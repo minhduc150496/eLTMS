@@ -1,0 +1,12 @@
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.BusinessLogic.dll
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.BusinessLogic.pdb
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.dll
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\EntityFramework.dll
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.pdb
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.dll.config
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\bin\Debug\EntityFramework.xml
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csprojAssemblyReference.cache
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csproj.CopyComplete
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.dll
+C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.pdb
