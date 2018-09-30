@@ -1,4 +1,5 @@
 ﻿using eLTMS.Web.App_Start;
+using eLTMS.Web.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace eLTMS.Web
         {
             AreaRegistration.RegisterAllAreas();
             Bootstrapper.Run();
+            AutoMapperConfiguration.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
