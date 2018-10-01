@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eLTMS.Web", "eLTMS.Web\eLTMS.Web.csproj", "{C471EEE6-1355-4325-BB95-C41C465BB6BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eLTMS.BusinessLogic", "eLTMS.BusinessLogic\eLTMS.BusinessLogic.csproj", "{CB202736-804F-47A7-9533-B67C1F2FBF74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eLTMS.DataAccess", "eLTMS.DataAccess\eLTMS.DataAccess.csproj", "{81E344AD-370A-4AA6-98F5-8151677D2533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eLTMS.UserWeb", "eLTMS.UserWeb\eLTMS.UserWeb.csproj", "{5A4E600A-CF32-45BA-8919-68F9B321317A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eLTMS.AdminWeb", "eLTMS.AdminWeb\eLTMS.AdminWeb.csproj", "{C471EEE6-1355-4325-BB95-C41C465BB6BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB202736-804F-47A7-9533-B67C1F2FBF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB202736-804F-47A7-9533-B67C1F2FBF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB202736-804F-47A7-9533-B67C1F2FBF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +25,14 @@ Global
 		{81E344AD-370A-4AA6-98F5-8151677D2533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81E344AD-370A-4AA6-98F5-8151677D2533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81E344AD-370A-4AA6-98F5-8151677D2533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4E600A-CF32-45BA-8919-68F9B321317A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4E600A-CF32-45BA-8919-68F9B321317A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4E600A-CF32-45BA-8919-68F9B321317A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4E600A-CF32-45BA-8919-68F9B321317A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C471EEE6-1355-4325-BB95-C41C465BB6BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
