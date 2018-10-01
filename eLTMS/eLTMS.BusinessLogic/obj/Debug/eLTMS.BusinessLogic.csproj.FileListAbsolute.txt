@@ -10,3 +10,15 @@ C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.Business
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csproj.CopyComplete
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.dll
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.pdb
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.BusinessLogic.dll
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.BusinessLogic.pdb
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.dll
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\EntityFramework.dll
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.pdb
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\eLTMS.DataAccess.dll.config
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\bin\Debug\EntityFramework.xml
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csprojAssemblyReference.cache
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csproj.CoreCompileInputs.cache
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.csproj.CopyComplete
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.dll
+D:\eLTMS\eLTMS\eLTMS.BusinessLogic\obj\Debug\eLTMS.BusinessLogic.pdb

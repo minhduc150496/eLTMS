@@ -10,3 +10,15 @@ C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.csproj.CopyComplete
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.dll
 C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.pdb
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\eLTMS.DataAccess.dll.config
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\eLTMS.DataAccess.dll
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\eLTMS.DataAccess.pdb
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\EntityFramework.dll
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\EntityFramework.xml
+D:\eLTMS\eLTMS\eLTMS.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+D:\eLTMS\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.csprojAssemblyReference.cache
+D:\eLTMS\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.csproj.CoreCompileInputs.cache
+D:\eLTMS\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.csproj.CopyComplete
+D:\eLTMS\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.dll
+D:\eLTMS\eLTMS\eLTMS.DataAccess\obj\Debug\eLTMS.DataAccess.pdb

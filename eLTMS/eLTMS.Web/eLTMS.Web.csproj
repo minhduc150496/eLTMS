@@ -178,6 +178,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\AdminWeb\AdminWebAreaRegistration.cs" />
+    <Compile Include="Areas\AdminWeb\Controllers\PatientController.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -7336,6 +7338,10 @@
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Scripts\customScript\allSupplies.js" />
+    <Content Include="Areas\AdminWeb\Views\web.config" />
+    <Content Include="Areas\AdminWeb\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\AdminWeb\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\AdminWeb\Views\Patient\Index.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -7364,6 +7370,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\AdminWeb\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -2,6 +2,7 @@
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using eLTMS.BusinessLogic.Services;
+using eLTMS.DataAccess;
 using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace eLTMS.Web.Ioc
 {
@@ -52,7 +54,7 @@ namespace eLTMS.Web.Ioc
                .AsImplementedInterfaces().InstancePerRequest();
             
             Container = builder.Build();
-
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
             return Container;
 
         }
