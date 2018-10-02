@@ -1,2 +1,8 @@
 eLTMS/.vs/
 eLTMS/eLTMS.Web/obj/
+eLTMS/eLTMS.Web/bin/
+eLTMS/eLTMS.BusinessLogic/obj/
+eLTMS/eLTMS.BusinessLogic/bin/
+eLTMS/eLTMS.DataAccess/obj/
+eLTMS/eLTMS.DataAccess/bin/
+eLTMS/packages/
