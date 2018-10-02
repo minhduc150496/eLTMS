@@ -10,20 +10,27 @@ var homeController = {
     registerEvent: function () {
 
         $('#btnSave').off('click').on('click', function () {
-            var serviceCreateDto = {
-                ServiceId: $('#txtServiceId').val(),
-                Name: $('#txtServiceName').val(),
-                ServiceTypeId: $('#ddlType').val(),
-                ServiceStatusId: $('#ddlStatusId').val(),
-                Price: $('#txtPrice').val(),
-                SupplierId: supplierIdMaster
+            var code = $('#txtCode').val();
+            var name = $('#txtName').val();
+            var type = parseFloat($('#ddlSupplyType').val());
+            var supplyId = $('#txtSupplyId').val();
+            var unit = $('#ddlSupplyType').val();
+            var note = $('#txtNote').val();
+            var supply = {
+                SupplyId: supplyId,
+                SuppliesCode: code,
+                SuppliesName: name,
+                SuppliesTypeName: type,
+                //Quantity:quantity,
+                Unit: unit,
+                Note: note
             }
-            if (serviceCreateDto.ServiceId == 0) {
+            if (supply.supplyId == 0) {
                 $.ajax({
-                    url: '/Supplier/Service/AddService',
+                    url: '/WareHouse/AddSupply',
                     type: 'Post',
                     dataType: 'json',
-                    data: serviceCreateDto,
+                    data: supply,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -40,10 +47,10 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/Supplier/Service/UpdateService',
+                    url: '/WareHouse/AddSupply',
                     type: 'Post',
                     dataType: 'json',
-                    data: serviceCreateDto,
+                    data: supply,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -65,7 +72,7 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới dịch vụ');
+            $('#lblPopupTitle').text('Thêm mới vật tư');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
@@ -119,7 +126,7 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/Supplier/Service/GetServiceById',
+            url: '/Supplier/Service/GetSupplyById',
             data: {
                 serviceId: id
             },
@@ -144,39 +151,7 @@ var homeController = {
         });
     },
     saveData: function () {
-        var name = $('#txtName').val();
-        var salary = parseFloat($('#txtSalary').val());
-        var status = $('#ckStatus').prop('checked');
-        var id = parseInt($('#hidID').val());
-        var employee = {
-            Name: name,
-            Salary: salary,
-            Status: status,
-            ID: id
-        }
-        $.ajax({
-            url: '/Home/SaveData',
-            data: {
-                strEmployee: JSON.stringify(employee)
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                if (response.status == true) {
-                    bootbox.alert("Save Success", function () {
-                        $('#modalAddUpdate').modal('hide');
-                        homeController.loadData(true);
-                    });
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
+        
     },
     resetForm: function () {
         $('#txtServiceId').val('0');
@@ -201,6 +176,7 @@ var homeController = {
                             SupplyName: item.SuppliesName,
                             SupplyTypeName: item.SuppliesTypeName,
                             Quantity: item.Quantity,
+                            Unit: item.Unit,
                             //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
                             Note: item.Note,
 

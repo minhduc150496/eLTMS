@@ -52,5 +52,14 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult AddSupply(Supply supply)
+        {
+            var result =  _supplyService.AddSupply(supply);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
     }
 }

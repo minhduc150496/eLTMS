@@ -6,8 +6,7 @@ using System.Web;
 namespace eLTMS.Web.Models.dto
 {
     public class SupplyDto
-    {
-        
+    { 
         public int SuppliesId { get; set; } // SuppliesId (Primary key)
 
         
@@ -21,7 +20,7 @@ namespace eLTMS.Web.Models.dto
 
         public int? Quantity { get; set; } // Quantity
 
-        
+        public string Unit { get; set; } // Note
         public string Note { get; set; } // Note
     }
 }

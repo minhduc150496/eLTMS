@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface ISupplyService
     {
         List<Supply> GetAllSupplies();
+        bool AddSupply(Supply supply);
     }
 
     public class SupplyService : ISupplyService
@@ -29,6 +30,20 @@ namespace eLTMS.BusinessLogic.Services
             var supplyRepo = this.RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
             var supplies =  supplyRepo.GetAllSupply();
             return supplies;
+        }
+        public bool AddSupply(Supply supply)
+        {
+
+            var repo = RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+            //repo.Create(supply);
+            //var saveResult =  UnitOfWork.SaveChanges();
+            try
+            {
+                repo.Create(supply);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception) { return false; }
+            return true;
         }
     }
 }
