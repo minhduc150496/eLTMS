@@ -1,2 +1,4 @@
 eLTMS/.vs/
 eLTMS/eLTMS.Web/obj/
+eLTMS/eLTMS.UserWeb/obj/Debug/eLTMS.UserWeb.csprojAssemblyReference.cache
+eLTMS/eLTMS.AdminWeb/obj/Debug/eLTMS.AdminWeb.csprojAssemblyReference.cache
