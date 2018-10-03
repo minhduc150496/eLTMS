@@ -14,6 +14,7 @@ namespace eLTMS.DataAccess.Repositories
     public interface ITestingRepository : IRepository<Testing>
     {
         List<Testing> GetAllTesting();
+        Testing GetById(int id);
     }
     public class TestingRepository : RepositoryBase<Testing>, ITestingRepository
     {
@@ -23,6 +24,16 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(x => x.Patient)
                 .Include(x => x.LabTest)
                 .ToList();
+            return result;
+        }
+        public Testing GetById(int id)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.TestingId == id)
+                .Include(x => x.Patient)
+                .Include(x => x.LabTest)
+                .ToList()
+                .FirstOrDefault();
             return result;
         }
     }

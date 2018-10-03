@@ -23,9 +23,19 @@ namespace eLTMS.Web.Api
         [Route("api/testing/get-all")]
         public HttpResponseMessage TestingGetAll()
         {
-            var results = _testingService.GetAll();
-            var result = Mapper.Map<IEnumerable<Testing>, IEnumerable<TestingDto>>(results);
-            var response = Request.CreateResponse(HttpStatusCode.OK, result);
+            var testings = _testingService.GetAll();
+            var testingDtos = Mapper.Map<IEnumerable<Testing>, IEnumerable<TestingDto>>(testings);
+            var response = Request.CreateResponse(HttpStatusCode.OK, testingDtos);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("api/testing/get-by-id")]
+        public HttpResponseMessage GetById(int id)
+        {
+            var testing = _testingService.GetById(id);
+            var testingDto = Mapper.Map<Testing, TestingDto>(testing);
+            var response = Request.CreateResponse(HttpStatusCode.OK, testingDto);
             return response;
         }
 

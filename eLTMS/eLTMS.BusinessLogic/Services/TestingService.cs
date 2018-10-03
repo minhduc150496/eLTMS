@@ -13,6 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface ITestingService
     {
         List<Testing> GetAll();
+        Testing GetById(int id);
         bool Create(Testing newTesting);
         bool CreateMany(List<Testing> newTestings);
         bool Update(Testing testing);
@@ -34,6 +35,13 @@ namespace eLTMS.BusinessLogic.Services
             var repo = this.RepositoryHelper.GetRepository<ITestingRepository>(this.UnitOfWork);
             var testings = repo.GetAllTesting();
             return testings;
+        }
+
+        public Testing GetById(int id)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITestingRepository>(this.UnitOfWork);
+            var testing = repo.GetById(id);
+            return testing;
         }
 
         public bool Create(Testing newTesting)
