@@ -11,8 +11,10 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface ISupplyService
     {
-        List<Supply> GetAllSupplies();
+        List<Supply> GetAllSupplies(string suppliesCode);
         bool AddSupply(Supply supply);
+        bool Update(int id, string code, string name, int type, string unit, string note);
+        Supply GetSupplyById(int id);
     }
 
     public class SupplyService : ISupplyService
@@ -25,10 +27,16 @@ namespace eLTMS.BusinessLogic.Services
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public List<Supply> GetAllSupplies()
+        public List<Supply> GetAllSupplies(string suppliesCode)
         {
             var supplyRepo = this.RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
-            var supplies =  supplyRepo.GetAllSupply();
+            var supplies =  supplyRepo.GetAllSupply(suppliesCode);
+            return supplies;
+        }
+        public Supply GetSupplyById(int id)
+        {
+            var supplyRepo = this.RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+            var supplies = supplyRepo.GetSimpleById(id);
             return supplies;
         }
         public bool AddSupply(Supply supply)
@@ -43,6 +51,29 @@ namespace eLTMS.BusinessLogic.Services
                 UnitOfWork.SaveChanges();
             }
             catch (Exception) { return false; }
+            return true;
+        }
+
+        public bool Update(int id, string code, string name,int type, string unit, string note)
+        {
+            var repo = RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+
+            try
+            {
+                var supply = repo.GetById(id);
+                supply.SuppliesCode = code;
+                supply.SuppliesName = name;
+                supply.SuppliesTypeId = type;
+                supply.Unit = unit;
+                supply.Note =note;
+                repo.Update(supply);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
             return true;
         }
     }

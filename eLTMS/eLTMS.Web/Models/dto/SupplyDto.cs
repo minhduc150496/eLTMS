@@ -17,6 +17,7 @@ namespace eLTMS.Web.Models.dto
 
         public string SuppliesTypeName { get; set; }
 
+        public int? SuppliesTypeId { get; set; }
 
         public int? Quantity { get; set; } // Quantity
 

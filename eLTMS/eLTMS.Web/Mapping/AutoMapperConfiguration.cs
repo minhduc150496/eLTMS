@@ -21,6 +21,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.SuppliesCode, src => src.MapFrom(x => x.SuppliesCode))
                 .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit))
+                .ForMember(dst => dst.SuppliesTypeId, src => src.MapFrom(x => x.SuppliesTypeId))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note));
             });
         }

@@ -40,9 +40,9 @@ namespace eLTMS.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllSupplies(int page = 1,int pageSize = 20)
+        public JsonResult GetAllSupplies(string suppliesCode,int page = 1,int pageSize = 20)
         {
-            var queryResult = _supplyService.GetAllSupplies();
+            var queryResult = _supplyService.GetAllSupplies(suppliesCode);
             var totalRows = queryResult.Count();
             var result = Mapper.Map<IEnumerable<Supply>, IEnumerable<SupplyDto>>(queryResult.Skip((page-1) * pageSize).Take(pageSize)) ;
             return Json(new
@@ -56,6 +56,26 @@ namespace eLTMS.Web.Controllers
         public JsonResult AddSupply(Supply supply)
         {
             var result =  _supplyService.AddSupply(supply);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpGet]
+        public JsonResult SupplyDetail(int id)
+        {
+            var result = _supplyService.GetSupplyById(id);
+            var supply = Mapper.Map<Supply,SupplyDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = supply
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult UpdateSupply(Supply supply)
+        {
+            var result = _supplyService.Update(supply.SuppliesId, supply.SuppliesCode, supply.SuppliesName,supply.SuppliesTypeId.Value,supply.Unit,supply.Note);
             return Json(new
             {
                 sucess = result
