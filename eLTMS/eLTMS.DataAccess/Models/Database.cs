@@ -173,11 +173,7 @@ namespace eLTMS.DataAccess.Models
         public string RespondingMethod { get; set; } // RespondingMethod (length: 50)
 
         // Reverse navigation
-
-        /// <summary>
-        /// Child HospitalSuggestings where [HospitalSuggesting].[TestingID] point to this entity (FK_HospitalSuggesting_Testing)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK_HospitalSuggesting_Testing
+        
         /// <summary>
         /// Child ResultIndexes where [ResultIndex].[TestingID] point to this entity (FK_ResultIndex_Testing)
         /// </summary>
@@ -203,7 +199,6 @@ namespace eLTMS.DataAccess.Models
         public Testing()
         {
             ResultIndexes = new System.Collections.Generic.List<ResultIndex>();
-            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -429,6 +424,10 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child HospitalSuggestings where [HospitalSuggesting].[ResultPaperID] point to this entity (FK_HospitalSuggesting_ResultPaper)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK_HospitalSuggesting_ResultPaper
+        /// <summary>
         /// Child Testings where [Testing].[ResultPaperID] point to this entity (FK_Testing_ResultPaper)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Testing> Testings { get; set; } // Testing.FK_Testing_ResultPaper
@@ -443,6 +442,7 @@ namespace eLTMS.DataAccess.Models
         public ResultPaper()
         {
             Testings = new System.Collections.Generic.List<Testing>();
+            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -763,9 +763,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Id")]
         public int Id { get; set; } // ID (Primary key)
 
-        [Column(@"TestingID", Order = 2, TypeName = "int")]
-        [Display(Name = "Testing ID")]
-        public int? TestingId { get; set; } // TestingID
+        [Column(@"ResultPaperID", Order = 2, TypeName = "int")]
+        [Display(Name = "Result paper ID")]
+        public int? ResultPaperId { get; set; } // ResultPaperID
 
         [Column(@"HospitalID", Order = 3, TypeName = "int")]
         [Display(Name = "Hospital ID")]
@@ -788,9 +788,9 @@ namespace eLTMS.DataAccess.Models
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalS__Hospi__7C4F7684
 
         /// <summary>
-        /// Parent Testing pointed by [HospitalSuggesting].([TestingId]) (FK_HospitalSuggesting_Testing)
+        /// Parent ResultPaper pointed by [HospitalSuggesting].([ResultPaperId]) (FK_HospitalSuggesting_ResultPaper)
         /// </summary>
-        [ForeignKey("TestingId")] public virtual Testing Testing { get; set; } // FK_HospitalSuggesting_Testing
+        [ForeignKey("ResultPaperId")] public virtual ResultPaper ResultPaper { get; set; } // FK_HospitalSuggesting_ResultPaper
     }
 
     // HospitalFacultyMapping
@@ -1432,7 +1432,7 @@ namespace eLTMS.DataAccess.Models
 
         public HospitalSuggestingConfiguration(string schema)
         {
-            Property(x => x.TestingId).IsOptional();
+            Property(x => x.ResultPaperId).IsOptional();
             Property(x => x.HospitalId).IsOptional();
             Property(x => x.FacultyId).IsOptional();
 
@@ -1694,6 +1694,27 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.LabTestId).IsOptional();
 
         }
+    }
+
+    #endregion
+
+    #region Stored procedure return models
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class SpHelpdiagramdefinitionReturnModel
+    {
+        public System.Int32? version { get; set; }
+        public System.Byte[] definition { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class SpHelpdiagramsReturnModel
+    {
+        public System.String Database { get; set; }
+        public System.String Name { get; set; }
+        public System.Int32 ID { get; set; }
+        public System.String Owner { get; set; }
+        public System.Int32 OwnerID { get; set; }
     }
 
     #endregion
