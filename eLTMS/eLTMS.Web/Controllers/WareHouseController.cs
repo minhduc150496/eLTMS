@@ -81,5 +81,19 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+
+        [HttpGet]
+        public JsonResult GetAllSupply()
+        {
+            var queryResult = _supplyService.GetAllSupplies(string.Empty);
+
+            var result = queryResult.Select(x => new { x.SuppliesId, x.SuppliesName, x.SuppliesCode , x.Unit}).ToList();
+            return Json(new
+            {
+                success = true,
+                data = result, 
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
