@@ -29,9 +29,9 @@ namespace eLTMS.DataAccess.Infrastructure
             where TRepository : class
 
         {
-            if (typeof(TRepository) == typeof(IEmployeeRepository))
+            if (typeof(TRepository) == typeof(IResultPaperRepository))
             {
-                dynamic repo = new EmployeeRepository();
+                dynamic repo = new ResultPaperRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }

@@ -44,15 +44,15 @@ namespace eLTMS.Web.Ioc
             builder.RegisterType<FinalProjectContext>().AsSelf().InstancePerRequest();
 
             // Repositories
-            builder.RegisterAssemblyTypes(typeof(EmployeeRepository).Assembly)
+            builder.RegisterAssemblyTypes(typeof(TestingRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerRequest();
 
             // Services
-            builder.RegisterAssemblyTypes(typeof(EmployeeService).Assembly)
+            builder.RegisterAssemblyTypes(typeof(TestingService).Assembly)
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
-            
+
             Container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
             return Container;

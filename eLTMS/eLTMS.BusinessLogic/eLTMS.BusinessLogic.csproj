@@ -42,9 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\ResultService.cs" />
     <Compile Include="Services\SupplyService.cs" />
     <Compile Include="Services\TestingService.cs" />
   </ItemGroup>
