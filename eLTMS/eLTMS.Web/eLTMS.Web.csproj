@@ -180,12 +180,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -7313,6 +7315,7 @@
     <Content Include="Views\WareHouse\Index.cshtml" />
     <Content Include="Views\WareHouse\Supplies.cshtml" />
     <Content Include="Views\Shared\_LayoutPageWarehouseManagement.cshtml" />
+    <Content Include="Views\Patient\Patients.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
