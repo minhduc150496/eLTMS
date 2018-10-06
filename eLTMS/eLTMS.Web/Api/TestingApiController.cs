@@ -12,7 +12,6 @@ namespace eLTMS.Web.Api
 {
     public class TestingApiController : ApiController
     {
-
         private readonly ITestingService _testingService;
         public TestingApiController(ITestingService testingService)
         {

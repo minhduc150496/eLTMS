@@ -18,13 +18,14 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<ResultPaper> GetResultPapersByPatientId(int patientId)
         {
-            using (DbContext ctx = new DbContext())
-            {
-                new Repository<ResultPaper>
-            }
-            var result = DbSet.AsQueryable()
-                .ToList();
-            return result;
+            //using (DbContext ctx = new DbContext())
+            //{
+            //    new Repository<ResultPaper>
+            //}
+            //var result = DbSet.AsQueryable()
+            //    .ToList();
+            //return result;
+            return null;
         }
     }
 }

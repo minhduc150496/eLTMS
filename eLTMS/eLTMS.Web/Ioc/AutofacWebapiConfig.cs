@@ -53,6 +53,16 @@ namespace eLTMS.Web.Ioc
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
 
+            // Repositories
+            builder.RegisterAssemblyTypes(typeof(AccountRepository).Assembly)
+                .Where(t => t.Name.EndsWith("Repository"))
+                .AsImplementedInterfaces().InstancePerRequest();
+
+            // Services
+            builder.RegisterAssemblyTypes(typeof(AccountService).Assembly)
+               .Where(t => t.Name.EndsWith("Service"))
+               .AsImplementedInterfaces().InstancePerRequest();
+
             Container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
             return Container;
