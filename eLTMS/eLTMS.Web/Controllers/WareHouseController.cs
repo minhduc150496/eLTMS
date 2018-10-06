@@ -108,5 +108,14 @@ namespace eLTMS.Web.Controllers
                 data = result,
             });
         }
+        [HttpPost]
+        public JsonResult Delete(int supplyId)
+        {
+            var result = _supplyService.Delete(supplyId);
+            return Json(new
+            {
+                success = result
+            });
+        }
     }
 }

@@ -152,7 +152,7 @@ var homeController = {
     },
     deleteEmployee: function (id) {
         $.ajax({
-            url: '/Home/Delete',
+            url: '/WareH/Delete',
             data: {
                 id: id
             },

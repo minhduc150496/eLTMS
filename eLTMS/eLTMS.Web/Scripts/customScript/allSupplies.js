@@ -96,28 +96,26 @@ var homeController = {
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            bootbox.confirm("Are you sure to delete this employee?", function (result) {
-                homeController.deleteEmployee(id);
-            });
+            homeController.deleteSupply(id);
+            
         });
 
     },
-    deleteEmployee: function (id) {
+    deleteSupply: function (id) {
         $.ajax({
-            url: '/Home/Delete',
+            url: '/WareHouse/Delete',
             data: {
-                id: id
+                supplyId: id
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
-                    bootbox.alert("Delete Success", function () {
-                        homeController.loadData(true);
-                    });
+                if (response.success == true) {
+                    toastr.success("Xóa thành công.");
+                    homeController.loadData(true);
                 }
                 else {
-                    bootbox.alert(response.message);
+                    toastr.error("Xóa không thành công.");
                 }
             },
             error: function (err) {

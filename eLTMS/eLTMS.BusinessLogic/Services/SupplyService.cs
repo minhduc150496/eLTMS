@@ -15,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         bool AddSupply(Supply supply);
         bool Update(int id, string code, string name, int type, string unit, string note);
         Supply GetSupplyById(int id);
+        bool Delete(int id);
     }
 
     public class SupplyService : ISupplyService
@@ -66,6 +67,24 @@ namespace eLTMS.BusinessLogic.Services
                 supply.SuppliesTypeId = type;
                 supply.Unit = unit;
                 supply.Note =note;
+                repo.Update(supply);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public bool Delete(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+
+            try
+            {
+                var supply = repo.GetById(id);
+                supply.IsDeleted = true;
                 repo.Update(supply);
                 UnitOfWork.SaveChanges();
             }
