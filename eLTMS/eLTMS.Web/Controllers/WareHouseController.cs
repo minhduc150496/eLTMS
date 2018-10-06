@@ -15,9 +15,12 @@ namespace eLTMS.Web.Controllers
     {
         // GET: WareHouse
         private readonly ISupplyService _supplyService;
-        public WareHouseController(ISupplyService supplyService)
+        
+        private readonly IImportPaperService _importPaperService;
+        public WareHouseController(ISupplyService supplyService, IImportPaperService importPaperService)
         {
             this._supplyService = supplyService;
+            this._importPaperService = importPaperService;
         }
         public ActionResult Index()
         {
@@ -95,5 +98,15 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult AddImportPaper(ImportPaper importPaper)
+        {
+            var result = _importPaperService.AddImportPaper(importPaper);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            });
+        }
     }
 }

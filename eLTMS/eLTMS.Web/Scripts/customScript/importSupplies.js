@@ -76,6 +76,7 @@ var homeController = {
 
         $('#btnAddNew').off('click').on('click', function () {
             var newRow = $('#template-row').clone();
+            $(newRow).addClass('data-row');
             console.log(newRow.html());
             var ddlData = "<select class='form-control ddlCode'>";
             $.each(homeconfig.allSupply, function (i, item) {
@@ -90,6 +91,41 @@ var homeController = {
             
         });
 
+
+        $('#btnSaveImport').off('click').on('click', function () {
+            var allRows = $('.data-row');
+            var tmpData = [];
+            $.each(allRows, function (i, item) {
+                var detail = {};
+                detail.SuppliesId = $(item).find('.ddlCode').val();
+                detail.Quantity = $(item).find('.txtQuantity').val();
+                detail.Note = $(item).find('.txtNote').val();
+                tmpData.push(detail);
+            });
+            var data = {
+                ImportPaperCode: $('#txtImportCode').val(),
+                Note: $('#txtNote').val(),
+                ImportPaperDetails: tmpData
+            };
+            $.ajax({
+                url: '/WareHouse/AddImportPaper',
+                type: 'Post',
+                dataType: 'json',
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Tạo mới không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $('#myModal').modal('hide');
+                        homeController.loadData();
+                    }
+                }
+            })
+        });
        
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);

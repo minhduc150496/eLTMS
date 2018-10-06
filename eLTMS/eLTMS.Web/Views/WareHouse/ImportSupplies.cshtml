@@ -6,12 +6,12 @@
 
 <h2>ImportSupplies</h2>
 <section class="content">
-    <div class="form-group">
+    @*<div class="form-group">
         <label for="exampleInputFile">Import Excel</label>
         <input type="file" id="exampleInputFile">
 
         <p class="help-block">Example block-level help text here.</p>
-    </div>
+    </div>*@
 
     <div class="box">
         <div class="box-header">
@@ -19,6 +19,37 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+            <div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-1 col-form-label"></label>
+                    <label for="inputEmail3" class="col-sm-1 col-form-label">Số phiếu</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="txtImportCode" placeholder="">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"></label>
+                    <label for="inputPassword3" class="col-sm-1 col-form-label">Ngày nhập</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" value="06-10-2018" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-1 col-form-label"></label>
+                    <label for="inputEmail3" class="col-sm-1 col-form-label">Ghi chú</label>
+                    <div class="col-sm-9">
+                        <textarea rows="4" id="txtNote" cols="50" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-9 col-form-label"></label>
+                
+                    <div class="col-sm-3">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-primary" id="btnSaveImport">Lưu phiếu</button>
+                    </div>
+                </div>
+                
+
+            </div>
             <button class="btn btn-success" id="btnAddNew">Thêm mới</button>
             <table style="width:100%" class="table table-bordered">
                 <thead>
@@ -32,12 +63,12 @@
                     </tr>
                 </thead>
                 <tbody id="tblData">
-                    
+
                     <tr id="template-row" style="display:none;">
                         @*<td class="colIndex"></td>*@
                         <td class="colCode"></td>
                         <td class="colName"></td>
-                        <td class="colQuantity"><input type="number"  min="1" class="txtQuantity form-control" value="" /></td>
+                        <td class="colQuantity"><input type="number" min="1" class="txtQuantity form-control" value="" /></td>
                         <td class="colUnit"></td>
                         <td class="colNote"><input type="text" class="txtNote form-control" value="" /></td>
                     </tr>

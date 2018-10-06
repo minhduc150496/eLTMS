@@ -43,6 +43,18 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
+            if (typeof(TRepository) == typeof(IImportPaperDetailRepository))
+            {
+                dynamic repo = new ImportPaperDetailRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IImportPaperRepository))
+            {
+                dynamic repo = new ImportPaperRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
             TRepository repository = null;
             TryGetRepositoryPartial<TRepository>(unitOfWork, ref repository);
