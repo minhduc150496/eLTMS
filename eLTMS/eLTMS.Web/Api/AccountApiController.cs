@@ -28,12 +28,13 @@ namespace eLTMS.Web.Api
             var password = loginModel.Password; // sure that not empty from client
             var account = this._accountService.checkLogin(phoneNumber, password);
             var loginResult = new LoginResultModel();
-            if (account!=null)
+            if (account != null)
             {
                 loginResult.LoginSuccess = true;
                 var patient = account.Patients.FirstOrDefault();
                 loginResult.FullName = patient.FullName;
-            } else
+            }
+            else
             {
                 loginResult.LoginSuccess = false;
                 loginResult.PhoneNumber = phoneNumber;
@@ -42,7 +43,19 @@ namespace eLTMS.Web.Api
             return response;
         }
 
-        //EditProfile
-        
+        [HttpGet]
+        [Route("api/account/logout")]
+        public HttpResponseMessage Logout()
+        {
+            return null;
+        }
+
+        [HttpGet]
+        [Route("api/account/register")]
+        public HttpResponseMessage Register()
+        {
+            return null;
+        }
+
     }
 }

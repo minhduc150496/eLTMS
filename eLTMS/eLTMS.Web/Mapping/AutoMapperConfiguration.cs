@@ -32,6 +32,11 @@ namespace eLTMS.Web.Mapping
                 //cfg.CreateMap<Account, AccountDto>()
                 //.ForMember(dst => dst.FullName, src => src.MapFrom(x => x.)
 
+                cfg.CreateMap<LabTest, LabTestDto>()
+                .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))
+                .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
+                .ForMember(dst => dst.Price, src => src.MapFrom(x => x.Price));
+
             });
             
         }

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\ResultService.cs" />
     <Compile Include="Services\SupplyService.cs" />
     <Compile Include="Services\TestingService.cs" />
