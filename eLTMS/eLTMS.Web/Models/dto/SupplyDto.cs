@@ -23,5 +23,6 @@ namespace eLTMS.Web.Models.dto
 
         public string Unit { get; set; } // Note
         public string Note { get; set; } // Note
+        public bool? IsDeleted { get; set; } // IsDeleted
     }
 }

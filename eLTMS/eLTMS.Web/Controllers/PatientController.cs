@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eLTMS.AdminWeb.Models.dto;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Web.Models.dto;
@@ -32,8 +33,28 @@ namespace eLTMS.Web.Controllers
             return View();
         }
 
-
-
+        [HttpGet]
+        public JsonResult GetAllPatients(string phoneNumber = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _patientService.GetAllPatients(phoneNumber);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<Patient>, IEnumerable<PatientDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+      //  [HttpPost]
+//public JsonResult UpdatePatient(Patient patient)
+      //  {
+          //  var result = _supplyService.Update(supply.SuppliesId, supply.SuppliesCode, supply.SuppliesName, supply.SuppliesTypeId.Value, supply.Unit, supply.Note);
+          //  return Json(new
+//{
+          //      sucess = result
+//});
+      //  }
         [HttpPost]
         public JsonResult AddPatient(Patient patient)
         {
@@ -43,6 +64,16 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
-     
+        [HttpGet]
+        public JsonResult PatientDetail(int id)
+        {
+            var result = _patientService.GetPatientById(id);
+            var supply = Mapper.Map<Patient, PatientDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = supply
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

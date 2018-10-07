@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eLTMS.AdminWeb.Models.dto;
 using eLTMS.DataAccess.Models;
 using eLTMS.Web.Models.dto;
 using System;
@@ -22,7 +23,20 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit))
                 .ForMember(dst => dst.SuppliesTypeId, src => src.MapFrom(x => x.SuppliesTypeId))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note));
+
+                cfg.CreateMap<Patient, PatientDto>()
+                .ForMember(dst => dst.PatientId, src => src.MapFrom(x => x.PatientId))
+                .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))
+                .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Gender))
+                .ForMember(dst => dst.PatientCode, src => src.MapFrom(x => x.PatientCode))
+                .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
+                .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
+                .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
+                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
             });
         }
     }

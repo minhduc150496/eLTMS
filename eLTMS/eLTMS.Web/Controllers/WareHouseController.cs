@@ -43,7 +43,7 @@ namespace eLTMS.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllSupplies(string suppliesCode,int page = 1,int pageSize = 20)
+        public JsonResult GetAllSupplies(string suppliesCode = "",int page = 1,int pageSize = 20)
         {
             var queryResult = _supplyService.GetAllSupplies(suppliesCode);
             var totalRows = queryResult.Count();

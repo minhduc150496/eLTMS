@@ -11,29 +11,33 @@ var homeController = {
 
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
+            var accountId = parseInt($('#txtAccountId').val());
             var name = $('#txtName').val();
-            var type = parseInt($('#ddlSupplyType').val());
-            var supplyId = $('#txtSupplyId').val();
-            var unit = $('#ddlSupplyUnit').val();
-            var note = $('#txtNote').val();
-            var quantity = '0';
-            var isDeteted = "False";
-            var supply = {
-                SuppliesId: supplyId,
-                SuppliesCode: code,
-                SuppliesName: name,
-                SuppliesTypeId: type,
-                Quantity:quantity,
-                Unit: unit,
-                IsDeleted: isDeteted,
-                Note: note
+            var gender = $('#ddlGender').val();
+            var patientId = parseInt($('#txtPatientId').val());
+            var phone = $('#txtPhoneNumber').val();
+            var homeAddress = $('#txtHomeAddress').val();
+            var companyAddress = $('#txtCompanyAddress').val();
+            var date = '06-10-2018';
+            var isDeleted = "False";
+            var patient = {
+                PatientId: patientId,
+                PatientCode: code,
+                AccountId: accountId   ,
+                FullName: name,
+                Gender: gender,
+                DateOfBirth: date,
+                PhoneNumber: phone,
+                HomeAddress: homeAddress,
+                CompanyAddress: companyAddress,
+                IsDeleted: isDeleted
             }
-            if (supply.SuppliesId == 0) {
+            if (patient.PatientId == 0) {
                 $.ajax({
-                    url: '/WareHouse/AddSupply',
+                    url: '/Patient/AddPatient',
                     type: 'Post',
                     dataType: 'json',
-                    data: supply,
+                    data: patient,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -50,10 +54,10 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/WareHouse/UpdateSupply',
+                    url: '/Patient/UpdatePatient',
                     type: 'Post',
                     dataType: 'json',
-                    data: supply,
+                    data: patient,
                     success: function (res) {
                         if (!res.sucess) {
                            
@@ -75,8 +79,8 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới vật tư');
-            homeController.resetForm();
+            $('#lblPopupTitle').text('Thêm mới bệnh nhân');
+            //homeController.resetForm();
             $('#myModal').modal('show');
         });
 
@@ -127,7 +131,7 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/WareHouse/SupplyDetail',
+            url: '/Patient/PatientDetail',
             data: {
                 id: id
             },
@@ -136,12 +140,14 @@ var homeController = {
             success: function (response) {
                 if (response.sucess) {
                     var data = response.data;
-                    $('#txtSupplyId').val(data.SuppliesId);
-                    $('#txtCode').val(data.SuppliesCode);
-                    $('#txtName').val(data.SuppliesName);
-                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-                    $('#ddlSupplyUnit').val(data.Unit).change();
-                    $('#txtNote').val(data.Note);
+                    $('#txtPatientId').val(data.PatientId);
+                    $('#txtAccountId').val(data.AccountId);
+                    $('#txtCode').val(data.PatientCode);
+                    $('#txtName').val(data.FullName);
+                    $('#ddlGender').val(data.Gender).change();
+                    $('#txtPhoneNumber').val(data.PhoneNumber);
+                    $('#txtHomeAddress').val(data.HomeAddress);
+                    $('#txtCompanyAddress').val(data.CompanyAddress);
                    
                 }
                 else {
@@ -166,10 +172,10 @@ var homeController = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Warehouse/GetAllSupplies',
+            url: '/Patient/GetAllPatients',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, suppliesCode: $('#txtSearch').val() },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, phoneNumber: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -177,14 +183,14 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            SupplyId: item.SuppliesId,
-                            SuppliesCode: item.SuppliesCode,
-                            SupplyName: item.SuppliesName,
-                            SupplyTypeName: item.SuppliesTypeName,
-                            Quantity: item.Quantity,
-                            Unit: item.Unit,
+                            PatientId: item.PatientId,
+                            PatientCode: item.PatientCode,
+                            FullName: item.FullName,
+                            PhoneNumber: item.PhoneNumber,
+                            HomeAddress: item.HomeAddress,
+                           // Unit: item.Unit,
                             //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
-                            Note: item.Note,
+                           // Note: item.Note,
 
                         });
 
