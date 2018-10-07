@@ -83,6 +83,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent TestProfile pointed by [TestProfileLabTestMapping].([TestProfileId]) (FK__TestProfi__TestP__0A9D95DB)
         /// </summary>
         [ForeignKey("TestProfileId")] public virtual TestProfile TestProfile { get; set; } // FK__TestProfi__TestP__0A9D95DB
+
+        public TestProfileLabTestMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // TestProfile
@@ -132,6 +137,7 @@ namespace eLTMS.DataAccess.Models
 
         public TestProfile()
         {
+            IsDeleted = false;
             TestProfiles = new System.Collections.Generic.List<TestProfile>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
         }
@@ -210,6 +216,7 @@ namespace eLTMS.DataAccess.Models
 
         public Testing()
         {
+            IsDeleted = false;
             ResultIndexes = new System.Collections.Generic.List<ResultIndex>();
         }
     }
@@ -300,6 +307,7 @@ namespace eLTMS.DataAccess.Models
 
         public SupplyType()
         {
+            IsDeleted = false;
             Supplies = new System.Collections.Generic.List<Supply>();
         }
     }
@@ -371,6 +379,7 @@ namespace eLTMS.DataAccess.Models
 
         public Supply()
         {
+            IsDeleted = false;
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
@@ -414,6 +423,7 @@ namespace eLTMS.DataAccess.Models
 
         public Sample()
         {
+            IsDeleted = false;
             LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
         }
     }
@@ -478,6 +488,7 @@ namespace eLTMS.DataAccess.Models
 
         public ResultPaper()
         {
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -528,6 +539,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Testing pointed by [ResultIndex].([TestingId]) (FK_ResultIndex_Testing)
         /// </summary>
         [ForeignKey("TestingId")] public virtual Testing Testing { get; set; } // FK_ResultIndex_Testing
+
+        public ResultIndex()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Patient
@@ -616,6 +632,7 @@ namespace eLTMS.DataAccess.Models
 
         public Patient()
         {
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
             ResultPapers = new System.Collections.Generic.List<ResultPaper>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
@@ -658,6 +675,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Sample pointed by [LabTestSampleMapping].([SampleId]) (FK_LabTestSampleMapping_Sample)
         /// </summary>
         [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK_LabTestSampleMapping_Sample
+
+        public LabTestSampleMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // LabTest
@@ -710,6 +732,7 @@ namespace eLTMS.DataAccess.Models
 
         public LabTest()
         {
+            IsDeleted = false;
             LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
             Testings = new System.Collections.Generic.List<Testing>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
@@ -766,6 +789,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ImportPaperDetail].([SuppliesId]) (FK_ImportPaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ImportPaperDetail_Supplies
+
+        public ImportPaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ImportPaper
@@ -812,6 +840,7 @@ namespace eLTMS.DataAccess.Models
 
         public ImportPaper()
         {
+            IsDeleted = false;
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
     }
@@ -861,6 +890,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent ResultPaper pointed by [HospitalSuggesting].([ResultPaperId]) (FK_HospitalSuggesting_ResultPaper)
         /// </summary>
         [ForeignKey("ResultPaperId")] public virtual ResultPaper ResultPaper { get; set; } // FK_HospitalSuggesting_ResultPaper
+
+        public HospitalSuggesting()
+        {
+            IsDeleted = false;
+        }
     }
 
     // HospitalFacultyMapping
@@ -899,6 +933,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Hospital pointed by [HospitalFacultyMapping].([HospitalId]) (FK__HospitalF__Hospi__7A672E12)
         /// </summary>
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalF__Hospi__7A672E12
+
+        public HospitalFacultyMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Hospital
@@ -949,6 +988,7 @@ namespace eLTMS.DataAccess.Models
 
         public Hospital()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -1000,6 +1040,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Patient pointed by [Feedback].([PatientId]) (FK__Feedback__Patien__6B24EA82)
         /// </summary>
         [ForeignKey("PatientId")] public virtual Patient Patient { get; set; } // FK__Feedback__Patien__6B24EA82
+
+        public Feedback()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Faculty
@@ -1038,6 +1083,7 @@ namespace eLTMS.DataAccess.Models
 
         public Faculty()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -1093,6 +1139,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ExportProposurePaperDetail].([SuppliesId]) (FK_ExportProposurePaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ExportProposurePaperDetail_Supplies
+
+        public ExportProposurePaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ExportProposurePaper
@@ -1149,6 +1200,7 @@ namespace eLTMS.DataAccess.Models
 
         public ExportProposurePaper()
         {
+            IsDeleted = false;
             ExportPapers = new System.Collections.Generic.List<ExportPaper>();
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
         }
@@ -1199,6 +1251,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent ExportProposurePaper pointed by [ExportPaper].([ExportProposurePaperId]) (FK_ExportPaper_ExportProposurePaper)
         /// </summary>
         [ForeignKey("ExportProposurePaperId")] public virtual ExportProposurePaper ExportProposurePaper { get; set; } // FK_ExportPaper_ExportProposurePaper
+
+        public ExportPaper()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Employee
@@ -1281,6 +1338,7 @@ namespace eLTMS.DataAccess.Models
 
         public Employee()
         {
+            IsDeleted = false;
             ResultPapers = new System.Collections.Generic.List<ResultPaper>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
         }
@@ -1349,6 +1407,7 @@ namespace eLTMS.DataAccess.Models
 
         public Account()
         {
+            IsDeleted = false;
             Patients = new System.Collections.Generic.List<Patient>();
             Employees = new System.Collections.Generic.List<Employee>();
         }
