@@ -72,7 +72,6 @@
     <Compile Include="Repositories\LabTestRepository.cs" />
     <Compile Include="Repositories\ResultPaperRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
-    <Compile Include="Repositories\TestingRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

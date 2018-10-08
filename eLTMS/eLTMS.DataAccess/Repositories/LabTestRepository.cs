@@ -18,7 +18,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<LabTest> GetAll()
         {
             var results = DbSet.AsQueryable()
-                .Include(x => x.LabTestSampleMappings)
+                //.Include(x => x.LabTestSampleMappings)
                 .ToList();
             return results;
         }

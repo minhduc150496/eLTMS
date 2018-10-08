@@ -47,7 +47,6 @@
     <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\ResultService.cs" />
     <Compile Include="Services\SupplyService.cs" />
-    <Compile Include="Services\TestingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
