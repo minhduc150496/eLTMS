@@ -44,12 +44,12 @@ namespace eLTMS.Web.Ioc
             builder.RegisterType<FinalProjectContext>().AsSelf().InstancePerRequest();
 
             // Repositories
-            builder.RegisterAssemblyTypes(typeof(TestingRepository).Assembly)
+            builder.RegisterAssemblyTypes(typeof(AccountRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerRequest();
 
             // Services
-            builder.RegisterAssemblyTypes(typeof(TestingService).Assembly)
+            builder.RegisterAssemblyTypes(typeof(AccountService).Assembly)
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
 

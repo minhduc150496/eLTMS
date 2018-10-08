@@ -33,12 +33,10 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<ImportPaperDetail> ImportPaperDetails { get; set; } // ImportPaperDetail
         public System.Data.Entity.DbSet<LabTest> LabTests { get; set; } // LabTest
         public System.Data.Entity.DbSet<Patient> Patients { get; set; } // Patient
-        public System.Data.Entity.DbSet<ResultIndex> ResultIndexes { get; set; } // ResultIndex
         public System.Data.Entity.DbSet<ResultPaper> ResultPapers { get; set; } // ResultPaper
         public System.Data.Entity.DbSet<Sample> Samples { get; set; } // Sample
         public System.Data.Entity.DbSet<Supply> Supplies { get; set; } // Supply
         public System.Data.Entity.DbSet<SupplyType> SupplyTypes { get; set; } // SupplyType
-        public System.Data.Entity.DbSet<Testing> Testings { get; set; } // Testing
         public System.Data.Entity.DbSet<TestProfile> TestProfiles { get; set; } // TestProfile
         public System.Data.Entity.DbSet<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping
 

@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace eLTMS.Web.Api
 {
-    public class AccountApiController: ApiController
+    public class AccountApiController : ApiController
     {
         private readonly IAccountService _accountService;
         public AccountApiController(IAccountService accountService)
