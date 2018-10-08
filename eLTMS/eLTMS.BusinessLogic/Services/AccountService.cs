@@ -19,19 +19,20 @@ namespace eLTMS.BusinessLogic.Services
         private readonly IUnitOfWork UnitOfWork;
         public AccountService(IRepositoryHelper repositoryHelper)
         {
-            this.RepositoryHelper = repositoryHelper;
-            this.UnitOfWork = repositoryHelper.GetUnitOfWork();
+            RepositoryHelper = repositoryHelper;
+            UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
+
         public Account checkLogin(string phoneNumber, string password)
         {
             var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
             Account account = repo.GetByPhoneNumber(phoneNumber);
-            if (account != null && account.Password.Trim() == password.Trim())
+            if (account!=null && account.Password.Trim().Equals(password.Trim()))
             {
                 return account;
             }
             return null;
         }
-    }
 
+    }
 }

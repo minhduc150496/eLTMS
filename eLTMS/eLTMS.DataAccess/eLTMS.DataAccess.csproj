@@ -73,6 +73,7 @@
     <Compile Include="Repositories\SampleGettingRepository.cs" />
     <Compile Include="Repositories\AppointmentRepository.cs" />
     <Compile Include="Repositories\SampleRepository.cs" />
+    <Compile Include="Repositories\LabTestRepository.cs" />
     <Compile Include="Repositories\ResultPaperRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
   </ItemGroup>

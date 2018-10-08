@@ -42,7 +42,7 @@ namespace eLTMS.Web.Ioc
             builder.RegisterType<DbContextTransactionProxy>().As<IDbContextTransactionProxy>();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<FinalProjectContext>().AsSelf().InstancePerRequest();
-
+            
             // Repositories
             builder.RegisterAssemblyTypes(typeof(AccountRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))

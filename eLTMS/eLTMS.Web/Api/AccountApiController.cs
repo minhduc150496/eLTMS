@@ -1,10 +1,13 @@
-﻿using eLTMS.BusinessLogic.Services;
+﻿using AutoMapper;
+using eLTMS.BusinessLogic.Services;
+using eLTMS.DataAccess.Models;
 using eLTMS.Web.Models;
+using eLTMS.Web.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace eLTMS.Web.Api
@@ -16,27 +19,43 @@ namespace eLTMS.Web.Api
         {
             this._accountService = accountService;
         }
+
         [HttpPost]
         [Route("api/account/login")]
         public HttpResponseMessage Login(LoginModel loginModel)
         {
-            var phoneNumber = loginModel.phoneNumber;
-            var password = loginModel.password;
+            var phoneNumber = loginModel.PhoneNumber; // sure that not empty from client
+            var password = loginModel.Password; // sure that not empty from client
             var account = this._accountService.checkLogin(phoneNumber, password);
             var loginResult = new LoginResultModel();
             if (account != null)
             {
-                loginResult.result = true;
+                loginResult.LoginSuccess = true;
                 var patient = account.Patients.FirstOrDefault();
-                loginResult.fullname = patient.FullName;
+                loginResult.FullName = patient.FullName;
             }
             else
             {
-                loginResult.result = false;
-                loginResult.phoneNumber = phoneNumber;
+                loginResult.LoginSuccess = false;
+                loginResult.PhoneNumber = phoneNumber;
             }
-            var response = Request.CreateResponse(System.Net.HttpStatusCode.OK, loginResult);
+            var response = Request.CreateResponse(HttpStatusCode.OK, loginResult);
             return response;
         }
+
+        [HttpGet]
+        [Route("api/account/logout")]
+        public HttpResponseMessage Logout()
+        {
+            return null;
+        }
+
+        [HttpGet]
+        [Route("api/account/register")]
+        public HttpResponseMessage Register()
+        {
+            return null;
+        }
+
     }
 }
