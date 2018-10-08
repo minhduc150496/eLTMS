@@ -80,7 +80,7 @@ var homeController = {
 
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới bệnh nhân');
-            //homeController.resetForm();
+            homeController.resetForm();
             $('#myModal').modal('show');
         });
 
@@ -145,7 +145,7 @@ var homeController = {
                     $('#txtCode').val(data.PatientCode);
                     $('#txtName').val(data.FullName);
                     $('#ddlGender').val(data.Gender).change();
-                    $('#txtPhoneNumber').val(data.PhoneNumber);
+                    $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtCompanyAddress').val(data.CompanyAddress);
                    
@@ -163,12 +163,14 @@ var homeController = {
         
     },
     resetForm: function () {
-        $('#txtSupplyId').val('0');
+        $('#txtPatientId').val('0');
         $('#txtCode').val('');
-        $('#txtName').val('')
-        $('#ddlSupplyType').val('').change();
-        $('#ddlSupplyUnit').val('').change();
-        $('#txtNote').val('')
+        $('#txtAccountId').val('');
+        $('#txtName').val('');
+        $('#ddlGender').val('').change();
+        $('#txtPhoneNumber').val('');
+        $('#txtHomeAddress').val('');
+        $('#txtCompanyAddress').val('');
     },
     loadData: function (changePageSize) {
         $.ajax({

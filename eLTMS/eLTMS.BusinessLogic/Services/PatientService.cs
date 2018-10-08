@@ -14,7 +14,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<Patient> GetAllPatients(string phoneNumber);
         bool AddPatient(Patient patient);
-        bool Update(int id, string code, string name, int type, string unit, string note);
+        bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
         Patient GetPatientById(int id);
         //bool Delete(int id);
        // bool UpdatePatient(Patient dto);
@@ -37,7 +37,7 @@ namespace eLTMS.BusinessLogic.Services
                 repo.Create(patient);
                 UnitOfWork.SaveChanges();
             }
-            catch (Exception) { return false; }
+            catch (Exception ex) { return false; }
             return true;
         }
 
@@ -53,20 +53,23 @@ namespace eLTMS.BusinessLogic.Services
             var patients = patientRepo.GetSimpleById(id);
             return patients;
         }
-        public bool Update(int id, string code, string name, int type, string unit, string note)
+        public bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress)
         {
-            var repo = RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+            var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
 
             try
             {
-                var supply = repo.GetById(id);
-                supply.SuppliesCode = code;
-                supply.SuppliesName = name;
-                supply.SuppliesTypeId = type;
-                supply.Unit = unit;
-                supply.Note = note;
-                repo.Update(supply);
-                UnitOfWork.SaveChanges();
+                var patient = repo.GetById(id);
+                patient.PatientCode = code;
+                patient.FullName = name;
+                patient.Gender = gender;
+                patient.PhoneNumber = phone;
+                patient.HomeAddress = address;
+                patient.CompanyAddress = companyAddress;
+                repo.Update(patient);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any())
+                    return false;
             }
             catch (Exception)
             {

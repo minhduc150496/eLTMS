@@ -46,15 +46,15 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-      //  [HttpPost]
-//public JsonResult UpdatePatient(Patient patient)
-      //  {
-          //  var result = _supplyService.Update(supply.SuppliesId, supply.SuppliesCode, supply.SuppliesName, supply.SuppliesTypeId.Value, supply.Unit, supply.Note);
-          //  return Json(new
-//{
-          //      sucess = result
-//});
-      //  }
+        [HttpPost]
+public JsonResult UpdatePatient(Patient patient)
+        {
+            var result = _patientService.Update(patient.PatientId, patient.PatientCode,patient.FullName, patient.Gender, patient.PhoneNumber, patient.HomeAddress, patient.CompanyAddress);
+            return Json(new
+{
+               sucess = result
+});
+        }
         [HttpPost]
         public JsonResult AddPatient(Patient patient)
         {
