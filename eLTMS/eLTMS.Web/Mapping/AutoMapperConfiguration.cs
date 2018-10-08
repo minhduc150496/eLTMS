@@ -28,6 +28,17 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
                 .ForMember(dst => dst.BookedDateString, src => src.MapFrom(x => x.BookedDate.Value.ToShortDateString()))
                 .ForMember(dst => dst.BookedTimeString, src => src.MapFrom(x => x.BookedTime.Value.Hours + ":" + x.BookedTime.Value.Minutes));
+
+                cfg.CreateMap<Sample, SampleDto>()
+                .ForMember(dst => dst.sampleName, src => src.MapFrom(x => x.SampleName))
+                .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests));
+
+                cfg.CreateMap<LabTest, LabTestDto>()
+                .ForMember(dst => dst.labTestName, src => src.MapFrom(x => x.LabTestName))
+                .ForMember(dst => dst.description, src => src.MapFrom(x => x.Description))
+                .ForMember(dst => dst.price, src => src.MapFrom(x => x.Price));
+
+
             });
             
         }

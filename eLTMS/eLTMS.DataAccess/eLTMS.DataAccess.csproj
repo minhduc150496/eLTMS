@@ -68,6 +68,8 @@
     </Compile>
     <Compile Include="FinalProjectContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\SampleRepository.cs" />
     <Compile Include="Repositories\ResultPaperRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
     <Compile Include="Repositories\TestingRepository.cs" />

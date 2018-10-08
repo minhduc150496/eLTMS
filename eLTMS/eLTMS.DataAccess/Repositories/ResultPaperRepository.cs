@@ -10,21 +10,21 @@ using System.Data.Entity;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    public interface IResultPaperRepository : IRepository<ResultPaper>
-    {
-        List<ResultPaper> GetResultPapersByPatientId(int patientId);
-    }
-    public class ResultPaperRepository : RepositoryBase<ResultPaper>, IResultPaperRepository
-    {
-        public List<ResultPaper> GetResultPapersByPatientId(int patientId)
-        {
-            using (DbContext ctx = new DbContext())
-            {
-                new Repository<ResultPaper>
-            }
-            var result = DbSet.AsQueryable()
-                .ToList();
-            return result;
-        }
-    }
+    //public interface IResultPaperRepository : IRepository<ResultPaper>
+    //{
+    //    List<ResultPaper> GetResultPapersByPatientId(int patientId);
+    //}
+    //public class ResultPaperRepository : RepositoryBase<ResultPaper>, IResultPaperRepository
+    //{
+    //    public List<ResultPaper> GetResultPapersByPatientId(int patientId)
+    //    {
+    //        using (DbContext ctx = new DbContext())
+    //        {
+    //            new Repository<ResultPaper>
+    //        }
+    //        var result = DbSet.AsQueryable()
+    //            .ToList();
+    //        return result;
+    //    }
+    //}
 }

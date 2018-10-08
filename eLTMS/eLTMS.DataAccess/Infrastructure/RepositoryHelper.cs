@@ -29,12 +29,12 @@ namespace eLTMS.DataAccess.Infrastructure
             where TRepository : class
 
         {
-            if (typeof(TRepository) == typeof(IResultPaperRepository))
-            {
-                dynamic repo = new ResultPaperRepository();
-                repo.UnitOfWork = unitOfWork;
-                return (TRepository)repo;
-            }
+            //if (typeof(TRepository) == typeof(IResultPaperRepository))
+            //{
+            //    dynamic repo = new ResultPaperRepository();
+            //    repo.UnitOfWork = unitOfWork;
+            //    return (TRepository)repo;
+            //}
 
             if (typeof(TRepository) == typeof(ISupplyRepository))
             {
@@ -49,6 +49,21 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+
+            if (typeof(TRepository) == typeof(IAccountRepository))
+            {
+                dynamic repo = new AccountRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
+            if (typeof(TRepository) == typeof(ISampleRepository))
+            {
+                dynamic repo = new SampleRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
 
 
             TRepository repository = null;

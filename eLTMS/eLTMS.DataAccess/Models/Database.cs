@@ -83,6 +83,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent TestProfile pointed by [TestProfileLabTestMapping].([TestProfileId]) (FK__TestProfi__TestP__0A9D95DB)
         /// </summary>
         [ForeignKey("TestProfileId")] public virtual TestProfile TestProfile { get; set; } // FK__TestProfi__TestP__0A9D95DB
+
+        public TestProfileLabTestMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // TestProfile
@@ -132,6 +137,7 @@ namespace eLTMS.DataAccess.Models
 
         public TestProfile()
         {
+            IsDeleted = false;
             TestProfiles = new System.Collections.Generic.List<TestProfile>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
         }
@@ -210,6 +216,7 @@ namespace eLTMS.DataAccess.Models
 
         public Testing()
         {
+            IsDeleted = false;
             ResultIndexes = new System.Collections.Generic.List<ResultIndex>();
         }
     }
@@ -300,6 +307,7 @@ namespace eLTMS.DataAccess.Models
 
         public SupplyType()
         {
+            IsDeleted = false;
             Supplies = new System.Collections.Generic.List<Supply>();
         }
     }
@@ -371,6 +379,7 @@ namespace eLTMS.DataAccess.Models
 
         public Supply()
         {
+            IsDeleted = false;
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
@@ -408,13 +417,14 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child LabTestSampleMappings where [LabTestSampleMapping].[SampleID] point to this entity (FK_LabTestSampleMapping_Sample)
+        /// Child LabTests where [LabTest].[SampleID] point to this entity (FK__LabTest__SampleI__44CA3770)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTestSampleMapping> LabTestSampleMappings { get; set; } // LabTestSampleMapping.FK_LabTestSampleMapping_Sample
+        public virtual System.Collections.Generic.ICollection<LabTest> LabTests { get; set; } // LabTest.FK__LabTest__SampleI__44CA3770
 
         public Sample()
         {
-            LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
+            IsDeleted = false;
+            LabTests = new System.Collections.Generic.List<LabTest>();
         }
     }
 
@@ -478,6 +488,7 @@ namespace eLTMS.DataAccess.Models
 
         public ResultPaper()
         {
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -528,6 +539,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Testing pointed by [ResultIndex].([TestingId]) (FK_ResultIndex_Testing)
         /// </summary>
         [ForeignKey("TestingId")] public virtual Testing Testing { get; set; } // FK_ResultIndex_Testing
+
+        public ResultIndex()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Patient
@@ -535,7 +551,7 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class Patient
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"PatientID", Order = 1, TypeName = "int")]
         [Index(@"PK__Patient__3214EC2761CA8559", 1, IsUnique = true, IsClustered = true)]
         [Required]
@@ -616,48 +632,11 @@ namespace eLTMS.DataAccess.Models
 
         public Patient()
         {
-            Testings = new System.Collections.Generic.List<Testing>();
-            ResultPapers = new System.Collections.Generic.List<ResultPaper>();
+            IsDeleted = false;
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            ResultPapers = new System.Collections.Generic.List<ResultPaper>();
+            Testings = new System.Collections.Generic.List<Testing>();
         }
-    }
-
-    // LabTestSampleMapping
-    [Table("LabTestSampleMapping", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class LabTestSampleMapping
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column(@"LabTestSampleMappingID", Order = 1, TypeName = "int")]
-        [Index(@"PK_LabTestSampleMapping", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Lab test sample mapping ID")]
-        public int LabTestSampleMappingId { get; set; } // LabTestSampleMappingID (Primary key)
-
-        [Column(@"SampleID", Order = 2, TypeName = "int")]
-        [Display(Name = "Sample ID")]
-        public int? SampleId { get; set; } // SampleID
-
-        [Column(@"LabTestID", Order = 3, TypeName = "int")]
-        [Display(Name = "Lab test ID")]
-        public int? LabTestId { get; set; } // LabTestID
-
-        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent LabTest pointed by [LabTestSampleMapping].([LabTestId]) (FK_LabTestSampleMapping_LabTest)
-        /// </summary>
-        [ForeignKey("LabTestId")] public virtual LabTest LabTest { get; set; } // FK_LabTestSampleMapping_LabTest
-
-        /// <summary>
-        /// Parent Sample pointed by [LabTestSampleMapping].([SampleId]) (FK_LabTestSampleMapping_Sample)
-        /// </summary>
-        [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK_LabTestSampleMapping_Sample
     }
 
     // LabTest
@@ -693,12 +672,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"SampleID", Order = 6, TypeName = "int")]
+        [Display(Name = "Sample ID")]
+        public int? SampleId { get; set; } // SampleID
+
         // Reverse navigation
 
-        /// <summary>
-        /// Child LabTestSampleMappings where [LabTestSampleMapping].[LabTestID] point to this entity (FK_LabTestSampleMapping_LabTest)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTestSampleMapping> LabTestSampleMappings { get; set; } // LabTestSampleMapping.FK_LabTestSampleMapping_LabTest
         /// <summary>
         /// Child Testings where [Testing].[LabTestID] point to this entity (FK_Testing_LabTest)
         /// </summary>
@@ -708,9 +687,16 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping.FK__TestProfi__LabTe__09A971A2
 
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Sample pointed by [LabTest].([SampleId]) (FK__LabTest__SampleI__44CA3770)
+        /// </summary>
+        [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK__LabTest__SampleI__44CA3770
+
         public LabTest()
         {
-            LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
         }
@@ -766,6 +752,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ImportPaperDetail].([SuppliesId]) (FK_ImportPaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ImportPaperDetail_Supplies
+
+        public ImportPaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ImportPaper
@@ -812,6 +803,7 @@ namespace eLTMS.DataAccess.Models
 
         public ImportPaper()
         {
+            IsDeleted = false;
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
     }
@@ -861,6 +853,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent ResultPaper pointed by [HospitalSuggesting].([ResultPaperId]) (FK_HospitalSuggesting_ResultPaper)
         /// </summary>
         [ForeignKey("ResultPaperId")] public virtual ResultPaper ResultPaper { get; set; } // FK_HospitalSuggesting_ResultPaper
+
+        public HospitalSuggesting()
+        {
+            IsDeleted = false;
+        }
     }
 
     // HospitalFacultyMapping
@@ -899,6 +896,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Hospital pointed by [HospitalFacultyMapping].([HospitalId]) (FK__HospitalF__Hospi__7A672E12)
         /// </summary>
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalF__Hospi__7A672E12
+
+        public HospitalFacultyMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Hospital
@@ -949,6 +951,7 @@ namespace eLTMS.DataAccess.Models
 
         public Hospital()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -1000,6 +1003,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Patient pointed by [Feedback].([PatientId]) (FK__Feedback__Patien__6B24EA82)
         /// </summary>
         [ForeignKey("PatientId")] public virtual Patient Patient { get; set; } // FK__Feedback__Patien__6B24EA82
+
+        public Feedback()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Faculty
@@ -1038,6 +1046,7 @@ namespace eLTMS.DataAccess.Models
 
         public Faculty()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -1093,6 +1102,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ExportProposurePaperDetail].([SuppliesId]) (FK_ExportProposurePaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ExportProposurePaperDetail_Supplies
+
+        public ExportProposurePaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ExportProposurePaper
@@ -1149,6 +1163,7 @@ namespace eLTMS.DataAccess.Models
 
         public ExportProposurePaper()
         {
+            IsDeleted = false;
             ExportPapers = new System.Collections.Generic.List<ExportPaper>();
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
         }
@@ -1199,6 +1214,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent ExportProposurePaper pointed by [ExportPaper].([ExportProposurePaperId]) (FK_ExportPaper_ExportProposurePaper)
         /// </summary>
         [ForeignKey("ExportProposurePaperId")] public virtual ExportProposurePaper ExportProposurePaper { get; set; } // FK_ExportPaper_ExportProposurePaper
+
+        public ExportPaper()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Employee
@@ -1281,6 +1301,7 @@ namespace eLTMS.DataAccess.Models
 
         public Employee()
         {
+            IsDeleted = false;
             ResultPapers = new System.Collections.Generic.List<ResultPaper>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
         }
@@ -1349,6 +1370,7 @@ namespace eLTMS.DataAccess.Models
 
         public Account()
         {
+            IsDeleted = false;
             Patients = new System.Collections.Generic.List<Patient>();
             Employees = new System.Collections.Generic.List<Employee>();
         }
@@ -1610,23 +1632,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Description).IsOptional();
             Property(x => x.Price).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
-        }
-    }
-
-    // LabTestSampleMapping
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class LabTestSampleMappingConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<LabTestSampleMapping>
-    {
-        public LabTestSampleMappingConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public LabTestSampleMappingConfiguration(string schema)
-        {
             Property(x => x.SampleId).IsOptional();
-            Property(x => x.LabTestId).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
