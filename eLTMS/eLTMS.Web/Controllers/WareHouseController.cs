@@ -69,6 +69,17 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult LoadPaperImportDetailId(int id)
+        {
+                     var queryResult = _importPaperService.GetImportPaperById(id);
+            var importPaper = Mapper.Map<ImportPaper, ImportPaperDto>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = importPaper,
+                            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult AddSupply(Supply supply)
         {

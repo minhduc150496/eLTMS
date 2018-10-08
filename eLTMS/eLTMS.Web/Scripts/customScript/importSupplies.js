@@ -192,7 +192,7 @@ var homeController = {
                     $('#txtNote').val(data.Note);
                     $('#txtCreateDate').val(data.CreateDate);
                     $('#txtCreateDate').removeAttr('style');
-
+                    homeController.loadDataDetail(id);
                 }
                
             },
@@ -233,6 +233,35 @@ var homeController = {
                     });
                     console.log(html);
                     $('#tblData1').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadData();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataDetail: function (id) {
+        $.ajax({
+            url: '/Warehouse/LoadPaperImportDetailId',
+            type: 'GET',
+            dataType: 'json',
+            data: {  id: id },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#data-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            ImportPaperId: item.ImportPaperId,
+                            ImportPaperCode: item.Unit,
+                            CreateDate: item.Note,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblData').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadData();
                     }, changePageSize);
