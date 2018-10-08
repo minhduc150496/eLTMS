@@ -173,6 +173,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\AccountApiController.cs" />
     <Compile Include="Api\LabTestApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />
@@ -189,9 +190,10 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
-    <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
     <Compile Include="Models\dto\LabTestDto.cs" />
+    <Compile Include="Models\dto\SampleDto.cs" />
+    <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LoginResultModel.cs" />

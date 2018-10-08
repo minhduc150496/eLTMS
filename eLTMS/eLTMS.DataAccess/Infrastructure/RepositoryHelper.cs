@@ -29,12 +29,12 @@ namespace eLTMS.DataAccess.Infrastructure
             where TRepository : class
 
         {
-            if (typeof(TRepository) == typeof(IResultPaperRepository))
-            {
-                dynamic repo = new ResultPaperRepository();
-                repo.UnitOfWork = unitOfWork;
-                return (TRepository)repo;
-            }
+            //if (typeof(TRepository) == typeof(IResultPaperRepository))
+            //{
+            //    dynamic repo = new ResultPaperRepository();
+            //    repo.UnitOfWork = unitOfWork;
+            //    return (TRepository)repo;
+            //}
 
             if (typeof(TRepository) == typeof(ISupplyRepository))
             {
@@ -50,12 +50,20 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
+            if (typeof(TRepository) == typeof(ISampleRepository))
+            {
+                dynamic repo = new SampleRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
             if (typeof(TRepository) == typeof(ILabTestRepository))
             {
                 dynamic repo = new LabTestRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+
 
             TRepository repository = null;
             TryGetRepositoryPartial<TRepository>(unitOfWork, ref repository);
