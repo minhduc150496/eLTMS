@@ -90,7 +90,11 @@ var homeController = {
             homeController.registerEventForChangeDropDown();
             
         });
-
+        $('#btnView').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Danh sách phiếu nhập kho');
+            homeController.resetForm();
+            $('#myModal').modal('show');
+        });
 
         $('#btnSaveImport').off('click').on('click', function () {
             var allRows = $('.data-row');
@@ -100,6 +104,7 @@ var homeController = {
                 detail.SuppliesId = $(item).find('.ddlCode').val();
                 detail.Quantity = $(item).find('.txtQuantity').val();
                 detail.Note = $(item).find('.txtNote').val();
+                detail.Unit = $(item).find('.colUnit').text();
                 tmpData.push(detail);
             });
             var data = {
@@ -136,8 +141,7 @@ var homeController = {
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
-            $('#myModal').modal('show');
+            $('#myModal').modal('hide');
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
@@ -175,20 +179,22 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/WareHouse/SupplyDetail',
+            url: '/WareHouse/LoadPaperImportDetailId',
             data: {
                 id: id
             },
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.sucess) {
+                if (response.success) {
                     var data = response.data;
-                    homeconfig.allSupply = data;                   
+                    $('#txtImportCode').val(data.ImportPaperCode);
+                    $('#txtNote').val(data.Note);
+                    $('#txtCreateDate').val(data.CreateDate);
+                    $('#txtCreateDate').removeAttr('style');
+
                 }
-                else {
-                    bootbox.alert(response.message);
-                }
+               
             },
             error: function (err) {
                 console.log(err);
@@ -208,10 +214,10 @@ var homeController = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Warehouse/GetAllSupplies',
+            url: '/Warehouse/GetAllImportPapers',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, suppliesCode: $('#txtSearch').val() },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, createDate: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -219,20 +225,14 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            SupplyId: item.SuppliesId,
-                            SuppliesCode: item.SuppliesCode,
-                            SupplyName: item.SuppliesName,
-                            SupplyTypeName: item.SuppliesTypeName,
-                            Quantity: item.Quantity,
-                            Unit: item.Unit,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
-                            Note: item.Note,
-
+                            ImportPaperId: item.ImportPaperId,
+                            ImportPaperCode: item.ImportPaperCode,
+                            CreateDate: item.CreateDate,
                         });
 
                     });
                     console.log(html);
-                    $('#tblData').html(html);
+                    $('#tblData1').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadData();
                     }, changePageSize);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eLTMS.AdminWeb.Models.dto;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Web.Models.dto;
@@ -48,6 +49,19 @@ namespace eLTMS.Web.Controllers
             var queryResult = _supplyService.GetAllSupplies(suppliesCode);
             var totalRows = queryResult.Count();
             var result = Mapper.Map<IEnumerable<Supply>, IEnumerable<SupplyDto>>(queryResult.Skip((page-1) * pageSize).Take(pageSize)) ;
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllImportPapers(string createDate = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _importPaperService.GetAllImportPapers(createDate);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<ImportPaper>, IEnumerable<ImportPaperDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
             return Json(new
             {
                 success = true,
@@ -116,6 +130,18 @@ namespace eLTMS.Web.Controllers
             {
                 success = result
             });
+        }
+        [HttpGet]
+        public JsonResult LoadPaperImportDetailId(int id)
+        {
+            var queryResult = _importPaperService.GetImportPaperById(id);
+
+            var importPaper = Mapper.Map<ImportPaper, ImportPaperDto>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = importPaper
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

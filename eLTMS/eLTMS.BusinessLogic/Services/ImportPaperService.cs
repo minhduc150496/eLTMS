@@ -12,6 +12,9 @@ namespace eLTMS.BusinessLogic.Services
     public interface IImportPaperService
     {
         bool AddImportPaper(ImportPaper importPaper);
+        List<ImportPaper> GetAllImportPapers(string createDate);
+        ImportPaper GetImportPaperById(int id);
+        ImportPaper GetByimportPaperCode(string code);
     }
     public class ImportPaperService : IImportPaperService
     {
@@ -56,6 +59,25 @@ namespace eLTMS.BusinessLogic.Services
                     return true;
                 }
             }
+        }
+
+        public ImportPaper GetByimportPaperCode(string code)
+        {
+            var importPaperRepo = RepositoryHelper.GetRepository<IImportPaperRepository>(UnitOfWork);
+            var data = importPaperRepo.GetSimpleById(code);
+            return data;
+        }
+        public List<ImportPaper> GetAllImportPapers(string createDate)
+        {
+            var importPaperRepo = this.RepositoryHelper.GetRepository<IImportPaperRepository>(UnitOfWork);
+            var importPapers = importPaperRepo.GetAllImportPaper(createDate);
+            return importPapers;
+        }
+        public ImportPaper GetImportPaperById(int id)
+        {
+            var importPaperRepo = this.RepositoryHelper.GetRepository<IImportPaperRepository>(UnitOfWork);
+            var importPapers = importPaperRepo.GetSimpleById(id);
+            return importPapers;
         }
     }
 }

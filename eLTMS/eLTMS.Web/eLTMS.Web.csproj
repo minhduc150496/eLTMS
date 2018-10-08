@@ -187,6 +187,8 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
