@@ -1,7 +1,9 @@
 ﻿var homeconfig = {
     pageSize: 10,
     pageIndex: 1,
-    allSupply: []
+    allSupply: [],
+    ImportExcel: false,
+    LoadFromDataBase : false
 }
 var homeController = {
     init: function () {
@@ -72,7 +74,10 @@ var homeController = {
           
         })
 
+        $('#btnDownload').off('click').on('click', function () {
+            $('#hiddenForm').submit();
 
+        })
 
         $('#btnAddNew').off('click').on('click', function () {
             var newRow = $('#template-row').clone();
@@ -153,6 +158,120 @@ var homeController = {
             });
         });
 
+        $("#input").off('change').on("change", function () {
+            var excelFile,
+                fileReader = new FileReader();
+
+            $("#result").hide();
+
+            fileReader.onload = function (e) {
+                var buffer = new Uint8Array(fileReader.result);
+                $('.data-row').remove();
+                $.ig.excel.Workbook.load(buffer, function (workbook) {
+                    var column, row, newRow, cellValue, columnIndex, i,
+                        worksheet = workbook.worksheets(0),
+                        columnsNumber = 0,
+                        gridColumns = [],
+                        data = [],
+                        worksheetRowsCount;
+
+                    // Both the columns and rows in the worksheet are lazily created and because of this most of the time worksheet.columns().count() will return 0
+                    // So to get the number of columns we read the values in the first row and count. When value is null we stop counting columns:
+                    while (worksheet.rows(0).getCellValue(columnsNumber)) {
+                        columnsNumber++;
+                    }
+
+                    // Iterating through cells in first row and use the cell text as key and header text for the grid columns
+                    for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                        column = worksheet.rows(0).getCellText(columnIndex);
+                        switch (columnIndex) {
+                            case 0:
+                                column = "SuppliesCode";
+                                break;
+                            case 1:
+                                column = "Quantity";
+                                break;
+                            default:
+                                column = "Note";
+                                break;
+                        }
+                        gridColumns.push({ headerText: column, key: column });
+                    }
+
+                    // We start iterating from 1, because we already read the first row to build the gridColumns array above
+                    // We use each cell value and add it to json array, which will be used as dataSource for the grid
+                    for (i = 1, worksheetRowsCount = worksheet.rows().count(); i < worksheetRowsCount; i++) {
+                        newRow = {};
+                        row = worksheet.rows(i);
+
+                        for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                            cellValue = row.getCellText(columnIndex);
+                            newRow[gridColumns[columnIndex].key] = cellValue;
+                        }
+
+                        data.push(newRow);
+                    }
+
+                    
+
+                    var ddlData = "<select class='form-control ddlCode'>";
+                    $.each(homeconfig.allSupply, function (i, item) {
+                        ddlData += "<option value='" + item.SuppliesId + "' data-name='" + item.SuppliesName + "' data-unit='" + item.Unit + "'>" + item.SuppliesCode + "</option>"
+
+                    });
+                    ddlData += "</select>";
+
+                    homeconfig.ImportExcel = true;
+                    $.each(data, function (i, item) {
+                        console.log(item);
+                        for (var i = 0; i < homeconfig.allSupply.length; i++) {
+                            if (homeconfig.allSupply[i].SuppliesCode == item.SuppliesCode) {
+                                item.SuppliesId = homeconfig.allSupply[i].SuppliesId;
+                                item.Unit = homeconfig.allSupply[i].Unit;
+                                item.SuppliesName = homeconfig.allSupply[i].SuppliesName;
+                                break;
+                            }
+                        }
+                        var newRow = $('#template-row').clone();
+                        $(newRow).addClass('data-row');
+                        var codeColumn = $(newRow).find('.colCode').html(ddlData);
+                        $(newRow).find('.txtQuantity').val(item.Quantity);
+                        $(newRow).find('.txtNote').val(item.Note);
+                        $(newRow).find('.colName').text(item.SuppliesName);
+                        $(newRow).find('.colUnit').text(item.Unit);
+                        $(newRow).insertAfter('#template-row');
+
+                        
+
+
+                    });
+                  
+                    var allRows = $('.data-row');
+                    
+                    for (var i = 0; i < allRows.length; i++) {
+                        var supplyId = data[allRows.length - 1 - i].SuppliesId;
+                        $(allRows[i]).find('.ddlCode').val(supplyId).change();
+                    }
+                    $('.data-row').removeAttr('style');
+                    homeController.registerEventForChangeDropDown();
+                    homeconfig.ImportExcel = false;
+                }, function (error) {
+                    $("#result").text("The excel file is corrupted.");
+                    $("#result").show(1000);
+                });
+            }
+
+            if (this.files.length > 0) {
+                excelFile = this.files[0];
+                if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
+                    fileReader.readAsArrayBuffer(excelFile);
+                } else {
+                    $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
+                    $("#result").show(1000);
+                }
+            }
+
+        });
     },
     deleteEmployee: function (id) {
         $.ajax({
@@ -192,7 +311,38 @@ var homeController = {
                     $('#txtNote').val(data.Note);
                     $('#txtCreateDate').val(data.CreateDate);
                     $('#txtCreateDate').removeAttr('style');
-                    homeController.loadDataDetail(id);
+                    var importPaperDetailDtos = data.ImportPaperDetailDtos;
+                    $('.data-row').remove();
+                    
+                    var ddlData = "<select class='form-control ddlCode'>";
+                    $.each(homeconfig.allSupply, function (i, item) {
+                        ddlData += "<option value='" + item.SuppliesId + "' data-name='" + item.SuppliesName + "' data-unit='" + item.Unit + "'>" + item.SuppliesCode + "</option>"
+
+                    });
+                    ddlData += "</select>";
+                    
+                    homeconfig.LoadFromDataBase = true;
+                    $.each(importPaperDetailDtos, function (i, item) {
+                        var newRow = $('#template-row').clone();
+                        $(newRow).addClass('data-row');
+                        var codeColumn = $(newRow).find('.colCode').html(ddlData);
+                        $(newRow).find('.txtQuantity').val(item.Quantity);
+                        $(newRow).find('.txtNote').val(item.Note);
+                        $(newRow).insertAfter('#template-row');
+                        homeController.registerEventForChangeDropDown();
+                        
+                        
+                    });
+                    console.log(importPaperDetailDtos);
+                    
+                    var allRows = $('.data-row');
+                    console.log(allRows);
+                    for (var i = 0; i < allRows.length; i++) {
+                        var supplyId = importPaperDetailDtos[allRows.length - 1 - i].SuppliesId;
+                        $(allRows[i]).find('.ddlCode').val(supplyId).change();
+                    }
+                    $('.data-row').removeAttr('style');
+                    homeconfig.LoadFromDataBase = false;
                 }
                
             },
@@ -241,35 +391,7 @@ var homeController = {
             }
         })
     },
-    loadDataDetail: function (id) {
-        $.ajax({
-            url: '/Warehouse/LoadPaperImportDetailId',
-            type: 'GET',
-            dataType: 'json',
-            data: {  id: id },
-            success: function (response) {
-                if (response.success) {
-                    var data = response.data;
-                    var html = '';
-                    var template = $('#data-template').html();
-                    $.each(data, function (i, item) {
-                        html += Mustache.render(template, {
-                            ImportPaperId: item.ImportPaperId,
-                            ImportPaperCode: item.Unit,
-                            CreateDate: item.Note,
-                        });
-
-                    });
-                    console.log(html);
-                    $('#tblData').html(html);
-                    homeController.paging(response.total, function () {
-                        homeController.loadData();
-                    }, changePageSize);
-                    homeController.registerEvent();
-                }
-            }
-        })
-    },
+    
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -315,6 +437,26 @@ var homeController = {
     },
     registerEventForChangeDropDown: function () {
         $('.ddlCode').off('change').on('change', function () {
+
+            var value = $(this).find(':selected').val();
+            console.log(value);
+            var allRows = $('.data-row');
+            console.log(homeconfig.LoadFromDataBase);
+            console.log(homeconfig.ImportExcel);
+            if (homeconfig.LoadFromDataBase == true || homeconfig.ImportExcel == true) {
+
+            }
+            else {
+                for (var i = 0; i < allRows.length; i++) {
+                    var supplyId = $(allRows[i]).find('.ddlCode').val();
+                    console.log(supplyId);
+                    if (i != 0 && supplyId == value) {
+                        toastr.error("Vật tư với mã " + $(this).find(':selected').text() + " đã được chọn ");
+                        return;
+                    }
+                }
+            }
+           
 
             var name = $(this).find(':selected').data('name');
             var unit = $(this).find(':selected').data('unit');

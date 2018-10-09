@@ -112,6 +112,7 @@ namespace eLTMS.Web.Controllers
 
         [HttpGet]
         public JsonResult GetAllSupply()
+
         {
             var queryResult = _supplyService.GetAllSupplies(string.Empty);
 
@@ -143,16 +144,11 @@ namespace eLTMS.Web.Controllers
             });
         }
         [HttpGet]
-        public JsonResult LoadPaperImportDetailId(int id)
-        {
-            var queryResult = _importPaperService.GetImportPaperById(id);
-
-            var importPaper = Mapper.Map<ImportPaper, ImportPaperDto>(queryResult);
-            return Json(new
-            {
-                success = true,
-                data = importPaper
-            }, JsonRequestBehavior.AllowGet);
+        public FileResult DownloadImportPaperTemplate()
+        { 
+            byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/templates/ImportPaperTemplate.xlsx"));
+            string fileName = "ImportPaperTemplate.xlsx";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
     }
 }

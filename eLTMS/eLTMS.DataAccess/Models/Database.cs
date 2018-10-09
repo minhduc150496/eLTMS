@@ -778,7 +778,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Import paper code")]
         public string ImportPaperCode { get; set; } // ImportPaperCode (length: 20)
 
-        [Column(@"CreateDate", Order = 3, TypeName = "date")]
+        [Column(@"CreateDate", Order = 3, TypeName = "datetime")]
         [Display(Name = "Create date")]
         public System.DateTime? CreateDate { get; set; } // CreateDate
 

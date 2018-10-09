@@ -7319,6 +7319,7 @@
     <Content Include="Views\WareHouse\Supplies.cshtml" />
     <Content Include="Views\Shared\_LayoutPageWarehouseManagement.cshtml" />
     <Content Include="Views\Patient\Patients.cshtml" />
+    <Content Include="templates\ImportPaperTemplate.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,6 +13,7 @@ namespace eLTMS.DataAccess
         public FinalProjectContext()
             : base("name=FinalProjectContext")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
         public FinalProjectContext(String connectionString) : base(connectionString)
         {
