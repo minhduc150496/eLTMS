@@ -142,17 +142,17 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-        [HttpGet]
-        public JsonResult LoadPaperImportDetailId(int id)
-        {
-            var queryResult = _importPaperService.GetImportPaperById(id);
+        //[HttpGet]
+        //public JsonResult LoadPaperImportDetailId(int id)
+        //{
+        //    var queryResult = _importPaperService.GetImportPaperById(id);
 
-            var importPaper = Mapper.Map<ImportPaper, ImportPaperDto>(queryResult);
-            return Json(new
-            {
-                success = true,
-                data = importPaper
-            }, JsonRequestBehavior.AllowGet);
-        }
+        //    var importPaper = Mapper.Map<ImportPaper, ImportPaperDto>(queryResult);
+        //    return Json(new
+        //    {
+        //        success = true,
+        //        data = importPaper
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
     }
 }
