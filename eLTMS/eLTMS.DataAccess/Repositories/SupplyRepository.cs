@@ -21,7 +21,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<Supply> GetAllSupply(string suppliesCode)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.SuppliesCode.Contains(suppliesCode))
+                .Where(x => x.SuppliesCode.Contains(suppliesCode) && x.IsDeleted == false)
                 .Include( x => x.SupplyType)
                 .ToList();
             return result;

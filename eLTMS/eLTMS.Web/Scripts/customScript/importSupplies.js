@@ -1,11 +1,13 @@
 ﻿var homeconfig = {
     pageSize: 10,
     pageIndex: 1,
+    allSupply: []
 }
 var homeController = {
     init: function () {
-        homeController.loadData();
+        //homeController.loadData();
         homeController.registerEvent();
+        homeController.loadAllSuply();
     },
     registerEvent: function () {
 
@@ -17,7 +19,6 @@ var homeController = {
             var unit = $('#ddlSupplyUnit').val();
             var note = $('#txtNote').val();
             var quantity = '0';
-            var isDeteted = "False";
             var supply = {
                 SuppliesId: supplyId,
                 SuppliesCode: code,
@@ -25,7 +26,6 @@ var homeController = {
                 SuppliesTypeId: type,
                 Quantity:quantity,
                 Unit: unit,
-                IsDeleted: isDeteted,
                 Note: note
             }
             if (supply.SuppliesId == 0) {
@@ -75,11 +75,62 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới vật tư');
+            var newRow = $('#template-row').clone();
+            $(newRow).addClass('data-row');
+            console.log(newRow.html());
+            var ddlData = "<select class='form-control ddlCode'>";
+            $.each(homeconfig.allSupply, function (i, item) {
+                ddlData += "<option value='" + item.SuppliesId + "' data-name='" + item.SuppliesName + "' data-unit='" + item.Unit + "'>" + item.SuppliesCode + "</option>"
+
+            });           
+            ddlData += "</select>";
+            var codeColumn = $(newRow).find('.colCode').html(ddlData);
+            $(newRow).insertAfter('#template-row');
+            $(newRow).removeAttr('style');
+            homeController.registerEventForChangeDropDown();
+            
+        });
+        $('#btnView').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Danh sách phiếu nhập kho');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
 
+        $('#btnSaveImport').off('click').on('click', function () {
+            var allRows = $('.data-row');
+            var tmpData = [];
+            $.each(allRows, function (i, item) {
+                var detail = {};
+                detail.SuppliesId = $(item).find('.ddlCode').val();
+                detail.Quantity = $(item).find('.txtQuantity').val();
+                detail.Note = $(item).find('.txtNote').val();
+                detail.Unit = $(item).find('.colUnit').text();
+                tmpData.push(detail);
+            });
+            var data = {
+                ImportPaperCode: $('#txtImportCode').val(),
+                Note: $('#txtNote').val(),
+                ImportPaperDetails: tmpData
+            };
+            $.ajax({
+                url: '/WareHouse/AddImportPaper',
+                type: 'Post',
+                dataType: 'json',
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Tạo mới không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $('#myModal').modal('hide');
+                        homeController.loadData();
+                    }
+                }
+            })
+        });
        
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
@@ -90,34 +141,35 @@ var homeController = {
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
-            $('#myModal').modal('show');
+            $('#myModal').modal('hide');
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deleteSupply(id);
-            
+            bootbox.confirm("Are you sure to delete this employee?", function (result) {
+                homeController.deleteEmployee(id);
+            });
         });
 
     },
-    deleteSupply: function (id) {
+    deleteEmployee: function (id) {
         $.ajax({
-            url: '/WareHouse/Delete',
+            url: '/WareH/Delete',
             data: {
-                supplyId: id
+                id: id
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.success == true) {
-                    toastr.success("Xóa thành công.");
-                    homeController.loadData(true);
+                if (response.status == true) {
+                    bootbox.alert("Delete Success", function () {
+                        homeController.loadData(true);
+                    });
                 }
                 else {
-                    toastr.error("Xóa không thành công.");
+                    bootbox.alert(response.message);
                 }
             },
             error: function (err) {
@@ -127,26 +179,22 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/WareHouse/SupplyDetail',
+            url: '/WareHouse/LoadPaperImportDetailId',
             data: {
                 id: id
             },
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.sucess) {
+                if (response.success) {
                     var data = response.data;
-                    $('#txtSupplyId').val(data.SuppliesId);
-                    $('#txtCode').val(data.SuppliesCode);
-                    $('#txtName').val(data.SuppliesName);
-                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-                    $('#ddlSupplyUnit').val(data.Unit).change();
+                    $('#txtImportCode').val(data.ImportPaperCode);
                     $('#txtNote').val(data.Note);
-                   
+                    $('#txtCreateDate').val(data.CreateDate);
+                    $('#txtCreateDate').removeAttr('style');
+                    homeController.loadDataDetail(id);
                 }
-                else {
-                    bootbox.alert(response.message);
-                }
+               
             },
             error: function (err) {
                 console.log(err);
@@ -166,10 +214,10 @@ var homeController = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Warehouse/GetAllSupplies',
+            url: '/Warehouse/GetAllImportPapers',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, suppliesCode: $('#txtSearch').val() },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, createDate: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -177,15 +225,38 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            SupplyId: item.SuppliesId,
-                            SuppliesCode: item.SuppliesCode,
-                            SupplyName: item.SuppliesName,
-                            SupplyTypeName: item.SuppliesTypeName,
-                            Quantity: item.Quantity,
-                            Unit: item.Unit,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
-                            Note: item.Note,
+                            ImportPaperId: item.ImportPaperId,
+                            ImportPaperCode: item.ImportPaperCode,
+                            CreateDate: item.CreateDate,
+                        });
 
+                    });
+                    console.log(html);
+                    $('#tblData1').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadData();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataDetail: function (id) {
+        $.ajax({
+            url: '/Warehouse/LoadPaperImportDetailId',
+            type: 'GET',
+            dataType: 'json',
+            data: {  id: id },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#data-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            ImportPaperId: item.ImportPaperId,
+                            ImportPaperCode: item.Unit,
+                            CreateDate: item.Note,
                         });
 
                     });
@@ -220,6 +291,36 @@ var homeController = {
                 homeconfig.pageIndex = page;
                 setTimeout(callback, 200);
             }
+        });
+    },
+    loadAllSuply: function () {
+        $.ajax({
+            url: '/WareHouse/GetAllSupply',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    homeconfig.allSupply = data;
+
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    },
+    registerEventForChangeDropDown: function () {
+        $('.ddlCode').off('change').on('change', function () {
+
+            var name = $(this).find(':selected').data('name');
+            var unit = $(this).find(':selected').data('unit');
+            var curentRow = $(this).closest('tr');
+            $(curentRow).find('.colName').text(name);
+            $(curentRow).find('.colUnit').text(unit);
         });
     }
 }

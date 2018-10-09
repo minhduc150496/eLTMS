@@ -68,6 +68,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Lab test ID")]
         public int? LabTestId { get; set; } // LabTestID
 
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
@@ -79,6 +83,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent TestProfile pointed by [TestProfileLabTestMapping].([TestProfileId]) (FK__TestProfi__TestP__0A9D95DB)
         /// </summary>
         [ForeignKey("TestProfileId")] public virtual TestProfile TestProfile { get; set; } // FK__TestProfi__TestP__0A9D95DB
+
+        public TestProfileLabTestMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // TestProfile
@@ -104,6 +113,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Parent profile ID")]
         public int? ParentProfileId { get; set; } // ParentProfileID
 
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -124,6 +137,7 @@ namespace eLTMS.DataAccess.Models
 
         public TestProfile()
         {
+            IsDeleted = false;
             TestProfiles = new System.Collections.Generic.List<TestProfile>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
         }
@@ -172,12 +186,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Responding method")]
         public string RespondingMethod { get; set; } // RespondingMethod (length: 50)
 
+        [Column(@"IsDeleted", Order = 9, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
-        /// <summary>
-        /// Child HospitalSuggestings where [HospitalSuggesting].[TestingID] point to this entity (FK_HospitalSuggesting_Testing)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK_HospitalSuggesting_Testing
         /// <summary>
         /// Child ResultIndexes where [ResultIndex].[TestingID] point to this entity (FK_ResultIndex_Testing)
         /// </summary>
@@ -202,8 +216,8 @@ namespace eLTMS.DataAccess.Models
 
         public Testing()
         {
+            IsDeleted = false;
             ResultIndexes = new System.Collections.Generic.List<ResultIndex>();
-            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -280,6 +294,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Supplies type name")]
         public string SuppliesTypeName { get; set; } // SuppliesTypeName (length: 50)
 
+        [Column(@"IsDeleted", Order = 3, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -289,6 +307,7 @@ namespace eLTMS.DataAccess.Models
 
         public SupplyType()
         {
+            IsDeleted = false;
             Supplies = new System.Collections.Generic.List<Supply>();
         }
     }
@@ -336,6 +355,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
+        [Column(@"IsDeleted", Order = 8, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -356,6 +379,7 @@ namespace eLTMS.DataAccess.Models
 
         public Supply()
         {
+            IsDeleted = false;
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
@@ -386,16 +410,21 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Description")]
         public string Description { get; set; } // Description (length: 500)
 
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
-        /// Child LabTestSampleMappings where [LabTestSampleMapping].[SampleID] point to this entity (FK_LabTestSampleMapping_Sample)
+        /// Child LabTests where [LabTest].[SampleID] point to this entity (FK__LabTest__SampleI__44CA3770)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTestSampleMapping> LabTestSampleMappings { get; set; } // LabTestSampleMapping.FK_LabTestSampleMapping_Sample
+        public virtual System.Collections.Generic.ICollection<LabTest> LabTests { get; set; } // LabTest.FK__LabTest__SampleI__44CA3770
 
         public Sample()
         {
-            LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
+            IsDeleted = false;
+            LabTests = new System.Collections.Generic.List<LabTest>();
         }
     }
 
@@ -426,8 +455,20 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Response date")]
         public System.DateTime? ResponseDate { get; set; } // ResponseDate
 
+        [Column(@"PatientID", Order = 5, TypeName = "int")]
+        [Display(Name = "Patient ID")]
+        public int? PatientId { get; set; } // PatientID
+
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
+        /// <summary>
+        /// Child HospitalSuggestings where [HospitalSuggesting].[ResultPaperID] point to this entity (FK_HospitalSuggesting_ResultPaper)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK_HospitalSuggesting_ResultPaper
         /// <summary>
         /// Child Testings where [Testing].[ResultPaperID] point to this entity (FK_Testing_ResultPaper)
         /// </summary>
@@ -440,9 +481,16 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         [ForeignKey("DoctorId")] public virtual Employee Employee { get; set; } // FK_ResultPaper_Employee
 
+        /// <summary>
+        /// Parent Patient pointed by [ResultPaper].([PatientId]) (FK_ResultPaper_Patient)
+        /// </summary>
+        [ForeignKey("PatientId")] public virtual Patient Patient { get; set; } // FK_ResultPaper_Patient
+
         public ResultPaper()
         {
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
+            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -481,12 +529,21 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Upper bound")]
         public float? UpperBound { get; set; } // UpperBound
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
         /// Parent Testing pointed by [ResultIndex].([TestingId]) (FK_ResultIndex_Testing)
         /// </summary>
         [ForeignKey("TestingId")] public virtual Testing Testing { get; set; } // FK_ResultIndex_Testing
+
+        public ResultIndex()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Patient
@@ -494,7 +551,7 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class Patient
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"PatientID", Order = 1, TypeName = "int")]
         [Index(@"PK__Patient__3214EC2761CA8559", 1, IsUnique = true, IsClustered = true)]
         [Required]
@@ -547,12 +604,20 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Company address")]
         public string CompanyAddress { get; set; } // CompanyAddress (length: 200)
 
+        [Column(@"IsDeleted", Order = 10, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
         /// Child Feedbacks where [Feedback].[PatientID] point to this entity (FK__Feedback__Patien__6B24EA82)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Feedback> Feedbacks { get; set; } // Feedback.FK__Feedback__Patien__6B24EA82
+        /// <summary>
+        /// Child ResultPapers where [ResultPaper].[PatientID] point to this entity (FK_ResultPaper_Patient)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<ResultPaper> ResultPapers { get; set; } // ResultPaper.FK_ResultPaper_Patient
         /// <summary>
         /// Child Testings where [Testing].[PatientID] point to this entity (FK_Testing_Patient)
         /// </summary>
@@ -567,43 +632,11 @@ namespace eLTMS.DataAccess.Models
 
         public Patient()
         {
-            Testings = new System.Collections.Generic.List<Testing>();
+            IsDeleted = false;
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            ResultPapers = new System.Collections.Generic.List<ResultPaper>();
+            Testings = new System.Collections.Generic.List<Testing>();
         }
-    }
-
-    // LabTestSampleMapping
-    [Table("LabTestSampleMapping", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class LabTestSampleMapping
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column(@"LabTestSampleMappingID", Order = 1, TypeName = "int")]
-        [Index(@"PK_LabTestSampleMapping", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Lab test sample mapping ID")]
-        public int LabTestSampleMappingId { get; set; } // LabTestSampleMappingID (Primary key)
-
-        [Column(@"SampleID", Order = 2, TypeName = "int")]
-        [Display(Name = "Sample ID")]
-        public int? SampleId { get; set; } // SampleID
-
-        [Column(@"LabTestID", Order = 3, TypeName = "int")]
-        [Display(Name = "Lab test ID")]
-        public int? LabTestId { get; set; } // LabTestID
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent LabTest pointed by [LabTestSampleMapping].([LabTestId]) (FK_LabTestSampleMapping_LabTest)
-        /// </summary>
-        [ForeignKey("LabTestId")] public virtual LabTest LabTest { get; set; } // FK_LabTestSampleMapping_LabTest
-
-        /// <summary>
-        /// Parent Sample pointed by [LabTestSampleMapping].([SampleId]) (FK_LabTestSampleMapping_Sample)
-        /// </summary>
-        [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK_LabTestSampleMapping_Sample
     }
 
     // LabTest
@@ -635,12 +668,16 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Price")]
         public int? Price { get; set; } // Price
 
+        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        [Column(@"SampleID", Order = 6, TypeName = "int")]
+        [Display(Name = "Sample ID")]
+        public int? SampleId { get; set; } // SampleID
+
         // Reverse navigation
 
-        /// <summary>
-        /// Child LabTestSampleMappings where [LabTestSampleMapping].[LabTestID] point to this entity (FK_LabTestSampleMapping_LabTest)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTestSampleMapping> LabTestSampleMappings { get; set; } // LabTestSampleMapping.FK_LabTestSampleMapping_LabTest
         /// <summary>
         /// Child Testings where [Testing].[LabTestID] point to this entity (FK_Testing_LabTest)
         /// </summary>
@@ -650,9 +687,16 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping.FK__TestProfi__LabTe__09A971A2
 
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Sample pointed by [LabTest].([SampleId]) (FK__LabTest__SampleI__44CA3770)
+        /// </summary>
+        [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK__LabTest__SampleI__44CA3770
+
         public LabTest()
         {
-            LabTestSampleMappings = new System.Collections.Generic.List<LabTestSampleMapping>();
+            IsDeleted = false;
             Testings = new System.Collections.Generic.List<Testing>();
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
         }
@@ -693,6 +737,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
@@ -704,6 +752,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ImportPaperDetail].([SuppliesId]) (FK_ImportPaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ImportPaperDetail_Supplies
+
+        public ImportPaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ImportPaper
@@ -737,6 +790,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -746,6 +803,7 @@ namespace eLTMS.DataAccess.Models
 
         public ImportPaper()
         {
+            IsDeleted = false;
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
     }
@@ -763,9 +821,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Id")]
         public int Id { get; set; } // ID (Primary key)
 
-        [Column(@"TestingID", Order = 2, TypeName = "int")]
-        [Display(Name = "Testing ID")]
-        public int? TestingId { get; set; } // TestingID
+        [Column(@"ResultPaperID", Order = 2, TypeName = "int")]
+        [Display(Name = "Result paper ID")]
+        public int? ResultPaperId { get; set; } // ResultPaperID
 
         [Column(@"HospitalID", Order = 3, TypeName = "int")]
         [Display(Name = "Hospital ID")]
@@ -774,6 +832,10 @@ namespace eLTMS.DataAccess.Models
         [Column(@"FacultyID", Order = 4, TypeName = "int")]
         [Display(Name = "Faculty ID")]
         public int? FacultyId { get; set; } // FacultyID
+
+        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
 
         // Foreign keys
 
@@ -788,9 +850,14 @@ namespace eLTMS.DataAccess.Models
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalS__Hospi__7C4F7684
 
         /// <summary>
-        /// Parent Testing pointed by [HospitalSuggesting].([TestingId]) (FK_HospitalSuggesting_Testing)
+        /// Parent ResultPaper pointed by [HospitalSuggesting].([ResultPaperId]) (FK_HospitalSuggesting_ResultPaper)
         /// </summary>
-        [ForeignKey("TestingId")] public virtual Testing Testing { get; set; } // FK_HospitalSuggesting_Testing
+        [ForeignKey("ResultPaperId")] public virtual ResultPaper ResultPaper { get; set; } // FK_HospitalSuggesting_ResultPaper
+
+        public HospitalSuggesting()
+        {
+            IsDeleted = false;
+        }
     }
 
     // HospitalFacultyMapping
@@ -814,6 +881,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Faculty ID")]
         public int? FacultyId { get; set; } // FacultyID
 
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
@@ -825,6 +896,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Hospital pointed by [HospitalFacultyMapping].([HospitalId]) (FK__HospitalF__Hospi__7A672E12)
         /// </summary>
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalF__Hospi__7A672E12
+
+        public HospitalFacultyMapping()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Hospital
@@ -858,6 +934,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Hotline")]
         public string Hotline { get; set; } // Hotline (length: 20)
 
+        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -871,6 +951,7 @@ namespace eLTMS.DataAccess.Models
 
         public Hospital()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -907,6 +988,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Received date time")]
         public System.DateTime? ReceivedDateTime { get; set; } // ReceivedDateTime
 
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
@@ -918,6 +1003,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Patient pointed by [Feedback].([PatientId]) (FK__Feedback__Patien__6B24EA82)
         /// </summary>
         [ForeignKey("PatientId")] public virtual Patient Patient { get; set; } // FK__Feedback__Patien__6B24EA82
+
+        public Feedback()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Faculty
@@ -939,6 +1029,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Faculty name")]
         public string FacultyName { get; set; } // FacultyName (length: 200)
 
+        [Column(@"IsDeleted", Order = 3, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -952,6 +1046,7 @@ namespace eLTMS.DataAccess.Models
 
         public Faculty()
         {
+            IsDeleted = false;
             HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
@@ -992,6 +1087,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
@@ -1003,6 +1102,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Supply pointed by [ExportProposurePaperDetail].([SuppliesId]) (FK_ExportProposurePaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ExportProposurePaperDetail_Supplies
+
+        public ExportProposurePaperDetail()
+        {
+            IsDeleted = false;
+        }
     }
 
     // ExportProposurePaper
@@ -1042,6 +1146,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Status")]
         public string Status { get; set; } // Status (length: 10)
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -1055,6 +1163,7 @@ namespace eLTMS.DataAccess.Models
 
         public ExportProposurePaper()
         {
+            IsDeleted = false;
             ExportPapers = new System.Collections.Generic.List<ExportPaper>();
             ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
         }
@@ -1095,12 +1204,21 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Foreign keys
 
         /// <summary>
         /// Parent ExportProposurePaper pointed by [ExportPaper].([ExportProposurePaperId]) (FK_ExportPaper_ExportProposurePaper)
         /// </summary>
         [ForeignKey("ExportProposurePaperId")] public virtual ExportProposurePaper ExportProposurePaper { get; set; } // FK_ExportPaper_ExportProposurePaper
+
+        public ExportPaper()
+        {
+            IsDeleted = false;
+        }
     }
 
     // Employee
@@ -1159,6 +1277,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
 
+        [Column(@"IsDeleted", Order = 10, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -1179,6 +1301,7 @@ namespace eLTMS.DataAccess.Models
 
         public Employee()
         {
+            IsDeleted = false;
             ResultPapers = new System.Collections.Generic.List<ResultPaper>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
         }
@@ -1230,6 +1353,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Avatar url")]
         public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -1243,6 +1370,7 @@ namespace eLTMS.DataAccess.Models
 
         public Account()
         {
+            IsDeleted = false;
             Patients = new System.Collections.Generic.List<Patient>();
             Employees = new System.Collections.Generic.List<Employee>();
         }
@@ -1268,6 +1396,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Password).IsOptional().IsFixedLength();
             Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
             Property(x => x.AvatarUrl).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1290,6 +1419,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.StartDate).IsOptional();
             Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1310,6 +1440,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.AccountId).IsOptional();
             Property(x => x.ExportProposurePaperId).IsOptional();
             Property(x => x.Note).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1330,6 +1461,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.AccountId).IsOptional();
             Property(x => x.Note).IsOptional();
             Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1349,6 +1481,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Unit).IsOptional();
             Property(x => x.Quantity).IsOptional();
             Property(x => x.Note).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1365,6 +1498,7 @@ namespace eLTMS.DataAccess.Models
         public FacultyConfiguration(string schema)
         {
             Property(x => x.FacultyName).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1383,6 +1517,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.EmployeeId).IsOptional();
             Property(x => x.Content).IsOptional();
             Property(x => x.ReceivedDateTime).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1401,6 +1536,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.HospitalName).IsOptional();
             Property(x => x.HospitalAddress).IsOptional();
             Property(x => x.Hotline).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1417,6 +1553,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.HospitalId).IsOptional();
             Property(x => x.FacultyId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1432,9 +1569,10 @@ namespace eLTMS.DataAccess.Models
 
         public HospitalSuggestingConfiguration(string schema)
         {
-            Property(x => x.TestingId).IsOptional();
+            Property(x => x.ResultPaperId).IsOptional();
             Property(x => x.HospitalId).IsOptional();
             Property(x => x.FacultyId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1454,6 +1592,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.CreateDate).IsOptional();
             Property(x => x.AccountId).IsOptional();
             Property(x => x.Note).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1473,6 +1612,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Unit).IsOptional();
             Property(x => x.Quantity).IsOptional();
             Property(x => x.Note).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1491,22 +1631,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.LabTestName).IsOptional();
             Property(x => x.Description).IsOptional();
             Property(x => x.Price).IsOptional();
-        }
-    }
-
-    // LabTestSampleMapping
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class LabTestSampleMappingConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<LabTestSampleMapping>
-    {
-        public LabTestSampleMappingConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public LabTestSampleMappingConfiguration(string schema)
-        {
+            Property(x => x.IsDeleted).IsOptional();
             Property(x => x.SampleId).IsOptional();
-            Property(x => x.LabTestId).IsOptional();
 
         }
     }
@@ -1530,6 +1656,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.CompanyAddress).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1550,6 +1677,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IndexValue).IsOptional();
             Property(x => x.LowerBound).IsOptional();
             Property(x => x.UpperBound).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1568,6 +1696,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.DoctorId).IsOptional();
             Property(x => x.DoctorComment).IsOptional();
             Property(x => x.ResponseDate).IsOptional();
+            Property(x => x.PatientId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1585,6 +1715,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.SampleName).IsOptional();
             Property(x => x.Description).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1605,6 +1736,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Quantity).IsOptional();
             Property(x => x.Unit).IsOptional();
             Property(x => x.Note).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1621,6 +1753,7 @@ namespace eLTMS.DataAccess.Models
         public SupplyTypeConfiguration(string schema)
         {
             Property(x => x.SuppliesTypeName).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1658,6 +1791,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.BookedDate).IsOptional();
             Property(x => x.BookedTime).IsOptional();
             Property(x => x.RespondingMethod).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1675,6 +1809,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.TestProfileName).IsOptional();
             Property(x => x.ParentProfileId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1692,8 +1827,30 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.TestProfileId).IsOptional();
             Property(x => x.LabTestId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
+    }
+
+    #endregion
+
+    #region Stored procedure return models
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class SpHelpdiagramdefinitionReturnModel
+    {
+        public System.Int32? version { get; set; }
+        public System.Byte[] definition { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class SpHelpdiagramsReturnModel
+    {
+        public System.String Database { get; set; }
+        public System.String Name { get; set; }
+        public System.Int32 ID { get; set; }
+        public System.String Owner { get; set; }
+        public System.Int32 OwnerID { get; set; }
     }
 
     #endregion

@@ -180,12 +180,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDto.cs" />
+    <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -7287,8 +7291,10 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\customScript\importSupplies.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -7312,6 +7318,7 @@
     <Content Include="Views\WareHouse\Index.cshtml" />
     <Content Include="Views\WareHouse\Supplies.cshtml" />
     <Content Include="Views\Shared\_LayoutPageWarehouseManagement.cshtml" />
+    <Content Include="Views\Patient\Patients.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
