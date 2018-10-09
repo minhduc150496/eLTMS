@@ -34,9 +34,9 @@ namespace eLTMS.Web.Controllers
         }
         //Tạo page cho View Employee
         [HttpGet]
-        public JsonResult GetAllEmployees (int page=1,int pageSize = 20)
+        public JsonResult GetAllEmployees (String fullName="",int page=1,int pageSize = 20)
         {
-            var queryResult = _employeeService.GetAll();
+            var queryResult = _employeeService.GetAllEmployees(fullName);
             var totalRows = queryResult.Count();
             var result = Mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
             return Json(new
@@ -44,7 +44,7 @@ namespace eLTMS.Web.Controllers
                 success = true,
                 data = result,
                 total = totalRows
-            }, JsonRequestBehavior.AllowGet);         
+            }, JsonRequestBehavior.AllowGet);          
         }
     }
 }

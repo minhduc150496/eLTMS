@@ -11,7 +11,8 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IEmployeeService
     {
-        List<Employee> GetAll();
+      List<Employee> GetAllEmployees(string fullName);
+        //List<Employee> GetAll();
         //List<Employee> GetByName(string name);
         //bool Insert(int id, string name, int age);
         //bool Delete(int id);
@@ -20,18 +21,26 @@ namespace eLTMS.BusinessLogic.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepositoryHelper RepositoryHelper;
+        private readonly IUnitOfWork UnitOfWork;
         public EmployeeService(IRepositoryHelper repositoryHelper)
         {
             RepositoryHelper = repositoryHelper;
+            UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public List<Employee> GetAll()
+        public List<Employee> GetAllEmployees(string fullName)
         {
-            var unitOfWork = RepositoryHelper.GetUnitOfWork();
-            var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-            var results = repo.GetAll().ToList();
-            return results;
+            var employeeRepo = this.RepositoryHelper.GetRepository<IEmployeeRepository>(UnitOfWork);
+            var employee = employeeRepo.GetAllEmployee(fullName);
+            return employee;
         }
+        //public List<Employee> GetAll()
+        //{
+        //  var unitOfWork = RepositoryHelper.GetUnitOfWork();
+        //  var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
+        //   var results = repo.GetAll().ToList();
+        //    return results;
+        //}
 
         //public List<Employee> GetByName(string name)
         //{

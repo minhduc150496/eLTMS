@@ -17,14 +17,14 @@ namespace eLTMS.Web.Controllers
             this._employeeService = employeeService;
         }
 
-        [HttpGet]
-        [Route("employee/all-employee")]
-        public HttpResponseMessage GetAll()
-        {
-            var results = _employeeService.GetAll();
-            var response = Request.CreateResponse(HttpStatusCode.OK, results);
-            return response;
-        }
+       // [HttpGet]
+       // [Route("employee/all-employee")]
+      //  public HttpResponseMessage GetAll()
+       // {
+       //     var results = _employeeService.GetAll();
+         //   var response = Request.CreateResponse(HttpStatusCode.OK, results);
+         //   return response;
+     //   }
 
         //[HttpGet]
         //[Route("employee/get-name")]
