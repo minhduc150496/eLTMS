@@ -173,9 +173,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\SampleApiController.cs" />
+    <Compile Include="Api\AppointmentApiController.cs" />
     <Compile Include="Api\AccountApiController.cs" />
-    <Compile Include="Api\LabTestApiController.cs" />
+    <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -191,6 +191,8 @@
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
+    <Compile Include="Models\dto\SampleGettingDto.cs" />
+    <Compile Include="Models\dto\AppointmentDto.cs" />
     <Compile Include="Models\dto\LabTestDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\AccountDto.cs" />

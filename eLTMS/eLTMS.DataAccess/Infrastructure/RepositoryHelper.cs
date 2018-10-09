@@ -57,12 +57,27 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
-            if (typeof(TRepository) == typeof(ILabTestRepository))
+            if (typeof(TRepository) == typeof(IAppointmentRepository))
             {
-                dynamic repo = new LabTestRepository();
+                dynamic repo = new AppointmentRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+
+            if (typeof(TRepository) == typeof(ISampleGettingRepository))
+            {
+                dynamic repo = new SampleGettingRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
+            if (typeof(TRepository) == typeof(ILabTestingRepository))
+            {
+                dynamic repo = new LabTestingRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
 
 
             TRepository repository = null;
