@@ -7,6 +7,7 @@ namespace eLTMS.Web.Models.dto
 {
     public class LabTestDto
     {
+        public int LabTestId { get; set; }
         public string LabTestName { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }        

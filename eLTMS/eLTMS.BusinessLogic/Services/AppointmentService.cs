@@ -26,12 +26,8 @@ namespace eLTMS.BusinessLogic.Services
         public bool Create(Appointment appointment)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            //var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
             try
             {
-                //appointment.LabTestings = labTestings;
-                //appointment.SampleGettings = sampleGettings;
                 appointmentRepo.Create(appointment);
                 var result = this.UnitOfWork.SaveChanges();
                 if (result.Any())

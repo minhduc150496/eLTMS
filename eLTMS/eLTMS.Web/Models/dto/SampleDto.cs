@@ -8,6 +8,8 @@ namespace eLTMS.Web.Models.dto
 {
     public class SampleDto
     {
+        public int sampleId { get; set; }
+
         public string sampleName { get; set; }
         
         public List<LabTestDto> labTests { get; set; }

@@ -23,15 +23,16 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note));
                 
                 cfg.CreateMap<Sample, SampleDto>()
+                .ForMember(dst => dst.sampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.sampleName, src => src.MapFrom(x => x.SampleName))
                 .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
+                .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))
                 .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
                 .ForMember(dst => dst.Price, src => src.MapFrom(x => x.Price));
                 
-
             });
             
         }

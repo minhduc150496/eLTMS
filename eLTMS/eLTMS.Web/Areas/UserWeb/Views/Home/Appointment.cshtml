@@ -21,16 +21,20 @@
                     <h2>
                         <b>Bước 1/2: Chọn loại xét nghiệm:</b>
                     </h2>
-                    <h3>1. Máu</h3>
-                    <div data-SampleId="1">
-                        <input type="checkbox" data-LabTestId="1" />
-                        Ct Máu
-                        <br>
-                        <input type="checkbox" data-LabTestId="2" />
-                        VSS
-                        <br>
-                        <input type="checkbox" data-LabTestId="3" />
-                        Tiểu cầu, độ tập trung
+                    <div id="step-1-form">
+                        @*
+                            <h3>1. Máu</h3>
+                            <div data-SampleId="1">
+                                <input type="checkbox" data-LabTestId="1" />
+                                Ct Máu
+                                <br>
+                                <input type="checkbox" data-LabTestId="2" />
+                                VSS
+                                <br>
+                                <input type="checkbox" data-LabTestId="3" />
+                                Tiểu cầu, độ tập trung
+                            </div>
+                        *@
                     </div>
 
                     <br><br>
@@ -131,8 +135,26 @@
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
-                //console.log(data);
                 samples = data;
+                console.log(data);
+                // render checkboxes form for choosing Samples & LabTests
+                var sampleHtml = "";
+                for (var i = 0; i < samples.length; i++) {
+                    var sample = samples[i];
+                    // append Sample Title: "1. Mau"
+                    sampleHtml += "<h3>" + (i + 1) + ". " + sample.sampleName + "</h3>\n";
+                    sampleHtml += '<div data-SampleId="' + sample.sampleId + '">\n';
+                    for (var j = 0; j < sample.labTests.length; j++) {
+                        // append Lab Tests in Sample
+                        var labTest = sample.labTests[j];
+                        sampleHtml += '<input type="checkbox" data-LabTestId="' + labTest.LabTestId + '" /> ';
+                        sampleHtml += labTest.LabTestName;
+                        sampleHtml += '<br>\n';
+                    }
+                    sampleHtml += '</div>\n';
+                }
+                $("#step-1-form").append(sampleHtml);
+                // end rendering
             })
         })
     </script>
