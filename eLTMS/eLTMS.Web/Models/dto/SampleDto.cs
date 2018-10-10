@@ -13,5 +13,7 @@ namespace eLTMS.Web.Models.dto
         public string sampleName { get; set; }
         
         public List<LabTestDto> labTests { get; set; }
+
+        public int sampleDuration { get; set; }
     }
 }

@@ -21,13 +21,13 @@ namespace eLTMS.Web.Api
 
         [HttpPost]
         [Route("api/appointment/create")]
-        public HttpResponseMessage Login(AppointmentDto appoinDto)
+        public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
             // manually map: apoinDto and appointment (entity)
             Appointment appointment = new Appointment();
             appointment.PatientId = appoinDto.PatientId;
             appointment.SampleGettings = new List<SampleGetting>();
-            foreach (var sampleGettingDto in appoinDto.Samples)
+            foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
             {
                 var sampleGetting = new SampleGetting();
                 sampleGetting.SampleId = sampleGettingDto.SampleId;
@@ -36,13 +36,19 @@ namespace eLTMS.Web.Api
                 appointment.SampleGettings.Add(sampleGetting);
             }
             appointment.LabTestings = new List<LabTesting>();
-            foreach (var sampleGettingDto in appoinDto.Samples)
+            if (appoinDto.SampleGettingDtos != null)
             {
-                foreach (var labTestId in sampleGettingDto.LabTestIds)
+                foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
                 {
-                    LabTesting labTesting = new LabTesting();
-                    labTesting.LabTestId = labTestId;
-                    appointment.LabTestings.Add(labTesting);
+                    if (sampleGettingDto.LabTestIds != null)
+                    {
+                        foreach (var labTestId in sampleGettingDto.LabTestIds)
+                        {
+                            LabTesting labTesting = new LabTesting();
+                            labTesting.LabTestId = labTestId;
+                            appointment.LabTestings.Add(labTesting);
+                        }
+                    }
                 }
             }
             //

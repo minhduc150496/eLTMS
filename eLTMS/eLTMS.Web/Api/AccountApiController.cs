@@ -27,17 +27,27 @@ namespace eLTMS.Web.Api
             var phoneNumber = loginModel.PhoneNumber; // sure that not empty from client
             var password = loginModel.Password; // sure that not empty from client
             var account = this._accountService.checkLogin(phoneNumber, password);
-            var loginResult = new LoginResultModel();
+            object loginResult = null;
             if (account != null)
             {
-                loginResult.LoginSuccess = true;
                 var patient = account.Patients.FirstOrDefault();
-                loginResult.FullName = patient.FullName;
+                loginResult = new
+                {
+                    Success = true,
+                    PatientId = patient.PatientId,
+                    PhoneNumber = phoneNumber,
+                    FullName = patient.FullName
+                };
             }
             else
             {
-                loginResult.LoginSuccess = false;
-                loginResult.PhoneNumber = phoneNumber;
+                loginResult = new
+                {
+                    Success = account != null,
+                    PatientId = -1,
+                    PhoneNumber = phoneNumber,
+                    FullName = ""
+                };
             }
             var response = Request.CreateResponse(HttpStatusCode.OK, loginResult);
             return response;

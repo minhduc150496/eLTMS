@@ -25,7 +25,8 @@ namespace eLTMS.Web.Mapping
                 cfg.CreateMap<Sample, SampleDto>()
                 .ForMember(dst => dst.sampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.sampleName, src => src.MapFrom(x => x.SampleName))
-                .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests));
+                .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests))
+                .ForMember(dst => dst.sampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))

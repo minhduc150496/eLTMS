@@ -12,10 +12,6 @@ namespace eLTMS.BusinessLogic.Services
     public interface ISampleService
     {
         List<Sample> GetAll();
-        //bool Create(LabTest newTesting);
-        //bool CreateMany(List<LabTest> newTestings);
-        //bool Update(LabTest testing);
-        //bool Delete(int id);
     }
     public class SampleService: ISampleService
     {

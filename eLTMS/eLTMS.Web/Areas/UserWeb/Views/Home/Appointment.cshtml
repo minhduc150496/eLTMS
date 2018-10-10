@@ -1,4 +1,10 @@
-﻿<!-- breadcroumb Area Start-->
+﻿@{
+    const int startHour = 4;
+    const int endHour = 14;
+    var patientId = 1;
+}
+
+<!-- breadcroumb Area Start-->
 <div class="breadvroumb_area">
     <div class="container">
         <div class="row text-center">
@@ -24,14 +30,14 @@
                     <div id="step-1-form">
                         @*
                             <h3>1. Máu</h3>
-                            <div data-SampleId="1">
-                                <input type="checkbox" data-LabTestId="1" />
+                            <div data-sampleid="1">
+                                <input type="checkbox" data-labtestid="1" />
                                 Ct Máu
                                 <br>
-                                <input type="checkbox" data-LabTestId="2" />
+                                <input type="checkbox" data-labtestid="2" />
                                 VSS
                                 <br>
-                                <input type="checkbox" data-LabTestId="3" />
+                                <input type="checkbox" data-labtestid="3" />
                                 Tiểu cầu, độ tập trung
                             </div>
                         *@
@@ -42,57 +48,26 @@
                 </div> <!-- end step 1 -->
                 <div id="step-2">
                     <h2>
-                        <b>Bước 2/2: Chọn thời gian:</b>
+                        <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
                     </h2>
-                    <h3>1. Máu</h3>
-                    <select style="overflow-y: scroll">
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                    </select>
-
-                    <h3>2. Nước tiểu</h3>
-                    <select>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                    </select>
-
-                    <h3>3. Dịch</h3>
-                    <select>
-                        <option>7:00 - 7:15</option>
-                        <option>7:15 - 7:30</option>
-                        <option>7:30 - 7:45</option>
-                        <option>7:45 - 8:00</option>
-                    </select>
+                    <div id="step-2-form">
+                        @*
+                            <h3>1. Máu</h3>
+                            <div data-sampleid="1">
+                            <input type="date" />
+                            <select name="time-slot" style="overflow-y: scroll">
+                                <option value="">7:00 - 7:15</option>
+                                <option value="7:30">7:30 - 7:45</option>
+                                <option value="8:00">8:00 - 8:15</option>
+                            </select>
+                            </div>
+                        *@
+                    </div>
 
                     <br><br>
                     <button id="btn-prev" type="button" class="custom_btn">Về bước 1</button>
                     <button id="btn-submit" type="button" class="custom_btn">Đặt lịch</button>
-                </div> <!-- end step 2 -->
-                <!-- <div class="row text">
-                    <div class="col">
-                        <button id="btn-submit" type="button" class="custom_btn">Đặt lịch<i class="zmdi zmdi-plus"></i></button>
-                    </div>
-                </div> -->
+                </div>
             </div>
             <div class="col-md-6 text-right">
                 <div class="appoinment_Img">
@@ -106,10 +81,12 @@
 
 @section scripts{
     <script>
-        $(function () {
+        GLOBAL = {};
 
+        $(function () {
             $("#step-2").hide(0);
             $("#btn-next").click(function () {
+                renderStep2Html(GLOBAL.samples);
                 var duration = 200;
                 $("#step-1").fadeOut(duration, function () {
                     $("#step-2").fadeIn(duration);
@@ -121,41 +98,143 @@
                     $("#step-1").fadeIn(duration);
                 });
             })
+
+            // btn submit
             $("#btn-submit").click(function () {
+                GLOBAL.appointmentDto = {
+                    PatientId: @(patientId),
+                    SampleGettingDtos: []
+                };
+                var el_Samples = $("#step-2-form *[data-sampleid]");
+                if (el_Samples != null) {
+                    for (var i = 0; i < el_Samples.length; i++) {
+                        // create new SampleGetingDto
+                        var el_Sample = el_Samples[i];
+
+                        var sampleId = $(el_Sample).data("sampleid");
+                        var startTime = $(el_Sample).find("*[name='start-time']").val();
+                        var finishTime = $(el_Sample).find("*[name='finish-time']").val();
+                        var sDate = $(el_Sample).find("*[type='date']").val();
+                        startTime = sDate + " " + startTime;
+                        finishTime = sDate + " " + finishTime;
+                        var sampleGettingDto = {
+                            SampleId: sampleId,
+                            LabTestIds: [],
+                            StartTime: startTime,
+                            FinishTime: finishTime
+                        };
+
+                        var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
+                        console.log(el_LabTests);
+                        if (el_LabTests != null) {
+                            for (var j = 0; j < el_LabTests.length; j++) {
+                                var labTestId = $(el_LabTests[j]).data("labtestid");
+                                console.log(labTestId);
+                                sampleGettingDto.LabTestIds.push(labTestId);
+                            }
+                        }
+                        GLOBAL.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
+                    }
+                }
+                // ajax for create new appointment
+                var jsonData = JSON.stringify(GLOBAL.appointmentDto);
+                console.log(jsonData);
                 $.ajax({
+                    method: "POST",
+                    contentType: "application/json",
                     url: "/api/appointment/create",
-                    data: objAppointment
+                    dataType: "JSON",
+                    data: jsonData,
                 }).success(function (data) {
-                    //console.log(data);
-                    samples = data;
+                    console.log(data);
                 })
             })
 
-            samples = [];
+            // ajax for get all samples and labtests
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
-                samples = data;
-                console.log(data);
-                // render checkboxes form for choosing Samples & LabTests
-                var sampleHtml = "";
+                GLOBAL.samples = data; // global
+                //console.log(data);
+                renderStep1Html(GLOBAL.samples);
+            }) // end AJAX settings
+
+
+        }) // end ready
+
+        function renderStep1Html(samples) {
+            // render step 1 - choosing Samples & LabTests
+            var sampleHtml = "";
+            if (samples != null) {
                 for (var i = 0; i < samples.length; i++) {
                     var sample = samples[i];
                     // append Sample Title: "1. Mau"
                     sampleHtml += "<h3>" + (i + 1) + ". " + sample.sampleName + "</h3>\n";
-                    sampleHtml += '<div data-SampleId="' + sample.sampleId + '">\n';
-                    for (var j = 0; j < sample.labTests.length; j++) {
-                        // append Lab Tests in Sample
-                        var labTest = sample.labTests[j];
-                        sampleHtml += '<input type="checkbox" data-LabTestId="' + labTest.LabTestId + '" /> ';
-                        sampleHtml += labTest.LabTestName;
-                        sampleHtml += '<br>\n';
+                    sampleHtml += '<div data-sampleid="' + sample.sampleId + '">\n';
+                    if (sample.labTests != null) {
+                        for (var j = 0; j < sample.labTests.length; j++) {
+                            // append Lab Tests in Sample
+                            var labTest = sample.labTests[j];
+                            sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
+                            sampleHtml += labTest.LabTestName + '</label>\n';
+                            sampleHtml += '<br>\n';
+                        }
                     }
                     sampleHtml += '</div>\n';
                 }
-                $("#step-1-form").append(sampleHtml);
-                // end rendering
-            })
-        })
+            }
+            $("#step-1-form").append(sampleHtml);
+            // end rendering step 1
+        }
+
+        function renderStep2Html(samples) {
+            $("#step-2-form").html("");
+            // render step 2 - choosing Samples & LabTests
+            var sampleHtml = "";
+            if (samples != null) {
+                for (var i = 0; i < samples.length; i++) {
+                    var sample = samples[i];
+                    var sampleId = sample.sampleId;
+                    var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
+                    if (checkedLabTests == null || checkedLabTests.length==0) {
+                        continue;
+                    }
+                    // append Sample Title: "1. Mau"
+                    sampleHtml += "<h3>" + (i + 1) + ". " + sample.sampleName + "</h3>\n";
+                    sampleHtml += '<div data-sampleid="' + sample.sampleId + '">\n';
+                    sampleHtml += '<input type="date" />\n';
+                    sampleHtml += '<select style="overflow-y: scroll">\n';
+                    var sampleDuration = sample.sampleDuration / 60;
+                    for (var time = @(startHour); time + sampleDuration <= @(endHour); time += 2 * sampleDuration) {
+                        // print slots for sample
+                        var startTime = formatTime(time);
+                        var finishTime = formatTime(time + sampleDuration);
+                        sampleHtml += '<option>' + startTime + ' - ' + finishTime + '</option>\n';
+                    }
+                    sampleHtml += '</select>\n';
+                    sampleHtml += '</div>\n';
+                }
+            }
+            $("#step-2-form").append(sampleHtml);
+            // end rendering step 2
+        }
+
+        function formatTime(time)
+        {
+            var hour = Math.trunc(time);
+            var min = (time - hour) * 60;
+            min = Math.round(min);
+            if (min == 60) { // khử trường hợp: 7:60
+                hour++;
+                min = 0;
+            }
+            if (hour < 10) {
+                hour = '0' + hour;
+            }
+            if (min < 10) {
+                min = '0' + min;
+            }
+            return hour + ':' + min;
+        } // end function
     </script>
 }

@@ -21,6 +21,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Include (x  => x.LabTests)
+                .Include(x => x.SampleGroup)
                 .ToList();
             return result;
         }

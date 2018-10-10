@@ -9,6 +9,6 @@ namespace eLTMS.Web.Models.dto
     {
         public int PatientId { get; set; }
 
-        public List<SampleGettingDto> Samples { get; set; }
+        public List<SampleGettingDto> SampleGettingDtos { get; set; }
     }
 }
