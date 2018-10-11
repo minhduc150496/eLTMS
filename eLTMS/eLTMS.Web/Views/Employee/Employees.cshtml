@@ -151,13 +151,13 @@
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{PatientCode}}</td>
+        <td>{{EmployeeID}}</td>
         <td>{{FullName}}</td>
         <td>{{PhoneNumber}}</td>
-        <td>{{HomeAddress}}</td>
+        <td>{{Role}}</td>
         <td>
-            <button class="btn btn-primary btn-edit" data-id="{{PatientId}}"><i class="fa fa-pencil-square-o"></i></button>
-            <button class="btn btn-danger btn-delete" data-id="{{PatientId}}"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-primary btn-edit" data-id="{{EmployeeID}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-danger btn-delete" data-id="{{EmployeeID}}"><i class="fa fa-trash"></i></button>
 
         </td>
     </tr>
@@ -165,4 +165,4 @@
 
 
 
-<script src="~/Scripts/customScript/importPatients.js"></script>
+<script src="~/Scripts/customScript/employee.js"></script>

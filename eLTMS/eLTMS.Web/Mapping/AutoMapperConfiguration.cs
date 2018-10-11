@@ -55,6 +55,12 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+
+                cfg.CreateMap<Employee, EmployeeDto>()
+                .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
+                .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))
+                .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
+                .ForMember(dst => dst.Role, src => src.MapFrom(x => x.Account.Role));
             });
         }
     }

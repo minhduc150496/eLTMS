@@ -15,6 +15,7 @@ namespace eLTMS.Web.Models.dto
         public System.DateTime? DateOfBirth { get; set; } // DateOfBirth
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
         public string HomeAddress { get; set; } // HomeAddress (length: 200)
+        public string Role { get; set; }// Role (length: 200)
         public System.DateTime? DateOfStart { get; set; } // Date Start Of Work
         public bool? IsDeleted { get; set; } // IsDeleted
     }
