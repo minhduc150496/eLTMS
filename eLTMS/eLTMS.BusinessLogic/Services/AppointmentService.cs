@@ -11,7 +11,8 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IAppointmentService
     {
-        bool Create(Appointment appointment);
+        //bool Create(Appointment appointment);
+        List<Appointment> GetNewApp();
     }
     public class AppointmentService: IAppointmentService
     {
@@ -23,27 +24,34 @@ namespace eLTMS.BusinessLogic.Services
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public bool Create(Appointment appointment)
+        //public bool Create(Appointment appointment)
+        //{
+        //    var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+        //    //var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
+        //    try
+        //    {
+        //        //appointment.LabTestings = labTestings;
+        //        //appointment.SampleGettings = sampleGettings;
+        //        appointmentRepo.Create(appointment);
+        //        var result = this.UnitOfWork.SaveChanges();
+        //        if (result.Any())
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
+
+        public List<Appointment> GetNewApp()
         {
-            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            //var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
-            try
-            {
-                //appointment.LabTestings = labTestings;
-                //appointment.SampleGettings = sampleGettings;
-                appointmentRepo.Create(appointment);
-                var result = this.UnitOfWork.SaveChanges();
-                if (result.Any())
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
+            var repo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var app = repo.GetNewAppByPatientId();
+            return app;
         }
     }
 }
