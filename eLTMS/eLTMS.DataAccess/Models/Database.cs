@@ -643,10 +643,6 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child LabTestings where [LabTesting].[LabTestID] point to this entity (FK_LabTesting_LabTesting)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTesting> LabTestings { get; set; } // LabTesting.FK_LabTesting_LabTesting
-        /// <summary>
         /// Child LabTestingIndexes where [LabTestingIndex].[LabTestingID] point to this entity (FK_LabTestingIndex_LabTesting)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LabTestingIndex> LabTestingIndexes { get; set; } // LabTestingIndex.FK_LabTestingIndex_LabTesting
@@ -658,15 +654,9 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         [ForeignKey("AppointmentId")] public virtual Appointment Appointment { get; set; } // FK_LabTesting_Appointment
 
-        /// <summary>
-        /// Parent LabTesting pointed by [LabTesting].([LabTestId]) (FK_LabTesting_LabTesting)
-        /// </summary>
-        [ForeignKey("LabTestId")] public virtual LabTesting LabTest { get; set; } // FK_LabTesting_LabTesting
-
         public LabTesting()
         {
             IsDeleted = false;
-            LabTestings = new System.Collections.Generic.List<LabTesting>();
             LabTestingIndexes = new System.Collections.Generic.List<LabTestingIndex>();
         }
     }
@@ -1367,6 +1357,30 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"ResultPaperCode", Order = 6, TypeName = "nchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Result paper code")]
+        public string ResultPaperCode { get; set; } // ResultPaperCode (length: 20)
+
+        [Column(@"Conclusion", Order = 7, TypeName = "nvarchar")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Conclusion")]
+        public string Conclusion { get; set; } // Conclusion (length: 500)
+
+        [Column(@"EnterTime", Order = 8, TypeName = "datetime")]
+        [Display(Name = "Enter time")]
+        public System.DateTime? EnterTime { get; set; } // EnterTime
+
+        [Column(@"ReturnTime", Order = 9, TypeName = "datetime")]
+        [Display(Name = "Return time")]
+        public System.DateTime? ReturnTime { get; set; } // ReturnTime
+
+        [Column(@"ResultApproved", Order = 10, TypeName = "bit")]
+        [Display(Name = "Result approved")]
+        public bool? ResultApproved { get; set; } // ResultApproved
+
         // Reverse navigation
 
         /// <summary>
@@ -1506,6 +1520,11 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.DoctorId).IsOptional();
             Property(x => x.Status).IsOptional().IsFixedLength();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.ResultPaperCode).IsOptional().IsFixedLength();
+            Property(x => x.Conclusion).IsOptional();
+            Property(x => x.EnterTime).IsOptional();
+            Property(x => x.ReturnTime).IsOptional();
+            Property(x => x.ResultApproved).IsOptional();
 
         }
     }

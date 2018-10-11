@@ -424,6 +424,7 @@
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.js" />
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.min.css" />
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.min.js" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment.js" />
     <Content Include="Areas\UserWeb\Views\Home\About.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Contact.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Gallery.cshtml" />
@@ -7542,7 +7543,9 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -1,10 +1,4 @@
-﻿@{
-    const int startHour = 4;
-    const int endHour = 14;
-    var patientId = 1;
-}
-
-<!-- breadcroumb Area Start-->
+﻿<!-- breadcroumb Area Start-->
 <div class="breadvroumb_area">
     <div class="container">
         <div class="row text-center">
@@ -78,168 +72,23 @@
     </div>
 </div>
 <!-- appoinment Page End-->
+<!-- Modal -->
+<div id="success-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center">Đặt lịch thành công!</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 @section scripts{
-    <script>
-        GLOBAL = {};
-        Utils = {};
-
-        $(function () {
-            $("#step-2").hide(0);
-            $("#btn-next").click(function () {
-                renderStep2Html(GLOBAL.sampleDtos);
-                var duration = 200;
-                $("#step-1").fadeOut(duration, function () {
-                    $("#step-2").fadeIn(duration);
-                });
-            })
-            $("#btn-prev").click(function () {
-                var duration = 200;
-                $("#step-2").fadeOut(duration, function () {
-                    $("#step-1").fadeIn(duration);
-                });
-            })
-
-            // btn submit
-            $("#btn-submit").click(function () {
-                GLOBAL.appointmentDto = {
-                    PatientId: @(patientId),
-                    SampleGettingDtos: []
-                };
-                var el_Samples = $("#step-2-form *[data-sampleid]");
-                if (el_Samples != null) {
-                    for (var i = 0; i < el_Samples.length; i++) {
-                        // create new SampleGetingDto
-                        var el_Sample = el_Samples[i];
-                        // get date, start time & finish time
-                        var sampleId = $(el_Sample).data("sampleid");
-                        var sampleDuration = $(el_Sample).data("sample-duration");
-                        sampleDuration = parseFloat(sampleDuration);
-                        var startTime = $(el_Sample).find(":selected").val(); // double
-                        startTime = parseFloat(startTime);
-                        var finishTime = startTime + sampleDuration;
-                        var sDate = $(el_Sample).find("*[type='date']").val();
-                        startTime = sDate + " " + Utils.formatTime(startTime);
-                        finishTime = sDate + " " + Utils.formatTime(finishTime);// + finishTime;
-                        // assign to sampleGetting Dto
-                        var sampleGettingDto = {
-                            SampleId: sampleId,
-                            LabTestIds: [],
-                            StartTime: startTime,
-                            FinishTime: finishTime
-                        };
-
-                        var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
-                        console.log(el_LabTests);
-                        if (el_LabTests != null) {
-                            for (var j = 0; j < el_LabTests.length; j++) {
-                                var labTestId = $(el_LabTests[j]).data("labtestid");
-                                console.log(labTestId);
-                                sampleGettingDto.LabTestIds.push(labTestId);
-                            }
-                        }
-                        GLOBAL.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
-                    }
-                }
-                // ajax for create new appointment
-                var jsonData = JSON.stringify(GLOBAL.appointmentDto);
-                console.log(jsonData);
-                $.ajax({
-                    method: "POST",
-                    contentType: "application/json",
-                    url: "/api/appointment/create",
-                    dataType: "JSON",
-                    data: jsonData,
-                }).success(function (data) {
-                    console.log(data);
-                })
-            })
-
-            // ajax for get all sampleDtos and labtests
-            $.ajax({
-                url: "/api/sample/get-all"
-            }).success(function (data) {
-                GLOBAL.sampleDtos = data; // global
-                //console.log(data);
-                renderStep1Html(GLOBAL.sampleDtos);
-            }) // end AJAX settings
-
-
-        }) // end ready
-
-        function renderStep1Html(sampleDtos) {
-            // render step 1 - choosing Samples & LabTests
-            var sampleHtml = "";
-            if (sampleDtos != null) {
-                for (var i = 0; i < sampleDtos.length; i++) {
-                    var sampleDto = sampleDtos[i];
-                    // append Sample Title: "1. Mau"
-                    sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
-                    sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '">\n';
-                    if (sampleDto.labTests != null) {
-                        for (var j = 0; j < sampleDto.labTests.length; j++) {
-                            // append Lab Tests in Sample
-                            var labTest = sampleDto.labTests[j];
-                            sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
-                            sampleHtml += labTest.LabTestName + '</label>\n';
-                            sampleHtml += '<br>\n';
-                        }
-                    }
-                    sampleHtml += '</div>\n';
-                }
-            }
-            $("#step-1-form").append(sampleHtml);
-            // end rendering step 1
-        }
-
-        function renderStep2Html(sampleDtos) {
-            $("#step-2-form").html("");
-            // render step 2 - choosing Samples & LabTests
-            var sampleHtml = "";
-            if (sampleDtos != null) {
-                for (var i = 0; i < sampleDtos.length; i++) {
-                    var sampleDto = sampleDtos[i];
-                    var sampleId = sampleDto.sampleId;
-                    var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
-                    if (checkedLabTests == null || checkedLabTests.length==0) {
-                        continue;
-                    }
-                    // append Sample Title: "1. Mau"
-                    sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
-                    sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '" data-sample-duration="'+ sampleDto.sampleDuration +'">\n';
-                    sampleHtml += '<input type="date" />\n';
-                    sampleHtml += '<select style="overflow-y: scroll">\n';
-                    var sampleDuration = sampleDto.sampleDuration / 60;
-                    for (var time = @(startHour); time + sampleDuration <= @(endHour); time += 2 * sampleDuration) {
-                        // print slots for sample
-                        var startTime = Utils.formatTime(time);
-                        var finishTime = Utils.formatTime(time + sampleDuration);
-                        sampleHtml += '<option>' + startTime + ' - ' + finishTime + '</option>\n';
-                    }
-                    sampleHtml += '</select>\n';
-                    sampleHtml += '</div>\n';
-                }
-            }
-            $("#step-2-form").append(sampleHtml);
-            // end rendering step 2
-        }
-
-        Utils.formatTime = function (time)
-        {
-            var hour = Math.trunc(time);
-            var min = (time - hour) * 60;
-            min = Math.round(min);
-            if (min == 60) { // khử trường hợp: 7:60
-                hour++;
-                min = 0;
-            }
-            if (hour < 10) {
-                hour = '0' + hour;
-            }
-            if (min < 10) {
-                min = '0' + min;
-            }
-            return hour + ':' + min;
-        } // end function
-    </script>
+    <script src="~/Areas/UserWeb/Scripts/Appointment.js"></script>
 }
