@@ -53,10 +53,10 @@
                     <div id="step-2-form">
                         @*
                             <h3>1. Máu</h3>
-                            <div data-sampleid="1">
+                            <div data-sampleid="1" data-sample-duration="10">
                             <input type="date" />
-                            <select name="time-slot" style="overflow-y: scroll">
-                                <option value="">7:00 - 7:15</option>
+                            <select style="overflow-y: scroll">
+                                <option value="7:00">7:00 - 7:15</option>
                                 <option value="7:30">7:30 - 7:45</option>
                                 <option value="8:00">8:00 - 8:15</option>
                             </select>
@@ -71,7 +71,7 @@
             </div>
             <div class="col-md-6 text-right">
                 <div class="appoinment_Img">
-                    <img src="assets/img/appoionment-img.png" alt="">
+                    <img src="~/Areas/UserWeb/Content/assets/img/appoionment-img.png" alt="">
                 </div>
             </div>
         </div>
@@ -82,11 +82,12 @@
 @section scripts{
     <script>
         GLOBAL = {};
+        Utils = {};
 
         $(function () {
             $("#step-2").hide(0);
             $("#btn-next").click(function () {
-                renderStep2Html(GLOBAL.samples);
+                renderStep2Html(GLOBAL.sampleDtos);
                 var duration = 200;
                 $("#step-1").fadeOut(duration, function () {
                     $("#step-2").fadeIn(duration);
@@ -110,13 +111,17 @@
                     for (var i = 0; i < el_Samples.length; i++) {
                         // create new SampleGetingDto
                         var el_Sample = el_Samples[i];
-
+                        // get date, start time & finish time
                         var sampleId = $(el_Sample).data("sampleid");
-                        var startTime = $(el_Sample).find("*[name='start-time']").val();
-                        var finishTime = $(el_Sample).find("*[name='finish-time']").val();
+                        var sampleDuration = $(el_Sample).data("sample-duration");
+                        sampleDuration = parseFloat(sampleDuration);
+                        var startTime = $(el_Sample).find(":selected").val(); // double
+                        startTime = parseFloat(startTime);
+                        var finishTime = startTime + sampleDuration;
                         var sDate = $(el_Sample).find("*[type='date']").val();
-                        startTime = sDate + " " + startTime;
-                        finishTime = sDate + " " + finishTime;
+                        startTime = sDate + " " + Utils.formatTime(startTime);
+                        finishTime = sDate + " " + Utils.formatTime(finishTime);// + finishTime;
+                        // assign to sampleGetting Dto
                         var sampleGettingDto = {
                             SampleId: sampleId,
                             LabTestIds: [],
@@ -150,31 +155,31 @@
                 })
             })
 
-            // ajax for get all samples and labtests
+            // ajax for get all sampleDtos and labtests
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
-                GLOBAL.samples = data; // global
+                GLOBAL.sampleDtos = data; // global
                 //console.log(data);
-                renderStep1Html(GLOBAL.samples);
+                renderStep1Html(GLOBAL.sampleDtos);
             }) // end AJAX settings
 
 
         }) // end ready
 
-        function renderStep1Html(samples) {
+        function renderStep1Html(sampleDtos) {
             // render step 1 - choosing Samples & LabTests
             var sampleHtml = "";
-            if (samples != null) {
-                for (var i = 0; i < samples.length; i++) {
-                    var sample = samples[i];
+            if (sampleDtos != null) {
+                for (var i = 0; i < sampleDtos.length; i++) {
+                    var sampleDto = sampleDtos[i];
                     // append Sample Title: "1. Mau"
-                    sampleHtml += "<h3>" + (i + 1) + ". " + sample.sampleName + "</h3>\n";
-                    sampleHtml += '<div data-sampleid="' + sample.sampleId + '">\n';
-                    if (sample.labTests != null) {
-                        for (var j = 0; j < sample.labTests.length; j++) {
+                    sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
+                    sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '">\n';
+                    if (sampleDto.labTests != null) {
+                        for (var j = 0; j < sampleDto.labTests.length; j++) {
                             // append Lab Tests in Sample
-                            var labTest = sample.labTests[j];
+                            var labTest = sampleDto.labTests[j];
                             sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
                             sampleHtml += labTest.LabTestName + '</label>\n';
                             sampleHtml += '<br>\n';
@@ -187,28 +192,28 @@
             // end rendering step 1
         }
 
-        function renderStep2Html(samples) {
+        function renderStep2Html(sampleDtos) {
             $("#step-2-form").html("");
             // render step 2 - choosing Samples & LabTests
             var sampleHtml = "";
-            if (samples != null) {
-                for (var i = 0; i < samples.length; i++) {
-                    var sample = samples[i];
-                    var sampleId = sample.sampleId;
+            if (sampleDtos != null) {
+                for (var i = 0; i < sampleDtos.length; i++) {
+                    var sampleDto = sampleDtos[i];
+                    var sampleId = sampleDto.sampleId;
                     var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
                     if (checkedLabTests == null || checkedLabTests.length==0) {
                         continue;
                     }
                     // append Sample Title: "1. Mau"
-                    sampleHtml += "<h3>" + (i + 1) + ". " + sample.sampleName + "</h3>\n";
-                    sampleHtml += '<div data-sampleid="' + sample.sampleId + '">\n';
+                    sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
+                    sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '" data-sample-duration="'+ sampleDto.sampleDuration +'">\n';
                     sampleHtml += '<input type="date" />\n';
                     sampleHtml += '<select style="overflow-y: scroll">\n';
-                    var sampleDuration = sample.sampleDuration / 60;
+                    var sampleDuration = sampleDto.sampleDuration / 60;
                     for (var time = @(startHour); time + sampleDuration <= @(endHour); time += 2 * sampleDuration) {
                         // print slots for sample
-                        var startTime = formatTime(time);
-                        var finishTime = formatTime(time + sampleDuration);
+                        var startTime = Utils.formatTime(time);
+                        var finishTime = Utils.formatTime(time + sampleDuration);
                         sampleHtml += '<option>' + startTime + ' - ' + finishTime + '</option>\n';
                     }
                     sampleHtml += '</select>\n';
@@ -219,7 +224,7 @@
             // end rendering step 2
         }
 
-        function formatTime(time)
+        Utils.formatTime = function (time)
         {
             var hour = Math.trunc(time);
             var min = (time - hour) * 60;
