@@ -34,8 +34,8 @@ namespace eLTMS.Web.Mapping
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
                 .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
-                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
-                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.Sample.SampleGroupId));
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId));
+                //.ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.Sample.SampleGroupId));
 
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.AppId, src => src.MapFrom(x => x.AppointmentId))

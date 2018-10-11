@@ -13,14 +13,14 @@ namespace eLTMS.DataAccess.Repositories
 {
     public interface IAppointmentRepository : IRepository<Appointment>
     {
-        List<Appointment> GetNewAppByPatientId(/*int patientId*/);
+        List<Appointment> GetNewAppByPatientId(int patientId);
     }
     public class AppointmentRepository: RepositoryBase<Appointment>, IAppointmentRepository
     {
-        public List<Appointment> GetNewAppByPatientId(/*int patientId*/)
+        public List<Appointment> GetNewAppByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.Equals("NEW")/* && x.PatientId == patientId*/)
+                .Where(x => x.Status.Equals("NEW") && x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.SampleGettings)
                 .ToList();

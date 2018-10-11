@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eLTMS.DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,7 @@ namespace eLTMS.Web.Models.dto
     {
         public int SampleId { get; set; }
 
-        public string SampleName { get; set; }
+        //public List<Sample> SampleName { get; set; }
 
         public DateTime StartTime { get; set; }
         

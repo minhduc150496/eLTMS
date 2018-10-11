@@ -25,7 +25,22 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage GetAllLabTest()
         {
             var sample = _sampleService.GetAll();
+            
             var sampleDtos = Mapper.Map<IEnumerable<Sample>, IEnumerable<SampleDto>>(sample);
+            foreach(SampleDto sampleElement in sampleDtos)
+            {
+
+            }
+            var response = Request.CreateResponse(HttpStatusCode.OK, sampleDtos);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("api/sample/getSampleById")]
+        public HttpResponseMessage GetSampleById(int id)
+        {
+            var sample = _sampleService.GetSampleById(id);
+            var sampleDtos = Mapper.Map<SampleDto>(sample);
             var response = Request.CreateResponse(HttpStatusCode.OK, sampleDtos);
             return response;
         }

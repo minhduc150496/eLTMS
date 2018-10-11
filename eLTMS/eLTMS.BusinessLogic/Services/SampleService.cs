@@ -16,11 +16,14 @@ namespace eLTMS.BusinessLogic.Services
         //bool CreateMany(List<LabTest> newTestings);
         //bool Update(LabTest testing);
         //bool Delete(int id);
+
+        Sample GetSampleById(int id);
     }
     public class SampleService: ISampleService
     {
         private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
+
         public SampleService(IRepositoryHelper repositoryHelper)
         {
             RepositoryHelper = repositoryHelper;
@@ -32,6 +35,14 @@ namespace eLTMS.BusinessLogic.Services
             var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
             var sample = repo.GetAllSamples();
             return sample;
+        }
+
+        public Sample GetSampleById(int id)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var sample = repo.GetSampleById(id);
+            return sample;
+
         }
         
     }
