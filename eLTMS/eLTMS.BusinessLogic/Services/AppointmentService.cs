@@ -49,9 +49,17 @@ namespace eLTMS.BusinessLogic.Services
 
         public List<Appointment> GetNewApp(int patientId)
         {
+<<<<<<< HEAD
             var repo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var app = repo.GetNewAppByPatientId(patientId);
             return app;
+=======
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetNewAppByPatientId(patientId);
+            
+            return apps;
+>>>>>>> 00aed11b368192dcf20360e42ff6fbd83f0b573e
         }
     }
 }
