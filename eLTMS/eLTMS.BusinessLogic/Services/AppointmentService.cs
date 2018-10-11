@@ -12,7 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface IAppointmentService
     {
         //bool Create(Appointment appointment);
-        List<Appointment> GetNewApp();
+        List<Appointment> GetNewApp(int patientId);
     }
     public class AppointmentService: IAppointmentService
     {
@@ -47,11 +47,13 @@ namespace eLTMS.BusinessLogic.Services
         //    return true;
         //}
 
-        public List<Appointment> GetNewApp()
+        public List<Appointment> GetNewApp(int patientId)
         {
-            var repo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var app = repo.GetNewAppByPatientId();
-            return app;
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetNewAppByPatientId(patientId);
+            
+            return apps;
         }
     }
 }
