@@ -12,9 +12,16 @@ namespace eLTMS.DataAccess.Repositories
 {
     public interface ISampleGettingRepository : IRepository<SampleGetting>
     {
+        List<SampleGetting> GetAll();
     }
     public class SampleGettingRepository : RepositoryBase<SampleGetting>, ISampleGettingRepository
     {
-
+        public List<SampleGetting> GetAll()
+        {
+            var results = DbSet.AsQueryable()
+                .Include(x => x.Sample)
+                .ToList();
+            return results;
+        }
     }
 }

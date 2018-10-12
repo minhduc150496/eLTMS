@@ -29,11 +29,24 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.sampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
-                .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))
                 .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
                 .ForMember(dst => dst.Price, src => src.MapFrom(x => x.Price));
-                
+
+                cfg.CreateMap<SampleGetting, SampleGettingDto>()
+                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
+                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId));
+                //.ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.Sample.SampleGroupId));
+
+                cfg.CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dst => dst.AppId, src => src.MapFrom(x => x.AppointmentId))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+                .ForMember(dst => dst.SampleGetting, src => src.MapFrom(x => x.SampleGettings));
+
+
+
+
             });
             
         }

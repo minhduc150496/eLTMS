@@ -14,6 +14,7 @@ namespace eLTMS.DataAccess.Repositories
     public interface ISampleRepository : IRepository<Sample>
     {
         List<Sample> GetAllSamples();
+        Sample GetSampleById(int id);
     }
     public class SampleRepository : RepositoryBase<Sample>, ISampleRepository
     {
@@ -23,6 +24,12 @@ namespace eLTMS.DataAccess.Repositories
                 .Include (x  => x.LabTests)
                 .Include(x => x.SampleGroup)
                 .ToList();
+            return result;
+        }
+
+        public Sample GetSampleById(int id)
+        {
+            var result = DbSet.Where(s => s.SampleId == id).ToList().FirstOrDefault();
             return result;
         }
     }
