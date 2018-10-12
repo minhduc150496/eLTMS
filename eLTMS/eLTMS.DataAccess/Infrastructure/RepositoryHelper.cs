@@ -55,7 +55,18 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
-
+            if (typeof(TRepository) == typeof(IExportPaperDetailRepository))
+            {
+                dynamic repo = new ExportPaperDetailRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IExportPaperRepository))
+            {
+                dynamic repo = new ExportPaperRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
             if (typeof(TRepository) == typeof(IPatientRepository))
             {
                 dynamic repo = new PatientRepository();

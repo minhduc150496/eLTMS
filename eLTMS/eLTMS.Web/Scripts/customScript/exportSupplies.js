@@ -149,14 +149,13 @@ var homeController = {
             $('#myModal').modal('hide');
             var id = $(this).data('id');
             homeController.loadDetail(id);
-            $('#btnSaveImport').hide();
         });
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-
-                homeController.deleteImport(id);
-          
+            bootbox.confirm("Are you sure to delete this employee?", function (result) {
+                homeController.deleteEmployee(id);
+            });
         });
 
         $("#input").off('change').on("change", function () {
@@ -274,33 +273,29 @@ var homeController = {
 
         });
     },
-
-    deleteImport: function (id) {
+    deleteEmployee: function (id) {
         $.ajax({
-            url: '/WareHouse/DeleteImportPaper',
+            url: '/WareH/Delete',
             data: {
-                importId: id
+                id: id
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.success == true) {
-                    toastr.success("Xóa thành công.");
-                    homeController.loadData(true);
+                if (response.status == true) {
+                    bootbox.alert("Delete Success", function () {
+                        homeController.loadData(true);
+                    });
                 }
                 else {
-                    toastr.error("Xóa không thành công.");
+                    bootbox.alert(response.message);
                 }
             },
             error: function (err) {
                 console.log(err);
             }
         });
-
     },
-
-
-    
     loadDetail: function (id) {
         $.ajax({
             url: '/WareHouse/LoadPaperImportDetailId',

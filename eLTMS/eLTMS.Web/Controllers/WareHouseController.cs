@@ -16,12 +16,14 @@ namespace eLTMS.Web.Controllers
     {
         // GET: WareHouse
         private readonly ISupplyService _supplyService;
-        
+
+        private readonly IExportPaperService _exportPaperService;
         private readonly IImportPaperService _importPaperService;
-        public WareHouseController(ISupplyService supplyService, IImportPaperService importPaperService)
+        public WareHouseController(ISupplyService supplyService, IImportPaperService importPaperService, IExportPaperService exportPaperService)
         {
             this._supplyService = supplyService;
             this._importPaperService = importPaperService;
+            this._exportPaperService = exportPaperService;
         }
         public ActionResult Index()
         {
@@ -134,10 +136,55 @@ namespace eLTMS.Web.Controllers
                 data = result,
             });
         }
+
+        [HttpPost]
+        public JsonResult AddExportPaper(ExportPaper exportPaper)
+        {
+            var result = _exportPaperService.AddExportPaper(exportPaper);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            });
+        }
+
+        [HttpGet]
+        public JsonResult GetAllExportPapers(string createDate = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _exportPaperService.GetAllExportPapers(createDate);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<ExportPaper>, IEnumerable<ExportPaperDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult LoadPaperExportDetailId(int id)
+        {
+            var queryResult = _exportPaperService.GetExportPaperById(id);
+            var exportPaper = Mapper.Map<ExportPaper, ExportPaperDto>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = exportPaper,
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult Delete(int supplyId)
         {
             var result = _supplyService.Delete(supplyId);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult DeleteImportPaper(int importId)
+        {
+            var result = _importPaperService.Delete(importId);
             return Json(new
             {
                 success = result

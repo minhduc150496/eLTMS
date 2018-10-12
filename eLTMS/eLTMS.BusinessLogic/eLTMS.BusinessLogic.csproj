@@ -45,6 +45,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\ExportPaperService .cs" />
     <Compile Include="Services\ImportPaperService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\SupplyService.cs" />

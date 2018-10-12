@@ -15,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         List<ImportPaper> GetAllImportPapers(string createDate);
         ImportPaper GetImportPaperById(int id);
         ImportPaper GetByimportPaperCode(string code);
+        bool Delete(int id);
     }
     public class ImportPaperService : IImportPaperService
     {
@@ -79,5 +80,25 @@ namespace eLTMS.BusinessLogic.Services
             var importPapers = importPaperRepo.GetSimpleById(id);
             return importPapers;
         }
+
+        public bool Delete(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<IImportPaperRepository>(UnitOfWork);
+
+            try
+            {
+                var import = repo.GetById(id);
+                import.IsDeleted = true;
+                repo.Update(import);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
+
 }

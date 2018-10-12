@@ -56,6 +56,24 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
 
+                cfg.CreateMap<ExportPaper, ExportPaperDto>()
+                .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
+                .ForMember(dst => dst.ExportPaperCode, src => src.MapFrom(x => x.ExportPaperCode))
+                .ForMember(dst => dst.CreateDate, src => src.MapFrom(x => x.CreateDate))
+                .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
+                .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.ExportPaperDetailDtos, src => src.MapFrom(x => x.ExportPaperDetails));
+
+                cfg.CreateMap<ExportPaperDetail, ExportPaperDetailDto>()
+                .ForMember(dst => dst.ExportPaperDetailId, src => src.MapFrom(x => x.ExportPaperDetailId))
+                .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
+                .ForMember(dst => dst.SuppliesId, src => src.MapFrom(x => x.SuppliesId))
+                .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit))
+                .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
+                .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
                 .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))

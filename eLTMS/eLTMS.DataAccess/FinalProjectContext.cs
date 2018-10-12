@@ -22,8 +22,7 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<Account> Accounts { get; set; } // Account
         public System.Data.Entity.DbSet<Employee> Employees { get; set; } // Employee
         public System.Data.Entity.DbSet<ExportPaper> ExportPapers { get; set; } // ExportPaper
-        public System.Data.Entity.DbSet<ExportProposurePaper> ExportProposurePapers { get; set; } // ExportProposurePaper
-        public System.Data.Entity.DbSet<ExportProposurePaperDetail> ExportProposurePaperDetails { get; set; } // ExportProposurePaperDetail
+        public System.Data.Entity.DbSet<ExportPaperDetail> ExportPaperDetails { get; set; } // ExportPaperDetail
         public System.Data.Entity.DbSet<Faculty> Faculties { get; set; } // Faculty
         public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
         public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital

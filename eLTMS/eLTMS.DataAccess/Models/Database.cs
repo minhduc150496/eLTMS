@@ -362,9 +362,9 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child ExportProposurePaperDetails where [ExportProposurePaperDetail].[SuppliesId] point to this entity (FK_ExportProposurePaperDetail_Supplies)
+        /// Child ExportPaperDetails where [ExportPaperDetail].[SuppliesId] point to this entity (FK_ExportProposurePaperDetail_Supplies)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<ExportProposurePaperDetail> ExportProposurePaperDetails { get; set; } // ExportProposurePaperDetail.FK_ExportProposurePaperDetail_Supplies
+        public virtual System.Collections.Generic.ICollection<ExportPaperDetail> ExportPaperDetails { get; set; } // ExportPaperDetail.FK_ExportProposurePaperDetail_Supplies
         /// <summary>
         /// Child ImportPaperDetails where [ImportPaperDetail].[SuppliesId] point to this entity (FK_ImportPaperDetail_Supplies)
         /// </summary>
@@ -380,7 +380,7 @@ namespace eLTMS.DataAccess.Models
         public Supply()
         {
             IsDeleted = false;
-            ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
+            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
         }
     }
@@ -1052,22 +1052,22 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // ExportProposurePaperDetail
-    [Table("ExportProposurePaperDetail", Schema = "dbo")]
+    // ExportPaperDetail
+    [Table("ExportPaperDetail", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ExportProposurePaperDetail
+    public class ExportPaperDetail
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"ExportProposurePaperDetailId", Order = 1, TypeName = "int")]
+        [Column(@"ExportPaperDetailId", Order = 1, TypeName = "int")]
         [Index(@"PK_ExportProposurePaperDetail", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
-        [Display(Name = "Export proposure paper detail ID")]
-        public int ExportProposurePaperDetailId { get; set; } // ExportProposurePaperDetailId (Primary key)
+        [Display(Name = "Export paper detail ID")]
+        public int ExportPaperDetailId { get; set; } // ExportPaperDetailId (Primary key)
 
-        [Column(@"ExportProposurePaperId", Order = 2, TypeName = "int")]
-        [Display(Name = "Export proposure paper ID")]
-        public int? ExportProposurePaperId { get; set; } // ExportProposurePaperId
+        [Column(@"ExportPaperId", Order = 2, TypeName = "int")]
+        [Display(Name = "Export paper ID")]
+        public int? ExportPaperId { get; set; } // ExportPaperId
 
         [Column(@"SuppliesId", Order = 3, TypeName = "int")]
         [Display(Name = "Supplies ID")]
@@ -1094,39 +1094,39 @@ namespace eLTMS.DataAccess.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent ExportProposurePaper pointed by [ExportProposurePaperDetail].([ExportProposurePaperId]) (FK_ExportProposurePaperDetail_ExportProposurePaper)
+        /// Parent ExportPaper pointed by [ExportPaperDetail].([ExportPaperId]) (FK_ExportProposurePaperDetail_ExportProposurePaper)
         /// </summary>
-        [ForeignKey("ExportProposurePaperId")] public virtual ExportProposurePaper ExportProposurePaper { get; set; } // FK_ExportProposurePaperDetail_ExportProposurePaper
+        [ForeignKey("ExportPaperId")] public virtual ExportPaper ExportPaper { get; set; } // FK_ExportProposurePaperDetail_ExportProposurePaper
 
         /// <summary>
-        /// Parent Supply pointed by [ExportProposurePaperDetail].([SuppliesId]) (FK_ExportProposurePaperDetail_Supplies)
+        /// Parent Supply pointed by [ExportPaperDetail].([SuppliesId]) (FK_ExportProposurePaperDetail_Supplies)
         /// </summary>
         [ForeignKey("SuppliesId")] public virtual Supply Supply { get; set; } // FK_ExportProposurePaperDetail_Supplies
 
-        public ExportProposurePaperDetail()
+        public ExportPaperDetail()
         {
             IsDeleted = false;
         }
     }
 
-    // ExportProposurePaper
-    [Table("ExportProposurePaper", Schema = "dbo")]
+    // ExportPaper
+    [Table("ExportPaper", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ExportProposurePaper
+    public class ExportPaper
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"ExportProposurePaperId", Order = 1, TypeName = "int")]
+        [Column(@"ExportPaperId", Order = 1, TypeName = "int")]
         [Index(@"PK_ExportProposurePaper", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
-        [Display(Name = "Export proposure paper ID")]
-        public int ExportProposurePaperId { get; set; } // ExportProposurePaperId (Primary key)
+        [Display(Name = "Export paper ID")]
+        public int ExportPaperId { get; set; } // ExportPaperId (Primary key)
 
-        [Column(@"ExportProposurePaperCode", Order = 2, TypeName = "nvarchar")]
+        [Column(@"ExportPaperCode", Order = 2, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
-        [Display(Name = "Export proposure paper code")]
-        public string ExportProposurePaperCode { get; set; } // ExportProposurePaperCode (length: 20)
+        [Display(Name = "Export paper code")]
+        public string ExportPaperCode { get; set; } // ExportPaperCode (length: 20)
 
         [Column(@"CreateDate", Order = 3, TypeName = "date")]
         [Display(Name = "Create date")]
@@ -1153,71 +1153,14 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child ExportPapers where [ExportPaper].[ExportProposurePaperId] point to this entity (FK_ExportPaper_ExportProposurePaper)
+        /// Child ExportPaperDetails where [ExportPaperDetail].[ExportPaperId] point to this entity (FK_ExportProposurePaperDetail_ExportProposurePaper)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<ExportPaper> ExportPapers { get; set; } // ExportPaper.FK_ExportPaper_ExportProposurePaper
-        /// <summary>
-        /// Child ExportProposurePaperDetails where [ExportProposurePaperDetail].[ExportProposurePaperId] point to this entity (FK_ExportProposurePaperDetail_ExportProposurePaper)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<ExportProposurePaperDetail> ExportProposurePaperDetails { get; set; } // ExportProposurePaperDetail.FK_ExportProposurePaperDetail_ExportProposurePaper
-
-        public ExportProposurePaper()
-        {
-            IsDeleted = false;
-            ExportPapers = new System.Collections.Generic.List<ExportPaper>();
-            ExportProposurePaperDetails = new System.Collections.Generic.List<ExportProposurePaperDetail>();
-        }
-    }
-
-    // ExportPaper
-    [Table("ExportPaper", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ExportPaper
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"ExportPaperId", Order = 1, TypeName = "int")]
-        [Index(@"PK_ExportPaper", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Export paper ID")]
-        public int ExportPaperId { get; set; } // ExportPaperId (Primary key)
-
-        [Column(@"ExportPaperCode", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Export paper code")]
-        public string ExportPaperCode { get; set; } // ExportPaperCode (length: 20)
-
-        [Column(@"CreateDate", Order = 3, TypeName = "date")]
-        [Display(Name = "Create date")]
-        public System.DateTime? CreateDate { get; set; } // CreateDate
-
-        [Column(@"AccountId", Order = 4, TypeName = "int")]
-        [Display(Name = "Account ID")]
-        public int? AccountId { get; set; } // AccountId
-
-        [Column(@"ExportProposurePaperId", Order = 5, TypeName = "int")]
-        [Display(Name = "Export proposure paper ID")]
-        public int? ExportProposurePaperId { get; set; } // ExportProposurePaperId
-
-        [Column(@"Note", Order = 6, TypeName = "nvarchar(max)")]
-        [Display(Name = "Note")]
-        public string Note { get; set; } // Note
-
-        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent ExportProposurePaper pointed by [ExportPaper].([ExportProposurePaperId]) (FK_ExportPaper_ExportProposurePaper)
-        /// </summary>
-        [ForeignKey("ExportProposurePaperId")] public virtual ExportProposurePaper ExportProposurePaper { get; set; } // FK_ExportPaper_ExportProposurePaper
+        public virtual System.Collections.Generic.ICollection<ExportPaperDetail> ExportPaperDetails { get; set; } // ExportPaperDetail.FK_ExportProposurePaperDetail_ExportProposurePaper
 
         public ExportPaper()
         {
             IsDeleted = false;
+            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
         }
     }
 
@@ -1438,45 +1381,24 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.ExportPaperCode).IsOptional();
             Property(x => x.CreateDate).IsOptional();
             Property(x => x.AccountId).IsOptional();
-            Property(x => x.ExportProposurePaperId).IsOptional();
-            Property(x => x.Note).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-
-        }
-    }
-
-    // ExportProposurePaper
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ExportProposurePaperConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ExportProposurePaper>
-    {
-        public ExportProposurePaperConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public ExportProposurePaperConfiguration(string schema)
-        {
-            Property(x => x.ExportProposurePaperCode).IsOptional();
-            Property(x => x.CreateDate).IsOptional();
-            Property(x => x.AccountId).IsOptional();
             Property(x => x.Note).IsOptional();
             Property(x => x.Status).IsOptional().IsFixedLength();
             Property(x => x.IsDeleted).IsOptional();
         }
     }
 
-    // ExportProposurePaperDetail
+    // ExportPaperDetail
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ExportProposurePaperDetailConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ExportProposurePaperDetail>
+    public class ExportPaperDetailConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ExportPaperDetail>
     {
-        public ExportProposurePaperDetailConfiguration()
+        public ExportPaperDetailConfiguration()
             : this("dbo")
         {
         }
 
-        public ExportProposurePaperDetailConfiguration(string schema)
+        public ExportPaperDetailConfiguration(string schema)
         {
-            Property(x => x.ExportProposurePaperId).IsOptional();
+            Property(x => x.ExportPaperId).IsOptional();
             Property(x => x.SuppliesId).IsOptional();
             Property(x => x.Unit).IsOptional();
             Property(x => x.Quantity).IsOptional();

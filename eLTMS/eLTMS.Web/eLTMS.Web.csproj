@@ -189,7 +189,9 @@
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\dto\EmployeeDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
     <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDto.cs" />
     <Compile Include="Models\dto\ImportPaperDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
@@ -7297,6 +7299,7 @@
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\customScript\exportSupplies.js" />
     <Content Include="Scripts\customScript\importSupplies.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
