@@ -32,7 +32,7 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
-        //Tạo page cho View Employee
+        //Tạo page cho View Employee-lay tat ca employee shoe tren bang
         [HttpGet]
         public JsonResult GetAllEmployees (String fullName="",int page=1,int pageSize = 20)
         {
@@ -45,6 +45,17 @@ namespace eLTMS.Web.Controllers
                 data = result,
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);          
+        }
+
+        //Update-Edit Employee
+        [HttpPost]
+        public JsonResult UpdateEmployee(Employee employee)
+        {
+            var result = _employeeService.Update(employee.EmployeeId, employee.Status, employee.FullName, employee.Gender, employee.DateOfBirth, employee.PhoneNumber, employee.HomeAddress, employee.StartDate, employee.Account.Role);
+            return Json(new
+            {
+                sucess = result
+            });
         }
     }
 }
