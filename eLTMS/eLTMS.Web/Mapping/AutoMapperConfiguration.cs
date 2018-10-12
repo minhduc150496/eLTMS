@@ -38,7 +38,7 @@ namespace eLTMS.Web.Mapping
                 //.ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.Sample.SampleGroupId));
 
                 cfg.CreateMap<Appointment, AppointmentDto>()
-                .ForMember(dst => dst.AppId, src => src.MapFrom(x => x.AppointmentId))
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 

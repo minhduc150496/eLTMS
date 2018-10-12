@@ -23,8 +23,6 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<Appointment> Appointments { get; set; } // Appointment
         public System.Data.Entity.DbSet<Employee> Employees { get; set; } // Employee
         public System.Data.Entity.DbSet<ExportPaper> ExportPapers { get; set; } // ExportPaper
-        public System.Data.Entity.DbSet<ExportProposurePaper> ExportProposurePapers { get; set; } // ExportProposurePaper
-        public System.Data.Entity.DbSet<ExportProposurePaperDetail> ExportProposurePaperDetails { get; set; } // ExportProposurePaperDetail
         public System.Data.Entity.DbSet<Faculty> Faculties { get; set; } // Faculty
         public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
         public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital
@@ -36,7 +34,6 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<LabTesting> LabTestings { get; set; } // LabTesting
         public System.Data.Entity.DbSet<LabTestingIndex> LabTestingIndexes { get; set; } // LabTestingIndex
         public System.Data.Entity.DbSet<Patient> Patients { get; set; } // Patient
-        public System.Data.Entity.DbSet<ResultPaper> ResultPapers { get; set; } // ResultPaper
         public System.Data.Entity.DbSet<Sample> Samples { get; set; } // Sample
         public System.Data.Entity.DbSet<SampleGroup> SampleGroups { get; set; } // Sample
         public System.Data.Entity.DbSet<SampleGetting> SampleGettings { get; set; } // SampleGetting
