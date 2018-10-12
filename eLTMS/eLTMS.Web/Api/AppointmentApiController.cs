@@ -58,5 +58,15 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(System.Net.HttpStatusCode.OK, success);
             return response;
         }
+
+        [HttpGet]
+        [Route("api/appointment/get-new-appointment-by-patient-id")]
+        public HttpResponseMessage GetNewAppointment(int patientId)
+        {
+            var app = _appointmentService.GetNewApp(patientId);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
+            var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
+            return response;
+        }
     }
 }

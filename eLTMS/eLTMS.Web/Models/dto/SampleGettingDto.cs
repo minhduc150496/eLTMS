@@ -10,7 +10,9 @@ namespace eLTMS.Web.Models.dto
     {
         public int SampleId { get; set; }
 
-        //public List<Sample> SampleName { get; set; }
+        public List<int> LabTestIds { get; set; }
+
+        public string SampleName { get; set; }
 
         public DateTime StartTime { get; set; }
         

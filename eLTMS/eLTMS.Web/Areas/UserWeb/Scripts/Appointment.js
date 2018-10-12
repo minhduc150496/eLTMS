@@ -63,7 +63,7 @@ $(document).ready(function () {
         }
         // ajax for create new appointment
         var jsonData = JSON.stringify(GLOBAL.appointmentDto);
-        console.log(jsonData);
+        //console.log(jsonData);
         $.ajax({
             method: "POST",
             contentType: "application/json",
