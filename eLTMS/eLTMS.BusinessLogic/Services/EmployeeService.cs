@@ -17,7 +17,7 @@ namespace eLTMS.BusinessLogic.Services
         //bool Insert(int id, string name, int age);
         //bool Delete(int id);
         //bool Update(int id, string name, int age);
-        bool Update(int id, string status, string fullname, string gender, DateTime dateOfBirth, string phone, string address, DateTime dateStart, string Role);
+        bool Update(int id, string status, string fullname, string gender, DateTime? dateOfBirth, string phone, string address, DateTime? dateStart, string Role);
     }
     public class EmployeeService : IEmployeeService
     {
@@ -35,7 +35,7 @@ namespace eLTMS.BusinessLogic.Services
             var employee = employeeRepo.GetAllEmployee(fullName);
             return employee;
         }
-        public bool Update(int id,string status, string fullname,string gender,DateTime dateOfBirth, string phone,string address,DateTime dateStart, string Role)
+        public bool Update(int id,string status, string fullname,string gender,DateTime? dateOfBirth, string phone,string address,DateTime? dateStart, string Role)
         {
             var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(UnitOfWork);
             try
