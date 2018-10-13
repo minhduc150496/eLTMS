@@ -1,7 +1,5 @@
 ﻿GLOBAL = {};
 Utils = {};
-GLOBAL.START_HOUR = 4;
-GLOBAL.END_HOUR = 14;
 GLOBAL.PATIENT_ID = 1; // hard code for dev-ing
 
 $(document).ready(function () {
@@ -98,12 +96,12 @@ function renderStep1Html(sampleDtos) {
         for (var i = 0; i < sampleDtos.length; i++) {
             var sampleDto = sampleDtos[i];
             // append Sample Title: "1. Mau"
-            sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
-            sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '">\n';
-            if (sampleDto.labTests != null) {
-                for (var j = 0; j < sampleDto.labTests.length; j++) {
+            sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
+            sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '">\n';
+            if (sampleDto.LabTests != null) {
+                for (var j = 0; j < sampleDto.LabTests.length; j++) {
                     // append Lab Tests in Sample
-                    var labTest = sampleDto.labTests[j];
+                    var labTest = sampleDto.LabTests[j];
                     sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
                     sampleHtml += labTest.LabTestName + '</label>\n';
                     sampleHtml += '<br>\n';
@@ -123,14 +121,17 @@ function renderStep2Html(sampleDtos) {
     if (sampleDtos != null) {
         for (var i = 0; i < sampleDtos.length; i++) {
             var sampleDto = sampleDtos[i];
-            var sampleId = sampleDto.sampleId;
+            var sampleId = sampleDto.SampleId;
             var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
             if (checkedLabTests == null || checkedLabTests.length == 0) {
                 continue;
             }
             // append Sample Title: "1. Mau"
-            sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.sampleName + "</h3>\n";
-            sampleHtml += '<div data-sampleid="' + sampleDto.sampleId + '" data-sample-duration="' + sampleDto.sampleDuration + '">\n';
+            sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
+            sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" ' +
+                'data-sample-duration="' + sampleDto.SampleDuration + '" ' +
+                'data-open-time="' + sampleDto.OpenTime + '" ' +
+                'data-close-time="' + sampleDto.CloseTime + '">\n';
             var today = new Date();
             var year = today.getFullYear();
             var month = today.getMonth();
@@ -144,8 +145,8 @@ function renderStep2Html(sampleDtos) {
             var sToday = "" + year + "-" + month + "-" + date;
             sampleHtml += '<input type="date" value="' + sToday + '" />\n';
             sampleHtml += '<select style="overflow-y: scroll">\n';
-            var sampleDuration = sampleDto.sampleDuration / 60;
-            for (var time = GLOBAL.START_HOUR; time + sampleDuration <= GLOBAL.END_HOUR; time += 2 * sampleDuration) {
+            var sampleDuration = sampleDto.SampleDuration / 60;
+            for (var time = sampleDto.OpenTime; time + sampleDuration <= sampleDto.CloseTime; time += 2 * sampleDuration) {
                 // print slots for sample
                 var startTime = Utils.formatTime(time);
                 var finishTime = Utils.formatTime(time + sampleDuration);

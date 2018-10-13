@@ -23,10 +23,12 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note));
                 
                 cfg.CreateMap<Sample, SampleDto>()
-                .ForMember(dst => dst.sampleId, src => src.MapFrom(x => x.SampleId))
-                .ForMember(dst => dst.sampleName, src => src.MapFrom(x => x.SampleName))
-                .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests))
-                .ForMember(dst => dst.sampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration));
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleName))
+                .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests))
+                .ForMember(dst => dst.SampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration))
+                .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.SampleGroup.OpenTime))
+                .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.SampleGroup.CloseTime));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))
@@ -41,9 +43,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
-
-
-
+                               
 
             });
             

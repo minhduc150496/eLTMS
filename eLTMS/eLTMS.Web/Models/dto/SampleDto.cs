@@ -8,12 +8,17 @@ namespace eLTMS.Web.Models.dto
 {
     public class SampleDto
     {
-        public int sampleId { get; set; }
+        public int SampleId { get; set; }
 
-        public string sampleName { get; set; }
+        public string SampleName { get; set; }
         
-        public List<LabTestDto> labTests { get; set; }
+        public List<LabTestDto> LabTests { get; set; }
 
-        public int sampleDuration { get; set; }
+        public int SampleDuration { get; set; }
+
+        public double OpenTime { get; set; }
+
+        public double CloseTime { get; set; }
+
     }
 }
