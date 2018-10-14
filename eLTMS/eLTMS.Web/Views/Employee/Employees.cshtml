@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Employees";
-    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+                /**/
+
+                ViewBag.Title = "Employees";
+                Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
 
 <section class="content-header">
@@ -63,6 +65,13 @@
             <div class="modal-body">
                 <form class="form-horizontal" action="/action_page.php">
 
+                    <input type="hidden" class="form-control" id="txtEmployeeId" name="txtEmployeeId" value="0">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Mã Account</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
+                        </div>
+                    </div>
                     <input type="hidden" class="form-control" id="txtEmployeeId" name="txtEmployeeId" value="0">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Mã nhân viên</label>
@@ -159,7 +168,7 @@
                                     Tạm dừng
                                 </option>
                                 <option value="Delete">
-                                   Nghỉ việc
+                                    Nghỉ việc
                                 </option>
                             </select>
                         </div>

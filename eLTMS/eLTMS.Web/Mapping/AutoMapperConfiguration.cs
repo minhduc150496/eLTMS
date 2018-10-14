@@ -78,7 +78,14 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
                 .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
-                .ForMember(dst => dst.Role, src => src.MapFrom(x => x.Account.Role));
+                .ForMember(dst => dst.Role, src => src.MapFrom(x => x.Account.Role))
+                .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
+                .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Gender))
+                .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
+                .ForMember(dst => dst.DateOfStart, src => src.MapFrom(x => x.StartDate.HasValue ? x.StartDate.Value.ToString("dd-MM-yyyy") : ""))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""));
             });
         }
     }

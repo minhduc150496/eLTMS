@@ -12,11 +12,11 @@ namespace eLTMS.Web.Models.dto
         public string Status { get; set; }//Status of Employee
         public string FullName { get; set; } // FullName (length: 100)
         public string Gender { get; set; } // Gender (length: 10)
-        public System.DateTime? DateOfBirth { get; set; } // DateOfBirth
+        public string DateOfBirth { get; set; } // DateOfBirth
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
         public string HomeAddress { get; set; } // HomeAddress (length: 200)
         public string Role { get; set; }// Role (length: 200)
-        public System.DateTime? DateOfStart { get; set; } // Date Start Of Work
+        public string DateOfStart { get; set; } // Date Start Of Work
         public bool? IsDeleted { get; set; } // IsDeleted
     }
 }

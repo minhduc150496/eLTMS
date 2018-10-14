@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace eLTMS.BusinessLogic.Services
 {
-    
+
     public interface IPatientService
     {
         List<Patient> GetAllPatients(string phoneNumber);
@@ -17,7 +17,7 @@ namespace eLTMS.BusinessLogic.Services
         bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
         Patient GetPatientById(int id);
         //bool Delete(int id);
-       // bool UpdatePatient(Patient dto);
+        // bool UpdatePatient(Patient dto);
     }
     public class PatientService : IPatientService
     {
@@ -28,11 +28,11 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
-        
+
         public bool AddPatient(Patient patient)
         {
             var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-                 try
+            try
             {
                 repo.Create(patient);
                 UnitOfWork.SaveChanges();

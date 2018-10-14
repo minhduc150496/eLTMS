@@ -16,7 +16,7 @@ namespace eLTMS.Web.Controllers
     {
         // GET: Patient
         private readonly IPatientService _patientService;
-        
+
         //private readonly IImportPaperService _importPaperService;
         public PatientController(IPatientService patientService)
         {
@@ -47,18 +47,18 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-public JsonResult UpdatePatient(Patient patient)
+        public JsonResult UpdatePatient(Patient patient)
         {
-            var result = _patientService.Update(patient.PatientId, patient.PatientCode,patient.FullName, patient.Gender, patient.PhoneNumber, patient.HomeAddress, patient.CompanyAddress);
+            var result = _patientService.Update(patient.PatientId, patient.PatientCode, patient.FullName, patient.Gender, patient.PhoneNumber, patient.HomeAddress, patient.CompanyAddress);
             return Json(new
-{
-               sucess = result
-});
+            {
+                sucess = result
+            });
         }
         [HttpPost]
         public JsonResult AddPatient(Patient patient)
         {
-            var result =  _patientService.AddPatient(patient);
+            var result = _patientService.AddPatient(patient);
             return Json(new
             {
                 sucess = result

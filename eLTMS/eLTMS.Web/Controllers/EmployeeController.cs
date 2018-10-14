@@ -19,7 +19,7 @@ namespace eLTMS.Web.Controllers
         //Khai báo IEmployeeService
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeController (IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService)
         {
             this._employeeService = employeeService;
         }
@@ -34,7 +34,7 @@ namespace eLTMS.Web.Controllers
         }
         //Tạo page cho View Employee-lay tat ca employee shoe tren bang
         [HttpGet]
-        public JsonResult GetAllEmployees (String fullName="",int page=1,int pageSize = 20)
+        public JsonResult GetAllEmployees(String fullName = "", int page = 1, int pageSize = 20)
         {
             var queryResult = _employeeService.GetAllEmployees(fullName);
             var totalRows = queryResult.Count();
@@ -44,14 +44,34 @@ namespace eLTMS.Web.Controllers
                 success = true,
                 data = result,
                 total = totalRows
-            }, JsonRequestBehavior.AllowGet);          
+            }, JsonRequestBehavior.AllowGet);
         }
 
         //Update-Edit Employee
         [HttpPost]
         public JsonResult UpdateEmployee(Employee employee)
         {
-            var result = _employeeService.Update(employee.EmployeeId, employee.Status, employee.FullName, employee.Gender, employee.DateOfBirth, employee.PhoneNumber, employee.HomeAddress, employee.StartDate, employee.Account.Role);
+            var result = _employeeService.Update(employee);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpGet]
+        public JsonResult EmployeeDetail(int id)
+        {
+            var result = _employeeService.getEmployeeById(id);
+            var supply = Mapper.Map<Employee, EmployeeDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = supply
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult AddEmployee(Employee employee)
+        {
+            var result = _employeeService.AddEmployee(employee);
             return Json(new
             {
                 sucess = result
