@@ -35,13 +35,14 @@ var homeController = {
                 FullName: name,
                 Gender: gender,
                 DateOfBirth: dateBirth,
-                DateOfStart: dateStart,
+                StartDate: dateStart,
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
                 IsDeleted: isDeleted,
                 Account: {
                     Role: $('#ddlRole').val()
-                }
+                },
+                Status: $('#ddlStatus').val()
             }
             if (employee.EmployeeID == 0) {
                 $.ajax({
@@ -153,7 +154,7 @@ var homeController = {
                     var data = response.data;          
                     $('#txtID').val(data.EmployeeID);
                     $('#txtAccountId').val(data.AccountId);
-                    $('#ddlStatus').val(data.Status);
+                    $('#ddlStatus').val(data.Status).change();
                     $('#txtName').val(data.FullName); 
                     $('#ddlGender').val(data.Gender.trim()).change();
                     $('#txtDB').val(data.DateOfBirth);
@@ -201,7 +202,7 @@ var homeController = {
                             EmployeeID: item.EmployeeID,
                             FullName: item.FullName,
                             PhoneNumber: item.PhoneNumber,
-                            Role: item.Role,
+                            Role: item.RoleDisplay,
                            
                         });
 
