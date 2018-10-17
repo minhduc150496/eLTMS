@@ -175,7 +175,6 @@
   <ItemGroup>
     <Compile Include="Api\AppointmentApiController.cs" />
     <Compile Include="Api\AccountApiController.cs" />
-    <Compile Include="Api\LabTestApiController.cs" />
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
@@ -193,15 +192,6 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
-    <Compile Include="Models\dto\AccountLoginDto.cs" />
-    <Compile Include="Models\dto\SampleGettingDto.cs" />
-    <Compile Include="Models\dto\AppointmentDto.cs" />
-    <Compile Include="Models\dto\LabTestDto.cs" />
-    <Compile Include="Models\dto\SampleDto.cs" />
-    <Compile Include="Models\dto\AccountDto.cs" />
-    <Compile Include="Models\dto\SupplyDto.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\LoginResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7605,6 +7595,10 @@
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
       <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
       <Name>eLTMS.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">
+      <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
+      <Name>eLTMS.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

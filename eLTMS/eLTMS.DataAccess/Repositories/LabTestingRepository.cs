@@ -12,9 +12,17 @@ namespace eLTMS.DataAccess.Repositories
 {
     public interface ILabTestingRepository : IRepository<LabTesting>
     {
+        List<LabTesting> GetAllLabTesting();
     }
     public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
     {
-
+        public List<LabTesting> GetAllLabTesting()
+        {
+            var result = DbSet.AsQueryable()
+                .Include(x => x.LabTest)
+                .Include(x => x.LabTestingIndexes)
+                .ToList();
+            return result;
+        }
     }
 }

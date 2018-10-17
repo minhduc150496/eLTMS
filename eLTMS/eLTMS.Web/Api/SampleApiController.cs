@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
-using eLTMS.Web.Models.dto;
+using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +27,7 @@ namespace eLTMS.Web.Api
             var sample = _sampleService.GetAll();
             
             var sampleDtos = Mapper.Map<IEnumerable<Sample>, IEnumerable<SampleDto>>(sample);
-            foreach(SampleDto sampleElement in sampleDtos)
-            {
-
-            }
+           
             var response = Request.CreateResponse(HttpStatusCode.OK, sampleDtos);
             return response;
         }

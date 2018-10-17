@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace eLTMS.Web.Models.dto
+namespace eLTMS.Models.Models.dto
 {
     public class AppointmentDto
     {
-        public int AppId { get; set; }
+        public int AppCode { get; set; }
 
         public string PatientName { get; set; }
+
+        public string testPurpose { get; set; }
 
         public List<SampleGettingDto> SampleGetting { get; set; }
     }

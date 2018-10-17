@@ -36,7 +36,6 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<LabTesting> LabTestings { get; set; } // LabTesting
         public System.Data.Entity.DbSet<LabTestingIndex> LabTestingIndexes { get; set; } // LabTestingIndex
         public System.Data.Entity.DbSet<Patient> Patients { get; set; } // Patient
-        public System.Data.Entity.DbSet<ResultPaper> ResultPapers { get; set; } // ResultPaper
         public System.Data.Entity.DbSet<Sample> Samples { get; set; } // Sample
         public System.Data.Entity.DbSet<SampleGroup> SampleGroups { get; set; } // Sample
         public System.Data.Entity.DbSet<SampleGetting> SampleGettings { get; set; } // SampleGetting
