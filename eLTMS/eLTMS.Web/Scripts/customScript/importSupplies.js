@@ -216,7 +216,14 @@ var homeController = {
 
         });
     },
-
+    resetForm: function () {
+        $('#txtSupplyId').val('0');
+        $('#txtCode').val('');
+        $('#txtName').val('')
+        $('#ddlSupplyType').val('').change();
+        $('#ddlSupplyUnit').val('').change();
+        $('#txtNote').val('')
+    },
     deleteImport: function (id) {
         $.ajax({
             url: '/WareHouse/DeleteImportPaper',

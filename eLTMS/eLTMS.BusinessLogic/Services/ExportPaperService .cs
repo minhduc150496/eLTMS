@@ -42,7 +42,7 @@ namespace eLTMS.BusinessLogic.Services
                     exportPerDto.CreateDate = DateTime.Now;
                     exportPerDto.ExportPaperCode = exportPaper.ExportPaperCode;
                     exportPerDto.Note = exportPaper.Note;
-                    exportPerDto.Status = "X";
+                    exportPerDto.Status = exportPaper.Status;
                     exportPaperRepo.Create(exportPerDto);
                     var dbValresults = UnitOfWork.SaveChanges();
                     if (dbValresults.Any())
@@ -95,6 +95,7 @@ namespace eLTMS.BusinessLogic.Services
             var exportPapers = exportPaperRepo.GetAllExportPaper(createDate);
             return exportPapers;
         }
+       
         public ExportPaper GetExportPaperById(int id)
         {
             var exportPaperRepo = this.RepositoryHelper.GetRepository<IExportPaperRepository>(UnitOfWork);

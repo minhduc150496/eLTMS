@@ -34,6 +34,7 @@ namespace eLTMS.BusinessLogic.Services
             var supplies =  supplyRepo.GetAllSupply(suppliesCode);
             return supplies;
         }
+      
         public Supply GetSupplyById(int id)
         {
             var supplyRepo = this.RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);

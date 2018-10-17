@@ -120,13 +120,14 @@
     </div>
 </div>
 <form action="/WareHouse/DownloadImportPaperTemplate" style="display:none" id="hiddenForm"></form>
+
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{ImportPaperCode}}</td>
         <td>{{CreateDate}}</td>
 
         <td>
-            <button class="btn btn-primary btn-edit" data-id="{{ImportPaperId}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-primary btn-edit" data-id="{{ImportPaperId}}"><i class="fa fa-eye"></i></button>
             <button class="btn btn-danger btn-delete" data-id="{{ImportPaperId}}"><i class="fa fa-trash"></i></button>
 
         </td>

@@ -16,7 +16,7 @@ namespace eLTMS.DataAccess.Repositories
     }
 
 
-  public  class PatientRepository : RepositoryBase<Patient>, IPatientRepository
+    public class PatientRepository : RepositoryBase<Patient>, IPatientRepository
     {
         public List<Patient> GetAllPatient(string phoneNumber)
         {

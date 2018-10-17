@@ -199,6 +199,7 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+        
         [HttpGet]
         public JsonResult LoadPaperExportDetailId(int id)
         {
@@ -262,14 +263,14 @@ namespace eLTMS.Web.Controllers
             dt.Columns.Add("Số lượng ", typeof(int));
             dt.Columns.Add("Số lượng thực tế ", typeof(int));
             dt.Columns.Add("Chênh lệch ", typeof(int));
-
+            dt.Columns.Add("Ghi chú", typeof(string));
             ws.Columns[0].SetWidth(30, LengthUnit.Pixel);
             ws.Columns[1].SetWidth(100, LengthUnit.Pixel);
             ws.Columns[2].SetWidth(250, LengthUnit.Pixel);
             ws.Columns[3].SetWidth(100, LengthUnit.Pixel);
             ws.Columns[4].SetWidth(150, LengthUnit.Pixel);
             ws.Columns[5].SetWidth(100, LengthUnit.Pixel);
-
+            ws.Columns[6].SetWidth(200, LengthUnit.Pixel);
             for (int i = 0; i < allSupply.Count; i++)
             {
                 
@@ -294,11 +295,11 @@ namespace eLTMS.Web.Controllers
 
                 ws.Cells["F" + ( i + 4)+""].Value = $"=(D{i+4}-E{i+4})";
 
-                ws.Cells["F" + (i + 4) + ""].Calculate();
+               // ws.Cells["F" + (i + 4) + ""].Calculate();
                 
             }
-            ws.Calculate();
-            ws.Parent.Calculate();
+           // ws.Calculate();
+          //  ws.Parent.Calculate();
             return File(GetBytes(ef, SaveOptions.XlsxDefault), SaveOptions.XlsxDefault.ContentType);
         }
 

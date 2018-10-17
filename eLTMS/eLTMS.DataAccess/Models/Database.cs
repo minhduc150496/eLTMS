@@ -1140,11 +1140,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
-        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
-        [MaxLength(1)]
-        [StringLength(1)]
+        [Column(@"Status", Order = 6, TypeName = "bit")]
         [Display(Name = "Status")]
-        public string Status { get; set; } // Status (length: 1)
+        public bool? Status { get; set; } // Status
 
         [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]

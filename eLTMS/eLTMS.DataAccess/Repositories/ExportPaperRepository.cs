@@ -25,11 +25,13 @@ namespace eLTMS.DataAccess.Repositories
         }
         public List<ExportPaper> GetAllExportPaper(string createDate)
         {
+          
             var result = DbSet.AsQueryable()
                 .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false)
                 .ToList();
             return result;
         }
+       
         public ExportPaper GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()

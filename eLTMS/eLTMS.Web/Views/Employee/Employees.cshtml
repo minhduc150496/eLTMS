@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Employees";
-    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+                /**/
+
+                ViewBag.Title = "Employees";
+                Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
 
 <section class="content-header">
@@ -20,7 +22,7 @@
                 <h3 class="box-title">Danh sách nhân viên</h3>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <button class="btn btn-success">Thêm nhân viên</button>
+                    <button class="btn btn-success" id="btnAddNew">Thêm nhân viên</button>
                     <br />
                     <br />
 
@@ -65,16 +67,16 @@
 
                     <input type="hidden" class="form-control" id="txtEmployeeId" name="txtEmployeeId" value="0">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Mã nhân viên</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtCode" name="txtCode">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Account ID</label>
+                        <label class="control-label col-sm-2" for="email">Mã Account</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" id="txtEmployeeId" name="txtEmployeeId" value="0">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Mã nhân viên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtID" name="txtID">
                         </div>
                     </div>
 
@@ -84,7 +86,6 @@
                             <input type="text" class="form-control" id="txtName" name="txtName">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="pwd">Giới tính</label>
                         <div class="col-sm-10">
@@ -101,35 +102,77 @@
                             </select>
                         </div>
                     </div>
-
-
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Ngày tháng năm sinh</label>
+                        <label class="control-label col-sm-2" for="email">Năm sinh</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" value="06-10-2018" id="txtDate" readonly>
+                            <input type="text" class="form-control" id="txtDB" name="txtDB">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Số điện thoại</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtPhoneNumber" name="txtName">
+                            <input type="text" class="form-control" id="txtPhoneNumber" name="txtPhoneNumber">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Địa chỉ nhà</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtHomeAddress" name="txtName">
+                            <input type="text" class="form-control" id="txtHomeAddress" name="txtHomeAddress">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Địa chỉ công ty</label>
+                        <label class="control-label col-sm-2" for="email">Ngày bắt đầu làm việc</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtCompanyAddress" name="txtName">
+                            <input type="text" class="form-control" id="txtSD" name="txtSD">
                         </div>
                     </div>
-
-
-
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Chức vụ</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="ddlRole">
+                                <option value="">
+                                    ----- Chọn -----
+                                </option>
+                                <option value="Doctor">
+                                    Bác sĩ
+                                </option>
+                                <option value="Nurse">
+                                    Y tá
+                                </option>
+                                <option value="Warehouse">
+                                    Quản kho
+                                </option>
+                                <option value="Admin">
+                                    Quản lý
+                                </option>
+                                <option value="Lab">
+                                    Kỹ thuật viên
+                                </option>
+                                <option value="Receptionist">
+                                    Tiếp tân
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Trạng thái</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="ddlStatus">
+                                <option value="">
+                                    ----- Chọn -----
+                                </option>
+                                <option value="Working">
+                                    Đang hoạt động
+                                </option>
+                                <option value="Stop">
+                                    Tạm dừng
+                                </option>
+                                <option value="Delete">
+                                    Nghỉ việc
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" id="btnSave" class="btn btn-success">Lưu</button>

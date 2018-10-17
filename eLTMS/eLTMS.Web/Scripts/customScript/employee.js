@@ -12,32 +12,44 @@ var homeController = {
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
             var accountId = parseInt($('#txtAccountId').val());
+            //var name = $('#txtName').val();
+            //var gender = $('#ddlGender').val();
+            //var patientId = parseInt($('#txtPatientId').val());
+            //var phone = $('#txtPhoneNumber').val();
+            //var homeAddress = $('#txtHomeAddress').val();
+            //var companyAddress = $('#txtCompanyAddress').val();
+            //var date = '06-10-2018';
+            //var isDeleted = "False";
+            var id = $('#txtID').val();
+            var accountId = parseInt($('#txtAccountId').val());
             var name = $('#txtName').val();
-            var gender = $('#ddlGender').val();
-            var patientId = parseInt($('#txtPatientId').val());
-            var phone = $('#txtPhoneNumber').val();
-            var homeAddress = $('#txtHomeAddress').val();
-            var companyAddress = $('#txtCompanyAddress').val();
+            var gender = $('#ddlGender').val().trim();         
+            var dateBirth = $('#txtDB').val();     
+            var phone = $('#txtPhoneNumber').val().trim();
+            var homeAddress = $('#txtHomeAddress').val();   
+            var dateStart = $('#txtSD').val();     
             var date = '06-10-2018';
             var isDeleted = "False";
-            var patient = {
-                PatientId: patientId,
-                PatientCode: code,
-                AccountId: accountId   ,
+            var employee = {
+                EmployeeId: id,      
                 FullName: name,
                 Gender: gender,
-                DateOfBirth: date,
+                DateOfBirth: dateBirth,
+                StartDate: dateStart,
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
-                CompanyAddress: companyAddress,
-                IsDeleted: isDeleted
+                IsDeleted: isDeleted,
+                Account: {
+                    Role: $('#ddlRole').val()
+                },
+                Status: $('#ddlStatus').val()
             }
-            if (patient.PatientId == 0) {
+            if (employee.EmployeeID == 0) {
                 $.ajax({
-                    url: '/Patient/AddPatient',
+                    url: '/Employee/AddEmployee',
                     type: 'Post',
                     dataType: 'json',
-                    data: patient,
+                    data: employee,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -54,10 +66,10 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/Patient/UpdatePatient',
+                    url: '/Employee/UpdateEmployee',
                     type: 'Post',
                     dataType: 'json',
-                    data: patient,
+                    data: employee,
                     success: function (res) {
                         if (!res.sucess) {
                            
@@ -79,7 +91,7 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới bệnh nhân');
+            $('#lblPopupTitle').text('Thêm mới nhân viên');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
@@ -131,7 +143,7 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/Patient/PatientDetail',
+            url: '/Employee/EmployeeDetail',
             data: {
                 id: id
             },
@@ -139,16 +151,17 @@ var homeController = {
             dataType: 'json',
             success: function (response) {
                 if (response.sucess) {
-                    var data = response.data;
-                    $('#txtPatientId').val(data.PatientId);
+                    var data = response.data;          
+                    $('#txtID').val(data.EmployeeID);
                     $('#txtAccountId').val(data.AccountId);
-                    $('#txtCode').val(data.PatientCode);
-                    $('#txtName').val(data.FullName);
-                    $('#ddlGender').val(data.Gender).change();
-                    $('#txtPhoneNumber').val(data.PhoneNumber.trim());
+                    $('#ddlStatus').val(data.Status).change();
+                    $('#txtName').val(data.FullName); 
+                    $('#ddlGender').val(data.Gender.trim()).change();
+                    $('#txtDB').val(data.DateOfBirth);
+                    $('#txtPhoneNumber').val(data.PhoneNumber);
+                    $('#ddlRole').val(data.Role);
                     $('#txtHomeAddress').val(data.HomeAddress);
-                    $('#txtCompanyAddress').val(data.CompanyAddress);
-                   
+                    $('#txtSD').val(data.DateOfStart);           
                 }
                 else {
                     bootbox.alert(response.message);
@@ -189,7 +202,7 @@ var homeController = {
                             EmployeeID: item.EmployeeID,
                             FullName: item.FullName,
                             PhoneNumber: item.PhoneNumber,
-                            Role: item.Role,
+                            Role: item.RoleDisplay,
                            
                         });
 

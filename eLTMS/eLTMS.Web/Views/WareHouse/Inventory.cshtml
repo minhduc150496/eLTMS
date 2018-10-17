@@ -26,7 +26,7 @@
                         <input type="text" class="form-control" id="txtImportCode" value="@ViewBag.PKK" readonly>
                     </div>
                     <label for="inputEmail3" class="col-sm-1 col-form-label"></label>
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Ngày xuất</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Ngày kiểm</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" id="txtCreateDate" readonly>
                     </div>
@@ -43,20 +43,18 @@
 
                     <div class="col-sm-3">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;
-                        <button class="btn btn-primary" id="btnSaveImport">Xử lý</button>
+                        <button class="btn btn-primary" id="btnSaveInventory">Xử lý</button>
                     </div>
                 </div>
 
 
             </div>
-            <button class="btn btn-success" id="btnAddNew">Thêm mới</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="btn btn-success" id="btnView">Xem phiếu</button>
+            <button class="btn btn-success" id="btnView1">Xem phiếu</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button class="btn btn-success" id="btnDownload1">Xuất tồn kho</button>
             <br />
             <br />
-            <input type="file" id="input" class="btn btn-info" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            <input type="file" id="inputPKK" class="btn btn-info" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             <br />
             <table style="width:100%" class="table table-bordered">
                 <thead>
@@ -64,7 +62,7 @@
                         @*<th>#</th>*@
                         <th>Mã Sản Phẩm</th>
                         <th>Tên Sản Phẩm</th>
-                        <th>Số Lượng</th>
+                        <th>Số Lượng Chênh Lệch</th>
                         <th>Đơn Vị</th>
                         <th>Ghi Chú</th>
                     </tr>
@@ -98,7 +96,7 @@
             </div>
             <div class="modal-body">
                 <input type="date" id="txtSearch" placeholder="Ngày nhập phiếu" />
-                <button class="btn btn-success" id="btnSearch">Search</button>
+                <button class="btn btn-success" id="btnSearch1">Search</button>
                 <table id="example2" class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -120,13 +118,14 @@
     </div>
 </div>
 <form action="/WareHouse/DownloadImportPaperTemplate" style="display:none" id="hiddenForm"></form>
+<form action="/WareHouse/GetExportFile" style="display:none" id="hiddenFormExportFile"></form>
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{ImportPaperCode}}</td>
         <td>{{CreateDate}}</td>
 
         <td>
-            <button class="btn btn-primary btn-edit" data-id="{{ImportPaperId}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-primary btn-edit" data-id="{{ImportPaperId}}"><i class="fa fa-eye"></i></button>
             <button class="btn btn-danger btn-delete" data-id="{{ImportPaperId}}"><i class="fa fa-trash"></i></button>
 
         </td>

@@ -84,6 +84,7 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
+       
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
@@ -183,7 +184,6 @@ var homeController = {
                             SupplyTypeName: item.SuppliesTypeName,
                             Quantity: item.Quantity,
                             Unit: item.Unit,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
                             Note: item.Note,
 
                         });
