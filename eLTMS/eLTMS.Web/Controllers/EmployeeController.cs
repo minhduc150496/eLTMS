@@ -48,14 +48,14 @@ namespace eLTMS.Web.Controllers
         }
 
         //Update-Edit Employee
-        [HttpPost]
-        public JsonResult UpdateEmployee(Employee employee)
-        {
-            var result = _employeeService.Update(employee.EmployeeId, employee.Status, employee.FullName, employee.Gender, employee.DateOfBirth, employee.PhoneNumber, employee.HomeAddress, employee.StartDate, employee.Account.Role);
-            return Json(new
-            {
-                sucess = result
-            });
-        }
+        //[HttpPost]
+        //public JsonResult UpdateEmployee(Employee employee)
+        //{
+        //    var result = _employeeService.Update(employee.EmployeeId, employee.Status, employee.FullName, employee.Gender, employee.DateOfBirth, employee.PhoneNumber, employee.HomeAddress, employee.StartDate, employee.Account.Role);
+        //    return Json(new
+        //    {
+        //        sucess = result
+        //    });
+        //}
     }
 }

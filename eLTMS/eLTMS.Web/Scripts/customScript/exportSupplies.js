@@ -13,77 +13,20 @@ var homeController = {
     },
     registerEvent: function () {
 
-        $('#btnSave').off('click').on('click', function () {
-            var code = $('#txtCode').val();
-            var name = $('#txtName').val();
-            var type = parseInt($('#ddlSupplyType').val());
-            var supplyId = $('#txtSupplyId').val();
-            var unit = $('#ddlSupplyUnit').val();
-            var note = $('#txtNote').val();
-            var quantity = '0';
-            var supply = {
-                SuppliesId: supplyId,
-                SuppliesCode: code,
-                SuppliesName: name,
-                SuppliesTypeId: type,
-                Quantity:quantity,
-                Unit: unit,
-                Note: note
-            }
-            if (supply.SuppliesId == 0) {
-                $.ajax({
-                    url: '/WareHouse/AddSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                            if (res.validation && res.validation.Errors) {
-                                toastr.error(res.validation.Errors[0].ErrorMessage);
-                            }
-
-                        }
-                        else {
-                            toastr.success("Tạo mới thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
-                    }
-                })
-            } else {
-                $.ajax({
-                    url: '/WareHouse/UpdateSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                           
-                                toastr.error("Cập nhật không thành công");
-                            
-
-                        }
-                        else {
-                            toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
-                    }
-                })
-            }
-          
-        })
-
+       
         $('#btnDownload').off('click').on('click', function () {
             $('#hiddenForm').submit();
 
         })
-
+        $('#btnDownload1').off('click').on('click', function () {
+            homeController.loadFile();
+        })
         $('#btnAddNew').off('click').on('click', function () {
             var newRow = $('#template-row').clone();
             $(newRow).addClass('data-row');
             console.log(newRow.html());
             var ddlData = "<select class='form-control ddlCode'>";
+            ddlData += "<option value=''> --- Chọn vật tư --- </option>";
             $.each(homeconfig.allSupply, function (i, item) {
                 ddlData += "<option value='" + item.SuppliesId + "' data-name='" + item.SuppliesName + "' data-unit='" + item.Unit + "'>" + item.SuppliesCode + "</option>"
 
@@ -96,7 +39,7 @@ var homeController = {
             
         });
         $('#btnView').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Danh sách phiếu nhập kho');
+            $('#lblPopupTitle').text('Danh sách phiếu xuất kho');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
@@ -113,12 +56,12 @@ var homeController = {
                 tmpData.push(detail);
             });
             var data = {
-                ImportPaperCode: $('#txtImportCode').val(),
+                ExportPaperCode: $('#txtImportCode').val(),
                 Note: $('#txtNote').val(),
-                ImportPaperDetails: tmpData
+                ExportPaperDetails: tmpData
             };
             $.ajax({
-                url: '/WareHouse/AddImportPaper',
+                url: '/WareHouse/AddExportPaper',
                 type: 'Post',
                 dataType: 'json',
                 data: data,
@@ -149,16 +92,18 @@ var homeController = {
             $('#myModal').modal('hide');
             var id = $(this).data('id');
             homeController.loadDetail(id);
+            $('#btnSaveImport').hide();
         });
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            bootbox.confirm("Are you sure to delete this employee?", function (result) {
-                homeController.deleteEmployee(id);
-            });
+
+                homeController.deleteExport(id);
+          
         });
 
         $("#input").off('change').on("change", function () {
+           // $('.data-row').remove();
             var excelFile,
                 fileReader = new FileReader();
 
@@ -273,32 +218,36 @@ var homeController = {
 
         });
     },
-    deleteEmployee: function (id) {
+
+    deleteExport: function (id) {
         $.ajax({
-            url: '/WareH/Delete',
+            url: '/WareHouse/DeleteExportPaper',
             data: {
-                id: id
+                importId: id
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
-                    bootbox.alert("Delete Success", function () {
-                        homeController.loadData(true);
-                    });
+                if (response.success == true) {
+                    toastr.success("Xóa thành công.");
+                    homeController.loadData(true);
                 }
                 else {
-                    bootbox.alert(response.message);
+                    toastr.error("Xóa không thành công.");
                 }
             },
             error: function (err) {
                 console.log(err);
             }
         });
+
     },
+
+
+    
     loadDetail: function (id) {
         $.ajax({
-            url: '/WareHouse/LoadPaperImportDetailId',
+            url: '/WareHouse/LoadPaperExportDetailId',
             data: {
                 id: id
             },
@@ -307,11 +256,11 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
-                    $('#txtImportCode').val(data.ImportPaperCode);
+                    $('#txtImportCode').val(data.ExportPaperCode);
                     $('#txtNote').val(data.Note);
                     $('#txtCreateDate').val(data.CreateDate);
                     $('#txtCreateDate').removeAttr('style');
-                    var importPaperDetailDtos = data.ImportPaperDetailDtos;
+                    var importPaperDetailDtos = data.ExportPaperDetailDtos;
                     $('.data-row').remove();
                     
                     var ddlData = "<select class='form-control ddlCode'>";
@@ -364,7 +313,7 @@ var homeController = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Warehouse/GetAllImportPapers',
+            url: '/Warehouse/GetAllExportPapers',
             type: 'GET',
             dataType: 'json',
             data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, createDate: $('#txtSearch').val() },
@@ -375,8 +324,8 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            ImportPaperId: item.ImportPaperId,
-                            ImportPaperCode: item.ImportPaperCode,
+                            ImportPaperId: item.ExportPaperId,
+                            ImportPaperCode: item.ExportPaperCode,
                             CreateDate: item.CreateDate,
                         });
 
@@ -435,6 +384,25 @@ var homeController = {
             }
         });
     },
+
+    loadFile: function () {
+        $.ajax({
+            url: '/WareHouse/GetExportFile',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success == true) {
+                    toastr.success("Đã tải file.");
+                }
+                else {
+                    toastr.error("Tải không thành công.");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    },
     registerEventForChangeDropDown: function () {
         $('.ddlCode').off('change').on('change', function () {
 
@@ -447,10 +415,9 @@ var homeController = {
 
             }
             else {
-                for (var i = 0; i < allRows.length; i++) {
-                    var supplyId = $(allRows[i]).find('.ddlCode').val();
-                    console.log(supplyId);
-                    if (i != 0 && supplyId == value) {
+                for (var i = 0; i < allRows.length; i++)
+                {
+                    if (i != 0 && $(allRows[i]).find('.ddlCode').val() == value) {
                         toastr.error("Vật tư với mã " + $(this).find(':selected').text() + " đã được chọn ");
                         return;
                     }

@@ -3,8 +3,11 @@ using eLTMS.AdminWeb.Models.dto;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Web.Models.dto;
+using GemBox.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -34,17 +37,52 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
+        public ActionResult Inventory()
+        {
+            var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
+            if (supplier != null)
+            {
+                ViewBag.PKK = "PKK" + (supplier.ExportPaperId + 1);
+            }
+            else
+            {
+                ViewBag.PKK = "PKK1";
+            }
+            return View();
+        }
 
         public ActionResult ImportSupplies()
         {
+            var supplier = _importPaperService.GetAllImportPapers("").LastOrDefault();
+            if (supplier != null)
+            {
+                ViewBag.PNK = "PNK" + (supplier.ImportPaperId + 1);
+            }
+            else
+            {
+                ViewBag.PNK = "PNK1";
+            }
             return View();
         }
 
         public ActionResult ExportSupplies()
         {
+            var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
+            if (supplier != null)
+            {
+                ViewBag.PXK = "PXK" + (supplier.ExportPaperId + 1);
+            }
+            else
+            {
+                ViewBag.PXK = "PXK1";
+            }
             return View();
         }
 
+        public ActionResult Test()
+        {
+            return View();
+        }
         [HttpGet]
         public JsonResult GetAllSupplies(string suppliesCode = "",int page = 1,int pageSize = 20)
         {
@@ -190,12 +228,104 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+        [HttpPost]
+        public JsonResult DeleteExportPaper(int importId)
+        {
+            var result = _exportPaperService.Delete(importId);
+            return Json(new
+            {
+                success = result
+            });
+        }
         [HttpGet]
         public FileResult DownloadImportPaperTemplate()
         { 
             byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("~/templates/ImportPaperTemplate.xlsx"));
             string fileName = "ImportPaperTemplate.xlsx";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        [HttpGet]
+        public FileResult GetExportFile()
+        {
+            var allSupply = _supplyService.GetAllSupplies(string.Empty);
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
+            ExcelFile ef = new ExcelFile();
+            ExcelWorksheet ws = ef.Worksheets.Add("Danh sách vật tư");
+            
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("STT", typeof(int));        
+            dt.Columns.Add("Mã vật tư", typeof(string));
+            dt.Columns.Add("Tên vật tư", typeof(string));
+            dt.Columns.Add("Số lượng ", typeof(int));
+            dt.Columns.Add("Số lượng thực tế ", typeof(int));
+            dt.Columns.Add("Chênh lệch ", typeof(int));
+
+            ws.Columns[0].SetWidth(30, LengthUnit.Pixel);
+            ws.Columns[1].SetWidth(100, LengthUnit.Pixel);
+            ws.Columns[2].SetWidth(250, LengthUnit.Pixel);
+            ws.Columns[3].SetWidth(100, LengthUnit.Pixel);
+            ws.Columns[4].SetWidth(150, LengthUnit.Pixel);
+            ws.Columns[5].SetWidth(100, LengthUnit.Pixel);
+
+            for (int i = 0; i < allSupply.Count; i++)
+            {
+                
+                var item = allSupply[i];
+                dt.Rows.Add(new object[] { i+1, item.SuppliesCode, item.SuppliesName, item.Quantity});
+               // ws.Cells["F" + ( i + 4)+""].Value = $"=D{i+4} - E{i+4}";
+               
+            }
+           
+            ws.Cells[0, 0].Value = "Danh sách vật tư trong kho";
+
+            // Insert DataTable into an Excel worksheet.
+            ws.InsertDataTable(dt,
+                new InsertDataTableOptions()
+                {
+                    ColumnHeaders = true,
+                    StartRow = 2
+                });
+            for (int i = 0; i < allSupply.Count; i++)
+            {
+
+
+                ws.Cells["F" + ( i + 4)+""].Value = $"=(D{i+4}-E{i+4})";
+
+                ws.Cells["F" + (i + 4) + ""].Calculate();
+                
+            }
+            ws.Calculate();
+            ws.Parent.Calculate();
+            return File(GetBytes(ef, SaveOptions.XlsxDefault), SaveOptions.XlsxDefault.ContentType);
+        }
+
+        private static byte[] GetBytes(ExcelFile file, SaveOptions options)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                file.Save(stream, options);
+                return stream.ToArray();
+            }
+        }
+
+        private static SaveOptions GetSaveOptions(string format)
+        {
+            switch (format.ToUpperInvariant())
+            {
+                case "XLSX":
+                    return SaveOptions.XlsxDefault;
+                case "XLS":
+                    return SaveOptions.XlsDefault;
+                case "ODS":
+                    return SaveOptions.OdsDefault;
+                case "CSV":
+                    return SaveOptions.CsvDefault;
+                default:
+                    throw new NotSupportedException("Format '" + format + "' is not supported.");
+            }
         }
     }
 }

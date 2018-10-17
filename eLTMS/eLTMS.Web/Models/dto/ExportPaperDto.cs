@@ -15,6 +15,6 @@ namespace eLTMS.AdminWeb.Models.dto
         public string Note { get; set; } // Note
         public bool? IsDeleted { get; set; } // IsDeleted
         public List<ExportPaperDetailDto> ExportPaperDetailDtos { get; set; }
-
+        public string Status { get; set; }
     }
 }

@@ -62,6 +62,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.CreateDate, src => src.MapFrom(x => x.CreateDate))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
+                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.ExportPaperDetailDtos, src => src.MapFrom(x => x.ExportPaperDetails));
 

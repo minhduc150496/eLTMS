@@ -31,19 +31,39 @@ namespace eLTMS.BusinessLogic.Services
         {
             var importPaperRepo = RepositoryHelper.GetRepository<IImportPaperRepository>(UnitOfWork);
             var importPaperDetailRepo = RepositoryHelper.GetRepository<IImportPaperDetailRepository>(UnitOfWork);
+            var supplyRepo = RepositoryHelper.GetRepository<ISupplyRepository>(UnitOfWork);
+            var allSupply = supplyRepo.GetAll();
             using (var transaction = UnitOfWork.BeginTransaction())
             {
 
                 try
                 {
-                    importPaper.CreateDate = DateTime.Now;
-                    importPaperRepo.Create(importPaper);
+                    var importPerDto = new ImportPaper();
+                    importPerDto.CreateDate = DateTime.Now;
+                    importPerDto.ImportPaperCode = importPaper.ImportPaperCode;
+                    importPerDto.Note = importPaper.Note;
+                    importPaperRepo.Create(importPerDto);
                     var dbValresults =  UnitOfWork.SaveChanges();
                     if (dbValresults.Any())
                     {
                         transaction.Rollback();
                         return false;
                     }
+                    foreach (var item in importPaper.ImportPaperDetails)
+                    {
+                        var currentSupply = allSupply.SingleOrDefault(x => x.SuppliesId == item.SuppliesId);
+                        currentSupply.Quantity += item.Quantity;
+                        var importPaperDetail = new ImportPaperDetail()
+                        {
+                            ImportPaperId = importPerDto.ImportPaperId,
+                            Quantity = item.Quantity,
+                            Unit = item.Unit,
+                            Note = item.Note,
+                            SuppliesId = item.SuppliesId
+                        };
+                        importPaperDetailRepo.Create(importPaperDetail);
+                    }
+
                     dbValresults =  UnitOfWork.SaveChanges();
                     if (dbValresults.Any())
                     {

@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "ExportSupplies";
+    ViewBag.Title = "Inventory";
     Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
 
-<h2>Quản Lý Xuất Kho</h2>
+<h2>Kiểm Kho</h2>
 
 <section class="content">
     @*<div class="form-group">
@@ -23,7 +23,7 @@
                     <label for="inputEmail3" class="col-sm-1 col-form-label"></label>
                     <label for="inputEmail3" class="col-sm-1 col-form-label">Số phiếu</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txtImportCode" value="@ViewBag.PXK" readonly>
+                        <input type="text" class="form-control" id="txtImportCode" value="@ViewBag.PKK" readonly>
                     </div>
                     <label for="inputEmail3" class="col-sm-1 col-form-label"></label>
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Ngày xuất</label>
@@ -43,7 +43,7 @@
 
                     <div class="col-sm-3">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;
-                        <button class="btn btn-primary" id="btnSaveImport">Xuất kho</button>
+                        <button class="btn btn-primary" id="btnSaveImport">Xử lý</button>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button class="btn btn-success" id="btnView">Xem phiếu</button>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="btn btn-danger" id="btnDownload">Tải tập tin mẫu </button>
+            <button class="btn btn-success" id="btnDownload1">Xuất tồn kho</button>
             <br />
             <br />
             <input type="file" id="input" class="btn btn-info" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />

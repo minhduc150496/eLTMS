@@ -1128,7 +1128,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Export paper code")]
         public string ExportPaperCode { get; set; } // ExportPaperCode (length: 20)
 
-        [Column(@"CreateDate", Order = 3, TypeName = "date")]
+        [Column(@"CreateDate", Order = 3, TypeName = "datetime")]
         [Display(Name = "Create date")]
         public System.DateTime? CreateDate { get; set; } // CreateDate
 
@@ -1140,11 +1140,11 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
-        [Column(@"Status", Order = 6, TypeName = "nchar")]
-        [MaxLength(10)]
-        [StringLength(10)]
+        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
+        [MaxLength(1)]
+        [StringLength(1)]
         [Display(Name = "Status")]
-        public string Status { get; set; } // Status (length: 10)
+        public string Status { get; set; } // Status (length: 1)
 
         [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
@@ -1181,11 +1181,11 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int? AccountId { get; set; } // AccountID
 
-        [Column(@"Status", Order = 3, TypeName = "nchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
+        [Column(@"Status", Order = 3, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
         [Display(Name = "Status")]
-        public string Status { get; set; } // Status (length: 20)
+        public string Status { get; set; } // Status (length: 50)
 
         [Column(@"FullName", Order = 4, TypeName = "nvarchar")]
         [MaxLength(100)]
@@ -1193,11 +1193,11 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Full name")]
         public string FullName { get; set; } // FullName (length: 100)
 
-        [Column(@"Gender", Order = 5, TypeName = "nchar")]
-        [MaxLength(10)]
-        [StringLength(10)]
+        [Column(@"Gender", Order = 5, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
         [Display(Name = "Gender")]
-        public string Gender { get; set; } // Gender (length: 10)
+        public string Gender { get; set; } // Gender (length: 50)
 
         [Column(@"DateOfBirth", Order = 6, TypeName = "date")]
         [Display(Name = "Date of birth")]
@@ -1213,12 +1213,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Start date")]
         public System.DateTime? StartDate { get; set; } // StartDate
 
-        [Column(@"PhoneNumber", Order = 9, TypeName = "nchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
+        [Column(@"PhoneNumber", Order = 9, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
         [Phone]
         [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
+        public string PhoneNumber { get; set; } // PhoneNumber (length: 50)
 
         [Column(@"IsDeleted", Order = 10, TypeName = "bit")]
         [Display(Name = "Is deleted")]
@@ -1245,8 +1245,8 @@ namespace eLTMS.DataAccess.Models
         public Employee()
         {
             IsDeleted = false;
-            ResultPapers = new System.Collections.Generic.List<ResultPaper>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            ResultPapers = new System.Collections.Generic.List<ResultPaper>();
         }
     }
 
@@ -1263,13 +1263,13 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int AccountId { get; set; } // AccountID (Primary key)
 
-        [Column(@"Role", Order = 2, TypeName = "nchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
+        [Column(@"Role", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
         [Display(Name = "Role")]
-        public string Role { get; set; } // Role (length: 20)
+        public string Role { get; set; } // Role (length: 50)
 
-        [Column(@"Email", Order = 3, TypeName = "nchar")]
+        [Column(@"Email", Order = 3, TypeName = "nvarchar")]
         [MaxLength(255)]
         [StringLength(255)]
         [EmailAddress]
@@ -1283,12 +1283,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Password")]
         public string Password { get; set; } // Password (length: 128)
 
-        [Column(@"PhoneNumber", Order = 5, TypeName = "nchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
+        [Column(@"PhoneNumber", Order = 5, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
         [Phone]
         [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
+        public string PhoneNumber { get; set; } // PhoneNumber (length: 50)
 
         [Column(@"AvatarURL", Order = 6, TypeName = "nvarchar")]
         [MaxLength(500)]
@@ -1314,8 +1314,8 @@ namespace eLTMS.DataAccess.Models
         public Account()
         {
             IsDeleted = false;
-            Patients = new System.Collections.Generic.List<Patient>();
             Employees = new System.Collections.Generic.List<Employee>();
+            Patients = new System.Collections.Generic.List<Patient>();
         }
     }
 
@@ -1334,10 +1334,10 @@ namespace eLTMS.DataAccess.Models
 
         public AccountConfiguration(string schema)
         {
-            Property(x => x.Role).IsOptional().IsFixedLength();
-            Property(x => x.Email).IsOptional().IsFixedLength();
+            Property(x => x.Role).IsOptional();
+            Property(x => x.Email).IsOptional();
             Property(x => x.Password).IsOptional().IsFixedLength();
-            Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.AvatarUrl).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
@@ -1355,13 +1355,13 @@ namespace eLTMS.DataAccess.Models
         public EmployeeConfiguration(string schema)
         {
             Property(x => x.AccountId).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.FullName).IsOptional();
-            Property(x => x.Gender).IsOptional().IsFixedLength();
+            Property(x => x.Gender).IsOptional();
             Property(x => x.DateOfBirth).IsOptional();
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.StartDate).IsOptional();
-            Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
 
         }
@@ -1382,7 +1382,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.CreateDate).IsOptional();
             Property(x => x.AccountId).IsOptional();
             Property(x => x.Note).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
     }

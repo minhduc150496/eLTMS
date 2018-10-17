@@ -13,66 +13,7 @@ var homeController = {
     },
     registerEvent: function () {
 
-        $('#btnSave').off('click').on('click', function () {
-            var code = $('#txtCode').val();
-            var name = $('#txtName').val();
-            var type = parseInt($('#ddlSupplyType').val());
-            var supplyId = $('#txtSupplyId').val();
-            var unit = $('#ddlSupplyUnit').val();
-            var note = $('#txtNote').val();
-            var quantity = '0';
-            var supply = {
-                SuppliesId: supplyId,
-                SuppliesCode: code,
-                SuppliesName: name,
-                SuppliesTypeId: type,
-                Quantity:quantity,
-                Unit: unit,
-                Note: note
-            }
-            if (supply.SuppliesId == 0) {
-                $.ajax({
-                    url: '/WareHouse/AddSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                            if (res.validation && res.validation.Errors) {
-                                toastr.error(res.validation.Errors[0].ErrorMessage);
-                            }
-
-                        }
-                        else {
-                            toastr.success("Tạo mới thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
-                    }
-                })
-            } else {
-                $.ajax({
-                    url: '/WareHouse/UpdateSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                           
-                                toastr.error("Cập nhật không thành công");
-                            
-
-                        }
-                        else {
-                            toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
-                    }
-                })
-            }
-          
-        })
+      
 
         $('#btnDownload').off('click').on('click', function () {
             $('#hiddenForm').submit();
@@ -84,6 +25,7 @@ var homeController = {
             $(newRow).addClass('data-row');
             console.log(newRow.html());
             var ddlData = "<select class='form-control ddlCode'>";
+            ddlData += "<option value=''> --- Chọn vật tư --- </option>";
             $.each(homeconfig.allSupply, function (i, item) {
                 ddlData += "<option value='" + item.SuppliesId + "' data-name='" + item.SuppliesName + "' data-unit='" + item.Unit + "'>" + item.SuppliesCode + "</option>"
 
@@ -356,17 +298,7 @@ var homeController = {
             }
         });
     },
-    saveData: function () {
-        
-    },
-    resetForm: function () {
-        $('#txtSupplyId').val('0');
-        $('#txtCode').val('');
-        $('#txtName').val('')
-        $('#ddlSupplyType').val('').change();
-        $('#ddlSupplyUnit').val('').change();
-        $('#txtNote').val('')
-    },
+ 
     loadData: function (changePageSize) {
         $.ajax({
             url: '/Warehouse/GetAllImportPapers',
@@ -452,10 +384,9 @@ var homeController = {
 
             }
             else {
-                for (var i = 0; i < allRows.length; i++) {
-                    var supplyId = $(allRows[i]).find('.ddlCode').val();
-                    console.log(supplyId);
-                    if (i != 0 && supplyId == value) {
+                for (var i = 0; i < allRows.length; i++)
+                {
+                    if (i != 0 && $(allRows[i]).find('.ddlCode').val() == value) {
                         toastr.error("Vật tư với mã " + $(this).find(':selected').text() + " đã được chọn ");
                         return;
                     }
