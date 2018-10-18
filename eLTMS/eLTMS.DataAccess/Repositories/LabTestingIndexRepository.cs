@@ -5,22 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-using System.Data.Entity;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    public interface ISampleGettingRepository : IRepository<SampleGetting>
+    public interface ILabTestingIndexRepository : IRepository<LabTestingIndexRepository>
     {
-        List<SampleGetting> GetAll();
+        List<LabTestingIndexRepository> GetAll();
     }
-    public class SampleGettingRepository : RepositoryBase<SampleGetting>, ISampleGettingRepository
+
+    public class LabTestingIndexRepository : RepositoryBase<LabTestingIndexRepository>, ILabTestingIndexRepository
     {
-        public List<SampleGetting> GetAll()
+        public List<LabTestingIndexRepository> GetAll()
         {
             var results = DbSet.AsQueryable()
+                //.Include(x => x.LabTestSampleMappings)
                 .ToList();
             return results;
         }
     }
 }
+

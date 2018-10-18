@@ -75,6 +75,7 @@
     <Compile Include="Repositories\ImportPaperDetailRepository.cs" />
     <Compile Include="Repositories\ImportPaperRepository.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\LabTestingIndexRepository.cs" />
     <Compile Include="Repositories\LabTestingRepository.cs" />
     <Compile Include="Repositories\SampleGettingRepository.cs" />
     <Compile Include="Repositories\AppointmentRepository.cs" />

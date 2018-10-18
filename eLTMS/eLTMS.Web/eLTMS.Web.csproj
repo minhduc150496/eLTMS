@@ -178,7 +178,6 @@
   <ItemGroup>
     <Compile Include="Api\AppointmentApiController.cs" />
     <Compile Include="Api\AccountApiController.cs" />
-    <Compile Include="Api\LabTestApiController.cs" />
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
@@ -7630,6 +7629,10 @@
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
       <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
       <Name>eLTMS.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">
+      <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
+      <Name>eLTMS.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

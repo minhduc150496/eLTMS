@@ -10,27 +10,19 @@ using System.Data;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    //public interface ILabTestingRepository : IRepository<LabTesting>
-    //{
-    //    List<Employee> GetAllEmployee(string fullName);
-    //    Employee GetSimpleById(int id);
-    //}
-    //public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
-    //{
-    //    public List<Employee> GetAllEmployee(string fullName)
-    //    {
-    //        var result = DbSet.AsQueryable()
-    //            .Include(x => x.Account)
-    //            .Where(x => x.FullName.Contains(fullName) && x.IsDeleted == false)
-    //            .ToList();
-    //        return result;
-    //    }
-    //    public Employee GetSimpleById(int id)
-    //    {
-    //        var result = DbSet.AsQueryable()
-    //            .Include(x=>x.Account)
-    //            .SingleOrDefault(x => x.EmployeeId == id);
-    //        return result;
-    //    }
-    //}
+    public interface ILabTestingRepository : IRepository<LabTesting>
+    {
+        List<LabTesting> GetAllLabTesting();
+    }
+    public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
+    {
+        public List<LabTesting> GetAllLabTesting()
+        {
+            var result = DbSet.AsQueryable()
+                .Include(x => x.LabTest)
+                .Include(x => x.LabTestingIndexes)
+                .ToList();
+            return result;
+        }
+    }
 }

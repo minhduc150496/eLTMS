@@ -13,8 +13,13 @@ namespace eLTMS.BusinessLogic.Services
     {
         bool Create(Appointment appointment);
         List<Appointment> GetNewApp(int patientId);
+        List<Appointment> GetOldApp(int patientId);
+        List<Appointment> GetResult(int patientId);
+        List<Appointment> GetAppByPhoneNDate(string phone);
+        List<Appointment> GetResultByAppCode(string appCode);
+        //bool UpdateAppointment(Appointment appDto);
     }
-    public class AppointmentService: IAppointmentService
+    public class AppointmentService : IAppointmentService
     {
         private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
@@ -24,31 +29,68 @@ namespace eLTMS.BusinessLogic.Services
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public bool Create(Appointment appointment)
+        public List<Appointment> GetAppByPhoneNDate(string phone)
         {
-            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            try
-            {
-                appointmentRepo.Create(appointment);
-                var result = this.UnitOfWork.SaveChanges();
-                if (result.Any())
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetAppointmentByPhoneNDate(phone);
+            return apps;
         }
+
+        //public bool Create(Appointment appointment)
+        //{
+        //    var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+        //    //var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
+        //    try
+        //    {
+        //        //appointment.LabTestings = labTestings;
+        //        //appointment.SampleGettings = sampleGettings;
+        //        appointmentRepo.Create(appointment);
+        //        var result = this.UnitOfWork.SaveChanges();
+        //        if (result.Any())
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         public List<Appointment> GetNewApp(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var apps = appRepo.GetNewAppByPatientId(patientId);
-            
             return apps;
         }
+
+        public List<Appointment> GetOldApp(int patientId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetOldAppByPatientId(patientId);
+            return apps;
+        }
+
+        public List<Appointment> GetResult(int patientId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetResultByPatientId(patientId);
+            return apps;
+        }
+
+        public  List<Appointment> GetResultByAppCode (string appCode)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var apps = appRepo.GetResultByAppCode(appCode);
+            return apps;
+        }
+
+        
     }
 }

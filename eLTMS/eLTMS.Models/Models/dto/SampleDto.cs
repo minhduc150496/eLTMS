@@ -1,10 +1,10 @@
-﻿using eLTMS.DataAccess.Models;
+﻿using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace eLTMS.Web.Models.dto
+namespace eLTMS.Models.Models.dto
 {
     public class SampleDto
     {
