@@ -78,6 +78,36 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
+            if (typeof(TRepository) == typeof(IImportPaperDetailRepository))
+            {
+                dynamic repo = new ImportPaperDetailRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IImportPaperRepository))
+            {
+                dynamic repo = new ImportPaperRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IExportPaperDetailRepository))
+            {
+                dynamic repo = new ExportPaperDetailRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IExportPaperRepository))
+            {
+                dynamic repo = new ExportPaperRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IPatientRepository))
+            {
+                dynamic repo = new PatientRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
 
             TRepository repository = null;

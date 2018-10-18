@@ -10,20 +10,30 @@ var homeController = {
     registerEvent: function () {
 
         $('#btnSave').off('click').on('click', function () {
-            var serviceCreateDto = {
-                ServiceId: $('#txtServiceId').val(),
-                Name: $('#txtServiceName').val(),
-                ServiceTypeId: $('#ddlType').val(),
-                ServiceStatusId: $('#ddlStatusId').val(),
-                Price: $('#txtPrice').val(),
-                SupplierId: supplierIdMaster
+            var code = $('#txtCode').val();
+            var name = $('#txtName').val();
+            var type = parseInt($('#ddlSupplyType').val());
+            var supplyId = $('#txtSupplyId').val();
+            var unit = $('#ddlSupplyUnit').val();
+            var note = $('#txtNote').val();
+            var quantity = '0';
+            var isDeteted = "False";
+            var supply = {
+                SuppliesId: supplyId,
+                SuppliesCode: code,
+                SuppliesName: name,
+                SuppliesTypeId: type,
+                Quantity:quantity,
+                Unit: unit,
+                IsDeleted: isDeteted,
+                Note: note
             }
-            if (serviceCreateDto.ServiceId == 0) {
+            if (supply.SuppliesId == 0) {
                 $.ajax({
-                    url: '/Supplier/Service/AddService',
+                    url: '/WareHouse/AddSupply',
                     type: 'Post',
                     dataType: 'json',
-                    data: serviceCreateDto,
+                    data: supply,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -40,15 +50,15 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/Supplier/Service/UpdateService',
+                    url: '/WareHouse/UpdateSupply',
                     type: 'Post',
                     dataType: 'json',
-                    data: serviceCreateDto,
+                    data: supply,
                     success: function (res) {
                         if (!res.sucess) {
-                            if (res.validation && res.validation.Errors) {
-                                toastr.error(res.validation.Errors[0].ErrorMessage);
-                            }
+                           
+                                toastr.error("Cập nhật không thành công");
+                            
 
                         }
                         else {
@@ -65,7 +75,7 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới dịch vụ');
+            $('#lblPopupTitle').text('Thêm mới vật tư');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
@@ -74,13 +84,14 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
+       
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật dịch vụ');
+            $('#lblPopupTitle').text('Cập nhật vật tư');
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);
@@ -88,28 +99,26 @@ var homeController = {
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            bootbox.confirm("Are you sure to delete this employee?", function (result) {
-                homeController.deleteEmployee(id);
-            });
+            homeController.deleteSupply(id);
+            
         });
 
     },
-    deleteEmployee: function (id) {
+    deleteSupply: function (id) {
         $.ajax({
-            url: '/Home/Delete',
+            url: '/WareHouse/Delete',
             data: {
-                id: id
+                supplyId: id
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
-                    bootbox.alert("Delete Success", function () {
-                        homeController.loadData(true);
-                    });
+                if (response.success == true) {
+                    toastr.success("Xóa thành công.");
+                    homeController.loadData(true);
                 }
                 else {
-                    bootbox.alert(response.message);
+                    toastr.error("Xóa không thành công.");
                 }
             },
             error: function (err) {
@@ -119,20 +128,22 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/Supplier/Service/GetServiceById',
+            url: '/WareHouse/SupplyDetail',
             data: {
-                serviceId: id
+                id: id
             },
             type: 'GET',
             dataType: 'json',
             success: function (response) {
                 if (response.sucess) {
-                    var data = response.result;
-                    $('#txtServiceId').val(data.ServiceId);
-                    $('#txtServiceName').val(data.Name);
-                    $('#txtPrice').val(data.Price);
-                    $('#ddlType').val(data.ServiceTypeId).change();
-                    $('#ddlStatusId').val(data.ServiceStatusId).change();
+                    var data = response.data;
+                    $('#txtSupplyId').val(data.SuppliesId);
+                    $('#txtCode').val(data.SuppliesCode);
+                    $('#txtName').val(data.SuppliesName);
+                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
+                    $('#ddlSupplyUnit').val(data.Unit).change();
+                    $('#txtNote').val(data.Note);
+                   
                 }
                 else {
                     bootbox.alert(response.message);
@@ -144,52 +155,22 @@ var homeController = {
         });
     },
     saveData: function () {
-        var name = $('#txtName').val();
-        var salary = parseFloat($('#txtSalary').val());
-        var status = $('#ckStatus').prop('checked');
-        var id = parseInt($('#hidID').val());
-        var employee = {
-            Name: name,
-            Salary: salary,
-            Status: status,
-            ID: id
-        }
-        $.ajax({
-            url: '/Home/SaveData',
-            data: {
-                strEmployee: JSON.stringify(employee)
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                if (response.status == true) {
-                    bootbox.alert("Save Success", function () {
-                        $('#modalAddUpdate').modal('hide');
-                        homeController.loadData(true);
-                    });
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
+        
     },
     resetForm: function () {
-        $('#txtServiceId').val('0');
-        $('#txtPrice').val('');
-        $('#ddlStatusId').val(1);
-        $('#ddlServiceTypeId').val(1);
+        $('#txtSupplyId').val('0');
+        $('#txtCode').val('');
+        $('#txtName').val('')
+        $('#ddlSupplyType').val('').change();
+        $('#ddlSupplyUnit').val('').change();
+        $('#txtNote').val('')
     },
     loadData: function (changePageSize) {
         $.ajax({
             url: '/Warehouse/GetAllSupplies',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, suppliesCode: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -197,11 +178,12 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
+                            SupplyId: item.SuppliesId,
                             SuppliesCode: item.SuppliesCode,
                             SupplyName: item.SuppliesName,
                             SupplyTypeName: item.SuppliesTypeName,
                             Quantity: item.Quantity,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
+                            Unit: item.Unit,
                             Note: item.Note,
 
                         });

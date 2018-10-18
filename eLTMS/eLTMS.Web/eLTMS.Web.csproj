@@ -65,6 +65,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="GemBox.Spreadsheet, Version=43.0.35.1076, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">
+      <HintPath>..\packages\GemBox.Spreadsheet.43.0.0.1076\lib\net35\GemBox.Spreadsheet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -186,13 +189,21 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\UserWeb\Controllers\HomeController.cs" />
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\EmployeeDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDto.cs" />
+    <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
     <Compile Include="Models\dto\AppointmentDto.cs" />
@@ -7531,6 +7542,8 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\employee.js" />
+    <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
     <Content Include="Areas\UserWeb\Views\web.config" />
     <Content Include="Areas\UserWeb\Content\assets\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
@@ -7541,6 +7554,8 @@
     <Content Include="Areas\UserWeb\Views\Home\ServiceDetails.cshtml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\customScript\exportSupplies.js" />
+    <Content Include="Scripts\customScript\importSupplies.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -7566,9 +7581,15 @@
     <Content Include="Views\WareHouse\Index.cshtml" />
     <Content Include="Views\WareHouse\Supplies.cshtml" />
     <Content Include="Views\Shared\_LayoutPageWarehouseManagement.cshtml" />
+    <Content Include="Views\Patient\Patients.cshtml" />
+    <Content Include="templates\ImportPaperTemplate.xlsx" />
+    <Content Include="Views\Employee\Employees.cshtml" />
+    <Content Include="Views\WareHouse\Inventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="Areas\UserWeb\Models\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>

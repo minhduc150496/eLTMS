@@ -40,6 +40,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -313,26 +317,17 @@
         <aside class="main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-                <!-- Sidebar user panel -->
-                <div class="user-panel">
-                    <div class="pull-left image">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                    </div>
-                    <div class="pull-left info">
-                        <p>Alexander Pierce</p>
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                    </div>
-                </div>
+               
                 <!-- search form -->
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
 
-                    <li><a href="@Url.Action("Supplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lí vật tư</span></a></li>
-                    <li><a href="@Url.Action("ImportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lí nhập kho</span></a></li>
-                    <li><a href="@Url.Action("ExportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lí xuất kho</span></a></li>
-                    <li><a href="@Url.Action("ExportSupplies","WareHouse")><i class="fa fa-book"></i> <span>Thống kê</span></a></li>
+                    <li><a href="@Url.Action("Supplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý vật tư</span></a></li>
+                    <li><a href="@Url.Action("ImportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý nhập kho</span></a></li>
+                    <li><a href="@Url.Action("ExportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý xuất kho</span></a></li>
+                    <li><a href="@Url.Action("Inventory","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý kiểm kho</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->

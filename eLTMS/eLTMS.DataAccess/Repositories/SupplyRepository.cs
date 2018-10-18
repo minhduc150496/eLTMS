@@ -13,15 +13,25 @@ namespace eLTMS.DataAccess.Repositories
     
     public interface ISupplyRepository : IRepository<Supply>
     {
-        List<Supply> GetAllSupply();
+        List<Supply> GetAllSupply(string suppliesCode);
+        Supply GetSimpleById(int id);
     }
     public class SupplyRepository : RepositoryBase<Supply>, ISupplyRepository
     {
-        public List<Supply> GetAllSupply()
+        public List<Supply> GetAllSupply(string suppliesCode)
         {
             var result = DbSet.AsQueryable()
+                .Where(x => x.SuppliesCode.Contains(suppliesCode) && x.IsDeleted == false)
                 .Include( x => x.SupplyType)
                 .ToList();
+            return result;
+        }
+
+        public Supply GetSimpleById(int id)
+        {
+            var result = DbSet.AsQueryable()               
+                .Include(x => x.SupplyType)
+                .SingleOrDefault(x => x.SuppliesId == id);
             return result;
         }
     }
