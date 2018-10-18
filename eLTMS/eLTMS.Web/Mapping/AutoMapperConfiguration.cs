@@ -39,7 +39,7 @@ namespace eLTMS.Web.Mapping
 
                 cfg.CreateMap<Sample, SampleDto>()
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleName))
-                .ForMember(dst => dst.labTests, src => src.MapFrom(x => x.LabTests));
+                .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
 
                 cfg.CreateMap<ImportPaper, ImportPaperDto>()
                 .ForMember(dst => dst.ImportPaperId, src => src.MapFrom(x => x.ImportPaperId))

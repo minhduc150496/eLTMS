@@ -672,6 +672,11 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         [ForeignKey("AppointmentCode")] public virtual Appointment Appointment { get; set; } // FK_LabTesting_Appointment
 
+        /// <summary>
+        /// Parent LabTest pointed by [LabTesting].([LabTestId]) (FK_LabTesting_LabTest)
+        /// </summary>
+        [ForeignKey("LabTestId")] public virtual LabTest LabTest { get; set; } // FK_LabTesting_LabTest
+
         public LabTesting()
         {
             IsDeleted = false;
@@ -719,6 +724,10 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child LabTestings where [LabTesting].[LabTestID] point to this entity (FK_LabTesting_LabTest)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LabTesting> LabTestings { get; set; } // LabTesting.FK_LabTesting_LabTest
+        /// <summary>
         /// Child TestProfileLabTestMappings where [TestProfileLabTestMapping].[LabTestID] point to this entity (FK__TestProfi__LabTe__2645B050)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping.FK__TestProfi__LabTe__2645B050
@@ -734,6 +743,7 @@ namespace eLTMS.DataAccess.Models
         {
             IsDeleted = false;
             TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
+            LabTestings = new System.Collections.Generic.List<LabTesting>();
         }
     }
 

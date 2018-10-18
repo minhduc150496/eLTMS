@@ -47,9 +47,15 @@
     <Compile Include="Models\dto\AppointmentGetResultDto.cs" />
     <Compile Include="Models\dto\AppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentUpdateDto.cs" />
+    <Compile Include="Models\dto\EmployeeDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDto.cs" />
     <Compile Include="Models\dto\LabTestDto.cs" />
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />
+    <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />

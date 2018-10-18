@@ -197,21 +197,6 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
-    <Compile Include="Models\dto\EmployeeDto.cs" />
-    <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
-    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
-    <Compile Include="Models\dto\ExportPaperDto.cs" />
-    <Compile Include="Models\dto\ImportPaperDto.cs" />
-    <Compile Include="Models\dto\PatientDto.cs" />
-    <Compile Include="Models\dto\AccountLoginDto.cs" />
-    <Compile Include="Models\dto\SampleGettingDto.cs" />
-    <Compile Include="Models\dto\AppointmentDto.cs" />
-    <Compile Include="Models\dto\LabTestDto.cs" />
-    <Compile Include="Models\dto\SampleDto.cs" />
-    <Compile Include="Models\dto\AccountDto.cs" />
-    <Compile Include="Models\dto\SupplyDto.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\LoginResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7587,9 +7572,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Areas\UserWeb\Models\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>

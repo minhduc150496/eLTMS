@@ -37,28 +37,24 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        //public bool Create(Appointment appointment)
-        //{
-        //    var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-        //    //var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
-        //    try
-        //    {
-        //        //appointment.LabTestings = labTestings;
-        //        //appointment.SampleGettings = sampleGettings;
-        //        appointmentRepo.Create(appointment);
-        //        var result = this.UnitOfWork.SaveChanges();
-        //        if (result.Any())
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
+        public bool Create(Appointment appointment)
+        {
+            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            try
+            {
+                appointmentRepo.Create(appointment);
+                var result = this.UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
 
         public List<Appointment> GetNewApp(int patientId)
         {

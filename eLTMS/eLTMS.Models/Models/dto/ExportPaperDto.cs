@@ -1,9 +1,10 @@
-﻿using System;
+﻿using eLTMS.Models.Models.dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace eLTMS.AdminWeb.Models.dto
+namespace eLTMS.Models.Models.dto
 {
     public class ExportPaperDto
     {

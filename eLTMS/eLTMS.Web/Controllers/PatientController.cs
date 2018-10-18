@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using eLTMS.AdminWeb.Models.dto;
+using eLTMS.Models.Models.dto;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
-using eLTMS.Web.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
