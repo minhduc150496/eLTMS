@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26DC2CF1-D4E0-4BBE-99DF-EA0D33375D99}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eLTMS.Models</RootNamespace>
+    <AssemblyName>eLTMS.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\dto\AccountDto.cs" />
+    <Compile Include="Models\dto\AccountLoginDto.cs" />
+    <Compile Include="Models\dto\AppointmentGetByPhoneAndDateDto.cs" />
+    <Compile Include="Models\dto\AppointmentGetResultDto.cs" />
+    <Compile Include="Models\dto\AppointmentDto.cs" />
+    <Compile Include="Models\dto\AppointmentUpdateDto.cs" />
+    <Compile Include="Models\dto\EmployeeDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ExportPaperDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
+    <Compile Include="Models\dto\ImportPaperDto.cs" />
+    <Compile Include="Models\dto\LabTestDto.cs" />
+    <Compile Include="Models\dto\LabTestingDto.cs" />
+    <Compile Include="Models\dto\LabTestingIndexDto.cs" />
+    <Compile Include="Models\dto\PatientDto.cs" />
+    <Compile Include="Models\dto\SampleDto.cs" />
+    <Compile Include="Models\dto\SampleGettingDto.cs" />
+    <Compile Include="Models\dto\SupplyDto.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\LoginResultModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

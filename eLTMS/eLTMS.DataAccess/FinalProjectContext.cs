@@ -20,6 +20,7 @@ namespace eLTMS.DataAccess
 
         }
         public System.Data.Entity.DbSet<Account> Accounts { get; set; } // Account
+        public System.Data.Entity.DbSet<Appointment> Appointments { get; set; } // Appointment
         public System.Data.Entity.DbSet<Employee> Employees { get; set; } // Employee
         public System.Data.Entity.DbSet<ExportPaper> ExportPapers { get; set; } // ExportPaper
         public System.Data.Entity.DbSet<ExportPaperDetail> ExportPaperDetails { get; set; } // ExportPaperDetail
@@ -31,13 +32,14 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<ImportPaper> ImportPapers { get; set; } // ImportPaper
         public System.Data.Entity.DbSet<ImportPaperDetail> ImportPaperDetails { get; set; } // ImportPaperDetail
         public System.Data.Entity.DbSet<LabTest> LabTests { get; set; } // LabTest
+        public System.Data.Entity.DbSet<LabTesting> LabTestings { get; set; } // LabTesting
+        public System.Data.Entity.DbSet<LabTestingIndex> LabTestingIndexes { get; set; } // LabTestingIndex
         public System.Data.Entity.DbSet<Patient> Patients { get; set; } // Patient
-        public System.Data.Entity.DbSet<ResultIndex> ResultIndexes { get; set; } // ResultIndex
-        public System.Data.Entity.DbSet<ResultPaper> ResultPapers { get; set; } // ResultPaper
         public System.Data.Entity.DbSet<Sample> Samples { get; set; } // Sample
+        public System.Data.Entity.DbSet<SampleGroup> SampleGroups { get; set; } // Sample
+        public System.Data.Entity.DbSet<SampleGetting> SampleGettings { get; set; } // SampleGetting
         public System.Data.Entity.DbSet<Supply> Supplies { get; set; } // Supply
         public System.Data.Entity.DbSet<SupplyType> SupplyTypes { get; set; } // SupplyType
-        public System.Data.Entity.DbSet<Testing> Testings { get; set; } // Testing
         public System.Data.Entity.DbSet<TestProfile> TestProfiles { get; set; } // TestProfile
         public System.Data.Entity.DbSet<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping
 

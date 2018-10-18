@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using eLTMS.AdminWeb.Models.dto;
+using eLTMS.Models.Models.dto;
 using eLTMS.DataAccess.Models;
-using eLTMS.Web.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +37,10 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
 
+                cfg.CreateMap<Sample, SampleDto>()
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleName))
+                .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
+
                 cfg.CreateMap<ImportPaper, ImportPaperDto>()
                 .ForMember(dst => dst.ImportPaperId, src => src.MapFrom(x => x.ImportPaperId))
                 .ForMember(dst => dst.ImportPaperCode, src => src.MapFrom(x => x.ImportPaperCode))
@@ -55,6 +58,11 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+                cfg.CreateMap<SampleGetting, SampleGettingDto>()
+                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
+                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName));
 
                 cfg.CreateMap<ExportPaper, ExportPaperDto>()
                 .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
@@ -66,14 +74,43 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.ExportPaperDetailDtos, src => src.MapFrom(x => x.ExportPaperDetails));
 
-                cfg.CreateMap<ExportPaperDetail, ExportPaperDetailDto>()
-                .ForMember(dst => dst.ExportPaperDetailId, src => src.MapFrom(x => x.ExportPaperDetailId))
-                .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
-                .ForMember(dst => dst.SuppliesId, src => src.MapFrom(x => x.SuppliesId))
-                .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit))
-                .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
-                .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
-                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+                cfg.CreateMap<Appointment, AppointmentGetByPhoneAndDateDto>()
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+                .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.Patient.PhoneNumber))
+                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode));
+                cfg.CreateMap<Appointment, AppointmentGetResultDto>()
+                .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+                .ForMember(dst => dst.Age, src => src.MapFrom(x => x.Patient.DateOfBirth))
+                .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Patient.Gender))
+                .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => x.Employee.FullName))
+                .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Patient.Gender))
+                .ForMember(dst => dst.TestPurpose, src => src.MapFrom(x => x.TestPurpose))
+                .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
+                .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
+                .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved))
+                .ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
+
+                cfg.CreateMap<Appointment, AppointmentUpdateDto>()
+                .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.PatientId, src => src.MapFrom(x => x.PatientId))
+                .ForMember(dst => dst.DoctorId, src => src.MapFrom(x => x.DoctorId))
+                .ForMember(dst => dst.IsEmergency, src => src.MapFrom(x => x.IsEmergency))
+                .ForMember(dst => dst.TestPurpose, src => src.MapFrom(x => x.TestPurpose))
+                .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
+                .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
+                .ForMember(dst => dst.Conlusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+
+                cfg.CreateMap<LabTestingIndex, LabTestingIndexDto>()
+                .ForMember(dst => dst.IndexName, src => src.MapFrom(x => x.IndexName))
+                .ForMember(dst => dst.IndexValue, src => src.MapFrom(x => x.IndexValue))
+                .ForMember(dst => dst.LowNormalHigh, src => src.MapFrom(x => x.LowNormalHigh))
+                .ForMember(dst => dst.NormalRange, src => src.MapFrom(x => x.NormalRange))
+                .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit));
 
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
@@ -88,7 +125,11 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.DateOfStart, src => src.MapFrom(x => x.StartDate.HasValue ? x.StartDate.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""));
+                cfg.CreateMap<LabTesting, LabTestingDto>()
+               .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+               .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
             });
+
         }
         private static string GetRoleName(string name)
         {

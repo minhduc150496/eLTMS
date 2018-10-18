@@ -27,7 +27,7 @@ namespace eLTMS.DataAccess.Repositories
         public Employee GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()
-                .Include(x=>x.Account)
+                .Include(x => x.Account)
                 .SingleOrDefault(x => x.EmployeeId == id);
             return result;
         }
