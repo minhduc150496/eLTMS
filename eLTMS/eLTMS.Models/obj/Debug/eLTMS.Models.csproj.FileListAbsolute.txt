@@ -10,3 +10,9 @@ C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csprojAss
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CoreCompileInputs.cache
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.dll
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.pdb
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csprojAssemblyReference.cache
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CoreCompileInputs.cache
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
+C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb

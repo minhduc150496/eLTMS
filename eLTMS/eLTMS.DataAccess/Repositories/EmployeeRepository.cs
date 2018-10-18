@@ -20,7 +20,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Include(x => x.Account)
-                .Where(x => x.FullName.Contains(fullName) && x.IsDeleted == false)
+                .Where(x => (x.FullName.Contains(fullName)||x.PhoneNumber.Contains(fullName)||x.HomeAddress.Contains(fullName)||x.Account.Role.Contains(fullName)) && x.IsDeleted == false)
                 .ToList();
             return result;
         }

@@ -133,31 +133,31 @@ namespace eLTMS.Web.Mapping
         }
         private static string GetRoleName(string name)
         {
-            if (name == "Nurse")
+            if (name == "Y tá")
             {
                 return "Y tá";
             }
-            else if (name == "Doctor")
+            else if (name == "Bác sĩ")
             {
                 return "Bác sĩ";
             }
-            else if (name == "Doctor")
+            else if (name == "Bác sĩ")
             {
                 return "Bác sĩ";
             }
-            else if (name == "Warehouse")
+            else if (name == "Quản kho")
             {
                 return "Quản kho";
             }
-            else if (name == "Admin")
+            else if (name == "Quản lý")
             {
                 return "Quản lý";
             }
-            else if (name == "Lab")
+            else if (name == "Kỹ thuật viên")
             {
                 return "Kỹ thuật viên";
             }
-            else if (name == "Receptionist")
+            else if (name == "Tiếp tân")
             {
                 return "Tiếp tân";
             }
