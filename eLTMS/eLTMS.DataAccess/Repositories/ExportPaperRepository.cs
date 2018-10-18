@@ -13,6 +13,7 @@ namespace eLTMS.DataAccess.Repositories
     {
         ExportPaper GetSimpleById(string code);
         List<ExportPaper> GetAllExportPaper(string createDate);
+        List<ExportPaper> GetAllInventory(string createDate);
         ExportPaper GetSimpleById(int id);
     }
     public class ExportPaperRepository : RepositoryBase<ExportPaper>, IExportPaperRepository
@@ -27,11 +28,18 @@ namespace eLTMS.DataAccess.Repositories
         {
           
             var result = DbSet.AsQueryable()
-                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false)
+                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false && x.Status == false)
                 .ToList();
             return result;
         }
-       
+        public List<ExportPaper> GetAllInventory(string createDate)
+        {
+
+            var result = DbSet.AsQueryable()
+                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false && x.Status == true)
+                .ToList();
+            return result;
+        }
         public ExportPaper GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()
