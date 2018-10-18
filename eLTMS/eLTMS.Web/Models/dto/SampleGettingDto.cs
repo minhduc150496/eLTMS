@@ -14,9 +14,11 @@ namespace eLTMS.Web.Models.dto
 
         public string SampleName { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime GettingDate { get; set; }
+
+        public TimeSpan StartTime { get; set; }
         
-        public DateTime FinishTime { get; set; }
+        public TimeSpan FinishTime { get; set; }
 
     }
 }

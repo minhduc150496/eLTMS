@@ -364,7 +364,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample getting ID")]
         public int SampleGettingId { get; set; } // SampleGettingID (Primary key)
 
-        [Column(@"AppointmentCode", Order = 2, TypeName = "nchar")]
+        [Column(@"AppointmentCode", Order = 2, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Appointment code")]
@@ -374,15 +374,15 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample ID")]
         public int? SampleId { get; set; } // SampleID
 
-        [Column(@"StartTime", Order = 4, TypeName = "datetime")]
+        [Column(@"StartTime", Order = 4, TypeName = "time")]
         [Display(Name = "Start time")]
-        public System.DateTime? StartTime { get; set; } // StartTime
+        public System.TimeSpan? StartTime { get; set; } // StartTime
 
-        [Column(@"FinishTime", Order = 5, TypeName = "datetime")]
+        [Column(@"FinishTime", Order = 5, TypeName = "time")]
         [Display(Name = "Finish time")]
-        public System.DateTime? FinishTime { get; set; } // FinishTime
+        public System.TimeSpan? FinishTime { get; set; } // FinishTime
 
-        [Column(@"Status", Order = 6, TypeName = "nchar")]
+        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
@@ -391,6 +391,10 @@ namespace eLTMS.DataAccess.Models
         [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
+
+        [Column(@"GettingDate", Order = 8, TypeName = "date")]
+        [Display(Name = "Getting date")]
+        public System.DateTime? GettingDate { get; set; } // GettingDate
 
         // Foreign keys
 
@@ -482,7 +486,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Patient ID")]
         public int PatientId { get; set; } // PatientID (Primary key)
 
-        [Column(@"PatientCode", Order = 2, TypeName = "nchar")]
+        [Column(@"PatientCode", Order = 2, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Patient code")]
@@ -498,7 +502,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Full name")]
         public string FullName { get; set; } // FullName (length: 100)
 
-        [Column(@"Gender", Order = 5, TypeName = "nchar")]
+        [Column(@"Gender", Order = 5, TypeName = "nvarchar")]
         [MaxLength(10)]
         [StringLength(10)]
         [Display(Name = "Gender")]
@@ -508,7 +512,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Date of birth")]
         public System.DateTime? DateOfBirth { get; set; } // DateOfBirth
 
-        [Column(@"PhoneNumber", Order = 7, TypeName = "nchar")]
+        [Column(@"PhoneNumber", Order = 7, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
@@ -574,7 +578,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Lab testing ID")]
         public int? LabTestingId { get; set; } // LabTestingID
 
-        [Column(@"IndexName", Order = 3, TypeName = "nchar")]
+        [Column(@"IndexName", Order = 3, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Index name")]
@@ -586,7 +590,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Index value")]
         public string IndexValue { get; set; } // IndexValue (length: 50)
 
-        [Column(@"LowNormalHigh", Order = 5, TypeName = "nchar")]
+        [Column(@"LowNormalHigh", Order = 5, TypeName = "nvarchar")]
         [MaxLength(10)]
         [StringLength(10)]
         [Display(Name = "Low normal high")]
@@ -638,13 +642,13 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Lab test ID")]
         public int? LabTestId { get; set; } // LabTestID
 
-        [Column(@"AppointmentCode", Order = 3, TypeName = "nchar")]
+        [Column(@"AppointmentCode", Order = 3, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Appointment code")]
         public string AppointmentCode { get; set; } // AppointmentCode (length: 20)
 
-        [Column(@"Status", Order = 4, TypeName = "nchar")]
+        [Column(@"Status", Order = 4, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
@@ -956,7 +960,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Hospital address")]
         public string HospitalAddress { get; set; } // HospitalAddress (length: 200)
 
-        [Column(@"Hotline", Order = 4, TypeName = "nchar")]
+        [Column(@"Hotline", Order = 4, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Hotline")]
@@ -1168,7 +1172,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
-        [Column(@"Status", Order = 6, TypeName = "nchar")]
+        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
         [MaxLength(10)]
         [StringLength(10)]
         [Display(Name = "Status")]
@@ -1209,7 +1213,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int? AccountId { get; set; } // AccountID
 
-        [Column(@"Status", Order = 3, TypeName = "nchar")]
+        [Column(@"Status", Order = 3, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
@@ -1221,7 +1225,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Full name")]
         public string FullName { get; set; } // FullName (length: 100)
 
-        [Column(@"Gender", Order = 5, TypeName = "nchar")]
+        [Column(@"Gender", Order = 5, TypeName = "nvarchar")]
         [MaxLength(10)]
         [StringLength(10)]
         [Display(Name = "Gender")]
@@ -1241,7 +1245,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Start date")]
         public System.DateTime? StartDate { get; set; } // StartDate
 
-        [Column(@"PhoneNumber", Order = 9, TypeName = "nchar")]
+        [Column(@"PhoneNumber", Order = 9, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
@@ -1284,7 +1288,7 @@ namespace eLTMS.DataAccess.Models
     public class Appointment
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column(@"AppointmentCode", Order = 1, TypeName = "nchar")]
+        [Column(@"AppointmentCode", Order = 1, TypeName = "nvarchar")]
         [Index(@"PK_Appointment", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [MaxLength(20)]
@@ -1329,7 +1333,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Result approved")]
         public bool? ResultApproved { get; set; } // ResultApproved
 
-        [Column(@"Status", Order = 10, TypeName = "nchar")]
+        [Column(@"Status", Order = 10, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
@@ -1365,8 +1369,8 @@ namespace eLTMS.DataAccess.Models
         public Appointment()
         {
             IsDeleted = false;
-            LabTestings = new System.Collections.Generic.List<LabTesting>();
             SampleGettings = new System.Collections.Generic.List<SampleGetting>();
+            LabTestings = new System.Collections.Generic.List<LabTesting>();
         }
     }
 
@@ -1383,27 +1387,27 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int AccountId { get; set; } // AccountID (Primary key)
 
-        [Column(@"Role", Order = 2, TypeName = "nchar")]
+        [Column(@"Role", Order = 2, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Role")]
         public string Role { get; set; } // Role (length: 20)
 
-        [Column(@"Email", Order = 3, TypeName = "nchar")]
+        [Column(@"Email", Order = 3, TypeName = "nvarchar")]
         [MaxLength(255)]
         [StringLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } // Email (length: 255)
 
-        [Column(@"Password", Order = 4, TypeName = "nchar")]
+        [Column(@"Password", Order = 4, TypeName = "nvarchar")]
         [MaxLength(128)]
         [StringLength(128)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } // Password (length: 128)
 
-        [Column(@"PhoneNumber", Order = 5, TypeName = "nchar")]
+        [Column(@"PhoneNumber", Order = 5, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
@@ -1454,10 +1458,10 @@ namespace eLTMS.DataAccess.Models
 
         public AccountConfiguration(string schema)
         {
-            Property(x => x.Role).IsOptional().IsFixedLength();
-            Property(x => x.Email).IsOptional().IsFixedLength();
-            Property(x => x.Password).IsOptional().IsFixedLength();
-            Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.Role).IsOptional();
+            Property(x => x.Email).IsOptional();
+            Property(x => x.Password).IsOptional();
+            Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.AvatarUrl).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
@@ -1474,7 +1478,6 @@ namespace eLTMS.DataAccess.Models
 
         public AppointmentConfiguration(string schema)
         {
-            Property(x => x.AppointmentCode).IsFixedLength();
             Property(x => x.PatientId).IsOptional();
             Property(x => x.DoctorId).IsOptional();
             Property(x => x.IsEmergency).IsOptional();
@@ -1483,7 +1486,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.ReturnTime).IsOptional();
             Property(x => x.Conclusion).IsOptional();
             Property(x => x.ResultApproved).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
 
         }
@@ -1501,13 +1504,13 @@ namespace eLTMS.DataAccess.Models
         public EmployeeConfiguration(string schema)
         {
             Property(x => x.AccountId).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.FullName).IsOptional();
-            Property(x => x.Gender).IsOptional().IsFixedLength();
+            Property(x => x.Gender).IsOptional();
             Property(x => x.DateOfBirth).IsOptional();
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.StartDate).IsOptional();
-            Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
 
         }
@@ -1528,7 +1531,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.CreateDate).IsOptional();
             Property(x => x.AccountId).IsOptional();
             Property(x => x.Note).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
     }
@@ -1603,7 +1606,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.HospitalName).IsOptional();
             Property(x => x.HospitalAddress).IsOptional();
-            Property(x => x.Hotline).IsOptional().IsFixedLength();
+            Property(x => x.Hotline).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
     }
@@ -1717,8 +1720,8 @@ namespace eLTMS.DataAccess.Models
         public LabTestingConfiguration(string schema)
         {
             Property(x => x.LabTestId).IsOptional();
-            Property(x => x.AppointmentCode).IsOptional().IsFixedLength();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.AppointmentCode).IsOptional();
+            Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
 
         }
@@ -1736,9 +1739,9 @@ namespace eLTMS.DataAccess.Models
         public LabTestingIndexConfiguration(string schema)
         {
             Property(x => x.LabTestingId).IsOptional();
-            Property(x => x.IndexName).IsOptional().IsFixedLength();
+            Property(x => x.IndexName).IsOptional();
             Property(x => x.IndexValue).IsOptional();
-            Property(x => x.LowNormalHigh).IsOptional().IsFixedLength();
+            Property(x => x.LowNormalHigh).IsOptional();
             Property(x => x.NormalRange).IsOptional();
             Property(x => x.Unit).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
@@ -1757,12 +1760,12 @@ namespace eLTMS.DataAccess.Models
 
         public PatientConfiguration(string schema)
         {
-            Property(x => x.PatientCode).IsOptional().IsFixedLength();
+            Property(x => x.PatientCode).IsOptional();
             Property(x => x.AccountId).IsOptional();
             Property(x => x.FullName).IsOptional();
-            Property(x => x.Gender).IsOptional().IsFixedLength();
+            Property(x => x.Gender).IsOptional();
             Property(x => x.DateOfBirth).IsOptional();
-            Property(x => x.PhoneNumber).IsOptional().IsFixedLength();
+            Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.CompanyAddress).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
@@ -1800,12 +1803,13 @@ namespace eLTMS.DataAccess.Models
 
         public SampleGettingConfiguration(string schema)
         {
-            Property(x => x.AppointmentCode).IsOptional().IsFixedLength();
+            Property(x => x.AppointmentCode).IsOptional();
             Property(x => x.SampleId).IsOptional();
             Property(x => x.StartTime).IsOptional();
             Property(x => x.FinishTime).IsOptional();
-            Property(x => x.Status).IsOptional().IsFixedLength();
+            Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.GettingDate).IsOptional();
 
         }
     }
