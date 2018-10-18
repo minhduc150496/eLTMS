@@ -39,6 +39,9 @@ namespace eLTMS.Web.Mapping
 
                 cfg.CreateMap<Sample, SampleDto>()
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleName))
+                .ForMember(dst => dst.SampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration))
+                .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.SampleGroup.OpenTime))
+                .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.SampleGroup.CloseTime))
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
 
                 cfg.CreateMap<ImportPaper, ImportPaperDto>()

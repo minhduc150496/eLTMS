@@ -36,13 +36,14 @@ $(document).ready(function () {
                 var startTime = $(el_Sample).find(":selected").val(); // double
                 startTime = parseFloat(startTime);
                 var finishTime = startTime + sampleDuration / 60;
-                var sDate = $(el_Sample).find("*[type='date']").val();
-                startTime = sDate + " " + Utils.formatTime(startTime);
-                finishTime = sDate + " " + Utils.formatTime(finishTime);// + finishTime;
+                var gettingDate = $(el_Sample).find("*[type='date']").val();
+                startTime = Utils.formatTime(startTime);
+                finishTime = Utils.formatTime(finishTime);// + finishTime;
                 // assign to sampleGetting Dto
                 var sampleGettingDto = {
                     SampleId: sampleId,
                     LabTestIds: [],
+                    GettingDate: gettingDate,
                     StartTime: startTime,
                     FinishTime: finishTime
                 };
@@ -62,6 +63,10 @@ $(document).ready(function () {
         // ajax for create new appointment
         var jsonData = JSON.stringify(GLOBAL.appointmentDto);
         //console.log(jsonData);
+
+        $("#processing-modal").modal({
+            show: true
+        });
         $.ajax({
             method: "POST",
             contentType: "application/json",
@@ -69,6 +74,7 @@ $(document).ready(function () {
             dataType: "JSON",
             data: jsonData,
         }).success(function (data) {
+            $("#processing-modal").modal("hide");
             if (data == true) {
                 $("#success-modal").modal({
                     show: true
@@ -97,14 +103,15 @@ function renderStep1Html(sampleDtos) {
             var sampleDto = sampleDtos[i];
             // append Sample Title: "1. Mau"
             sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
-            sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '">\n';
+            sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" class="row">\n';
             if (sampleDto.LabTests != null) {
                 for (var j = 0; j < sampleDto.LabTests.length; j++) {
                     // append Lab Tests in Sample
                     var labTest = sampleDto.LabTests[j];
+                    sampleHtml += '<div class="col-md-3">';
                     sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
                     sampleHtml += labTest.LabTestName + '</label>\n';
-                    sampleHtml += '<br>\n';
+                    sampleHtml += '</div>\n';
                 }
             }
             sampleHtml += '</div>\n';

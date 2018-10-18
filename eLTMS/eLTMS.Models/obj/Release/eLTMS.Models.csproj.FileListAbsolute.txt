@@ -1,0 +1,6 @@
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\eLTMS.Models.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\eLTMS.Models.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.csprojAssemblyReference.cache
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.csproj.CoreCompileInputs.cache
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.pdb

@@ -7537,6 +7537,7 @@
     <Content Include="Areas\UserWeb\Views\Home\Service.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\ServiceDetails.cshtml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\eLTMS - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\customScript\exportSupplies.js" />
     <Content Include="Scripts\customScript\importSupplies.js" />

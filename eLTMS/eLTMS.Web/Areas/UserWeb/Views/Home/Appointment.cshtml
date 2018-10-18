@@ -3,10 +3,7 @@
     <div class="container">
         <div class="row text-center">
             <div class="col">
-                <h1>Appointment</h1>
-                <div class="breadcroumb_link">
-                    <a href="index-2.html">Home </a>/ Appointment
-                </div>
+                <h1>Đặt lịch xét nghiệm</h1>
             </div>
         </div>
     </div>
@@ -15,59 +12,50 @@
 <!-- appoinment Page Start-->
 <div class="appoinment_form_area p100">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div id="step-1">
-                    <h2>
-                        <b>Bước 1/2: Chọn loại xét nghiệm:</b>
-                    </h2>
-                    <div id="step-1-form">
-                        @*
-                            <h3>1. Máu</h3>
-                            <div data-sampleid="1">
-                                <input type="checkbox" data-labtestid="1" />
-                                Ct Máu
-                                <br>
-                                <input type="checkbox" data-labtestid="2" />
-                                VSS
-                                <br>
-                                <input type="checkbox" data-labtestid="3" />
-                                Tiểu cầu, độ tập trung
-                            </div>
-                        *@
+        <div id="step-1">
+            <h2>
+                <b>Bước 1/2: Chọn loại xét nghiệm:</b>
+            </h2>
+            <div id="step-1-form">
+                @*
+                    <h3>1. Máu</h3>
+                    <div data-sampleid="1">
+                        <input type="checkbox" data-labtestid="1" />
+                        Ct Máu
+                        <br>
+                        <input type="checkbox" data-labtestid="2" />
+                        VSS
+                        <br>
+                        <input type="checkbox" data-labtestid="3" />
+                        Tiểu cầu, độ tập trung
                     </div>
+                *@
+            </div>
 
-                    <br><br>
-                    <button id="btn-next" type="button" class="custom_btn">Sang bước 2</button>
-                </div> <!-- end step 1 -->
-                <div id="step-2">
-                    <h2>
-                        <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
-                    </h2>
-                    <div id="step-2-form">
-                        @*
-                            <h3>1. Máu</h3>
-                            <div data-sampleid="1" data-sample-duration="10">
-                            <input type="date" />
-                            <select style="overflow-y: scroll">
-                                <option value="7:00">7:00 - 7:15</option>
-                                <option value="7:30">7:30 - 7:45</option>
-                                <option value="8:00">8:00 - 8:15</option>
-                            </select>
-                            </div>
-                        *@
+            <br><br>
+            <button id="btn-next" type="button" class="custom_btn">Sang bước 2</button>
+        </div> <!-- end step 1 -->
+        <div id="step-2">
+            <h2>
+                <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
+            </h2>
+            <div id="step-2-form">
+                @*
+                    <h3>1. Máu</h3>
+                    <div data-sampleid="1" data-sample-duration="10">
+                    <input type="date" />
+                    <select style="overflow-y: scroll">
+                        <option value="7:00">7:00 - 7:15</option>
+                        <option value="7:30">7:30 - 7:45</option>
+                        <option value="8:00">8:00 - 8:15</option>
+                    </select>
                     </div>
+                *@
+            </div>
 
-                    <br><br>
-                    <button id="btn-prev" type="button" class="custom_btn">Về bước 1</button>
-                    <button id="btn-submit" type="button" class="custom_btn">Đặt lịch</button>
-                </div>
-            </div>
-            <div class="col-md-6 text-right">
-                <div class="appoinment_Img">
-                    <img src="~/Areas/UserWeb/Content/assets/img/appoionment-img.png" alt="">
-                </div>
-            </div>
+            <br><br>
+            <button id="btn-prev" type="button" class="custom_btn">Về bước 1</button>
+            <button id="btn-submit" type="button" class="custom_btn">Đặt lịch</button>
         </div>
     </div>
 </div>
@@ -83,6 +71,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="processing-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center">
+                    Hệ thống đang xử lí.<br />
+                    Xin quý khách vui lòng chờ trong giây lát...
+                </h3>
             </div>
         </div>
 

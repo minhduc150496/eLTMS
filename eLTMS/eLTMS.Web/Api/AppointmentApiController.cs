@@ -32,6 +32,7 @@ namespace eLTMS.Web.Api
             {
                 var sampleGetting = new SampleGetting();
                 sampleGetting.SampleId = sampleGettingDto.SampleId;
+                sampleGetting.GettingDate = sampleGettingDto.GettingDate;
                 sampleGetting.StartTime = sampleGettingDto.StartTime;
                 sampleGetting.FinishTime = sampleGettingDto.FinishTime;
                 appointment.SampleGettings.Add(sampleGetting);
