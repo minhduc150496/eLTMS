@@ -422,7 +422,9 @@
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.js" />
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.min.css" />
     <Content Include="Areas\UserWeb\Content\DataTables\datatables.min.js" />
+    <Content Include="Areas\UserWeb\Images\color-dots-loader.gif" />
     <Content Include="Areas\UserWeb\Scripts\Appointment.js" />
+    <Content Include="Areas\UserWeb\Styles\Appointment.css" />
     <Content Include="Areas\UserWeb\Views\Home\About.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Contact.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Gallery.cshtml" />

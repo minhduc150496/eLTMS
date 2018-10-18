@@ -18,6 +18,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetResultByAppCode(string appCode);
         List<Appointment> GetAppointmentByPhoneNDate(string phoneNumber);
+        int? CountByDate(string sDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
@@ -77,5 +78,22 @@ namespace eLTMS.DataAccess.Repositories
                 .ToList();
             return result;
         }
+
+        public int? CountByDate(string sDate)
+        {
+            if (sDate == null)
+            {
+                return null;
+            }
+            sDate = sDate.Trim();
+            var result = DbSet.AsQueryable().
+                Where(x => x.AppointmentCode
+                    .Take("yyyy-MM-dd".Length)
+                    .ToString()
+                    .Equals(sDate))
+                .Count();
+            return result;
+        }
+
     }
 }

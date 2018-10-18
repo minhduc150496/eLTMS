@@ -1,4 +1,8 @@
-﻿<!-- breadcroumb Area Start-->
+﻿@section styles {
+    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment.css">
+}
+
+<!-- breadcroumb Area Start-->
 <div class="breadvroumb_area">
     <div class="container">
         <div class="row text-center">
@@ -76,8 +80,25 @@
 
     </div>
 </div>
+<!-- Modal -->
+<div id="fail-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center">
+                    Đặt lịch chưa thành công!
+                    Xin quý khách vui lòng thử lại.
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+            </div>
+        </div>
 
+    </div>
+</div>
 <!-- Modal -->
 <div id="processing-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -85,6 +106,9 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
+                <div class="box-loader">
+                    <img class="img-loader" src="~/Areas/UserWeb/Images/color-dots-loader.gif" />
+                </div>
                 <h3 class="text text-center">
                     Hệ thống đang xử lí.<br />
                     Xin quý khách vui lòng chờ trong giây lát...

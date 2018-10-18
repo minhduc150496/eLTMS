@@ -1,6 +1,7 @@
 ﻿GLOBAL = {};
 Utils = {};
 GLOBAL.PATIENT_ID = 1; // hard code for dev-ing
+GLOBAL.SAMPLE_DTOS_KEY = "SAMPLE_DTOS";
 
 $(document).ready(function () {
     $("#step-2").hide(0);
@@ -49,11 +50,11 @@ $(document).ready(function () {
                 };
 
                 var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
-                console.log(el_LabTests);
+                //console.log(el_LabTests);
                 if (el_LabTests != null) {
                     for (var j = 0; j < el_LabTests.length; j++) {
                         var labTestId = $(el_LabTests[j]).data("labtestid");
-                        console.log(labTestId);
+                        //console.log(labTestId);
                         sampleGettingDto.LabTestIds.push(labTestId);
                     }
                 }
@@ -64,9 +65,7 @@ $(document).ready(function () {
         var jsonData = JSON.stringify(GLOBAL.appointmentDto);
         //console.log(jsonData);
 
-        $("#processing-modal").modal({
-            show: true
-        });
+        $("#processing-modal").modal('show');
         $.ajax({
             method: "POST",
             contentType: "application/json",
@@ -74,23 +73,48 @@ $(document).ready(function () {
             dataType: "JSON",
             data: jsonData,
         }).success(function (data) {
-            $("#processing-modal").modal("hide");
-            if (data == true) {
-                $("#success-modal").modal({
-                    show: true
-                });
-            }
-        })
-    })
+            $("#processing-modal").on('shown.bs.modal', function () {
+                $("#processing-modal").modal('hide');
+            });
+            $("#processing-modal").modal('hide');
+            $("#processing-modal").on("hidden.bs.modal", function () {
+                if (data == true) {
+                    $("#success-modal").modal({
+                        show: true
+                    });
+                } else {
+                    $("#fail-modal").modal({
+                        show: true
+                    });
+                }
+            });
+            //$("#processing-modal").modal("hide");
+            //$("#processing-modal").modal("hide");
+            console.log('hide called');
+        });
+    });
 
-    // ajax for get all sampleDtos and labtests
-    $.ajax({
-        url: "/api/sample/get-all"
-    }).success(function (data) {
-        GLOBAL.sampleDtos = data; // global
-        //console.log(data);
+    // get all sampleDtos and LabTests
+    var sSampleDtos = localStorage.getItem(GLOBAL.SAMPLE_DTOS_KEY);
+    if (sSampleDtos == null) {
+        $.ajax({
+            url: "/api/sample/get-all"
+        }).success(function (data) {
+            //console.log(data);
+            GLOBAL.sampleDtos = data; // global
+            sSampleDtos = JSON.stringify(data);
+            // save to local storage
+            localStorage.setItem(GLOBAL.SAMPLE_DTOS_KEY, sSampleDtos);
+            // render UI
+            renderStep1Html(GLOBAL.sampleDtos);
+        }) // end AJAX settings
+    } else {
+        // get data
+        GLOBAL.sampleDtos = JSON.parse(sSampleDtos);
+        // render UI
         renderStep1Html(GLOBAL.sampleDtos);
-    }) // end AJAX settings
+    }
+    
 
 
 }) // end ready
