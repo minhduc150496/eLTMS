@@ -302,8 +302,8 @@ namespace eLTMS.DataAccess.Models
         public Supply()
         {
             IsDeleted = false;
-            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
+            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
         }
     }
 
@@ -1170,7 +1170,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Export paper code")]
         public string ExportPaperCode { get; set; } // ExportPaperCode (length: 20)
 
-        [Column(@"CreateDate", Order = 3, TypeName = "date")]
+        [Column(@"CreateDate", Order = 3, TypeName = "datetime")]
         [Display(Name = "Create date")]
         public System.DateTime? CreateDate { get; set; } // CreateDate
 
@@ -1182,11 +1182,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
-        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
-        [MaxLength(10)]
-        [StringLength(10)]
+        [Column(@"Status", Order = 6, TypeName = "bit")]
         [Display(Name = "Status")]
-        public string Status { get; set; } // Status (length: 10)
+        public bool? Status { get; set; } // Status
 
         [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
@@ -1287,8 +1285,8 @@ namespace eLTMS.DataAccess.Models
         public Employee()
         {
             IsDeleted = false;
-            Appointments = new System.Collections.Generic.List<Appointment>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            Appointments = new System.Collections.Generic.List<Appointment>();
         }
     }
 
@@ -1448,8 +1446,8 @@ namespace eLTMS.DataAccess.Models
         public Account()
         {
             IsDeleted = false;
-            Employees = new System.Collections.Generic.List<Employee>();
             Patients = new System.Collections.Generic.List<Patient>();
+            Employees = new System.Collections.Generic.List<Employee>();
         }
     }
 

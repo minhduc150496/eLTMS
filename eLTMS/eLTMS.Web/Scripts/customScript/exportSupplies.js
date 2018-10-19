@@ -123,8 +123,8 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
-        $('#btnSearch1').off('click').on('click', function () {
-            homeController.loadData1(true);
+        $('#btnSearchInventory').off('click').on('click', function () {
+            homeController.loadDataInventory(true);
         });
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
@@ -134,8 +134,13 @@ var homeController = {
         $('.btn-edit').off('click').on('click', function () {
             $('#myModal').modal('hide');
             var id = $(this).data('id');
-            homeController.loadDetail(id);
+            homeController.loadDetail(id); 
             $('#btnSaveImport').hide();
+            $('#btnSaveInventory').hide();
+            $('#btnAddNew').hide();
+            $('#input').hide();
+            $('#inputPKK').hide();
+            
         });
 
         $('.btn-delete').off('click').on('click', function () {
@@ -499,9 +504,9 @@ var homeController = {
             }
         })
     },
-    loadData1: function (changePageSize) {
+    loadDataInventory: function (changePageSize) {
         $.ajax({
-            url: '/Warehouse/GetAllExportPapers',
+            url: '/Warehouse/GetAllInventorys',
             type: 'GET',
             dataType: 'json',
             data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, createDate: $('#txtSearch').val() },
@@ -521,7 +526,7 @@ var homeController = {
                     console.log(html);
                     $('#tblData1').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadData();
+                        homeController.loadDataInventory();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
