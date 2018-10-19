@@ -13,7 +13,7 @@ namespace eLTMS.Models.Models.dto
 
         public string PatientName { get; set; }
 
-        public string testPurpose { get; set; }
+        public string TestPurpose { get; set; }
         
         public List<SampleGettingDto> SampleGettingDtos { get; set; }
     }

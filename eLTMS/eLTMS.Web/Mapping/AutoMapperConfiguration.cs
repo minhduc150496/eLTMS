@@ -61,7 +61,9 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Quantity, src => src.MapFrom(x => x.Quantity))
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
+                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
                 .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
@@ -131,6 +133,11 @@ namespace eLTMS.Web.Mapping
                 cfg.CreateMap<LabTesting, LabTestingDto>()
                .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
+
+                cfg.CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
+
             });
 
         }

@@ -2,6 +2,7 @@
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Models.Models.dto;
+using eLTMS.Models.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace eLTMS.Web.Api
             {
                 var sampleGetting = new SampleGetting();
                 sampleGetting.SampleId = sampleGettingDto.SampleId;
-                sampleGetting.GettingDate = sampleGettingDto.GettingDate;
+                sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
                 sampleGetting.StartTime = sampleGettingDto.StartTime;
                 sampleGetting.FinishTime = sampleGettingDto.FinishTime;
                 appointment.SampleGettings.Add(sampleGetting);
@@ -60,7 +61,7 @@ namespace eLTMS.Web.Api
         }
 
         [HttpGet]
-        [Route("api/appointment/get-new-appointment-by-patient-id")]
+        [Route("api/appointment/get-new-appointments-by-patient-id")]
         public HttpResponseMessage GetNewAppointment(int patientId)
         {
             var app = _appointmentService.GetNewApp(patientId);
@@ -70,7 +71,7 @@ namespace eLTMS.Web.Api
         }
 
         [HttpGet]
-        [Route("api/appointment/get-old-appointment-by-patient-id")]
+        [Route("api/appointment/get-old-appointments-by-patient-id")]
         public HttpResponseMessage GetOldAppointment(int patientId)
         {
             var app = _appointmentService.GetOldApp(patientId);
@@ -108,5 +109,6 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
+        
     }
 }

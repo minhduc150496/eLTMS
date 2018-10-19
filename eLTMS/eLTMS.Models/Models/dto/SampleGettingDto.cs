@@ -13,7 +13,7 @@ namespace eLTMS.Models.Models.dto
 
         public string SampleName { get; set; }
 
-        public DateTime GettingDate { get; set; }
+        public string GettingDate { get; set; }
 
         public TimeSpan StartTime { get; set; }
         

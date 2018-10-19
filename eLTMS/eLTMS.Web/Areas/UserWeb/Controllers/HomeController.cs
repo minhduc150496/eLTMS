@@ -49,11 +49,5 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         {
             return View("ServiceDetails", "_Layout");
         }
-
-        // GET: /Home/Appointment
-        public ActionResult Appointment()
-        {
-            return View("Appointment", "_Layout");
-        }
     }
 }
