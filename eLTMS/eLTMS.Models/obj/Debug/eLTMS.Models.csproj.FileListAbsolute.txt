@@ -10,3 +10,14 @@ C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csprojAss
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CoreCompileInputs.cache
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\System.ValueTuple.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\EntityFramework.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.dll.config
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\System.ValueTuple.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\EntityFramework.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CopyComplete

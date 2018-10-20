@@ -33,19 +33,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eLTMS.DataAccess.Models
 {
-  
+
     using System.Linq;
 
     #region POCO classes
-     public interface IDbModel 
-     {
-		string CreatedBy { get; set; } // CreatedBy (length: 50)
-		System.DateTime CreatedDate { get; set; } // CreatedDate
-		string UpdatedBy { get; set; } // UpdatedBy (length: 50)
-		System.DateTime UpdatedDate { get; set; } // UpdatedDate
-	 } 
+    public interface IDbModel
+    {
+        string CreatedBy { get; set; } // CreatedBy (length: 50)
+        System.DateTime CreatedDate { get; set; } // CreatedDate
+        string UpdatedBy { get; set; } // UpdatedBy (length: 50)
+        System.DateTime UpdatedDate { get; set; } // UpdatedDate
+    }
 
-
+    //public interface ISoftDeletable
+    //{
+    //    bool? IsActive { get; set; }
+        
+    //}
 
     // TestProfileLabTestMapping
     [Table("TestProfileLabTestMapping", Schema = "dbo")]
@@ -93,7 +97,7 @@ namespace eLTMS.DataAccess.Models
     // TestProfile
     [Table("TestProfile", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class TestProfile
+    public class TestProfile 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"TestProfileID", Order = 1, TypeName = "int")]
@@ -687,7 +691,7 @@ namespace eLTMS.DataAccess.Models
     // LabTest
     [Table("LabTest", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class LabTest
+    public partial class LabTest 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"LabTestID", Order = 1, TypeName = "int")]

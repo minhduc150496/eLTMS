@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eLTMS.DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace eLTMS.DataAccess.Infrastructure
 {
-    public abstract class RepositoryBase<TEntity> : RepositoryBase, IRepository<TEntity> where TEntity : class
+    public abstract class RepositoryBase<TEntity> : RepositoryBase, IRepository<TEntity> where TEntity : class/*, ISoftDeletable*/
     {
         private DbSet<TEntity> _dbset;
         protected DbSet<TEntity> DbSet
@@ -183,6 +184,11 @@ namespace eLTMS.DataAccess.Infrastructure
                 }
             }
         }
+
+        //public IQueryable<TEntity> GetActive()
+        //{
+        //    return UnitOfWork.Context.Set<TEntity>().Where(x => x.IsDeleted == false);
+        //}
     }
     public abstract class RepositoryBase : IRepository
     {

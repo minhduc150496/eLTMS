@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using eLTMS.Models.Models.dto;
-using eLTMS.DataAccess.Models;
+using eLTMS.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using eLTMS.DataAccess.Models;
 
-namespace eLTMS.Web.Mapping
+namespace eLTMS.Models.Mapping
 {
     public class AutoMapperConfiguration
     {
@@ -62,6 +63,8 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Note, src => src.MapFrom(x => x.Note))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
 
+                cfg.CreateMap<SampleGettingDto, SampleGetting>();
+
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
                 .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
@@ -97,6 +100,9 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved))
                 .ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
+
+                cfg.CreateMap<AppointmentDto, Appointment>()
+                .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
 
                 cfg.CreateMap<Appointment, AppointmentUpdateDto>()
                 .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))

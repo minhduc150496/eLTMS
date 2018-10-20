@@ -16,6 +16,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetNewAppByPatientId(int patientId);
         List<Appointment> GetOldAppByPatientId(int patientId);
         List<Appointment> GetResultByPatientId(int patientId);
+        Appointment GetAppointmentByCode(string appCode);
         List<Appointment> GetResultByAppCode(string appCode);
         List<Appointment> GetAppointmentByPhoneNDate(string phoneNumber);
         int? CountByDate(string sDate);
@@ -25,7 +26,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<Appointment> GetNewAppByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.Contains("NEW") && x.PatientId == patientId)
+                .Where(x => x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .ToList();
@@ -35,7 +36,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<Appointment> GetOldAppByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.Contains("OLD") && x.PatientId == patientId)
+                .Where(x => x.Status.ToUpper().Contains("DONE") && x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .ToList();
@@ -53,6 +54,16 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(x => x.LabTestings.Select(y => y.LabTestingIndexes))
                 .Include(x => x.LabTestings)
                 .ToList();
+            return result;
+        }
+
+        public Appointment GetAppointmentByCode(string appCode)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(appCode))
+                .Include(x => x.LabTestings)
+                .Include(x => x.SampleGettings)
+                .FirstOrDefault();
             return result;
         }
 
@@ -86,11 +97,10 @@ namespace eLTMS.DataAccess.Repositories
                 return null;
             }
             sDate = sDate.Trim();
+            //var dateLength = "yyyy-MM-dd".Length;
             var result = DbSet.AsQueryable().
-                Where(x => x.AppointmentCode
-                    .Take("yyyy-MM-dd".Length)
-                    .ToString()
-                    .Equals(sDate))
+                //Where(x => x.IsDeleted==false && x.AppointmentCode.Take(dateLength).Equals(sDate))
+                Where(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate))
                 .Count();
             return result;
         }

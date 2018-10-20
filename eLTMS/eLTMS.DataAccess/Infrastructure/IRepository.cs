@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eLTMS.DataAccess.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,7 +11,7 @@ namespace eLTMS.DataAccess.Infrastructure
     {
         IUnitOfWork UnitOfWork { get; set; }
     }
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class/*, ISoftDeletable*/
     {
         IEnumerable<TEntity> GetAll(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = null, int? skip = null, int? take = null);
         Task<IEnumerable<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = null, int? skip = null, int? take = null);
@@ -26,6 +27,7 @@ namespace eLTMS.DataAccess.Infrastructure
         Task<int> GetCountAsync(Expression<Func<TEntity, bool>> filter = null);
         bool GetExists(Expression<Func<TEntity, bool>> filter = null);
         Task<bool> GetExistsAsync(Expression<Func<TEntity, bool>> filter = null);
+        //IQueryable<TEntity> GetActive();
 
         void Create(TEntity entity, string createdBy = null);
         void Delete(object id, string modifiedBy = null);

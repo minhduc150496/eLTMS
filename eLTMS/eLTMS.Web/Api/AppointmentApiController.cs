@@ -56,7 +56,12 @@ namespace eLTMS.Web.Api
             }
             //
             var success = this._appointmentService.Create(appointment);
-            var response = Request.CreateResponse(System.Net.HttpStatusCode.OK, success);
+            var obj = new
+            {
+                Success = success,
+                Message = success ? "Tạo mới thành công!" : "Xin vui lòng thử lại"
+            };
+            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }
 
@@ -80,8 +85,37 @@ namespace eLTMS.Web.Api
             return response;
         }
 
+        [HttpPut]
+        [Route("api/appointment/update-appointment")]
+        public HttpResponseMessage UpdateAppointment(AppointmentDto appointmentDto)
+        {
+            var success = _appointmentService.UpdateAppointment
+                (appointmentDto.AppointmentCode, appointmentDto.SampleGettingDtos);
+            var obj = new
+            {
+                Success = success,
+                Message = success ? "Cập nhật thành công!" : "Xin vui lòng thử lại"
+            };
+            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            return response;
+        }
+
+        [HttpDelete]
+        [Route("api/appointment/delete-appointment")]
+        public HttpResponseMessage DeleteAppointment(string appointmentCode)
+        {
+            var success = _appointmentService.DeleteAppointment(appointmentCode);
+            var obj = new
+            {
+                Success = success,
+                Message = success ? "Hủy cuộc hẹn thành công!" : "Xin vui lòng thử lại"
+            };
+            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            return response;
+        }
+
         [HttpGet]
-        [Route("api/appointment/get-result-by-patient-id")]
+        [Route("api/appointment/get-results-by-patient-id")]
         public HttpResponseMessage GetResultByPatientId(int patientId)
         {
             var app = _appointmentService.GetResult(patientId);
@@ -109,6 +143,6 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
-        
+
     }
 }

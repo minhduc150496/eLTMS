@@ -1,11 +1,15 @@
-﻿using eLTMS.DataAccess.Infrastructure;
+﻿using AutoMapper;
+using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
+using eLTMS.Models.Models.dto;
+using eLTMS.Models.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using eLTMS.Models.;
 
 namespace eLTMS.BusinessLogic.Services
 {
@@ -17,7 +21,8 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetAppByPhoneNDate(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
-        //bool UpdateAppointment(Appointment appDto);
+        bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sgDtos);
+        bool DeleteAppointment(string appointmentCode);
     }
     public class AppointmentService : IAppointmentService
     {
@@ -47,6 +52,7 @@ namespace eLTMS.BusinessLogic.Services
                 var count = appointmentRepo.CountByDate(sDate);
                 var code = sDate + "-" + count;
                 appointment.AppointmentCode = code;
+                appointment.Status = "NEW";
                 appointmentRepo.Create(appointment);
                 var result = this.UnitOfWork.SaveChanges();
                 if (result.Any())
@@ -92,6 +98,50 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        
+        public bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sampleGettingDtos)
+        {
+            try
+            {
+                var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+                // get existing appointment by AppointmentCode
+                var appointment = appRepo.GetAppointmentByCode(appointmentCode);
+                // modify SampleGettings property
+                var sampleGettings = Mapper.Map<List<SampleGettingDto>, List<SampleGetting>>(sampleGettingDtos);
+                appointment.SampleGettings = sampleGettings;
+                // update entity
+                appRepo.Update(appointment);
+                // save to DB
+                this.UnitOfWork.SaveChanges();
+            } catch(Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool DeleteAppointment(string appointmentCode)
+        {
+            try
+            {
+                var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+                // get existing appointment by AppointmentCode
+                var appointment = appRepo.GetAppointmentByCode(appointmentCode);
+                if (appointment==null)
+                {
+                    return false;
+                }
+                // assign IsDeleted = true
+                appointment.IsDeleted = true;
+                // update entity
+                appRepo.Update(appointment);
+                // save to DB
+                this.UnitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -67,6 +67,7 @@
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="FinalProjectContext.cs" />
+    <Compile Include="Models\LabTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\ExportPaperRepository.cs" />
