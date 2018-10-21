@@ -1,0 +1,24 @@
+.header_area .site_logo {
+	width: 120px;
+}
+
+.copyright_area a {
+	text-decoration: underline;
+}
+
+.copyright_area a i {
+	color: white;
+}
+
+.footer_area .footer_logo img {
+	width: 120px;	
+}
+
+.login_area {	
+    position: absolute;
+    right: 0;
+    top: 50%;
+    line-height: 40px;
+    transform: translatey(-50%);
+    width: 240px;
+}
