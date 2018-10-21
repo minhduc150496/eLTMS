@@ -36,6 +36,7 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
+      
         public ActionResult Inventory()
         {
             var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();

@@ -56,6 +56,7 @@
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
+    <Compile Include="Models\dto\SampleGroupDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />

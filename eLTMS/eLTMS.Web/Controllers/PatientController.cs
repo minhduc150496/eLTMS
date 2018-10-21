@@ -67,12 +67,21 @@ namespace eLTMS.Web.Controllers
         public JsonResult PatientDetail(int id)
         {
             var result = _patientService.GetPatientById(id);
-            var supply = Mapper.Map<Patient, PatientDto>(result);
+            var patient = Mapper.Map<Patient, PatientDto>(result);
             return Json(new
             {
                 sucess = true,
-                data = supply
+                data = patient
             }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult DeletePatient(int patientId)
+        {
+            var result = _patientService.Delete(patientId);
+            return Json(new
+            {
+                success = result
+            });
         }
     }
 }

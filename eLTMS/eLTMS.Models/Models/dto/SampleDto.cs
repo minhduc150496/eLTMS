@@ -20,5 +20,8 @@ namespace eLTMS.Models.Models.dto
 
         public double CloseTime { get; set; }
 
+        public int? SampleGroupId { get; set; } // SampleGroupID
+        public string Description { get; set; } // Description (length: 500)
+        public bool? IsDeleted { get; set; } // IsDeleted
     }
 }

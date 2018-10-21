@@ -40,8 +40,8 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<SampleGetting> SampleGettings { get; set; } // SampleGetting
         public System.Data.Entity.DbSet<Supply> Supplies { get; set; } // Supply
         public System.Data.Entity.DbSet<SupplyType> SupplyTypes { get; set; } // SupplyType
-        public System.Data.Entity.DbSet<TestProfile> TestProfiles { get; set; } // TestProfile
-        public System.Data.Entity.DbSet<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping
+       // public System.Data.Entity.DbSet<TestProfile> TestProfiles { get; set; } // TestProfile
+//public System.Data.Entity.DbSet<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

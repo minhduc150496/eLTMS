@@ -11,33 +11,27 @@ var homeController = {
 
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
-            var accountId = parseInt($('#txtAccountId').val());
             var name = $('#txtName').val();
-            var gender = $('#ddlGender').val();
-            var patientId = parseInt($('#txtPatientId').val());
-            var phone = $('#txtPhoneNumber').val();
-            var homeAddress = $('#txtHomeAddress').val();
-            var companyAddress = $('#txtCompanyAddress').val();
-            var date = '06-10-2018';
+            var type = parseInt($('#ddlType').val());
+            var labTestId = parseInt($('#txtLabTestId').val());
+            var price = parseInt($('#txtPrice').val());
+            var description = $('#txtDescription').val();
             var isDeleted = "False";
-            var patient = {
-                PatientId: patientId,
-                PatientCode: code,
-                AccountId: accountId   ,
-                FullName: name,
-                Gender: gender,
-                DateOfBirth: date,
-                PhoneNumber: phone,
-                HomeAddress: homeAddress,
-                CompanyAddress: companyAddress,
+            var labTest = {
+                LabTestId: labTestId,
+                LabTestCode: code,
+                LabTestName: name,
+                SampleId: type,
+                Price: price,
+                Description: description,
                 IsDeleted: isDeleted
             }
-            if (patient.PatientId == 0) {
+            if (labTest.LabTestId == 0) {
                 $.ajax({
-                    url: '/Patient/AddPatient',
+                    url: '/LabTest/AddLabTest',
                     type: 'Post',
                     dataType: 'json',
-                    data: patient,
+                    data: labTest,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -54,10 +48,10 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/Patient/UpdatePatient',
+                    url: '/LabTest/UpdateLabTest',
                     type: 'Post',
                     dataType: 'json',
-                    data: patient,
+                    data: labTest,
                     success: function (res) {
                         if (!res.sucess) {
                            
@@ -79,12 +73,27 @@ var homeController = {
 
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới bệnh nhân');
+            $('#lblPopupTitle').text('Thêm mới dịch vụ xét nghiệm');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
-
-       
+        $('#btnAddNewSampleGroup').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Thêm mới nhóm xét nghiệm');
+            homeController.resetForm();
+            $('#myModal2').modal('show');
+        });
+        $('#btnAddNewSample').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Thêm mới xét nghiệm');
+            homeController.resetForm();
+            $('#myModal3').modal('hide');
+            $('#myModal1').modal('show');
+        });
+        $('#btnViewSample').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Danh sách các loại xét nghiệm');
+            homeController.resetForm();
+            $('#myModal3').modal('show');
+            homeController.loadDataSample(true);
+        });
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
@@ -94,7 +103,7 @@ var homeController = {
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
+            $('#lblPopupTitle').text('Cập nhật xét nghiệm');
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);
@@ -102,16 +111,16 @@ var homeController = {
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deletePatient(id);
+            homeController.delete(id);
             
         });
 
     },
-    deletePatient: function (id) {
+    delete: function (id) {
         $.ajax({
-            url: '/Patient/DeletePatient',
+            url: '/LabTest/DeleteLabTest',
             data: {
-                patientId: id
+                id: id
             },
             type: 'POST',
             dataType: 'json',
@@ -131,7 +140,7 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/Patient/PatientDetail',
+            url: '/LabTest/LabTestDetail',
             data: {
                 id: id
             },
@@ -140,14 +149,12 @@ var homeController = {
             success: function (response) {
                 if (response.sucess) {
                     var data = response.data;
-                    $('#txtPatientId').val(data.PatientId);
-                    $('#txtAccountId').val(data.AccountId);
-                    $('#txtCode').val(data.PatientCode);
-                    $('#txtName').val(data.FullName);
-                    $('#ddlGender').val(data.Gender).change();
-                    $('#txtPhoneNumber').val(data.PhoneNumber.trim());
-                    $('#txtHomeAddress').val(data.HomeAddress);
-                    $('#txtCompanyAddress').val(data.CompanyAddress);
+                    $('#txtLabTestId').val(data.LabTestId);
+                    $('#txtCode').val(data.LabTestCode);
+                    $('#txtName').val(data.LabTestName);
+                    $('#ddlType').val(data.SampleId).change();
+                    $('#txtPrice').val(data.Price);
+                    $('#txtDescription').val(data.Description);
                    
                 }
                 else {
@@ -163,21 +170,19 @@ var homeController = {
         
     },
     resetForm: function () {
-        $('#txtPatientId').val('0');
+        $('#txtLabTestId').val('0');
         $('#txtCode').val('');
-        $('#txtAccountId').val('');
         $('#txtName').val('');
-        $('#ddlGender').val('').change();
-        $('#txtPhoneNumber').val('');
-        $('#txtHomeAddress').val('');
-        $('#txtCompanyAddress').val('');
+        $('#ddlType').val('').change();
+        $('#txtPrice').val('');
+        $('#txtDescription').val('');
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Patient/GetAllPatients',
+            url: '/LabTest/GetAllLabTests',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, phoneNumber: $('#txtSearch').val() },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, code: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -185,20 +190,47 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            PatientId: item.PatientId,
-                            PatientCode: item.PatientCode,
-                            FullName: item.FullName,
-                            PhoneNumber: item.PhoneNumber,
-                            HomeAddress: item.HomeAddress,
-                           // Unit: item.Unit,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
-                           // Note: item.Note,
-
+                            LabTestId: item.LabTestId,
+                            Code: item.LabTestCode,
+                            Name: item.LabTestName,
+                            Type: item.SampleId,
+                            Price: item.Price,
+                            Description: item.Description,
                         });
 
                     });
                     console.log(html);
                     $('#tblData').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadData();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataSample: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllSamples',
+            type: 'GET',
+            dataType: 'json',
+            data: {  },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataSample-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            SampleId: item.SampleId,
+                            Name: item.SampleName,
+                            Type: item.SampleGroupId,
+                            Description: item.Description,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblDataSample').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadData();
                     }, changePageSize);

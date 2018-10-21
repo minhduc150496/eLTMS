@@ -190,6 +190,7 @@
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="Global.asax.cs">
@@ -7527,6 +7528,7 @@
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Scripts\customScript\employee.js" />
+    <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
     <Content Include="Areas\UserWeb\Views\web.config" />
@@ -7569,6 +7571,7 @@
     <Content Include="templates\ImportPaperTemplate.xlsx" />
     <Content Include="Views\Employee\Employees.cshtml" />
     <Content Include="Views\WareHouse\Inventory.cshtml" />
+    <Content Include="Views\LabTest\LabTests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -33,7 +33,7 @@ namespace eLTMS.BusinessLogic.Services
         public List<Sample> GetAll()
         {
             var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
-            var sample = repo.GetAllSamples();
+            var sample = repo.GetAllSample();
             return sample;
         }
 
