@@ -55,6 +55,7 @@ namespace eLTMS.BusinessLogic.Services
                 employee.HomeAddress = employeedto.HomeAddress;
                 employee.StartDate = employeedto.StartDate;
                 account.Role = employeedto.Account.Role;
+                employee.AccountId = employee.AccountId;
                 repo.Update(employee);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any()) return false;
