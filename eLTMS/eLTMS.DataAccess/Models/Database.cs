@@ -33,119 +33,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eLTMS.DataAccess.Models
 {
-
+  
     using System.Linq;
 
     #region POCO classes
-    public interface IDbModel
-    {
-        string CreatedBy { get; set; } // CreatedBy (length: 50)
-        System.DateTime CreatedDate { get; set; } // CreatedDate
-        string UpdatedBy { get; set; } // UpdatedBy (length: 50)
-        System.DateTime UpdatedDate { get; set; } // UpdatedDate
-    }
+     public interface IDbModel 
+     {
+		string CreatedBy { get; set; } // CreatedBy (length: 50)
+		System.DateTime CreatedDate { get; set; } // CreatedDate
+		string UpdatedBy { get; set; } // UpdatedBy (length: 50)
+		System.DateTime UpdatedDate { get; set; } // UpdatedDate
+	 } 
 
-    //public interface ISoftDeletable
-    //{
-    //    bool? IsActive { get; set; }
-        
-    //}
 
-    // TestProfileLabTestMapping
-    [Table("TestProfileLabTestMapping", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class TestProfileLabTestMapping
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"TestProfileLabTestMappingID", Order = 1, TypeName = "int")]
-        [Index(@"PK__TestProf__9023CE1CD12A897A", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Test profile lab test mapping ID")]
-        public int TestProfileLabTestMappingId { get; set; } // TestProfileLabTestMappingID (Primary key)
-
-        [Column(@"TestProfileID", Order = 2, TypeName = "int")]
-        [Display(Name = "Test profile ID")]
-        public int? TestProfileId { get; set; } // TestProfileID
-
-        [Column(@"LabTestID", Order = 3, TypeName = "int")]
-        [Display(Name = "Lab test ID")]
-        public int? LabTestId { get; set; } // LabTestID
-
-        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent LabTest pointed by [TestProfileLabTestMapping].([LabTestId]) (FK__TestProfi__LabTe__2645B050)
-        /// </summary>
-        [ForeignKey("LabTestId")] public virtual LabTest LabTest { get; set; } // FK__TestProfi__LabTe__2645B050
-
-        /// <summary>
-        /// Parent TestProfile pointed by [TestProfileLabTestMapping].([TestProfileId]) (FK__TestProfi__TestP__1EA48E88)
-        /// </summary>
-        [ForeignKey("TestProfileId")] public virtual TestProfile TestProfile { get; set; } // FK__TestProfi__TestP__1EA48E88
-
-        public TestProfileLabTestMapping()
-        {
-            IsDeleted = false;
-        }
-    }
-
-    // TestProfile
-    [Table("TestProfile", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class TestProfile 
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"TestProfileID", Order = 1, TypeName = "int")]
-        [Index(@"PK__TestProf__2373011C9DA391CE", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Test profile ID")]
-        public int TestProfileId { get; set; } // TestProfileID (Primary key)
-
-        [Column(@"TestProfileName", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(200)]
-        [StringLength(200)]
-        [Display(Name = "Test profile name")]
-        public string TestProfileName { get; set; } // TestProfileName (length: 200)
-
-        [Column(@"ParentProfileID", Order = 3, TypeName = "int")]
-        [Display(Name = "Parent profile ID")]
-        public int? ParentProfileId { get; set; } // ParentProfileID
-
-        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Reverse navigation
-
-        /// <summary>
-        /// Child TestProfiles where [TestProfile].[ParentProfileID] point to this entity (FK__TestProfi__Paren__1CBC4616)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<TestProfile> TestProfiles { get; set; } // TestProfile.FK__TestProfi__Paren__1CBC4616
-        /// <summary>
-        /// Child TestProfileLabTestMappings where [TestProfileLabTestMapping].[TestProfileID] point to this entity (FK__TestProfi__TestP__1EA48E88)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping.FK__TestProfi__TestP__1EA48E88
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent TestProfile pointed by [TestProfile].([ParentProfileId]) (FK__TestProfi__Paren__1CBC4616)
-        /// </summary>
-        [ForeignKey("ParentProfileId")] public virtual TestProfile ParentProfile { get; set; } // FK__TestProfi__Paren__1CBC4616
-
-        public TestProfile()
-        {
-            IsDeleted = false;
-            TestProfiles = new System.Collections.Generic.List<TestProfile>();
-            TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
-        }
-    }
 
     // database_firewall_rules
     [Table("database_firewall_rules", Schema = "sys")]
@@ -306,8 +206,8 @@ namespace eLTMS.DataAccess.Models
         public Supply()
         {
             IsDeleted = false;
-            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
             ImportPaperDetails = new System.Collections.Generic.List<ImportPaperDetail>();
+            ExportPaperDetails = new System.Collections.Generic.List<ExportPaperDetail>();
         }
     }
 
@@ -334,13 +234,13 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Getting duration")]
         public int? GettingDuration { get; set; } // GettingDuration
 
-        [Column(@"OpenTime", Order = 4, TypeName = "real")]
+        [Column(@"OpenTime", Order = 4, TypeName = "int")]
         [Display(Name = "Open time")]
-        public float? OpenTime { get; set; } // OpenTime
+        public int? OpenTime { get; set; } // OpenTime
 
-        [Column(@"CloseTime", Order = 5, TypeName = "real")]
+        [Column(@"CloseTime", Order = 5, TypeName = "int")]
         [Display(Name = "Close time")]
-        public float? CloseTime { get; set; } // CloseTime
+        public int? CloseTime { get; set; } // CloseTime
 
         // Reverse navigation
 
@@ -472,8 +372,8 @@ namespace eLTMS.DataAccess.Models
         public Sample()
         {
             IsDeleted = false;
-            LabTests = new System.Collections.Generic.List<LabTest>();
             SampleGettings = new System.Collections.Generic.List<SampleGetting>();
+            LabTests = new System.Collections.Generic.List<LabTest>();
         }
     }
 
@@ -691,7 +591,7 @@ namespace eLTMS.DataAccess.Models
     // LabTest
     [Table("LabTest", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public partial class LabTest 
+    public class LabTest
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"LabTestID", Order = 1, TypeName = "int")]
@@ -701,27 +601,33 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Lab test ID")]
         public int LabTestId { get; set; } // LabTestID (Primary key)
 
-        [Column(@"LabTestName", Order = 2, TypeName = "nvarchar")]
+        [Column(@"LabTestCode", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Lab test code")]
+        public string LabTestCode { get; set; } // LabTestCode (length: 20)
+
+        [Column(@"LabTestName", Order = 3, TypeName = "nvarchar")]
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "Lab test name")]
         public string LabTestName { get; set; } // LabTestName (length: 100)
 
-        [Column(@"Description", Order = 3, TypeName = "nvarchar")]
+        [Column(@"Description", Order = 4, TypeName = "nvarchar")]
         [MaxLength(500)]
         [StringLength(500)]
         [Display(Name = "Description")]
         public string Description { get; set; } // Description (length: 500)
 
-        [Column(@"Price", Order = 4, TypeName = "int")]
+        [Column(@"Price", Order = 5, TypeName = "int")]
         [Display(Name = "Price")]
         public int? Price { get; set; } // Price
 
-        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"SampleID", Order = 6, TypeName = "int")]
+        [Column(@"SampleID", Order = 7, TypeName = "int")]
         [Display(Name = "Sample ID")]
         public int? SampleId { get; set; } // SampleID
 
@@ -731,10 +637,6 @@ namespace eLTMS.DataAccess.Models
         /// Child LabTestings where [LabTesting].[LabTestID] point to this entity (FK_LabTesting_LabTest)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<LabTesting> LabTestings { get; set; } // LabTesting.FK_LabTesting_LabTest
-        /// <summary>
-        /// Child TestProfileLabTestMappings where [TestProfileLabTestMapping].[LabTestID] point to this entity (FK__TestProfi__LabTe__2645B050)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<TestProfileLabTestMapping> TestProfileLabTestMappings { get; set; } // TestProfileLabTestMapping.FK__TestProfi__LabTe__2645B050
 
         // Foreign keys
 
@@ -746,7 +648,6 @@ namespace eLTMS.DataAccess.Models
         public LabTest()
         {
             IsDeleted = false;
-            TestProfileLabTestMappings = new System.Collections.Generic.List<TestProfileLabTestMapping>();
             LabTestings = new System.Collections.Generic.List<LabTesting>();
         }
     }
@@ -1174,7 +1075,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Export paper code")]
         public string ExportPaperCode { get; set; } // ExportPaperCode (length: 20)
 
-        [Column(@"CreateDate", Order = 3, TypeName = "date")]
+        [Column(@"CreateDate", Order = 3, TypeName = "datetime")]
         [Display(Name = "Create date")]
         public System.DateTime? CreateDate { get; set; } // CreateDate
 
@@ -1186,11 +1087,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Note")]
         public string Note { get; set; } // Note
 
-        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
-        [MaxLength(10)]
-        [StringLength(10)]
+        [Column(@"Status", Order = 6, TypeName = "bit")]
         [Display(Name = "Status")]
-        public string Status { get; set; } // Status (length: 10)
+        public bool? Status { get; set; } // Status
 
         [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
@@ -1291,8 +1190,8 @@ namespace eLTMS.DataAccess.Models
         public Employee()
         {
             IsDeleted = false;
-            Appointments = new System.Collections.Generic.List<Appointment>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            Appointments = new System.Collections.Generic.List<Appointment>();
         }
     }
 
@@ -1452,8 +1351,8 @@ namespace eLTMS.DataAccess.Models
         public Account()
         {
             IsDeleted = false;
-            Employees = new System.Collections.Generic.List<Employee>();
             Patients = new System.Collections.Generic.List<Patient>();
+            Employees = new System.Collections.Generic.List<Employee>();
         }
     }
 
@@ -1713,6 +1612,7 @@ namespace eLTMS.DataAccess.Models
 
         public LabTestConfiguration(string schema)
         {
+            Property(x => x.LabTestCode).IsOptional();
             Property(x => x.LabTestName).IsOptional();
             Property(x => x.Description).IsOptional();
             Property(x => x.Price).IsOptional();
@@ -1897,42 +1797,6 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.StartIpAddress).IsUnicode(false);
             Property(x => x.EndIpAddress).IsUnicode(false);
-        }
-    }
-
-    // TestProfile
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class TestProfileConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<TestProfile>
-    {
-        public TestProfileConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public TestProfileConfiguration(string schema)
-        {
-            Property(x => x.TestProfileName).IsOptional();
-            Property(x => x.ParentProfileId).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-
-        }
-    }
-
-    // TestProfileLabTestMapping
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class TestProfileLabTestMappingConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<TestProfileLabTestMapping>
-    {
-        public TestProfileLabTestMappingConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public TestProfileLabTestMappingConfiguration(string schema)
-        {
-            Property(x => x.TestProfileId).IsOptional();
-            Property(x => x.LabTestId).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-
         }
     }
 

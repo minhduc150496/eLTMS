@@ -33,13 +33,14 @@ $(document).ready(function () {
                 // get date, start time & finish time
                 var sampleId = $(el_Sample).data("sampleid");
                 var sampleDuration = $(el_Sample).data("sample-duration");
-                sampleDuration = parseFloat(sampleDuration);
+                sampleDuration = parseInt(sampleDuration);
                 var startTime = $(el_Sample).find(":selected").val(); // double
-                startTime = parseFloat(startTime);
-                var finishTime = startTime + sampleDuration / 60;
+                startTime = parseInt(startTime);
+                var finishTime = startTime + sampleDuration;
+                // format to 07:00
+                startTime = Utils.formatTimeShort(startTime);
+                finishTime = Utils.formatTimeShort(finishTime);
                 var gettingDate = $(el_Sample).find("*[type='date']").val();
-                startTime = Utils.formatTime(startTime);
-                finishTime = Utils.formatTime(finishTime);// + finishTime;
                 // assign to sampleGetting Dto
                 var sampleGettingDto = {
                     SampleId: sampleId,
@@ -90,7 +91,7 @@ $(document).ready(function () {
             });
             //$("#processing-modal").modal("hide");
             //$("#processing-modal").modal("hide");
-            console.log('hide called');
+            //console.log('hide called');
         });
     });
 
@@ -176,11 +177,12 @@ function renderStep2Html(sampleDtos) {
             var sToday = "" + year + "-" + month + "-" + date;
             sampleHtml += '<input type="date" value="' + sToday + '" />\n';
             sampleHtml += '<select style="overflow-y: scroll">\n';
-            var sampleDuration = sampleDto.SampleDuration / 60;
+            sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
+            var sampleDuration = sampleDto.SampleDuration;
             for (var time = sampleDto.OpenTime; time + sampleDuration <= sampleDto.CloseTime; time += 2 * sampleDuration) {
                 // print slots for sample
-                var startTime = Utils.formatTime(time);
-                var finishTime = Utils.formatTime(time + sampleDuration);
+                var startTime = Utils.formatTimeShort(time);
+                var finishTime = Utils.formatTimeShort(time + sampleDuration);
                 sampleHtml += '<option value="' + time + '">' +
                     startTime + ' - ' + finishTime +
                     '</option>\n';
@@ -193,20 +195,31 @@ function renderStep2Html(sampleDtos) {
     // end rendering step 2
 }
 
-Utils.formatTime = function (time) {
-    var hour = Math.trunc(time);
-    var min = (time - hour) * 60;
-    min = Math.round(min);
-    if (min == 60) { // khử trường hợp: 7:60
-        hour++;
-        min = 0;
-    }
+Utils.formatTimeShort = function (time) {
+    var hour = Math.floor(time / 60 / 60);
+    var min = Math.floor(time / 60) % 60;
     if (hour < 10) {
-        hour = '0' + hour;
+        hour = "0" + hour;
     }
     if (min < 10) {
-        min = '0' + min;
+        min = "0" + min;
     }
     return hour + ':' + min;
+} // end function
+
+Utils.formatTimeShort = function (time) {
+    var hour = Math.floor(time / 60 / 60);
+    var min = Math.floor(time / 60) % 60;
+    var sec = time % 60;
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    if (min < 10) {
+        min = "0" + min;
+    }
+    if (sec < 10) {
+        sec = "0" + sec;
+    }
+    return hour + ':' + min + ":" + sec;
 } // end function
 

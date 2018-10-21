@@ -16,9 +16,9 @@ namespace eLTMS.Models.Models.dto
 
         public int SampleDuration { get; set; }
 
-        public double OpenTime { get; set; }
+        public int OpenTime { get; set; }
 
-        public double CloseTime { get; set; }
+        public int CloseTime { get; set; }
 
     }
 }
