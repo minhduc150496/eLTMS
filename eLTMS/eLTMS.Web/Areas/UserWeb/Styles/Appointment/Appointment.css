@@ -1,0 +1,89 @@
+﻿.box-loader {
+    display: block;
+    text-align: center;
+}
+
+.img-loader {
+    display: inline-block;
+}
+
+
+.step-box {
+    background: white;
+    padding: 35px 25px;
+}
+
+.current_appointment_area {
+    padding-top: 35px;
+    color: black;
+}
+
+    .current_appointment_area .step-box {
+        margin: 0 auto;
+        width: 750px;
+        padding: 15px 70px;
+        border: 1px solid gray;
+    }
+
+    .current_appointment_area h2 {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+
+        .current_appointment_area h2.first_h2 {
+            margin-top: 40px;
+        }
+
+    .current_appointment_area h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .current_appointment_area em {
+        font-weight: bold;
+        color: blue;
+    }
+
+    .current_appointment_area table {
+        margin: 0 auto 80px;
+    }
+
+        .current_appointment_area table th {
+            text-align: center;
+        }
+
+        .current_appointment_area table th,
+        .current_appointment_area table td {
+            border: 1px solid lightgray;
+        }
+
+        .current_appointment_area table th,
+        .current_appointment_area table td {
+            padding: 0 15px;
+        }
+
+            .current_appointment_area table td:nth-child(1),
+            .current_appointment_area table td:nth-child(3) {
+                text-align: right;
+            }
+
+    .current_appointment_area .button-box {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+        .current_appointment_area .button-box button {
+            display: inline-block;
+        }
+
+    .current_appointment_area .edit_btn {
+        background: orange;
+    }
+
+    .current_appointment_area .cancel_btn {
+        background: orangered;
+    }

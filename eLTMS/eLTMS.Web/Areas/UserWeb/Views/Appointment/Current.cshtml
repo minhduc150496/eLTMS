@@ -1,0 +1,169 @@
+﻿@section styles {
+    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
+}
+
+<!-- breadcroumb Area Start-->
+<div class="breadvroumb_area">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h1>Lịch hẹn của bạn</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcroumb Area End-->
+<!-- appoinment Page Start-->
+<div class="appoinment_form_area current_appointment_area p100">
+    <div class="container">
+        <div class="step-box">
+            <div class="button-box">
+                <a href="/UserWeb/Appointment/Edit">
+                    <button id="btn-next" type="button" class="custom_btn edit_btn">Chỉnh sửa</button>
+                </a>
+                <button id="btn-next" type="button" class="custom_btn cancel_btn">Hủy</button>
+            </div>
+            <h2 class="first_h2">
+                Thời gian lấy mẫu xét nghiệm
+            </h2>
+            <h3>1. Lấy mẫu máu:</h3>
+            <p>
+                - Ngày: <em>22-09-2018</em>
+                <br />
+                - Giờ: <em>4:40 - 4:50</em>
+            </p>
+            <h3>2. Lấy mẫu nước tiểu:</h3>
+            <p>
+                - Ngày: <em>22-09-2018</em>
+                <br />
+                - Giờ: <em>4:40 - 4:50</em>
+            </p>
+            <h3>3. Lấy mẫu tế bào:</h3>
+            <p>
+                - Ngày: <em>22-09-2018</em>
+                <br />
+                - Giờ: <em>4:40 - 4:50</em>
+            </p>
+
+            <h2>
+                Phí xét nghiệm
+            </h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stt</th>
+                        <th>Loại xét nghiệm</th>
+                        <th>Giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td><b>Máu</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Chức năng đông máu toàn bộ</td>
+                        <td>23.000 đ</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Anti HBsAg định lượng</td>
+                        <td>55.000 đ</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Nhóm máu Rhesus</td>
+                        <td>70.000 đ</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><b>Nước tiểu</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Anti HBc</td>
+                        <td>170.000 đ</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Anti HBc</td>
+                        <td>170.000 đ</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><b>TỔNG CỘNG</b></td>
+                        <td><b>1.150.000 đ</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="button-box">
+                <a href="/UserWeb/Appointment/Edit">
+                    <button id="btn-next" type="button" class="custom_btn edit_btn">Chỉnh sửa</button>
+                </a>
+                <button id="btn-next" type="button" class="custom_btn cancel_btn">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- appoinment Page End-->
+<!-- Modal -->
+<div id="success-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center">Đặt lịch thành công!</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+<div id="fail-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center">
+                    Đặt lịch chưa thành công!
+                    Xin quý khách vui lòng thử lại.
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+<div id="processing-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box-loader">
+                    <img class="img-loader" src="~/Areas/UserWeb/Images/color-dots-loader.gif" />
+                </div>
+                <h3 class="text text-center">
+                    Hệ thống đang xử lí.<br />
+                    Xin quý khách vui lòng chờ trong giây lát...
+                </h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Areas/UserWeb/Scripts/Appointment/Create.js"></script>
+}

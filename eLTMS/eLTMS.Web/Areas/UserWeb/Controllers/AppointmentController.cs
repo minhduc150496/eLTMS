@@ -20,10 +20,10 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             return View("Create", "_Layout");
         }
 
-        // GET: UserWeb/Appointment/NewAppointments
-        public ActionResult NewAppointments()
+        // GET: UserWeb/Appointment/Current
+        public ActionResult Current()
         {
-            return View("NewAppointments", "_Layout");
+            return View("Current", "_Layout");
         }
 
         // GET: UserWeb/Appointment/History

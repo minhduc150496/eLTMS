@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 
@@ -10,38 +10,36 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Medic Lab Saigon</title>
     <!-- === Animation css=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
     <!-- === Bootstrap=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- === owlcarousel=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <!-- === matarial icon=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="assets/css/material-design-iconic-font.min.css">
     <!-- === matarial icon=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/slicknav.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.min.css">
     <!-- === matarial icon=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
     <!-- === owlcarousel=== -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/style.css">
+    <link rel="stylesheet" href="style.css">
     <!-- === responsive css === -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
     <!-- === prety checkbox css === -->
-    @*<link rel="stylesheet" href="~/Areas/UserWeb/Assets/plugins/pretty-checkbox/pretty-checkbox.min.css">*@
     <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
     <!-- === customized css for Layout (Master Page) === -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Home/Layout.css">
+    <link rel="stylesheet" href="assets/Layout.css">
     <!-- === customized css for Index Page === -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Home/Index.css">
-    @RenderSection("styles", required: false)
+    <link rel="stylesheet" href="assets/Create.css">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 
-<body>
+    <body>
     <div class="preloader">
-        <img src="~/Areas/UserWeb/Assets/img/preloader.gif" alt="">
+        <img src="assets/img/preloader.gif" alt="">
     </div>
     <!-- header Area Start-->
     <header>
@@ -67,7 +65,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-6">
                         <a href="index-2.html" class="site_logo">
-                            <img src="~/Areas/UserWeb/Images/logo.JPG" alt="">
+                            <img src="assets/my-img/logo.JPG" alt="">
                         </a>
                     </div>
                     <div class="col-lg-10 text-center col-6">
@@ -75,15 +73,13 @@
                             <ul class="main_menu">
                                 <li><a href="index-2.html">Trang chủ</a></li>
                                 <li><a href="about.html">Về chúng tôi</a></li>
-                                <li>
-                                    <a href="service.html">Dịch vụ</a>
+                                <li><a href="service.html">Dịch vụ</a>
                                     <ul>
                                         <li><a href="service.html">Xét nghiệm tổng quát</a></li>
                                         <li><a href="service_details.html">Xét nghiệm sàng lọc<br> trước sinh</a></li>
                                         <li><a href="service_details.html">Xét nghiệm ADN</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/UserWeb/Appointment/Create">Đặt lịch hẹn</a></li>
                                 <li><a href="contact.html">Liên hệ</a></li>
                             </ul>
                             <div class="login_area">
@@ -104,27 +100,142 @@
     </header>
     <!-- header Area end-->
 
-    @RenderBody()
+    <!-- breadcroumb Area Start-->
+    <div class="breadvroumb_area">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>Đặt lịch xét nghiệm</h1>
+                    <div class="breadcroumb_link">
+                        <a href="index-2.html">Home </a>/ About us
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcroumb Area End-->
 
+
+    <!-- appoinment Page Start-->
+    <div class="appoinment_form_area p100">
+        <div class="container">
+            <div id="step-1">
+                <h2>
+                    <b>Bước 1/2: Chọn loại xét nghiệm:</b>
+                </h2>
+                <div id="step-1-form">
+                    <h3>1. Máu</h3>
+                    <div data-sampleid="1">
+                        <input type="checkbox" data-labtestid="1" />
+                        Ct Máu
+                        <br>
+                        <input type="checkbox" data-labtestid="2" />
+                        VSS
+                        <br>
+                        <input type="checkbox" data-labtestid="3" />
+                        Tiểu cầu, độ tập trung
+                    </div>
+                </div>
+
+                <br><br>
+                <button id="btn-next" type="button" class="custom_btn">Sang bước 2</button>
+            </div> <!-- end step 1 -->
+            <div id="step-2">
+                <h2>
+                    <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
+                </h2>
+                <div id="step-2-form">
+                        <h3>1. Máu</h3>
+                        <div data-sampleid="1" data-sample-duration="10">
+                        <input type="date" />
+                        <select style="overflow-y: scroll">
+                            <option value="7:00">7:00 - 7:15</option>
+                            <option value="7:30">7:30 - 7:45</option>
+                            <option value="8:00">8:00 - 8:15</option>
+                        </select>
+                        </div>
+                </div>
+
+                <br><br>
+                <button id="btn-prev" type="button" class="custom_btn">Về bước 1</button>
+                <button id="btn-submit" type="button" class="custom_btn">Đặt lịch</button>
+            </div>
+        </div>
+    </div>
+    <!-- appoinment Page End-->
+    <!-- Modal -->
+    <div id="success-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="text text-center">Đặt lịch thành công!</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="fail-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="text text-center">
+                        Đặt lịch chưa thành công!
+                        Xin quý khách vui lòng thử lại.
+                    </h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="processing-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="box-loader">
+                        <img class="img-loader" src="~/Areas/UserWeb/Images/color-dots-loader.gif" />
+                    </div>
+                    <h3 class="text text-center">
+                        Hệ thống đang xử lí.<br />
+                        Xin quý khách vui lòng chờ trong giây lát...
+                    </h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <!-- Footer Area Start-->
-    <footer style="background-image: url(/Areas/UserWeb/Assets/img/footer_bg.jpg);">
+    <footer style="background-image: url(assets/img/footer_bg.jpg);">
         <div class="footer_area">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 col-lg-3 col-12">
                         <div class="footer_content_box">
-                            <div class="footer_logo">
-                                <img src="~/Areas/UserWeb/Images/logo.JPG" alt="">
-                            </div>
-                            <p>
-                                Website thông tin Trung Tâm Y Khoa MEDIC - Tp Hồ Chí Minh - Giám đốc: BS. PHAN THANH HẢI
-                            </p>
-                            <ul class="footer_contact_inf">
-                                <li><a href="tel:0621099222"><i class="zmdi zmdi-phone"></i> ĐT: 84-28-39270284</a></li>
-                                <li><a href="mailto:huel.simone@hotmail.com"><i class="zmdi zmdi-email"></i> Email: hoahao254@medic.com.vn</a></li>
-                                <li><i class="zmdi zmdi-pin"></i><span>Địa chỉ: 254 Hòa Hảo, Quận 10, TP Hồ Chí Minh</span></li>
-                            </ul>
+                        <div class="footer_logo">
+                            <img src="assets/my-img/logo.JPG" alt="">
+                        </div>
+                        <p>
+                            Website thông tin Trung Tâm Y Khoa MEDIC - Tp Hồ Chí Minh - Giám đốc: BS. PHAN THANH HẢI
+                        </p>
+                        <ul class="footer_contact_inf">
+                            <li><a href="tel:0621099222"><i class="zmdi zmdi-phone"></i> ĐT: 84-28-39270284</a></li>
+                            <li><a href="mailto:huel.simone@hotmail.com"><i class="zmdi zmdi-email"></i> Email: hoahao254@medic.com.vn</a></li>
+                            <li><i class="zmdi zmdi-pin"></i><span>Địa chỉ: 254 Hòa Hảo, Quận 10, TP Hồ Chí Minh</span></li>
+                        </ul>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3 col-12">
@@ -170,8 +281,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <p>
-                            Bản quyền © 2018 thuộc về MEDIC. Thiết kế website bởi
+                        <p>Bản quyền © 2018 thuộc về MEDIC. Thiết kế website bởi 
                             <a href="#">eLTMS Team</a>
                         </p>
                     </div>
@@ -181,24 +291,23 @@
     </footer>
     <!-- Footer Area End-->
     <!-- === Jquery=== -->
-    <script src="~/Areas/UserWeb/Assets/js/jquery-2.1.4.min.js"></script>
+    <script src="assets/js/jquery-2.1.4.min.js"></script>
     <!-- === Jquery=== -->
-    <script src="~/Areas/UserWeb/Assets/js/popper.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
     <!-- === bootsrap=== -->
-    <script src="~/Areas/UserWeb/Assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
     <!-- === waypoint=== -->
-    <script src="~/Areas/UserWeb/Assets/js/waypoint.js"></script>
+    <script src="assets/js/waypoint.js"></script>
     <!-- === CounterUp=== -->
-    <script src="~/Areas/UserWeb/Assets/js/counterup.js"></script>
+    <script src="assets/js/counterup.js"></script>
     <!-- === owl-carousel=== -->
-    <script src="~/Areas/UserWeb/Assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
     <!-- === owl-carousel=== -->
-    <script src="~/Areas/UserWeb/Assets/js/jquery.slicknav.min.js"></script>
+    <script src="assets/js/jquery.slicknav.min.js"></script>
     <!-- === owl-carousel=== -->
-    <script src="~/Areas/UserWeb/Assets/js/jquery.nice-select.min.js"></script>
+    <script src="assets/js/jquery.nice-select.min.js"></script>
     <!-- === active js=== -->
-    <script src="~/Areas/UserWeb/Assets/js/active.js"></script>
-    @RenderSection("scripts", required: false)
+    <script src="assets/js/active.js"></script>
 </body>
 
 
