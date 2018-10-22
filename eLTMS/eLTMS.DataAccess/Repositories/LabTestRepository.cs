@@ -28,7 +28,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.LabTestCode.Contains(code) && x.IsDeleted == false)
-                //.Include(x => x.SupplyType)
+                .Include(x => x.Sample)
                 .ToList();
             return result;
         }

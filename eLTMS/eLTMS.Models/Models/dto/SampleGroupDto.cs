@@ -13,6 +13,6 @@ namespace eLTMS.Models.Models.dto
         public int? GettingDuration { get; set; } // GettingDuration
         public float? OpenTime { get; set; } // OpenTime
         public float? CloseTime { get; set; } // CloseTime
-
+        public bool? IsDeleted { get; set; } // IsDeleted
     }
 }

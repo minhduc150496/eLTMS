@@ -15,13 +15,15 @@ namespace eLTMS.Web.Controllers
     {
         //private readonly IExportPaperService _exportPaperService;
         private readonly ISampleService _sampleService;
+        private readonly ISampleGroupService _sampleGroupService;
         private readonly ILabTestService _labTestService;
 
         //private readonly IImportPaperService _importPaperService;
-        public LabTestController(ILabTestService labTestService, ISampleService sampleService)
+        public LabTestController(ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._sampleService = sampleService;
+            this._sampleGroupService = sampleGroupService;
         }
         public ActionResult Index()
         {
@@ -45,6 +47,21 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetAllSampleGroups(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _sampleGroupService.GetAll();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<SampleGroup>, IEnumerable<SampleGroupDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult GetAllLabTests(string code = "", int page = 1, int pageSize = 20)
         {
@@ -76,6 +93,24 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+        [HttpPost]
+        public JsonResult AddSample(Sample sample)
+        {
+            var result = _sampleService.AddSample(sample);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpPost]
+        public JsonResult AddSampleGroup(SampleGroup sample)
+        {
+            var result = _sampleGroupService.AddSampleGroup(sample);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
         [HttpGet]
         public JsonResult LabTestDetail(int id)
         {
@@ -91,6 +126,24 @@ namespace eLTMS.Web.Controllers
         public JsonResult DeleteLabTest(int id)
         {
             var result = _labTestService.Delete(id);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult DeleteSample(int id)
+        {
+            var result = _sampleService.Delete(id);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult DeleteSampleGroup(int id)
+        {
+            var result = _sampleGroupService.Delete(id);
             return Json(new
             {
                 success = result

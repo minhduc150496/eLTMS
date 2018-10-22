@@ -44,6 +44,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
                 .ForMember(dst => dst.Price, src => src.MapFrom(x => x.Price))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId));
 
 
@@ -53,6 +54,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.SampleGroupId, src => src.MapFrom(x => x.SampleGroupId))
                 .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.SampleGroupName, src => src.MapFrom(x => x.SampleGroup.GroupName))
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
 
 
@@ -61,6 +63,7 @@ namespace eLTMS.Web.Mapping
                 .ForMember(dst => dst.GroupName, src => src.MapFrom(x => x.GroupName))
                 .ForMember(dst => dst.GettingDuration, src => src.MapFrom(x => x.GettingDuration))
                 .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.OpenTime))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.CloseTime));
 
                 cfg.CreateMap<ImportPaper, ImportPaperDto>()

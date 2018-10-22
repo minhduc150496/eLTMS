@@ -35,7 +35,7 @@ namespace eLTMS.DataAccess.Repositories
            
             var result = DbSet.AsQueryable()
              .Where(x =>  x.IsDeleted == false)
-             //.Include(x => x.SupplyType)
+             .Include(x => x.SampleGroup)
              .ToList();
             return result;
 

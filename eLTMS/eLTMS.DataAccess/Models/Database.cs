@@ -234,13 +234,17 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Getting duration")]
         public int? GettingDuration { get; set; } // GettingDuration
 
-        [Column(@"OpenTime", Order = 4, TypeName = "real")]
+        [Column(@"OpenTime", Order = 4, TypeName = "int")]
         [Display(Name = "Open time")]
-        public float? OpenTime { get; set; } // OpenTime
+        public int? OpenTime { get; set; } // OpenTime
 
-        [Column(@"CloseTime", Order = 5, TypeName = "real")]
+        [Column(@"CloseTime", Order = 5, TypeName = "int")]
         [Display(Name = "Close time")]
-        public float? CloseTime { get; set; } // CloseTime
+        public int? CloseTime { get; set; } // CloseTime
+
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
 
         // Reverse navigation
 
@@ -1743,6 +1747,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.GettingDuration).IsOptional();
             Property(x => x.OpenTime).IsOptional();
             Property(x => x.CloseTime).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 

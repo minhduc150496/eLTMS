@@ -25,8 +25,8 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <button class="btn btn-success" id="btnAddNew">Thêm mới dịch vụ xét nghiệm</button>
-                    <button class="btn btn-success" id="btnAddNewSampleGroup">Thêm mới nhóm xét nghiệm</button>
-                    <button class="btn btn-success" id="btnViewSample">Loại Xét nghiệm</button>
+                    <button class="btn btn-success" id="btnViewSampleGroup">Nhóm xét nghiệm</button>
+                    <button class="btn btn-success" id="btnViewSample">Loại xét nghiệm</button>
                     <br />
                     <br />
 
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                  
+
 
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Tên xét nghiệm</label>
@@ -124,7 +124,7 @@
                             <input type="text" class="form-control" id="txtDescription" name="txtDescription">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
@@ -152,19 +152,19 @@
             <div class="modal-body">
                 <form class="form-horizontal" action="/action_page.php">
 
-                    <input type="hidden" class="form-control" id="txtLabTestId" name="txtLabTestId" value="0">
-                   
+
+
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Tên loại xét nghiệm</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtName" name="txtName">
+                            <input type="text" class="form-control" id="txtSampleName" name="txtSampleName">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="pwd">Nhóm xét nghiệm</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="ddlType">
+                            <select class="form-control" id="ddlSampleType">
                                 <option value="">
                                     ----- Chọn -----
                                 </option>
@@ -180,7 +180,7 @@
                                 <option value="4">
                                     Dịch
                                 </option>
-                             
+
                             </select>
                         </div>
                     </div>
@@ -188,13 +188,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Mô tả</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtDescription" name="txtDescription">
+                            <input type="text" class="form-control" id="txtSampleDescription" name="txtDescription">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
+                            <button type="button" id="btnSaveSample" class="btn btn-success">Lưu</button>
                         </div>
                     </div>
                 </form>
@@ -214,73 +214,34 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Thêm Mới Xét Nghiệm</h4>
+                <h4 class="modal-title" id="lblPopupTitle">Thêm Mới Loại Xét Nghiệm</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="/action_page.php">
-
-                    <input type="hidden" class="form-control" id="txtPatientId" name="txtPatientId" value="0">
+                <form class="form-horizontal">
+                   
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Mã bệnh nhân</label>
+                        <label class="control-label col-sm-2" for="email">Tên Nhóm xét nghiệm</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtCode" name="txtCode">
+                            <input type="text" class="form-control" id="txtGroupName" name="txtGroupName">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Account ID</label>
+                        <label class="control-label col-sm-2" for="email">Thời gian tiến hành</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Tên bệnh nhân</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtName" name="txtName">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="pwd">Giới tính</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" id="ddlGender">
-                                <option value="">
-                                    ----- Chọn -----
-                                </option>
-                                <option value="Male">
-                                    Nam
-                                </option>
-                                <option value="Female">
-                                    Nữ
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Ngày tháng năm sinh</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" value="06-10-2018" id="txtDate" readonly>
+                            <input type="number" class="form-control" id="txtTime" name="txtTime">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Số điện thoại</label>
+                        <label class="control-label col-sm-2" for="email">Bắt đầu</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtPhoneNumber" name="txtName">
+                            <input type="number" class="form-control" id="txtStart" name="txtStart">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Địa chỉ nhà</label>
+                        <label class="control-label col-sm-2" for="email">Kết thúc</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtHomeAddress" name="txtName">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Địa chỉ công ty</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtCompanyAddress" name="txtName">
+                            <input type="number" class="form-control" id="txtClose" name="txtClose">
                         </div>
                     </div>
 
@@ -288,7 +249,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
+                            <button type="button" id="btnSaveSampleGroup" class="btn btn-success">Lưu</button>
                         </div>
                     </div>
                 </form>
@@ -309,10 +270,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="lblPopupTitle">Danh sách các loại xét nghiệm</h4>
-            </div>
+            </div><br/>
             <button class="btn btn-success" id="btnAddNewSample">Thêm mới loại xét nghiệm</button>
             <div class="modal-body">
-                <form class="form-horizontal" action="/action_page.php">
+                <form class="form-horizontal">
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -334,6 +295,43 @@
 
     </div>
 </div>
+
+<div id="myModal4" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Danh sách các nhóm xét nghiệm</h4>
+            </div>
+            <br/>
+            <button class="btn btn-success" id="btnAddNewSampleGroup">Thêm mới nhóm xét nghiệm</button>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tên Nhóm xét nghiệm</th>
+                                <th>Thời Gian tiến hành lấy mẫu</th>
+                                <th>Bắt đầu</th>
+                                <th>Kết thúc</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblDataSampleGroup"></tbody>
+                    </table>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Code}}</td>
@@ -356,6 +354,18 @@
         <td>{{Description}}</td>
         <td>
             <button class="btn btn-danger btn-deleteSample" data-id="{{SampleId}}"><i class="fa fa-trash"></i></button>
+
+        </td>
+    </tr>
+</script>
+<script id="dataSampleGroup-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Name}}</td>
+        <td>{{Duration}}</td>
+        <td>{{Start}}</td>
+        <td>{{Close}}</td>
+        <td>
+            <button class="btn btn-danger btn-deleteSampleGroup" data-id="{{SampleGroupId}}"><i class="fa fa-trash"></i></button>
 
         </td>
     </tr>

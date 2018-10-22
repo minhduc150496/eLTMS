@@ -14,6 +14,7 @@ namespace eLTMS.Models.Models.dto
         public bool? IsDeleted { get; set; } // IsDeleted
         public int? SampleId { get; set; } // SampleID
         public string LabTestCode { get; set; } // LabTestCode (length: 20)
+        public string SampleName { get; set; }
 
     }
 }

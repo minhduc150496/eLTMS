@@ -11,7 +11,8 @@ namespace eLTMS.Models.Models.dto
         public int SampleId { get; set; }
 
         public string SampleName { get; set; }
-        
+        public string SampleGroupName { get; set; }
+
         public List<LabTestDto> LabTests { get; set; }
 
         public int SampleDuration { get; set; }

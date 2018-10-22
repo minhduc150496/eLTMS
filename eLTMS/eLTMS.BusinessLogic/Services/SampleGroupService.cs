@@ -9,44 +9,44 @@ using System.Threading.Tasks;
 
 namespace eLTMS.BusinessLogic.Services
 {
-    public interface ISampleService
+    public interface ISampleGroupService
     {
-        List<Sample> GetAll();
+        List<SampleGroup> GetAll();
         //bool Create(LabTest newTesting);
         //bool CreateMany(List<LabTest> newTestings);
         //bool Update(LabTest testing);
         bool Delete(int id);
-        bool AddSample(Sample sample);
-        Sample GetSampleById(int id);
+        bool AddSampleGroup(SampleGroup sample);
+        SampleGroup GetSampleGroupById(int id);
     }
-    public class SampleService: ISampleService
+    public class SampleGroupService : ISampleGroupService
     {
         private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
 
-        public SampleService(IRepositoryHelper repositoryHelper)
+        public SampleGroupService(IRepositoryHelper repositoryHelper)
         {
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public List<Sample> GetAll()
+        public List<SampleGroup> GetAll()
         {
-            var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
-            var sample = repo.GetAllSample();
+            var repo = this.RepositoryHelper.GetRepository<ISampleGroupRepository>(UnitOfWork);
+            var sample = repo.GetAllSampleGroup();
             return sample;
         }
 
-        public Sample GetSampleById(int id)
+        public SampleGroup GetSampleGroupById(int id)
         {
-            var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var repo = this.RepositoryHelper.GetRepository<ISampleGroupRepository>(UnitOfWork);
             var sample = repo.GetSampleById(id);
             return sample;
 
         }
         public bool Delete(int id)
         {
-            var repo = RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var repo = RepositoryHelper.GetRepository<ISampleGroupRepository>(UnitOfWork);
 
             try
             {
@@ -62,10 +62,10 @@ namespace eLTMS.BusinessLogic.Services
 
             return true;
         }
-        public bool AddSample(Sample sample)
+        public bool AddSampleGroup(SampleGroup sample)
         {
 
-            var repo = RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var repo = RepositoryHelper.GetRepository<ISampleGroupRepository>(UnitOfWork);
             try
             {
                 repo.Create(sample);

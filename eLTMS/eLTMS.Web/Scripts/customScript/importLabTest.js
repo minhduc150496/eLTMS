@@ -69,9 +69,78 @@ var homeController = {
             }
           
         })
+        $('#btnSaveSample').off('click').on('click', function () {
+            var name = $('#txtSampleName').val();
+            var type = parseInt($('#ddlSampleType').val());
+            var description = $('#txtSampleDescription').val();
+            var isDeleted = "False";
+            var sample = {
+                SampleName: name,
+                SampleGroupId: type,
+                Description: description,
+                IsDeleted: isDeleted
+            }
+            
+                $.ajax({
+                    url: '/LabTest/AddSample',
+                    type: 'Post',
+                    dataType: 'json',
+                    data: sample,
+                    success: function (res) {
+                        if (!res.sucess) {
+                            if (res.validation && res.validation.Errors) {
+                                toastr.error(res.validation.Errors[0].ErrorMessage);
+                            }
+
+                        }
+                        else {
+                            toastr.success("Tạo mới thành công.");
+                            $('#myModal1').modal('hide');
+                            homeController.loadDataSample();
+                            $('#myModal3').modal('show');
+                        }
+                    }
+                })
+            
+
+        })
+        $('#btnSaveSampleGroup').off('click').on('click', function () {
+            var name = $('#txtGroupName').val();
+            var duration = parseInt($('#txtTime').val());
+            var start = parseInt($('#txtStart').val());
+            var close = parseInt($('#txtClose').val());
+            var isDeleted = "False";
+            var sampleGroup = {
+                GroupName: name,
+                GettingDuration: duration,
+                OpenTime: start,
+                CloseTime: close,
+                IsDeleted: isDeleted
+            }
+
+            $.ajax({
+                url: '/LabTest/AddSampleGroup',
+                type: 'Post',
+                dataType: 'json',
+                data: sampleGroup,
+                success: function (res) {
+                    if (!res.sucess) {
+                        if (res.validation && res.validation.Errors) {
+                            toastr.error(res.validation.Errors[0].ErrorMessage);
+                        }
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $('#myModal2').modal('hide');
+                        homeController.loadDataSampleGroup();
+                        $('#myModal4').modal('show');
+                    }
+                }
+            })
 
 
-
+        })
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới dịch vụ xét nghiệm');
             homeController.resetForm();
@@ -79,20 +148,23 @@ var homeController = {
         });
         $('#btnAddNewSampleGroup').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới nhóm xét nghiệm');
-            homeController.resetForm();
+            $('#myModal4').modal('hide');
             $('#myModal2').modal('show');
         });
         $('#btnAddNewSample').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới xét nghiệm');
-            homeController.resetForm();
             $('#myModal3').modal('hide');
             $('#myModal1').modal('show');
         });
         $('#btnViewSample').off('click').on('click', function () {
             $('#lblPopupTitle').text('Danh sách các loại xét nghiệm');
-            homeController.resetForm();
             $('#myModal3').modal('show');
             homeController.loadDataSample(true);
+        });
+        $('#btnViewSampleGroup').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Danh sách các nhóm xét nghiệm');
+            $('#myModal4').modal('show');
+           homeController.loadDataSampleGroup(true);
         });
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
@@ -108,13 +180,21 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.delete(id);
             
         });
+        $('.btn-deleteSample').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteSample(id);
 
+
+        });
+        $('.btn-deleteSampleGroup').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteSampleGroup(id);
+        });
     },
     delete: function (id) {
         $.ajax({
@@ -137,6 +217,61 @@ var homeController = {
                 console.log(err);
             }
         });
+    },
+    deleteSample: function (id) {
+        try {
+            $.ajax({
+                url: '/LabTest/DeleteSample',
+                data: {
+                    id: id
+                },
+                async: false,
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success("Xóa thành công.");
+                        // homeController.loadDataSample(true);
+                    }
+                    else {
+                        toastr.error("Xóa không thành công.");
+                    }
+                }
+            });
+           
+        }
+
+        catch (err) {
+            alert(err);
+        }
+       
+    },
+    deleteSampleGroup: function (id) {
+        try {
+            $.ajax({
+                url: '/LabTest/DeleteSampleGroup',
+                data: {
+                    id: id
+                },
+                async: false,
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success("Xóa thành công.");
+                    }
+                    else {
+                        toastr.error("Xóa không thành công.");
+                    }
+                }
+            });
+
+        }
+
+        catch (err) {
+            alert(err);
+        }
+
     },
     loadDetail: function (id) {
         $.ajax({
@@ -166,9 +301,6 @@ var homeController = {
             }
         });
     },
-    saveData: function () {
-        
-    },
     resetForm: function () {
         $('#txtLabTestId').val('0');
         $('#txtCode').val('');
@@ -193,7 +325,7 @@ var homeController = {
                             LabTestId: item.LabTestId,
                             Code: item.LabTestCode,
                             Name: item.LabTestName,
-                            Type: item.SampleId,
+                            Type: item.SampleName,
                             Price: item.Price,
                             Description: item.Description,
                         });
@@ -209,7 +341,7 @@ var homeController = {
             }
         })
     },
-    loadDataSample: function (changePageSize) {
+    loadDataSample: function () {
         $.ajax({
             url: '/LabTest/GetAllSamples',
             type: 'GET',
@@ -224,16 +356,43 @@ var homeController = {
                         html += Mustache.render(template, {
                             SampleId: item.SampleId,
                             Name: item.SampleName,
-                            Type: item.SampleGroupId,
+                            Type: item.SampleGroupName,
                             Description: item.Description,
                         });
 
                     });
                     console.log(html);
                     $('#tblDataSample').html(html);
-                    homeController.paging(response.total, function () {
-                        homeController.loadData();
-                    }, changePageSize);
+                    
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataSampleGroup: function () {
+        $.ajax({
+            url: '/LabTest/GetAllSampleGroups',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataSampleGroup-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            SampleGroupId: item.SampleGroupId,
+                            Name: item.GroupName,
+                            Start: item.OpenTime,
+                            Duration: item.GettingDuration,
+                            Close: item.CloseTime,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblDataSampleGroup').html(html);
+
                     homeController.registerEvent();
                 }
             }
