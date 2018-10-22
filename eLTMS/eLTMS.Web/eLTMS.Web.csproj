@@ -7563,7 +7563,6 @@
     <Content Include="Areas\UserWeb\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Service.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\ServiceDetails.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Shared\_AppointmentInputs.cshtml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

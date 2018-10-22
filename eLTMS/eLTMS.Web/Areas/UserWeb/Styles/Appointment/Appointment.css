@@ -80,10 +80,13 @@
             display: inline-block;
         }
 
-    .current_appointment_area .edit_btn {
-        background: orange;
+    .current_appointment_area .edit_btn,
+    .create_appointment_area .next_btn,
+    .create_appointment_area .prev_btn {
+        background: #0a408a; /*blue*/
     }
 
-    .current_appointment_area .cancel_btn {
-        background: orangered;
+    .current_appointment_area .cancel_btn,
+    .create_appointment_area .submit_btn {
+        background: #da251c; /*red*/
     }

@@ -1,3 +1,16 @@
+/*
+    Brand's Colors
+    - Blue: #0a408a
+    - Green: #00923f
+    - Red: #da251c
+    - Yellow: #fff500
+*/
+
+/* Layout */
+h1, h2, h3, h4, h5, h6, p {
+    font-family: "Muli" !important;
+}
+
 .header_area .site_logo {
 	width: 120px;
 }

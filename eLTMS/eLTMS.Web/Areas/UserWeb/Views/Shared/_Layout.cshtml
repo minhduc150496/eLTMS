@@ -30,8 +30,6 @@
     <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
     <!-- === customized css for Layout (Master Page) === -->
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Home/Layout.css">
-    <!-- === customized css for Index Page === -->
-    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Home/Index.css">
     @RenderSection("styles", required: false)
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -66,17 +64,17 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-2 col-6">
-                        <a href="index-2.html" class="site_logo">
+                        <a href="/UserWeb/" class="site_logo">
                             <img src="~/Areas/UserWeb/Images/logo.JPG" alt="">
                         </a>
                     </div>
                     <div class="col-lg-10 text-center col-6">
                         <nav class="menu_bar">
                             <ul class="main_menu">
-                                <li><a href="index-2.html">Trang chủ</a></li>
-                                <li><a href="about.html">Về chúng tôi</a></li>
+                                <li><a href="/UserWeb/">Trang chủ</a></li>
+                                <li><a href="/UserWeb/About">Về chúng tôi</a></li>
                                 <li>
-                                    <a href="service.html">Dịch vụ</a>
+                                    <a href="/UserWeb/Services">Dịch vụ</a>
                                     <ul>
                                         <li><a href="service.html">Xét nghiệm tổng quát</a></li>
                                         <li><a href="service_details.html">Xét nghiệm sàng lọc<br> trước sinh</a></li>
@@ -84,15 +82,15 @@
                                     </ul>
                                 </li>
                                 <li><a href="/UserWeb/Appointment/Create">Đặt lịch hẹn</a></li>
-                                <li><a href="contact.html">Liên hệ</a></li>
+                                <li><a href="/UserWeb/Contact">Liên hệ</a></li>
                             </ul>
                             <div class="login_area">
                                 <ul class="main_menu">
                                     <li>
-                                        <a href="index-2.html">Đăng nhập</a>
+                                        <a href="/UserWeb/Login">Đăng nhập</a>
                                     </li>
                                     <li>
-                                        <a href="index-2.html">Đăng ký</a>
+                                        <a href="/UserWeb/Register">Đăng ký</a>
                                     </li>
                                 </ul>
                             </div>
@@ -115,7 +113,9 @@
                     <div class="col-md-6 col-lg-3 col-12">
                         <div class="footer_content_box">
                             <div class="footer_logo">
-                                <img src="~/Areas/UserWeb/Images/logo.JPG" alt="">
+                                <a href="/UserWeb/">
+                                    <img src="~/Areas/UserWeb/Images/logo.JPG" alt="">
+                                </a>
                             </div>
                             <p>
                                 Website thông tin Trung Tâm Y Khoa MEDIC - Tp Hồ Chí Minh - Giám đốc: BS. PHAN THANH HẢI
