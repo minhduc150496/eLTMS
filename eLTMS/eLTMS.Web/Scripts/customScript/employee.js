@@ -20,7 +20,7 @@ var homeController = {
             //var companyAddress = $('#txtCompanyAddress').val();
             //var date = '06-10-2018';
             //var isDeleted = "False";
-            var id = $('#txtID').val();
+            var id = $('#txtEmployeeId').val();
             var accountId = parseInt($('#txtAccountId').val());
             var name = $('#txtName').val();
             var gender = $('#ddlGender').val().trim();         
@@ -44,7 +44,8 @@ var homeController = {
                 },
                 Status: $('#ddlStatus').val()
             }
-            if (employee.EmployeeID == 0) {
+            console.log(employee);
+            if (employee.EmployeeId == 0) {
                 $.ajax({
                     url: '/Employee/AddEmployee',
                     type: 'Post',
@@ -176,14 +177,17 @@ var homeController = {
         
     },
     resetForm: function () {
-        $('#txtPatientId').val('0');
-        $('#txtCode').val('');
+        $('#txtEmployeeId').val('0');
+        $('#txtID').val('');
         $('#txtAccountId').val('');
         $('#txtName').val('');
         $('#ddlGender').val('').change();
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
-        $('#txtCompanyAddress').val('');
+        $('#txtDB').val('');
+        $('#txtSB').val('');
+        $('#ddlRole').val('').change();
+        $('#ddlStatus').val('').change();
     },
     loadData: function (changePageSize) {
         $.ajax({
