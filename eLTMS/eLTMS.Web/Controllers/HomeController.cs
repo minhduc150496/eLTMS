@@ -9,17 +9,9 @@ namespace eLTMS.Web.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly IEmployeeService _employeeService;
-        //public HomeController(IEmployeeService employeeService)
-        //{
-        //    this._employeeService = employeeService;
-        //}
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-            //var emps = _employeeService.GetAllEmployees();
-            //ViewBag.Emps = emps;
-            return View();
+            return RedirectToAction("Index", "Home", new { area = "UserWeb"});
         }
     }
 }

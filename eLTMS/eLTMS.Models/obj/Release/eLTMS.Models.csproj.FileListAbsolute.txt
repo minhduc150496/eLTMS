@@ -4,3 +4,14 @@ C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.csprojA
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.csproj.CoreCompileInputs.cache
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.dll
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\AutoMapper.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\eLTMS.DataAccess.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\System.ValueTuple.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\EntityFramework.dll
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\eLTMS.DataAccess.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\eLTMS.DataAccess.dll.config
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\AutoMapper.pdb
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\AutoMapper.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\System.ValueTuple.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Release\EntityFramework.xml
+C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Release\eLTMS.Models.csproj.CopyComplete
