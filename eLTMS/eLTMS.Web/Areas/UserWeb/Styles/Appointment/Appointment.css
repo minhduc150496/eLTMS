@@ -1,4 +1,38 @@
-﻿.box-loader {
+﻿/*
+    Author: DucBM
+*/
+
+.appoinment_form_area {
+    padding-top: 35px;
+    color: black;
+}
+
+    .appoinment_form_area h2 {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0 0 20px;
+    }
+
+    .appoinment_form_area h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 20px 0 10px;
+    }
+
+    .appoinment_form_area button {
+        font-weight: bold;
+    }
+
+    .appoinment_form_area .button-box {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+        .appoinment_form_area .button-box button {
+            display: inline-block;
+        }
+
+.box-loader {
     display: block;
     text-align: center;
 }
@@ -13,80 +47,82 @@
     padding: 35px 25px;
 }
 
-.current_appointment_area {
-    padding-top: 35px;
-    color: black;
+/* Create Appointment */
+.create_appointment_area .button-box {
+    margin-top: 35px;
 }
 
-    .current_appointment_area .step-box {
-        margin: 0 auto;
-        width: 750px;
-        padding: 15px 70px;
-        border: 1px solid gray;
+.create_appointment_area input[type="date"] {
+    border: 1px solid rgb(169,169,169);
+}
+
+.create_appointment_area select {
+    height: 29px;
+}
+
+.create_appointment_area .step-box-2 {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Current Appointment */
+.current_appointment_area .step-box {
+    margin: 0 auto;
+    width: 750px;
+    padding: 15px 70px;
+    border: 1px solid gray;
+}
+
+.current_appointment_area h2 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+    .current_appointment_area h2.first_h2 {
+        margin-top: 40px;
     }
 
-    .current_appointment_area h2 {
-        font-size: 22px;
-        font-weight: bold;
-        margin-top: 25px;
-        margin-bottom: 20px;
-    }
+.current_appointment_area h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
-        .current_appointment_area h2.first_h2 {
-            margin-top: 40px;
-        }
+.current_appointment_area em {
+    font-weight: bold;
+    color: blue;
+}
 
-    .current_appointment_area h3 {
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
+.current_appointment_area table {
+    margin: 0 auto 80px;
+}
 
-    .current_appointment_area em {
-        font-weight: bold;
-        color: blue;
-    }
-
-    .current_appointment_area table {
-        margin: 0 auto 80px;
-    }
-
-        .current_appointment_area table th {
-            text-align: center;
-        }
-
-        .current_appointment_area table th,
-        .current_appointment_area table td {
-            border: 1px solid lightgray;
-        }
-
-        .current_appointment_area table th,
-        .current_appointment_area table td {
-            padding: 0 15px;
-        }
-
-            .current_appointment_area table td:nth-child(1),
-            .current_appointment_area table td:nth-child(3) {
-                text-align: right;
-            }
-
-    .current_appointment_area .button-box {
-        margin: 20px 0;
+    .current_appointment_area table th {
         text-align: center;
     }
 
-        .current_appointment_area .button-box button {
-            display: inline-block;
+    .current_appointment_area table th,
+    .current_appointment_area table td {
+        border: 1px solid lightgray;
+    }
+
+    .current_appointment_area table th,
+    .current_appointment_area table td {
+        padding: 0 15px;
+    }
+
+        .current_appointment_area table td:nth-child(1),
+        .current_appointment_area table td:nth-child(3) {
+            text-align: right;
         }
 
-    .current_appointment_area .edit_btn,
-    .create_appointment_area .next_btn,
-    .create_appointment_area .prev_btn {
-        background: #0a408a; /*blue*/
-    }
+.current_appointment_area .edit_btn,
+.create_appointment_area .next_btn,
+.create_appointment_area .prev_btn {
+    background: #0a408a; /*blue*/
+}
 
-    .current_appointment_area .cancel_btn,
-    .create_appointment_area .submit_btn {
-        background: #da251c; /*red*/
-    }
+.current_appointment_area .cancel_btn,
+.create_appointment_area .submit_btn {
+    background: #da251c; /*red*/
+}

@@ -1,36 +1,30 @@
-﻿CONFIG = {
+﻿/*
+    Author: DucBM
+*/
+
+CONFIG = {
     PATIENT_ID: 1, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
 };
 
 var Utils = {
-    formatTimeShort: function (time, addZero) {
+    formatTimeShort: function (time) {
         var hour = Math.floor(time / 60 / 60);
         var min = Math.floor(time / 60) % 60;
-        if (addZero) {
-            if (hour < 10) {
-                hour = "0" + hour;
-            }
-            if (min < 10) {
-                min = "0" + min;
-            }
+        if (min < 10) {
+            min = "0" + min;
         }
         return hour + ':' + min;
     }, // end function
-    formatTimeLong: function (time, addZero) {
+    formatTimeLong: function (time) {
         var hour = Math.floor(time / 60 / 60);
         var min = Math.floor(time / 60) % 60;
         var sec = time % 60;
-        if (addZero) {
-            if (hour < 10) {
-                hour = "0" + hour;
-            }
-            if (min < 10) {
-                min = "0" + min;
-            }
-            if (sec < 10) {
-                sec = "0" + sec;
-            }
+        if (min < 10) {
+            min = "0" + min;
+        }
+        if (sec < 10) {
+            sec = "0" + sec;
         }
         return hour + ':' + min + ":" + sec;
     } // end function
@@ -128,10 +122,15 @@ var Controller = {
                     for (var j = 0; j < sampleDto.LabTests.length; j++) {
                         // append Lab Tests in Sample
                         var labTest = sampleDto.LabTests[j];
-                        sampleHtml += '<div class="col-md-3">';
-                        sampleHtml += '<label><input type="checkbox" data-labtestid="' + labTest.LabTestId + '" /> ';
-                        sampleHtml += labTest.LabTestName + '</label>\n';
-                        sampleHtml += '</div>\n';
+                        sampleHtml += '<div class="col-md-3">' +
+                            '<div class="pretty p-icon p-smooth p-bigger">' +
+                            '<input type = "checkbox" data-labtestid="' + labTest.LabTestId + '" />' +
+                            '<div class="state p-danger">' +
+                            '<i class="icon fa fa-check"></i>' +
+                            '<label>' + labTest.LabTestName + '</label>' +
+                            '</div>' +
+                            '</div >' +
+                            '</div>\n';
                     }
                 }
                 sampleHtml += '</div>\n';
@@ -224,7 +223,7 @@ var Controller = {
             });
             $("#processing-modal").modal('hide');
             $("#processing-modal").on("hidden.bs.modal", function () {
-                if (data == true) {
+                if (data.Success == true) {
                     $("#success-modal").modal({
                         show: true
                     });
