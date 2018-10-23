@@ -20,12 +20,12 @@ var homeController = {
             //var companyAddress = $('#txtCompanyAddress').val();
             //var date = '06-10-2018';
             //var isDeleted = "False";
-            var id = $('#txtEmployeeId').val();
+            var id = $('#txtID').val();
             var accountId = parseInt($('#txtAccountId').val());
             var name = $('#txtName').val();
-            var gender = $('#ddlGender').val().trim();         
+            var gender = $('#ddlGender').val();         
             var dateBirth = $('#txtDB').val();     
-            var phone = $('#txtPhoneNumber').val().trim();
+            var phone = $('#txtPhoneNumber').val();
             var homeAddress = $('#txtHomeAddress').val();   
             var dateStart = $('#txtSD').val();     
             var date = '06-10-2018';
@@ -115,16 +115,16 @@ var homeController = {
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deleteSupply(id);
+            homeController.deleteEmployee(id);
             
         });
 
     },
-    deleteSupply: function (id) {
+    deleteEmployee: function (id) {
         $.ajax({
-            url: '/WareHouse/Delete',
+            url: '/Employee/DeleteEmployee',
             data: {
-                supplyId: id
+                employeId: id
             },
             type: 'POST',
             dataType: 'json',
@@ -177,17 +177,16 @@ var homeController = {
         
     },
     resetForm: function () {
-        $('#txtEmployeeId').val('0');
-        $('#txtID').val('');
-        $('#txtAccountId').val('');
+        $('#txtID').val('0');
+        $('#txtAccountId').val('')
+        $('#ddlStatus').val('').change();
         $('#txtName').val('');
         $('#ddlGender').val('').change();
-        $('#txtPhoneNumber').val('');
-        $('#txtHomeAddress').val('');
         $('#txtDB').val('');
-        $('#txtSB').val('');
+        $('#txtPhoneNumber').val('');
         $('#ddlRole').val('').change();
-        $('#ddlStatus').val('').change();
+        $('#txtHomeAddress').val('');
+        $('#txtSD').val(''); 
     },
     loadData: function (changePageSize) {
         $.ajax({

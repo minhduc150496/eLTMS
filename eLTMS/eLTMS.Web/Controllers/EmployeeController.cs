@@ -76,5 +76,14 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+        [HttpPost]
+        public JsonResult DeleteEmployee(int employeId)
+        {
+            var result = _employeeService.DeleteEmployee(employeId);
+            return Json(new
+            {
+                success = result
+            });
+        }
     }
 }
