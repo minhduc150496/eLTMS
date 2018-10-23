@@ -102,16 +102,16 @@ var homeController = {
 
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deleteSupply(id);
+            homeController.deletePatient(id);
             
         });
 
     },
-    deleteSupply: function (id) {
+    deletePatient: function (id) {
         $.ajax({
-            url: '/WareHouse/Delete',
+            url: '/Patient/DeletePatient',
             data: {
-                supplyId: id
+                patientId: id
             },
             type: 'POST',
             dataType: 'json',

@@ -76,6 +76,5 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
-
     }
 }

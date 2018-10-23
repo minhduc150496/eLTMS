@@ -38,12 +38,37 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
 
+                cfg.CreateMap<LabTest, LabTestDto>()
+                .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
+                .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))
+                .ForMember(dst => dst.LabTestCode, src => src.MapFrom(x => x.LabTestCode))
+                .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
+                .ForMember(dst => dst.Price, src => src.MapFrom(x => x.Price))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId));
+
+
                 cfg.CreateMap<Sample, SampleDto>()
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleName))
+                .ForMember(dst => dst.SampleGroupId, src => src.MapFrom(x => x.SampleGroupId))
+                .ForMember(dst => dst.Description, src => src.MapFrom(x => x.Description))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.SampleGroupName, src => src.MapFrom(x => x.SampleGroup.GroupName))
                 .ForMember(dst => dst.SampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration))
                 .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.SampleGroup.OpenTime))
                 .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.SampleGroup.CloseTime))
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
+
+
+                cfg.CreateMap<SampleGroup, SampleGroupDto>()
+                .ForMember(dst => dst.SampleGroupId, src => src.MapFrom(x => x.SampleGroupId))
+                .ForMember(dst => dst.GroupName, src => src.MapFrom(x => x.GroupName))
+                .ForMember(dst => dst.GettingDuration, src => src.MapFrom(x => x.GettingDuration))
+                .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.OpenTime))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.CloseTime));
 
                 cfg.CreateMap<ImportPaper, ImportPaperDto>()
                 .ForMember(dst => dst.ImportPaperId, src => src.MapFrom(x => x.ImportPaperId))
@@ -149,31 +174,31 @@ namespace eLTMS.Models.Mapping
         }
         private static string GetRoleName(string name)
         {
-            if (name == "Nurse")
+            if (name == "Y tá")
             {
                 return "Y tá";
             }
-            else if (name == "Doctor")
+            else if (name == "Bác sĩ")
             {
                 return "Bác sĩ";
             }
-            else if (name == "Doctor")
+            else if (name == "Bác sĩ")
             {
                 return "Bác sĩ";
             }
-            else if (name == "Warehouse")
+            else if (name == "Quản kho")
             {
                 return "Quản kho";
             }
-            else if (name == "Admin")
+            else if (name == "Quản lý")
             {
                 return "Quản lý";
             }
-            else if (name == "Lab")
+            else if (name == "Kỹ thuật viên")
             {
                 return "Kỹ thuật viên";
             }
-            else if (name == "Receptionist")
+            else if (name == "Tiếp tân")
             {
                 return "Tiếp tân";
             }

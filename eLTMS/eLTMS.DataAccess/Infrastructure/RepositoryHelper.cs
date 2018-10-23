@@ -49,14 +49,24 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
-
+            if (typeof(TRepository) == typeof(ILabTestRepository))
+            {
+                dynamic repo = new LabTestRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
             if (typeof(TRepository) == typeof(ISampleRepository))
             {
                 dynamic repo = new SampleRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
-
+            if (typeof(TRepository) == typeof(ISampleGroupRepository))
+            {
+                dynamic repo = new SampleGroupRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
             if (typeof(TRepository) == typeof(IAppointmentRepository))
             {
                 dynamic repo = new AppointmentRepository();
@@ -67,6 +77,12 @@ namespace eLTMS.DataAccess.Infrastructure
             if (typeof(TRepository) == typeof(ISampleGettingRepository))
             {
                 dynamic repo = new SampleGettingRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IEmployeeRepository))
+            {
+                dynamic repo = new EmployeeRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }

@@ -36,6 +36,7 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
+      
         public ActionResult Inventory()
         {
             var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
@@ -198,7 +199,19 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-        
+        [HttpGet]
+        public JsonResult GetAllInventorys(string createDate = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _exportPaperService.GetAllInventorys(createDate);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<ExportPaper>, IEnumerable<ExportPaperDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult LoadPaperExportDetailId(int id)
         {
@@ -272,13 +285,10 @@ namespace eLTMS.Web.Controllers
             ws.Columns[6].SetWidth(200, LengthUnit.Pixel);
             for (int i = 0; i < allSupply.Count; i++)
             {
-                
                 var item = allSupply[i];
                 dt.Rows.Add(new object[] { i+1, item.SuppliesCode, item.SuppliesName, item.Quantity});
-               // ws.Cells["F" + ( i + 4)+""].Value = $"=D{i+4} - E{i+4}";
-               
-            }
-           
+
+            }           
             ws.Cells[0, 0].Value = "Danh sách vật tư trong kho";
 
             // Insert DataTable into an Excel worksheet.
@@ -290,15 +300,22 @@ namespace eLTMS.Web.Controllers
                 });
             for (int i = 0; i < allSupply.Count; i++)
             {
-
-
-                ws.Cells["F" + ( i + 4)+""].Value = $"=(D{i+4}-E{i+4})";
-
-               // ws.Cells["F" + (i + 4) + ""].Calculate();
+                ws.Cells["F" + ( i + 4)+""].Formula = $"=(D{i+4}-E{i+4})";
                 
+                ws.Cells["E" + (i + 4) + ""].Style.Locked = false;
+                ws.Cells["G" + (i + 4) + ""].Style.Locked = false;
+                ws.Cells["F" + (i + 4) + ""].Calculate();
             }
-           // ws.Calculate();
-          //  ws.Parent.Calculate();
+
+           
+
+            ws.Protected = true;
+            var protectionSettings = ws.ProtectionSettings;
+            protectionSettings.AllowInsertingColumns = true;
+            protectionSettings.SetPassword("123456");
+
+            ws.Calculate();
+            ws.Parent.Calculate();
             return File(GetBytes(ef, SaveOptions.XlsxDefault), SaveOptions.XlsxDefault.ContentType);
         }
 

@@ -13,6 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         bool AddExportPaper(ExportPaper exportPaper);
         List<ExportPaper> GetAllExportPapers(string createDate);
+        List<ExportPaper> GetAllInventorys(string createDate);
         ExportPaper GetExportPaperById(int id);
         ExportPaper GetByexportPaperCode(string code);
         bool Delete(int id);
@@ -95,7 +96,12 @@ namespace eLTMS.BusinessLogic.Services
             var exportPapers = exportPaperRepo.GetAllExportPaper(createDate);
             return exportPapers;
         }
-       
+        public List<ExportPaper> GetAllInventorys(string createDate)
+        {
+            var exportPaperRepo = this.RepositoryHelper.GetRepository<IExportPaperRepository>(UnitOfWork);
+            var exportPapers = exportPaperRepo.GetAllInventory(createDate);
+            return exportPapers;
+        }
         public ExportPaper GetExportPaperById(int id)
         {
             var exportPaperRepo = this.RepositoryHelper.GetRepository<IExportPaperRepository>(UnitOfWork);

@@ -17,7 +17,7 @@ namespace eLTMS.BusinessLogic.Services
         //bool Insert(int id, string name, int age);
         //bool Delete(int id);
         //bool Update(int id, string name, int age);
-       // bool Update(int id, string status, string fullname, string gender, DateTime? dateOfBirth, string phone, string address, DateTime? dateStart, string Role);
+        // bool Update(int id, string status, string fullname, string gender, DateTime? dateOfBirth, string phone, string address, DateTime? dateStart, string Role);
         bool Update(Employee employeedto);
         bool AddEmployee(Employee employee);
         Employee getEmployeeById(int id);
@@ -40,12 +40,12 @@ namespace eLTMS.BusinessLogic.Services
         }
         public bool Update(Employee employeedto)
         {
-           // int id, string status, string fullname, string gender, DateTime? dateOfBirth, string phone, string address, DateTime? dateStart, string Role
+            // int id, string status, string fullname, string gender, DateTime? dateOfBirth, string phone, string address, DateTime? dateStart, string Role
             var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(UnitOfWork);
-            
+
             try
-            {           
-                var employee = repo.GetSimpleById(employeedto.EmployeeId);              
+            {
+                var employee = repo.GetSimpleById(employeedto.EmployeeId);
                 var account = employee.Account;
                 employee.Status = employeedto.Status;
                 employee.FullName = employeedto.FullName;
@@ -55,6 +55,7 @@ namespace eLTMS.BusinessLogic.Services
                 employee.HomeAddress = employeedto.HomeAddress;
                 employee.StartDate = employeedto.StartDate;
                 account.Role = employeedto.Account.Role;
+                employee.AccountId = employee.AccountId;
                 repo.Update(employee);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any()) return false;

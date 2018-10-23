@@ -53,10 +53,12 @@
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\ExportPaperService .cs" />
     <Compile Include="Services\ImportPaperService.cs" />
+    <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />
     <Compile Include="Services\LabTestingService.cs" />
+    <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
     <Compile Include="Services\SupplyService.cs" />
   </ItemGroup>

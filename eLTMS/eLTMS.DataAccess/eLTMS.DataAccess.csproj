@@ -80,12 +80,15 @@
     <Compile Include="Repositories\LabTestingRepository.cs" />
     <Compile Include="Repositories\SampleGettingRepository.cs" />
     <Compile Include="Repositories\AppointmentRepository.cs" />
+    <Compile Include="Repositories\SampleGroupRepository.cs" />
     <Compile Include="Repositories\SampleRepository.cs" />
     <Compile Include="Repositories\LabTestRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Models\EF.Reverse.POCO.Core.ttinclude" />
     <None Include="Models\EF.Reverse.POCO.ttinclude" />
     <None Include="packages.config" />

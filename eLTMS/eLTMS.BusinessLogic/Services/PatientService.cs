@@ -16,7 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         bool AddPatient(Patient patient);
         bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
         Patient GetPatientById(int id);
-        //bool Delete(int id);
+        bool Delete(int id);
         // bool UpdatePatient(Patient dto);
     }
     public class PatientService : IPatientService
@@ -89,5 +89,23 @@ namespace eLTMS.BusinessLogic.Services
         //        patient.AccountId = null;
         //    }
         // }
+        public bool Delete(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+
+            try
+            {
+                var patient = repo.GetById(id);
+                patient.IsDeleted = true;
+                repo.Update(patient);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
