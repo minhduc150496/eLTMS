@@ -6,6 +6,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+/********************************************************************/
+/*  Reference: https://github.com/Hoangpnse62077/CasptoneProject    */
+/*  Gmail: hoangpnse62077@fpt.edu.vn                                */
+/********************************************************************/
+
 namespace eLTMS.DataAccess.Infrastructure
 {
     public abstract class RepositoryBase<TEntity> : RepositoryBase, IRepository<TEntity> where TEntity : class/*, ISoftDeletable*/
