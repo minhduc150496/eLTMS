@@ -242,6 +242,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Close time")]
         public int? CloseTime { get; set; } // CloseTime
 
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -1743,6 +1747,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.GettingDuration).IsOptional();
             Property(x => x.OpenTime).IsOptional();
             Property(x => x.CloseTime).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
