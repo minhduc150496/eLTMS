@@ -61,7 +61,7 @@
 }
 
 .create_appointment_area .step-box-2 {
-    max-width: 500px;
+    max-width: 450px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -124,5 +124,6 @@
 
 .current_appointment_area .cancel_btn,
 .create_appointment_area .submit_btn {
-    background: #da251c; /*red*/
+    /*background: #da251c;*/ /*red*/
+    background: #0a408a; /*blue*/
 }
