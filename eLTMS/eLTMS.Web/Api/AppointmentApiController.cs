@@ -57,7 +57,7 @@ namespace eLTMS.Web.Api
             var obj = new
             {
                 Success = success,
-                Message = success ? "Tạo mới thành công!" : "Xin vui lòng thử lại"
+                Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
             };
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;

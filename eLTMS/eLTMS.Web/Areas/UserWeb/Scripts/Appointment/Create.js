@@ -46,14 +46,26 @@ var Controller = {
         $(document).ready(function () {
             $("#step-2").hide(0);
             Controller.renderLabTestList();
-            //$("#processing-modal").modal({
-            //    backdrop: "static",
-            //    keyboard: false,
-            //    show: false,
-            //});
+            $("#success-modal").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: false,
+            });
         });
 
         $("#btn-next").click(function () {
+            // VALIDATION:
+            var $checks = $("#step-1-form input[type='checkbox']:checked");
+            //console.log($checks);
+            var noChecked = $checks.length == 0;
+            if (noChecked) { // user did not check any checkbox, not allow to go to step 2
+                $("html, body").animate({
+                    scrollTop: $("#step-1").offset().top,
+                }, 0);
+                $("#alert-required-labtests").fadeIn(500);
+                return;
+            } // end VALIDATION
+            // GO TO STEP 2:
             Controller.renderStep2Html(Model.sampleDtos);
             var duration = 200;
             $("#step-1").fadeOut(duration, function () {
@@ -69,10 +81,31 @@ var Controller = {
         });
 
         $("#btn-submit").click(function () {
+            // VALIDATION: required fill all fields
+            var hasEmptyField = false;
+            $("#step-2 [type='date']").each(function (index, element) {
+                if ($(this).val() == '') {
+                    hasEmptyField = true;
+                }
+            });
+            $("#step-2 select").each(function (index, element) {
+                if ($(this).val() == '') {
+                    hasEmptyField = true;
+                }
+            });
+            if (hasEmptyField) {
+                $("html, body").animate({
+                    scrollTop: $("#step-2").offset().top,
+                }, 0);
+                $("#alert-required-datetime").fadeIn(500);
+                return;
+            } // end VALIDATION
+
             Model.appointmentDto = {
                 PatientId: CONFIG.PATIENT_ID,
                 SampleGettingDtos: []
             };
+            // create SampleGettingDtos and assign to Model
             var el_Samples = $("#step-2-form *[data-sampleid]");
             if (el_Samples != null) {
                 for (var i = 0; i < el_Samples.length; i++) {
@@ -159,7 +192,7 @@ var Controller = {
                     continue;
                 }
                 // append Sample Title: "1. Mau"
-                sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
+                sampleHtml += "<h3>" + sampleDto.SampleName + "</h3>\n";
                 sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" ' +
                     'data-sample-duration="' + sampleDto.SampleDuration + '" ' +
                     'data-open-time="' + sampleDto.OpenTime + '" ' +
@@ -217,12 +250,18 @@ var Controller = {
         }
     }, // end Action
     sendToServer: function (jsonData) {
+        // show processing popup
         $("#processing-modal").modal('show');
         var openingProcessingModal = true;
         $("#processing-modal").on("shown.bs.modal", function (e) {
             openingProcessingModal = false;
         });
-        //setTimeout(function () {
+        // func: 
+        var showModalWithMessage = function ($modal, message) {
+            $modal.modal('show');
+            $modal.find(".out-message").html(message);
+        }
+        // call AJAX to create a new Appointment
         $.ajax({
             method: "POST",
             contentType: "application/json",
@@ -233,12 +272,13 @@ var Controller = {
         }).success(function (data) {
             console.log("response: ");
             console.log(data);
+            // 
             var checkResult = function (data) {
                 $("#processing-modal").modal('hide');
                 if (data.Success == true) {
-                    $("#success-modal").modal('show');
+                    showModalWithMessage($("#success-modal"), data.Message);
                 } else {
-                    $("#fail-modal").modal('show');
+                    showModalWithMessage($("#fail-modal"), data.Message);
                 }
             }
             if (openingProcessingModal) {
@@ -258,11 +298,11 @@ var Controller = {
                     e.stopPropagation();
                     openingProcessingModal = false;
                     $("#processing-modal").modal('hide');
-                    $("#fail-modal").modal('show');
+                    showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra."); // Lỗi 500
                 });
             } else {
                 $("#processing-modal").modal('hide');
-                $("#fail-modal").modal('show');
+                showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra");
             }
         });
 
