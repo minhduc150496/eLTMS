@@ -72,6 +72,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -190,15 +191,107 @@
     <Compile Include="Areas\UserWeb\Controllers\HomeController.cs" />
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
+    <Compile Include="DbConnection\Account.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Appointment.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\database_firewall_rules.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Department.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\eLTMS.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eLTMS.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\eLTMS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\eLTMS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eLTMS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Employee.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\ExportPaper.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\ExportPaperDetail.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Feedback.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Hospital.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\HospitalDepartment.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\HospitalSuggesting.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\ImportPaper.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\ImportPaperDetail.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\LabTest.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\LabTesting.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\LabTestingIndex.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Patient.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Sample.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\SampleGetting.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\SampleGroup.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\sp_helpdiagrams_Result.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\Supply.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\SupplyType.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbConnection\sysdiagram.cs">
+      <DependentUpon>eLTMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator\EmployeeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\UserWeb\Assets\css\animate.min.css" />
@@ -6941,6 +7034,16 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="DbConnection\eLTMS.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>eLTMS.edmx</DependentUpon>
+      <LastGenOutput>eLTMS.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbConnection\eLTMS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>eLTMS.edmx</DependentUpon>
+      <LastGenOutput>eLTMS.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -7564,6 +7667,13 @@
     <Content Include="Areas\UserWeb\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\Service.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\ServiceDetails.cshtml" />
+    <EntityDeploy Include="DbConnection\eLTMS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>eLTMS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DbConnection\eLTMS.edmx.diagram">
+      <DependentUpon>eLTMS.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -7604,6 +7714,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Feedback\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>
@@ -7654,6 +7765,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
