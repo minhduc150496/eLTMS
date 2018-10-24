@@ -264,52 +264,63 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class SampleGetting
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"SampleGettingID", Order = 1, TypeName = "int")]
-        [Index(@"PK_SampleGetting", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Sample getting ID")]
-        public int SampleGettingId { get; set; } // SampleGettingID (Primary key)
+        [Column(@"AppointmentID", Order = 1, TypeName = "int")]
+        [Display(Name = "Appointment ID")]
+        public int? AppointmentId { get; set; } // AppointmentID
 
-        [Column(@"AppointmentCode", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Appointment code")]
-        public string AppointmentCode { get; set; } // AppointmentCode (length: 20)
-
-        [Column(@"SampleID", Order = 3, TypeName = "int")]
+        [Column(@"SampleID", Order = 2, TypeName = "int")]
         [Display(Name = "Sample ID")]
         public int? SampleId { get; set; } // SampleID
 
-        [Column(@"StartTime", Order = 4, TypeName = "time")]
+        [Column(@"StartTime", Order = 3, TypeName = "time")]
         [Display(Name = "Start time")]
         public System.TimeSpan? StartTime { get; set; } // StartTime
 
-        [Column(@"FinishTime", Order = 5, TypeName = "time")]
+        [Column(@"FinishTime", Order = 4, TypeName = "time")]
         [Display(Name = "Finish time")]
         public System.TimeSpan? FinishTime { get; set; } // FinishTime
 
-        [Column(@"Status", Order = 6, TypeName = "nvarchar")]
+        [Column(@"Status", Order = 5, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
         public string Status { get; set; } // Status (length: 20)
 
-        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"GettingDate", Order = 8, TypeName = "date")]
+        [Column(@"GettingDate", Order = 7, TypeName = "date")]
         [Display(Name = "Getting date")]
         public System.DateTime? GettingDate { get; set; } // GettingDate
+
+        [Column(@"SampleGettingCode", Order = 8, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Sample getting code")]
+        public string SampleGettingCode { get; set; } // SampleGettingCode (length: 20)
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"SampleGettingID", Order = 9, TypeName = "int")]
+        [Index(@"PK__SampleGe__366AD1F732C6FE55", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Sample getting ID")]
+        public int SampleGettingId { get; set; } // SampleGettingID (Primary key)
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child LabTestings where [LabTesting].[SampleGettingID] point to this entity (FK_LabTesting_SampleGetting)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<LabTesting> LabTestings { get; set; } // LabTesting.FK_LabTesting_SampleGetting
 
         // Foreign keys
 
         /// <summary>
-        /// Parent Appointment pointed by [SampleGetting].([AppointmentCode]) (FK_SampleGetting_Appointment)
+        /// Parent Appointment pointed by [SampleGetting].([AppointmentId]) (FK_SampleGetting_Appointment)
         /// </summary>
-        [ForeignKey("AppointmentCode")] public virtual Appointment Appointment { get; set; } // FK_SampleGetting_Appointment
+        [ForeignKey("AppointmentId")] public virtual Appointment Appointment { get; set; } // FK_SampleGetting_Appointment
 
         /// <summary>
         /// Parent Sample pointed by [SampleGetting].([SampleId]) (FK_SampleGetting_Sample)
@@ -319,6 +330,7 @@ namespace eLTMS.DataAccess.Models
         public SampleGetting()
         {
             IsDeleted = false;
+            LabTestings = new System.Collections.Generic.List<LabTesting>();
         }
     }
 
@@ -376,8 +388,8 @@ namespace eLTMS.DataAccess.Models
         public Sample()
         {
             IsDeleted = false;
-            SampleGettings = new System.Collections.Generic.List<SampleGetting>();
             LabTests = new System.Collections.Generic.List<LabTest>();
+            SampleGettings = new System.Collections.Generic.List<SampleGetting>();
         }
     }
 
@@ -464,8 +476,8 @@ namespace eLTMS.DataAccess.Models
         public Patient()
         {
             IsDeleted = false;
-            Appointments = new System.Collections.Generic.List<Appointment>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            Appointments = new System.Collections.Generic.List<Appointment>();
         }
     }
 
@@ -550,11 +562,9 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Lab test ID")]
         public int? LabTestId { get; set; } // LabTestID
 
-        [Column(@"AppointmentCode", Order = 3, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Appointment code")]
-        public string AppointmentCode { get; set; } // AppointmentCode (length: 20)
+        [Column(@"SampleGettingID", Order = 3, TypeName = "int")]
+        [Display(Name = "Sample getting ID")]
+        public int? SampleGettingId { get; set; } // SampleGettingID
 
         [Column(@"Status", Order = 4, TypeName = "nvarchar")]
         [MaxLength(20)]
@@ -566,6 +576,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"MachineSlot", Order = 6, TypeName = "int")]
+        [Display(Name = "Machine slot")]
+        public int? MachineSlot { get; set; } // MachineSlot
+
         // Reverse navigation
 
         /// <summary>
@@ -576,14 +590,14 @@ namespace eLTMS.DataAccess.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent Appointment pointed by [LabTesting].([AppointmentCode]) (FK_LabTesting_Appointment)
-        /// </summary>
-        [ForeignKey("AppointmentCode")] public virtual Appointment Appointment { get; set; } // FK_LabTesting_Appointment
-
-        /// <summary>
         /// Parent LabTest pointed by [LabTesting].([LabTestId]) (FK_LabTesting_LabTest)
         /// </summary>
         [ForeignKey("LabTestId")] public virtual LabTest LabTest { get; set; } // FK_LabTesting_LabTest
+
+        /// <summary>
+        /// Parent SampleGetting pointed by [LabTesting].([SampleGettingId]) (FK_LabTesting_SampleGetting)
+        /// </summary>
+        [ForeignKey("SampleGettingId")] public virtual SampleGetting SampleGetting { get; set; } // FK_LabTesting_SampleGetting
 
         public LabTesting()
         {
@@ -796,9 +810,9 @@ namespace eLTMS.DataAccess.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent Faculty pointed by [HospitalSuggesting].([FacultyId]) (FK__HospitalS__Facul__7F2BE32F)
+        /// Parent Department pointed by [HospitalSuggesting].([FacultyId]) (FK__HospitalS__Facul__7F2BE32F)
         /// </summary>
-        [ForeignKey("FacultyId")] public virtual Faculty Faculty { get; set; } // FK__HospitalS__Facul__7F2BE32F
+        [ForeignKey("FacultyId")] public virtual Department Department { get; set; } // FK__HospitalS__Facul__7F2BE32F
 
         /// <summary>
         /// Parent Hospital pointed by [HospitalSuggesting].([HospitalId]) (FK__HospitalS__Hospi__00200768)
@@ -811,18 +825,18 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // HospitalFacultyMapping
-    [Table("HospitalFacultyMapping", Schema = "dbo")]
+    // HospitalDepartment
+    [Table("HospitalDepartment", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalFacultyMapping
+    public class HospitalDepartment
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column(@"HospitalFacultyMappingID", Order = 1, TypeName = "int")]
+        [Column(@"HospitalDepartmentID", Order = 1, TypeName = "int")]
         [Index(@"PK__Hospital__275680DE8771BC40", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
-        [Display(Name = "Hospital faculty mapping ID")]
-        public int HospitalFacultyMappingId { get; set; } // HospitalFacultyMappingID (Primary key)
+        [Display(Name = "Hospital department ID")]
+        public int HospitalDepartmentId { get; set; } // HospitalDepartmentID (Primary key)
 
         [Column(@"HospitalID", Order = 2, TypeName = "int")]
         [Display(Name = "Hospital ID")]
@@ -839,16 +853,16 @@ namespace eLTMS.DataAccess.Models
         // Foreign keys
 
         /// <summary>
-        /// Parent Faculty pointed by [HospitalFacultyMapping].([FacultyId]) (FK__HospitalF__Facul__10566F31)
+        /// Parent Department pointed by [HospitalDepartment].([FacultyId]) (FK__HospitalF__Facul__10566F31)
         /// </summary>
-        [ForeignKey("FacultyId")] public virtual Faculty Faculty { get; set; } // FK__HospitalF__Facul__10566F31
+        [ForeignKey("FacultyId")] public virtual Department Department { get; set; } // FK__HospitalF__Facul__10566F31
 
         /// <summary>
-        /// Parent Hospital pointed by [HospitalFacultyMapping].([HospitalId]) (FK__HospitalF__Hospi__114A936A)
+        /// Parent Hospital pointed by [HospitalDepartment].([HospitalId]) (FK__HospitalF__Hospi__114A936A)
         /// </summary>
         [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalF__Hospi__114A936A
 
-        public HospitalFacultyMapping()
+        public HospitalDepartment()
         {
             IsDeleted = false;
         }
@@ -892,9 +906,9 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
-        /// Child HospitalFacultyMappings where [HospitalFacultyMapping].[HospitalID] point to this entity (FK__HospitalF__Hospi__114A936A)
+        /// Child HospitalDepartments where [HospitalDepartment].[HospitalID] point to this entity (FK__HospitalF__Hospi__114A936A)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalFacultyMapping> HospitalFacultyMappings { get; set; } // HospitalFacultyMapping.FK__HospitalF__Hospi__114A936A
+        public virtual System.Collections.Generic.ICollection<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment.FK__HospitalF__Hospi__114A936A
         /// <summary>
         /// Child HospitalSuggestings where [HospitalSuggesting].[HospitalID] point to this entity (FK__HospitalS__Hospi__00200768)
         /// </summary>
@@ -903,7 +917,7 @@ namespace eLTMS.DataAccess.Models
         public Hospital()
         {
             IsDeleted = false;
-            HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
+            HospitalDepartments = new System.Collections.Generic.List<HospitalDepartment>();
             HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
@@ -958,48 +972,6 @@ namespace eLTMS.DataAccess.Models
         public Feedback()
         {
             IsDeleted = false;
-        }
-    }
-
-    // Faculty
-    [Table("Faculty", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class Faculty
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"FacultyID", Order = 1, TypeName = "int")]
-        [Index(@"PK__Faculty__306F636E346C2475", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Faculty ID")]
-        public int FacultyId { get; set; } // FacultyID (Primary key)
-
-        [Column(@"FacultyName", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(200)]
-        [StringLength(200)]
-        [Display(Name = "Faculty name")]
-        public string FacultyName { get; set; } // FacultyName (length: 200)
-
-        [Column(@"IsDeleted", Order = 3, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Reverse navigation
-
-        /// <summary>
-        /// Child HospitalFacultyMappings where [HospitalFacultyMapping].[FacultyID] point to this entity (FK__HospitalF__Facul__10566F31)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalFacultyMapping> HospitalFacultyMappings { get; set; } // HospitalFacultyMapping.FK__HospitalF__Facul__10566F31
-        /// <summary>
-        /// Child HospitalSuggestings where [HospitalSuggesting].[FacultyID] point to this entity (FK__HospitalS__Facul__7F2BE32F)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK__HospitalS__Facul__7F2BE32F
-
-        public Faculty()
-        {
-            IsDeleted = false;
-            HospitalFacultyMappings = new System.Collections.Generic.List<HospitalFacultyMapping>();
-            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -1199,20 +1171,58 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // Department
+    [Table("Department", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class Department
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"FacultyID", Order = 1, TypeName = "int")]
+        [Index(@"PK__Faculty__306F636E346C2475", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Faculty ID")]
+        public int FacultyId { get; set; } // FacultyID (Primary key)
+
+        [Column(@"FacultyName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(200)]
+        [StringLength(200)]
+        [Display(Name = "Faculty name")]
+        public string FacultyName { get; set; } // FacultyName (length: 200)
+
+        [Column(@"IsDeleted", Order = 3, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child HospitalDepartments where [HospitalDepartment].[FacultyID] point to this entity (FK__HospitalF__Facul__10566F31)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment.FK__HospitalF__Facul__10566F31
+        /// <summary>
+        /// Child HospitalSuggestings where [HospitalSuggesting].[FacultyID] point to this entity (FK__HospitalS__Facul__7F2BE32F)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK__HospitalS__Facul__7F2BE32F
+
+        public Department()
+        {
+            IsDeleted = false;
+            HospitalDepartments = new System.Collections.Generic.List<HospitalDepartment>();
+            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
+        }
+    }
+
     // Appointment
     [Table("Appointment", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class Appointment
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column(@"AppointmentCode", Order = 1, TypeName = "nvarchar")]
-        [Index(@"PK_Appointment", 1, IsUnique = true, IsClustered = true)]
-        [Required]
         [MaxLength(20)]
         [StringLength(20)]
-        [Key]
         [Display(Name = "Appointment code")]
-        public string AppointmentCode { get; set; } // AppointmentCode (Primary key) (length: 20)
+        public string AppointmentCode { get; set; } // AppointmentCode (length: 20)
 
         [Column(@"PatientID", Order = 2, TypeName = "int")]
         [Display(Name = "Patient ID")]
@@ -1260,14 +1270,18 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"AppointmentID", Order = 12, TypeName = "int")]
+        [Index(@"PK_Appointment", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Appointment ID")]
+        public int AppointmentId { get; set; } // AppointmentID (Primary key)
+
         // Reverse navigation
 
         /// <summary>
-        /// Child LabTestings where [LabTesting].[AppointmentCode] point to this entity (FK_LabTesting_Appointment)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<LabTesting> LabTestings { get; set; } // LabTesting.FK_LabTesting_Appointment
-        /// <summary>
-        /// Child SampleGettings where [SampleGetting].[AppointmentCode] point to this entity (FK_SampleGetting_Appointment)
+        /// Child SampleGettings where [SampleGetting].[AppointmentID] point to this entity (FK_SampleGetting_Appointment)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<SampleGetting> SampleGettings { get; set; } // SampleGetting.FK_SampleGetting_Appointment
 
@@ -1287,7 +1301,6 @@ namespace eLTMS.DataAccess.Models
         {
             IsDeleted = false;
             SampleGettings = new System.Collections.Generic.List<SampleGetting>();
-            LabTestings = new System.Collections.Generic.List<LabTesting>();
         }
     }
 
@@ -1395,6 +1408,7 @@ namespace eLTMS.DataAccess.Models
 
         public AppointmentConfiguration(string schema)
         {
+            Property(x => x.AppointmentCode).IsOptional();
             Property(x => x.PatientId).IsOptional();
             Property(x => x.DoctorId).IsOptional();
             Property(x => x.IsEmergency).IsOptional();
@@ -1406,6 +1420,22 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
 
+        }
+    }
+
+    // Department
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class DepartmentConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Department>
+    {
+        public DepartmentConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public DepartmentConfiguration(string schema)
+        {
+            Property(x => x.FacultyName).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
@@ -1474,22 +1504,6 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // Faculty
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class FacultyConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Faculty>
-    {
-        public FacultyConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public FacultyConfiguration(string schema)
-        {
-            Property(x => x.FacultyName).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-        }
-    }
-
     // Feedback
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class FeedbackConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Feedback>
@@ -1528,16 +1542,16 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // HospitalFacultyMapping
+    // HospitalDepartment
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalFacultyMappingConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HospitalFacultyMapping>
+    public class HospitalDepartmentConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HospitalDepartment>
     {
-        public HospitalFacultyMappingConfiguration()
+        public HospitalDepartmentConfiguration()
             : this("dbo")
         {
         }
 
-        public HospitalFacultyMappingConfiguration(string schema)
+        public HospitalDepartmentConfiguration(string schema)
         {
             Property(x => x.HospitalId).IsOptional();
             Property(x => x.FacultyId).IsOptional();
@@ -1638,9 +1652,10 @@ namespace eLTMS.DataAccess.Models
         public LabTestingConfiguration(string schema)
         {
             Property(x => x.LabTestId).IsOptional();
-            Property(x => x.AppointmentCode).IsOptional();
+            Property(x => x.SampleGettingId).IsOptional();
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.MachineSlot).IsOptional();
 
         }
     }
@@ -1721,13 +1736,14 @@ namespace eLTMS.DataAccess.Models
 
         public SampleGettingConfiguration(string schema)
         {
-            Property(x => x.AppointmentCode).IsOptional();
+            Property(x => x.AppointmentId).IsOptional();
             Property(x => x.SampleId).IsOptional();
             Property(x => x.StartTime).IsOptional();
             Property(x => x.FinishTime).IsOptional();
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.GettingDate).IsOptional();
+            Property(x => x.SampleGettingCode).IsOptional();
 
         }
     }
