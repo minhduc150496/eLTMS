@@ -28,7 +28,8 @@ namespace eLTMS.DataAccess.Repositories
             var result = DbSet.AsQueryable()
                 .Where(x => x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
                 .Include(x => x.Patient)
-                .Include(x => x.SampleGettings.Select(y => y.LabTestings))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .ToList();
             return result;
         }

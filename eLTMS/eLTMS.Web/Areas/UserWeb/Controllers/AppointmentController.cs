@@ -1,4 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using eLTMS.BusinessLogic.Services;
+using eLTMS.DataAccess.Models;
+using eLTMS.Models.Models.dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +12,12 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
 {
     public class AppointmentController : Controller
     {
+        private readonly IAppointmentService _appointmentService;
+        public AppointmentController(IAppointmentService appointmentService)
+        {
+            this._appointmentService = appointmentService;
+        }
+
         // GET: UserWeb/Appointment
         public ActionResult Index()
         {
@@ -23,6 +33,9 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         // GET: UserWeb/Appointment/Current
         public ActionResult Current()
         {
+            var patientId = 1;
+            var appointment = _appointmentService.GetNewApp(patientId).FirstOrDefault();            
+            ViewBag.Appointment = appointment;
             return View("Current", "_Layout");
         }
 
