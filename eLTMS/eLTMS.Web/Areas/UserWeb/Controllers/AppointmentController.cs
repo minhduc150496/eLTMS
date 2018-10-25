@@ -34,7 +34,7 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         public ActionResult Current()
         {
             var patientId = 1;
-            var appointment = _appointmentService.GetNewApp(patientId).FirstOrDefault();            
+            var appointment = _appointmentService.GetNewApp(patientId).LastOrDefault();            
             ViewBag.Appointment = appointment;
             return View("Current", "_Layout");
         }
