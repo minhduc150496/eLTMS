@@ -59,6 +59,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />
     <Compile Include="Services\LabTestingService.cs" />
+    <Compile Include="Services\ReceptionistService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
     <Compile Include="Services\SupplyService.cs" />

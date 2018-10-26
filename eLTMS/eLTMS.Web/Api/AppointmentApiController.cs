@@ -138,8 +138,8 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/get-result-by-appointment-by-phone-and-date")]
         public HttpResponseMessage GetAppByPhoneNDate(string phone)
         {
-            var app = _appointmentService.GetAppByPhoneNDate(phone);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetByPhoneAndDateDto>>(app);
+            var app = _appointmentService.GetAppByPhone(phone);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetByPhoneDto>>(app);
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }

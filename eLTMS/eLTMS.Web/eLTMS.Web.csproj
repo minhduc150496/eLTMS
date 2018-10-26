@@ -195,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\ReceptionistController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="DbConnection\Account.cs">
       <DependentUpon>eLTMS.tt</DependentUpon>
@@ -7656,6 +7657,7 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
     <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
@@ -7709,6 +7711,7 @@
     <Content Include="Views\WareHouse\Inventory.cshtml" />
     <Content Include="Views\LabTest\LabTests.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Receptionist\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

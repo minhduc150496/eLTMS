@@ -107,11 +107,11 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.ExportPaperDetailDtos, src => src.MapFrom(x => x.ExportPaperDetails));
 
-                cfg.CreateMap<Appointment, AppointmentGetByPhoneAndDateDto>()
+                cfg.CreateMap<Appointment, AppointmentGetByPhoneDto>()
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.Patient.PhoneNumber))
-                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
-                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode));
+                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress));
+
                 cfg.CreateMap<Appointment, AppointmentGetResultDto>()
                 .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
@@ -128,6 +128,13 @@ namespace eLTMS.Models.Mapping
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
+
+                cfg.CreateMap<Appointment, AppointmentGetAllDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+                .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
+                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
+                .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 
                 cfg.CreateMap<Appointment, AppointmentUpdateDto>()
                 .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))

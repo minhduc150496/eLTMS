@@ -15,14 +15,24 @@ namespace eLTMS.DataAccess.Repositories
     {
         List<Appointment> GetNewAppByPatientId(int patientId);
         List<Appointment> GetOldAppByPatientId(int patientId);
+        List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
+        List<Appointment> GetAllApp();
         Appointment GetAppointmentByCode(string appCode);
         List<Appointment> GetResultByAppCode(string appCode);
-        List<Appointment> GetAppointmentByPhoneNDate(string phoneNumber);
         int? CountByDate(string sDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
+        public List<Appointment> GetAllApp()
+        {
+            var result = DbSet.AsQueryable()
+               .Include(x => x.Patient)
+               .Include(x => x.SampleGettings)
+               .ToList();
+            return result;
+        }
+
         public List<Appointment> GetNewAppByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
@@ -81,7 +91,7 @@ namespace eLTMS.DataAccess.Repositories
             return result;
         }
 
-        public List<Appointment> GetAppointmentByPhoneNDate(string phoneNumber)
+        public List<Appointment> GetAppointmentByPhone(string phoneNumber)
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.Patient.PhoneNumber.Trim().Equals(phoneNumber.Trim()))
@@ -105,5 +115,6 @@ namespace eLTMS.DataAccess.Repositories
             return result;
         }
 
+      
     }
 }
