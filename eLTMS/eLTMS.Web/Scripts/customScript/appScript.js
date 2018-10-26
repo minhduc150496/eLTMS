@@ -177,12 +177,16 @@ var homeController = {
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
+                        var sample = "";
+                        $.each(item.SampleGettingDtos, function (e, etem) {
+                            sample = sample  + etem.SampleName + ": " + etem.StartTime +" ";
+                        });
                         html += Mustache.render(template, {
                             AppCode: item.AppointmentCode,
                             FullName: item.PatientName,
                             Phone: item.Phone,
                             Address: item.Address,
-                            SampleName: item.SampleGettingDtos,
+                            SampleName: sample /*+ item.SampleGettingDtos.StartTime +"/n"*/,
                             //StartTime: item.Unit,
                             //Note: item.Note,
 

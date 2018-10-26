@@ -28,7 +28,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                .Include(x => x.Patient)
-               .Include(x => x.SampleGettings)
+               .Include(x => x.SampleGettings.Select(y=>y.Sample))
                .ToList();
             return result;
         }
