@@ -12,63 +12,41 @@ var homeController = {
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
             var name = $('#txtName').val();
-            var type = parseInt($('#ddlSupplyType').val());
-            var supplyId = $('#txtSupplyId').val();
-            var unit = $('#ddlSupplyUnit').val();
-            var note = $('#txtNote').val();
-            var quantity = '0';
-            var isDeteted = "False";
-            var supply = {
-                SuppliesId: supplyId,
-                SuppliesCode: code,
-                SuppliesName: name,
-                SuppliesTypeId: type,
-                Quantity:quantity,
-                Unit: unit,
-                IsDeleted: isDeteted,
-                Note: note
-            }
-            if (supply.SuppliesId == 0) {
-                $.ajax({
-                    url: '/WareHouse/AddSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                            if (res.validation && res.validation.Errors) {
-                                toastr.error(res.validation.Errors[0].ErrorMessage);
-                            }
+            var phone = $('#txtPhone').val();
+            var mau = $('#checkBox_loaiXetNghiem1').prop('checked');
+            var nuocTieu = $('#checkBox_loaiXetNghiem2').prop('checked');
+            var teBaoHoc = $('#checkBox_loaiXetNghiem3').prop('checked');
+            var phan = $('#checkBox_loaiXetNghiem4').prop('checked');
+            var dich = $('#checkBox_loaiXetNghiem5').prop('checked');
+            var item = {
+                AppCode: code,
+                Name: name,
+                Phone: phone,
+                Mau: mau,
+                NuocTieu: nuocTieu,
+                TeBaoHoc: teBaoHoc,
+                Phan: phan,
+                Dich: dich
+            };
+            $.ajax({
+                url: '/receptionist/AddApp',
+                type: 'Post',
+                dataType: 'json',
+                data: item,
+                success: function (res) {
+                    if (!res.sucess) {
+                        if (res.validation && res.validation.Errors) {
+                            toastr.error(res.validation.Errors[0].ErrorMessage);
+                        }
 
-                        }
-                        else {
-                            toastr.success("Tạo mới thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
                     }
-                })
-            } else {
-                $.ajax({
-                    url: '/WareHouse/UpdateSupply',
-                    type: 'Post',
-                    dataType: 'json',
-                    data: supply,
-                    success: function (res) {
-                        if (!res.sucess) {
-                           
-                                toastr.error("Cập nhật không thành công");
-                            
-
-                        }
-                        else {
-                            toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
-                            homeController.loadData();
-                        }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $('#myModal').modal('hide');
+                        homeController.loadData();
                     }
-                })
-            }
+                }
+            });
           
         })
 

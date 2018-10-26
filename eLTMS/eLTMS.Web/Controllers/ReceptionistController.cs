@@ -38,7 +38,15 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult AddApp(AppointmentAddDto data)
+        {
+            var result = _receptionistService.Add(data);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
 
     }
 }

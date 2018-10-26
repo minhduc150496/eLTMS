@@ -119,8 +119,13 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Appointment Code</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtCode" name="txtCode">
+                        </div>
+                    </div>
 
-                    <input type="hidden" class="form-control" id="txtSupplyId" name="txtSupplyId" value="0">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Họ tên</label>
                         <div class="col-sm-10">
@@ -140,43 +145,20 @@
                         <label class="control-label col-sm-2" for="pwd">Loại xét nghiệm</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
-                                <label><input type="checkbox" value="">Máu</label>
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem1" value="1">Máu</label>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" value="">Nước tiểu</label>
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem2" value="2">Nước tiểu</label>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" value="">Phân</label>
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem3" value="3">Tế bào học</label>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" value="">Dịch</label>
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem4" value="4">Phân</label>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" value="">Tế bào học</label>
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem5" value="5">Dịch</label>
                             </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" value="">Option 2</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="pwd">Đơn vị</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" id="ddlSupplyUnit">
-                                <option value="">
-                                    ----- Chọn loại đơn vị  -----
-                                </option>
-                                <option value="Cái">
-                                    Cái
-                                </option>
-                                <option value="Hộp">
-                                    Hộp
-                                </option>
-                                <option value="Lọ">
-                                    Lọ
-                                </option>
-                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -185,10 +167,6 @@
                             <textarea rows="4" id="txtNote" cols="50" class="form-control"></textarea>
                         </div>
                     </div>
-
-
-
-
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
@@ -219,9 +197,9 @@
         <td>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Detail</button>
             <div id="demo" class="collapse">
-                {{SampleName}}
-            </div>
 
+            </div>
+            {{SampleName}}
         </td>
         <td>
             <label class="switch">
