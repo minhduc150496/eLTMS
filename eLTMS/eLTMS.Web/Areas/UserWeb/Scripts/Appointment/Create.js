@@ -1,4 +1,6 @@
-﻿/*
+﻿
+
+/*
     Author: DucBM
 */
 
@@ -44,6 +46,11 @@ var Controller = {
         $(document).ready(function () {
             $("#step-2").hide(0);
             Controller.renderLabTestList();
+            //$("#processing-modal").modal({
+            //    backdrop: "static",
+            //    keyboard: false,
+            //    show: false,
+            //});
         });
 
         $("#btn-next").click(function () {
@@ -106,7 +113,7 @@ var Controller = {
             // ajax for create new appointment
             var jsonData = JSON.stringify(Model.appointmentDto);
             Controller.sendToServer(jsonData);
-        });
+        }); // end event handler
 
     }, // end Action
     renderStep1Html: function (sampleDtos) {
@@ -211,29 +218,57 @@ var Controller = {
     }, // end Action
     sendToServer: function (jsonData) {
         $("#processing-modal").modal('show');
+        var openingProcessingModal = true;
+        $("#processing-modal").on("shown.bs.modal", function (e) {
+            openingProcessingModal = false;
+        });
+        //setTimeout(function () {
         $.ajax({
             method: "POST",
             contentType: "application/json",
             url: "/api/appointment/create",
             dataType: "JSON",
+            async: true,
             data: jsonData,
         }).success(function (data) {
-            $("#processing-modal").on('shown.bs.modal', function () {
+            console.log("response: ");
+            console.log(data);
+            var checkResult = function (data) {
                 $("#processing-modal").modal('hide');
-            });
-            $("#processing-modal").modal('hide');
-            $("#processing-modal").on("hidden.bs.modal", function () {
                 if (data.Success == true) {
-                    $("#success-modal").modal({
-                        show: true
-                    });
+                    $("#success-modal").modal('show');
                 } else {
-                    $("#fail-modal").modal({
-                        show: true
-                    });
+                    $("#fail-modal").modal('show');
                 }
-            });
+            }
+            if (openingProcessingModal) {
+                $("#processing-modal").on("shown.bs.modal", function (e) {
+                    e.stopPropagation();
+                    openingProcessingModal = false;
+                    checkResult(data);
+                });
+            } else {
+                checkResult(data);
+            }
+        }).fail(function (data) {
+            console.log("response: ");
+            console.log(data);
+            if (openingProcessingModal) {
+                $("#processing-modal").on("shown.bs.modal", function (e) {
+                    e.stopPropagation();
+                    openingProcessingModal = false;
+                    $("#processing-modal").modal('hide');
+                    $("#fail-modal").modal('show');
+                });
+            } else {
+                $("#processing-modal").modal('hide');
+                $("#fail-modal").modal('show');
+            }
         });
+
+        //}, 1000);
+
+
     }, // end Action
 }
 Controller.init();

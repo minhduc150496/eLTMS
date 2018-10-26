@@ -47,12 +47,14 @@ namespace eLTMS.BusinessLogic.Services
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             try
             {
+                // Convert AppointmentDto to Appointment
                 var now = DateTime.Now;
                 var sDate = now.ToString("yyyy-MM-dd");
                 var count = appointmentRepo.CountByDate(sDate);
                 var code = sDate + "-" + count;
                 appointment.AppointmentCode = code;
                 appointment.Status = "NEW";
+                // Create
                 appointmentRepo.Create(appointment);
                 var result = this.UnitOfWork.SaveChanges();
                 if (result.Any())

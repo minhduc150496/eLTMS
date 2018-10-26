@@ -25,8 +25,9 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
-            // manually map: apoinDto and appointment (entity)
-            Appointment appointment = new Appointment();
+            // Convert AppointmentDto to Appointment (DTO to Entity)
+            Appointment appointment = Mapper.Map<AppointmentDto, Appointment>(appoinDto);
+
             appointment.PatientId = appoinDto.PatientId;
             appointment.SampleGettings = new List<SampleGetting>();
             foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
@@ -34,27 +35,24 @@ namespace eLTMS.Web.Api
                 var sampleGetting = new SampleGetting();
                 sampleGetting.SampleId = sampleGettingDto.SampleId;
                 sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
-                sampleGetting.StartTime = sampleGettingDto.StartTime;
-                sampleGetting.FinishTime = sampleGettingDto.FinishTime;
+                try
+                {
+                    sampleGetting.StartTime = TimeSpan.Parse(sampleGettingDto.StartTime);
+                    sampleGetting.FinishTime = TimeSpan.Parse(sampleGettingDto.FinishTime);
+                }
+                catch (Exception ex)
+                {
+                    // bao loi 
+                }
+                foreach (var labTestId in sampleGettingDto.LabTestIds)
+                {
+                    var labTesting = new LabTesting();
+                    labTesting.LabTestId = labTestId;
+                    sampleGetting.LabTestings.Add(labTesting);
+                }
                 appointment.SampleGettings.Add(sampleGetting);
             }
-            appointment.LabTestings = new List<LabTesting>();
-            if (appoinDto.SampleGettingDtos != null)
-            {
-                foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
-                {
-                    if (sampleGettingDto.LabTestIds != null)
-                    {
-                        foreach (var labTestId in sampleGettingDto.LabTestIds)
-                        {
-                            LabTesting labTesting = new LabTesting();
-                            labTesting.LabTestId = labTestId;
-                            appointment.LabTestings.Add(labTesting);
-                        }
-                    }
-                }
-            }
-            //
+            // call to AppointmentService
             var success = this._appointmentService.Create(appointment);
             var obj = new
             {
@@ -71,6 +69,7 @@ namespace eLTMS.Web.Api
         {
             var app = _appointmentService.GetNewApp(patientId);
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
+
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
