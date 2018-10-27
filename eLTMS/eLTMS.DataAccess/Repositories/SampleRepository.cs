@@ -14,7 +14,7 @@ namespace eLTMS.DataAccess.Repositories
     public interface ISampleRepository : IRepository<Sample>
     {
         List<Sample> GetAllSamples();
-        List<Sample> GetAllSample();
+        //List<Sample> GetAllSample();
         Sample GetSampleById(int id);
     }
     public class SampleRepository : RepositoryBase<Sample>, ISampleRepository
@@ -22,22 +22,15 @@ namespace eLTMS.DataAccess.Repositories
         public List<Sample> GetAllSamples()
         {
             var result = DbSet.AsQueryable()
-                .Include (x  => x.LabTests)
-                .Include(x => x.SampleGroup)
-                .ToList();
-            return result;
-
-        }
-
-
-        public List<Sample> GetAllSample()
-        {
-           
-            var result = DbSet.AsQueryable()
-             .Where(x =>  x.IsDeleted == false)
-             .Include(x => x.SampleGroup)
-             .ToList();
-            return result;
+                .Where(x => x.IsDeleted == false)
+                .Include(x => x.LabTests)
+                .Include(x => x.SampleGroup);
+            foreach(var rs in result)
+            {
+                // filter LabTests that has IsDeleted == false
+                rs.LabTests = rs.LabTests.Where(x => x.IsDeleted == false).ToList();
+            }
+            return result.ToList();
 
         }
 

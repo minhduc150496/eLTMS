@@ -1,4 +1,9 @@
-﻿@section styles {
+﻿@using eLTMS.Models.Utils;
+@using System.Globalization;
+@{
+    var appointment = ViewBag.Appointment;
+}
+@section styles {
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
 }
 
@@ -20,24 +25,23 @@
             <h2 class="first_h2">
                 <b>Thời gian lấy mẫu xét nghiệm</b>
             </h2>
-            <h3>1. Lấy mẫu máu:</h3>
-            <p>
-                - Ngày: <em>22-09-2018</em>
-                <br />
-                - Giờ: <em>4:40 - 4:50</em>
-            </p>
-            <h3>2. Lấy mẫu nước tiểu:</h3>
-            <p>
-                - Ngày: <em>22-09-2018</em>
-                <br />
-                - Giờ: <em>4:40 - 4:50</em>
-            </p>
-            <h3>3. Lấy mẫu tế bào:</h3>
-            <p>
-                - Ngày: <em>22-09-2018</em>
-                <br />
-                - Giờ: <em>4:40 - 4:50</em>
-            </p>
+            @{
+                var counter = 1;
+                foreach (var sampleGetting in appointment.SampleGettings)
+                {
+                    <h3>@(counter). @(sampleGetting.Sample.SampleName):</h3>
+                    <p>
+                        - Ngày: <em>@(sampleGetting.GettingDate.ToString("dd-MM-yyyy"))</em>
+                        <br />
+                        @{
+                            var startTime = DateTimeUtils.ConvertTimeSpanToShortHour(sampleGetting.StartTime);
+                            var finishTime = DateTimeUtils.ConvertTimeSpanToShortHour(sampleGetting.FinishTime);
+                        }
+                        - Giờ: <em>@(startTime) - @(finishTime)</em>
+                    </p>
+                    counter++;
+                }
+            }
 
             <h2>
                 <b>Phí xét nghiệm</b>
@@ -51,45 +55,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td><b>Máu</b></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Chức năng đông máu toàn bộ</td>
-                        <td>23.000 đ</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Anti HBsAg định lượng</td>
-                        <td>55.000 đ</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Nhóm máu Rhesus</td>
-                        <td>70.000 đ</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><b>Nước tiểu</b></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Anti HBc</td>
-                        <td>170.000 đ</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Anti HBc</td>
-                        <td>170.000 đ</td>
-                    </tr>
+                    @{
+                        counter = 1;
+                        var totalPrice = 0;
+                        foreach (var sampleGetting in appointment.SampleGettings)
+                        {
+
+                            <tr>
+                                <td></td>
+                                <td><b>@(sampleGetting.Sample.SampleName)</b></td>
+                                <td></td>
+                            </tr>
+                            foreach (var labTesting in sampleGetting.LabTestings)
+                            {
+                                <tr>
+                                    <td>@(counter)</td>
+                                    <td>@(labTesting.LabTest.LabTestName)</td>
+                                    @{
+                                        string sPrice = labTesting.LabTest.Price.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                    }
+                                    <td>@(sPrice)</td>
+                                </tr>
+                                totalPrice += labTesting.LabTest.Price;
+                                counter++;
+                            }
+                        }
+                    }
                     <tr>
                         <td></td>
                         <td><b>TỔNG CỘNG</b></td>
-                        <td><b>1.150.000 đ</b></td>
+                        @{
+                            string sTotalPrice = totalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                        }
+                        <td>@(sTotalPrice)</td>
                     </tr>
                 </tbody>
             </table>

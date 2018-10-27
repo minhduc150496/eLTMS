@@ -24,10 +24,17 @@ namespace eLTMS.DataAccess
         public System.Data.Entity.DbSet<Employee> Employees { get; set; } // Employee
         public System.Data.Entity.DbSet<ExportPaper> ExportPapers { get; set; } // ExportPaper
         public System.Data.Entity.DbSet<ExportPaperDetail> ExportPaperDetails { get; set; } // ExportPaperDetail
+<<<<<<< HEAD
 
         public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
         public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital
 
+=======
+        public System.Data.Entity.DbSet<Department> Departments { get; set; } // Department
+        public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
+        public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital
+        public System.Data.Entity.DbSet<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment
+>>>>>>> 9f64d688a142c64d7ff0388a56d46a3ca502f78a
         public System.Data.Entity.DbSet<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting
         public System.Data.Entity.DbSet<ImportPaper> ImportPapers { get; set; } // ImportPaper
         public System.Data.Entity.DbSet<ImportPaperDetail> ImportPaperDetails { get; set; } // ImportPaperDetail

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Utils;
 
 namespace eLTMS.Models.Mapping
 {
@@ -92,8 +93,8 @@ namespace eLTMS.Models.Mapping
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
                 .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
-                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
-                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
+                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
+                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName));
 
@@ -123,8 +124,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
                 .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
-                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved))
-                .ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
+                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));

@@ -15,9 +15,9 @@ namespace eLTMS.Models.Models.dto
 
         public string GettingDate { get; set; }
 
-        public TimeSpan StartTime { get; set; }
+        public string StartTime { get; set; }
         
-        public TimeSpan FinishTime { get; set; }
+        public string FinishTime { get; set; }
 
     }
 }

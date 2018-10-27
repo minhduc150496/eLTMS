@@ -19,7 +19,7 @@ namespace eLTMS.Models.Utils
             var s = dt.ToString("yyyy-MM-dd");
             return s;
         }
-
+        // DucBM
         public static DateTime? ConvertStringToDate(string s)
         {
             try
@@ -31,6 +31,23 @@ namespace eLTMS.Models.Utils
                 // 
             }
             return null;
+        }
+        public static string ConvertTimeSpanToShortHour(TimeSpan? ts)
+        {
+            string s = null;
+            if (ts==null)
+            {
+                return null;
+            }
+            try
+            {
+                var ts2 = (TimeSpan)ts;
+                s = string.Format("{0}:{1:D2}", ts2.Hours, ts2.Minutes);
+            } catch(Exception ex)
+            {
+                return null;
+            }
+            return s;
         }
     }
 }
