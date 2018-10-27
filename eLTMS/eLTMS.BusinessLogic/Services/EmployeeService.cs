@@ -21,7 +21,9 @@ namespace eLTMS.BusinessLogic.Services
         bool Update(Employee employeedto);
         bool AddEmployee(Employee employee);
         Employee getEmployeeById(int id);
-    }
+        bool DeleteEmployee(int id);
+        
+        }
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepositoryHelper RepositoryHelper;
@@ -83,77 +85,23 @@ namespace eLTMS.BusinessLogic.Services
             catch (Exception ex) { return false; }
             return true;
         }
-        //public List<Employee> GetAll()
-        //{
-        //  var unitOfWork = RepositoryHelper.GetUnitOfWork();
-        //  var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-        //   var results = repo.GetAll().ToList();
-        //    return results;
-        //}
+        public bool DeleteEmployee(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(UnitOfWork);
 
-        //public List<Employee> GetByName(string name)
-        //{
-        //    var unitOfWork = RepositoryHelper.GetUnitOfWork();
-        //    var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-        //    var results = repo.GetAll().Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
-        //    return results;
-        //}
+            try
+            {
+                var employee = repo.GetById(id);
+                employee.IsDeleted = true;
+                repo.Update(employee);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
-        //public bool Insert(int id, string name, int age)
-        //{
-        //    var unitOfWork = RepositoryHelper.GetUnitOfWork();
-        //    var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-
-        //    try
-        //    {
-        //        repo.Create(new Employee(id, name, age));
-        //        unitOfWork.SaveChanges();
-        //    } catch (Exception)
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-
-        //public bool Delete(int id)
-        //{
-        //    var unitOfWork = RepositoryHelper.GetUnitOfWork();
-        //    var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-
-        //    try
-        //    {
-        //        var employee = repo.GetById(id);
-        //        repo.Delete(employee);
-        //        unitOfWork.SaveChanges();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-
-        //public bool Update(int id, string name, int age)
-        //{
-        //    var unitOfWork = RepositoryHelper.GetUnitOfWork();
-        //    var repo = RepositoryHelper.GetRepository<IEmployeeRepository>(unitOfWork);
-
-        //    try
-        //    {
-        //        var employee = repo.GetById(id);
-        //        employee.Age = age;
-        //        employee.Name = name;
-        //        repo.Update(employee);
-        //        unitOfWork.SaveChanges();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
+            return true;
+        }
     }
 }
