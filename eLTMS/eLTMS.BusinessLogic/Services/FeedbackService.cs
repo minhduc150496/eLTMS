@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace eLTMS.BusinessLogic.Services
 {
-    public interface IFeedback
+    public interface IFeedbackService
     {
-
+        List<Feedback> GetAllFeed(string dateTime);
     }
-    public class FeedbackService: IFeedback
+    public class FeedbackService: IFeedbackService
     {
         private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
@@ -22,7 +22,7 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork(); 
         }
-        public List<Feedback> GetAllFeed(String dateTime)
+        public List<Feedback> GetAllFeed(string dateTime)
         {
             var feedRepo = this.RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
             var feedback = feedRepo.GetAllFeed(dateTime);
