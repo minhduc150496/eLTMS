@@ -535,7 +535,8 @@
     <Content Include="Areas\UserWeb\Images\our-team.png" />
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
-    <Content Include="Areas\UserWeb\Scripts\Appointment\Create.js" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\Edit.js" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentForm.js" />
     <Content Include="Areas\UserWeb\Styles\Appointment\Appointment.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Index.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Layout.css" />
@@ -549,6 +550,7 @@
     <Content Include="Areas\UserWeb\Views\Appointment\Results.cshtml" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\maps\pretty-checkbox.css.map" />
     <Content Include="Areas\UserWeb\Views\Appointment\Edit.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\_AppointmentForm.cshtml" />
     <None Include="Areas\UserWeb\Views\Home\Index.cshtml" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
@@ -7659,6 +7661,7 @@
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
+    <Content Include="Scripts\customScript\Feedback.js" />
     <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
@@ -7711,13 +7714,13 @@
     <Content Include="Views\WareHouse\Inventory.cshtml" />
     <Content Include="Views\LabTest\LabTests.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Feedback\Feedbacks.cshtml" />
     <Content Include="Views\Receptionist\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Feedback\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>

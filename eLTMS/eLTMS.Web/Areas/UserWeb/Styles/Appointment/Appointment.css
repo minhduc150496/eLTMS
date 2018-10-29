@@ -7,6 +7,16 @@
     color: black;
 }
 
+    .appoinment_form_area .sample-box {
+        border: 1px solid gray;
+        padding: 0 15px 15px 15px;
+        margin-bottom: 10px;
+    }
+
+    .appoinment_form_area .pretty label::before {
+        border-color: darkblue;
+    }
+
     .appoinment_form_area .alert {
         border-radius: 0;
     }

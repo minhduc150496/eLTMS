@@ -1,0 +1,125 @@
+﻿<!-- appoinment Page Start-->
+<div class="appoinment_form_area create_appointment_area p100">
+    <div class="container">
+        <div class="step-box" id="step-1">
+            <h2 class="text-center">
+                <b>Bước 1/2: Chọn loại xét nghiệm:</b>
+            </h2>
+            <div id="alert-required-labtests" class="alert alert-danger" role="alert">
+                Xin quý khách vui lòng chọn các loại xét nghiệm cần làm!
+            </div>
+            <div id="step-1-form">
+                @*
+                    <h3>1. Máu</h3>
+                    <div data-sampleid="1">
+                        <input type="checkbox" data-labtestid="1" />
+                        Ct Máu
+                        <br>
+                        <input type="checkbox" data-labtestid="2" />
+                        VSS
+                        <br>
+                        <input type="checkbox" data-labtestid="3" />
+                        Tiểu cầu, độ tập trung
+                    </div>
+                *@
+            </div>
+
+            <div class="button-box">
+                <button id="btn-next" type="button" class="custom_btn next_btn">
+                    Bước 2
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div> <!-- end step 1 -->
+        <div class="step-box step-box-2" id="step-2">
+            <h2>
+                <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
+            </h2>
+            <div id="alert-required-datetime" class="alert alert-danger" role="alert">
+                Xin quý khách vui lòng điền đầy đủ thông tin: ngày, giờ
+            </div>
+            <div id="step-2-form">
+                @*
+                    <h3>1. Máu</h3>
+                    <div data-sampleid="1" data-sample-duration="10">
+                    <input type="date" />
+                    <select style="overflow-y: scroll">
+                        <option value="7:00">7:00 - 7:15</option>
+                        <option value="7:30">7:30 - 7:45</option>
+                        <option value="8:00">8:00 - 8:15</option>
+                    </select>
+                    </div>
+                *@
+            </div>
+
+            <div class="button-box text-left">
+                <button id="btn-prev" type="button" class="custom_btn prev_btn">
+                    <i class="fa fa-arrow-left"></i>
+                    Bước 1
+                </button>
+                <button id="btn-submit" type="button" class="custom_btn submit_btn">Đặt lịch</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- appoinment Page End-->
+<!-- Modal -->
+<div id="success-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center out-message">Đặt lịch thành công!</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="button-box">
+                    <a href="/UserWeb/Appointment/Current">
+                        <button type="button" class="btn btn-success">Đồng ý</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+<div id="fail-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3 class="text text-center out-message">
+                    Có lỗi xảy ra.
+                    Xin quý khách vui lòng thử lại.
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <div class="button-box">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+<div id="processing-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="box-loader">
+                    <img class="img-loader" src="~/Areas/UserWeb/Images/color-dots-loader.gif" />
+                </div>
+                <h3 class="text text-center out-message">
+                    Hệ thống đang xử lí.<br />
+                    Xin quý khách vui lòng chờ trong giây lát...
+                </h3>
+            </div>
+        </div>
+
+    </div>
+</div>

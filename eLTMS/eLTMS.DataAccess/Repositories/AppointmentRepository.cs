@@ -35,19 +35,26 @@ namespace eLTMS.DataAccess.Repositories
 
         public List<Appointment> GetNewAppByPatientId(int patientId)
         {
-            var result = DbSet.AsQueryable()
-                .Where(x => x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
+            var appointment = DbSet.AsQueryable()
+                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .ToList();
+                .OrderByDescending(x => x.AppointmentId)
+                .FirstOrDefault();
+            if (appointment==null)
+            {
+                return null;
+            }
+            var result = new List<Appointment>();
+            result.Add(appointment);
             return result;
         }
 
         public List<Appointment> GetOldAppByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.ToUpper().Contains("DONE") && x.PatientId == patientId)
+                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("DONE") && x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .ToList();
