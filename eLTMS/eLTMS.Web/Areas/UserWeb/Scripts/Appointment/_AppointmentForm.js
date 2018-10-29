@@ -146,6 +146,10 @@ var Controller = {
             Controller.sendToServer(jsonData);
         }); // end event handler
 
+        $("h3 + [data-sampleid] select").change(function () {
+            console.log("hahaha");
+        })
+
     }, // end Action
     renderStep1Html: function (sampleDtos) {
         // render step 1 - choosing Samples & LabTests
@@ -184,6 +188,7 @@ var Controller = {
         // render step 2 - choosing Samples & LabTests
         var sampleHtml = "";
         if (sampleDtos != null) {
+            var lastFinishTime = 0;
             for (var i = 0; i < sampleDtos.length; i++) {
                 var sampleDto = sampleDtos[i];
                 var sampleId = sampleDto.SampleId;
@@ -212,13 +217,22 @@ var Controller = {
                 sampleHtml += '<select style="overflow-y: scroll">\n';
                 sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
                 var sampleDuration = sampleDto.SampleDuration;
+                var firstOption = true;
                 for (var time = sampleDto.OpenTime; time + sampleDuration <= sampleDto.CloseTime; time += 2 * sampleDuration) {
-                    // print slots for sample
-                    var startTime = Utils.formatTimeShort(time);
-                    var finishTime = Utils.formatTimeShort(time + sampleDuration);
-                    sampleHtml += '<option value="' + time + '">' +
-                        startTime + ' - ' + finishTime +
-                        '</option>\n';
+                    if (time > lastFinishTime) {
+                        // print slots for sample
+                        var startTime = Utils.formatTimeShort(time);
+                        var finishTime = Utils.formatTimeShort(time + sampleDuration);
+                        var selected = "";
+                        if (firstOption) {
+                            selected = "selected";
+                            firstOption = false;
+                            lastFinishTime = time + sampleDuration;
+                        }
+                        sampleHtml += '<option value="' + time + '" ' + selected +'>' +
+                            startTime + ' - ' + finishTime +
+                            '</option>\n';
+                    }
                 }
                 sampleHtml += '</select>\n';
                 sampleHtml += '</div>\n';

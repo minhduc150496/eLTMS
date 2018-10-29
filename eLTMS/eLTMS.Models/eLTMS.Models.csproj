@@ -67,6 +67,9 @@
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
+    <Compile Include="Models\SampleGettingCalendar\DateCollection.cs" />
+    <Compile Include="Models\SampleGettingCalendar\SampleGettingSlot.cs" />
+    <Compile Include="Models\SampleGettingCalendar\SampleGettingCalendar.cs" />
     <Compile Include="Models\dto\SampleGroupDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
