@@ -1,6 +1,4 @@
-﻿
-
-/*
+﻿/*
     Author: DucBM
 */
 
@@ -156,6 +154,7 @@ var Controller = {
             for (var i = 0; i < sampleDtos.length; i++) {
                 var sampleDto = sampleDtos[i];
                 // append Sample Title: "1. Mau"
+                sampleHtml += "<div class='sample-box'>";
                 sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
                 sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" class="row">\n';
                 if (sampleDto.LabTests != null) {
@@ -173,6 +172,7 @@ var Controller = {
                             '</div>\n';
                     }
                 }
+                sampleHtml += '</div>\n';
                 sampleHtml += '</div>\n';
             }
         }
