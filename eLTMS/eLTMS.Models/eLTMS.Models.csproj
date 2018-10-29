@@ -55,6 +55,7 @@
     <Compile Include="Models\dto\AppointmentGetResultDto.cs" />
     <Compile Include="Models\dto\AppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentUpdateDto.cs" />
+    <Compile Include="Models\dto\FeedbackDto.cs" />
     <Compile Include="Models\dto\EmployeeDto.cs" />
     <Compile Include="Models\dto\ExportPaperDetailDto.cs" />
     <Compile Include="Models\dto\ExportPaperDto.cs" />

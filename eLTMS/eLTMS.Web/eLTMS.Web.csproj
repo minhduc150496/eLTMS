@@ -7659,6 +7659,7 @@
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
     <Content Include="Scripts\customScript\employee.js" />
+    <Content Include="Scripts\customScript\Feedback.js" />
     <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
@@ -7711,12 +7712,12 @@
     <Content Include="Views\WareHouse\Inventory.cshtml" />
     <Content Include="Views\LabTest\LabTests.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Feedback\Feedbacks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Feedback\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>
