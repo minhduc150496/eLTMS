@@ -10,18 +10,38 @@ var homeController = {
     registerEvent: function () {
 
         $('#btnSave').off('click').on('click', function () {
-            var code = $('#txtCode').val();
             var name = $('#txtName').val();
+            var address = $('3txtAddress').val();
             var phone = $('#txtPhone').val();
-            var mau = $('#checkBox_loaiXetNghiem1').prop('checked');
-            var nuocTieu = $('#checkBox_loaiXetNghiem2').prop('checked');
-            var teBaoHoc = $('#checkBox_loaiXetNghiem3').prop('checked');
-            var phan = $('#checkBox_loaiXetNghiem4').prop('checked');
-            var dich = $('#checkBox_loaiXetNghiem5').prop('checked');
+            var mau = false;
+            var nuocTieu = false;
+            var teBaoHoc = false;
+            var phan = false;
+            var dich = false;
+
+            if ($('#checkBox_loaiXetNghiem1') || $('#checkBox_loaiXetNghiem2') || $('#checkBox_loaiXetNghiem3')
+                || $('#checkBox_loaiXetNghiem4') || $('#checkBox_loaiXetNghiem5') || $('#checkBox_loaiXetNghiem6')
+                || $('#checkBox_loaiXetNghiem7') || $('#checkBox_loaiXetNghiem8') || $('#checkBox_loaiXetNghiem9')
+                || $('#checkBox_loaiXetNghiem10') || $('#checkBox_loaiXetNghiem11') || $('#checkBox_loaiXetNghiem12')
+                || $('#checkBox_loaiXetNghiem13') || $('#checkBox_loaiXetNghiem14') || $('#checkBox_loaiXetNghiem15')
+                || $('#checkBox_loaiXetNghiem16') || $('#checkBox_loaiXetNghiem17') || $('#checkBox_loaiXetNghiem18')
+                || $('#checkBox_loaiXetNghiem19') || $('#checkBox_loaiXetNghiem20') || $('#checkBox_loaiXetNghiem21')
+                || $('#checkBox_loaiXetNghiem22').prop('checked') === true)
+                mau = true;
+            if ($('#checkBox_loaiXetNghiem23') || $('#checkBox_loaiXetNghiem24').prop('checked') === true)
+                nuocTieu = true;
+            if ($('#checkBox_loaiXetNghiem25') || $('#checkBox_loaiXetNghiem26').prop('checked') === true)
+                teBaoHoc = true;
+            if ($('#checkBox_loaiXetNghiem27') || $('#checkBox_loaiXetNghiem28').prop('checked') === true)
+                phan = true;
+            if ($('#checkBox_loaiXetNghiem29') || $('#checkBox_loaiXetNghiem30') || $('#checkBox_loaiXetNghiem31')
+                || $('#checkBox_loaiXetNghiem32') || $('#checkBox_loaiXetNghiem33') || $('#checkBox_loaiXetNghiem34').prop('checked') === true)
+                dich = true;
+
             var item = {
-                AppCode: code,
                 Name: name,
                 Phone: phone,
+                Address: address,
                 Mau: mau,
                 NuocTieu: nuocTieu,
                 TeBaoHoc: teBaoHoc,
@@ -47,7 +67,7 @@ var homeController = {
                     }
                 }
             });
-          
+
         })
 
 
@@ -58,11 +78,11 @@ var homeController = {
             $('#myModal').modal('show');
         });
 
-       
+
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
-       
+
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
@@ -78,7 +98,7 @@ var homeController = {
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSupply(id);
-            
+
         });
 
     },
@@ -121,7 +141,7 @@ var homeController = {
                     $('#ddlSupplyType').val(data.SuppliesTypeId).change();
                     $('#ddlSupplyUnit').val(data.Unit).change();
                     $('#txtNote').val(data.Note);
-                   
+
                 }
                 else {
                     bootbox.alert(response.message);
@@ -133,7 +153,7 @@ var homeController = {
         });
     },
     saveData: function () {
-        
+
     },
     resetForm: function () {
         $('#txtSupplyId').val('0');
@@ -157,7 +177,7 @@ var homeController = {
                     $.each(data, function (i, item) {
                         var sample = "";
                         $.each(item.SampleGettingDtos, function (e, etem) {
-                            sample = sample  + etem.SampleName + ": " + etem.StartTime +" ";
+                            sample = sample + etem.SampleName + ": " + etem.StartTime + " ";
                         });
                         html += Mustache.render(template, {
                             AppCode: item.AppointmentCode,

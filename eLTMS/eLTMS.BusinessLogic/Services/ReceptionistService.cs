@@ -27,6 +27,34 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
+        public string CreateAppReturnCode(Appointment appointment)
+        {
+            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            try
+            {
+                // Convert AppointmentDto to Appointment
+                var now = DateTime.Now;
+                var sDate = now.ToString("yyyy-MM-dd");
+                var count = appointmentRepo.CountByDate(sDate);
+                var code = sDate + "-" + count;
+                appointment.AppointmentCode = code;
+                appointment.Status = "NEW";
+                // Create
+                appointmentRepo.Create(appointment);
+                var result = this.UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return appointment.AppointmentCode;
+        }
+
+
         public bool Add(AppointmentAddDto data)
         {
 
@@ -55,14 +83,13 @@ namespace eLTMS.BusinessLogic.Services
                 });
                 UnitOfWork.SaveChanges();
                 var paId = paRepo.GetFirst(p=>p.PhoneNumber==data.Phone).PatientId;
-                appRepo.Create(new Appointment
+                var appCode= CreateAppReturnCode(new Appointment
                 {
-                    AppointmentCode = data.AppCode,
-                    PatientId=paId,
+                    PatientId = paId,
                     IsDeleted = false
                 });
                 UnitOfWork.SaveChanges();
-                var appId = appRepo.GetAppointmentByCode(data.AppCode).AppointmentId;
+                var appId = appRepo.GetFirst(p=>p.AppointmentCode==appCode).AppointmentId;
                 if (data.Mau == true)
                 {
                     sgRepo.Create(new SampleGetting
