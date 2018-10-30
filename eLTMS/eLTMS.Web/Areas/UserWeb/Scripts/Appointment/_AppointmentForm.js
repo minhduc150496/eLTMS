@@ -146,9 +146,8 @@ var Controller = {
             Controller.sendToServer(jsonData);
         }); // end event handler
 
-        $("h3 + [data-sampleid] select").change(function () {
-            console.log("hahaha");
-        })
+    }, // end Action
+    renderOptions: function () {
 
     }, // end Action
     renderStep1Html: function (sampleDtos) {
@@ -183,12 +182,16 @@ var Controller = {
         $("#step-1-form").append(sampleHtml);
         // end rendering step 1
     }, // end Action
-    renderStep2Html: function (sampleDtos) {
+    renderStep2Html: function (sampleDtos, argLastFinishTime) {
         $("#step-2-form").html("");
         // render step 2 - choosing Samples & LabTests
         var sampleHtml = "";
+        var firstSelect = "id='first-select'";
         if (sampleDtos != null) {
             var lastFinishTime = 0;
+            if (argLastFinishTime != null && argLastFinishTime != undefined) {
+                lastFinishTime = argLastFinishTime;
+            }
             for (var i = 0; i < sampleDtos.length; i++) {
                 var sampleDto = sampleDtos[i];
                 var sampleId = sampleDto.SampleId;
@@ -214,31 +217,70 @@ var Controller = {
                 }
                 var sToday = "" + year + "-" + month + "-" + date;
                 sampleHtml += '<input type="date" value="' + sToday + '" />\n';
-                sampleHtml += '<select style="overflow-y: scroll">\n';
+                sampleHtml += '<select style="overflow-y: scroll" ' + firstSelect + '>\n';
                 sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
                 var sampleDuration = sampleDto.SampleDuration;
                 var firstOption = true;
                 for (var time = sampleDto.OpenTime; time + sampleDuration <= sampleDto.CloseTime; time += 2 * sampleDuration) {
+                    // print slots for sample
+                    var startTime = Utils.formatTimeShort(time);
+                    var finishTime = Utils.formatTimeShort(time + sampleDuration);
+                    var selected = "";
                     if (time > lastFinishTime) {
-                        // print slots for sample
-                        var startTime = Utils.formatTimeShort(time);
-                        var finishTime = Utils.formatTimeShort(time + sampleDuration);
-                        var selected = "";
                         if (firstOption) {
                             selected = "selected";
                             firstOption = false;
                             lastFinishTime = time + sampleDuration;
                         }
-                        sampleHtml += '<option value="' + time + '" ' + selected +'>' +
-                            startTime + ' - ' + finishTime +
-                            '</option>\n';
                     }
+                    sampleHtml += '<option value="' + time + '" ' + selected + ' >' +
+                        startTime + ' - ' + finishTime +
+                        '</option>\n';
                 }
                 sampleHtml += '</select>\n';
                 sampleHtml += '</div>\n';
+                if (firstSelect != "") {
+                    firstSelect = ""
+                }
             }
         }
         $("#step-2-form").append(sampleHtml);
+        
+        var selects = $("#step-2-form select");
+        for (var i = 0; i < selects.length; i++) {
+            var options = $(selects[i]).children("option");
+            var sampleDuration = sampleDtos[i].SampleDuration;
+            for (var k = 1; k < options.length; k++) {
+                var time = parseInt($(options[k]).val());
+                var bDisable = false;
+                for (var j = 0; j < selects.length; j++) {
+                    if (i != j) {
+                        var start = parseInt($(selects[j]).children("option:selected").val());
+                        var end = start + sampleDtos[j].SampleDuration;
+                        var IsIntersect = function(A, B, a, b) {
+                            var boundary = Math.max(B, b) - Math.min(A, a);
+                            var sum = (B - A) + (b - a);
+                            return boundary <= sum;
+                        }
+                        if (IsIntersect(start, end, time, time + sampleDuration)) {
+                            bDisable = true;
+                            console.log("dis")
+                        }
+                    }
+                }
+                if (bDisable) {
+                    $(options[k]).attr("disabled", "disabled");
+                } else {
+                    $(options[k]).removeAttr("disabled");
+                }
+            }
+        }
+
+        $("#first-select").on("change", function () {
+            var value = $(this).val();
+            Controller.renderStep2Html(sampleDtos, value - 1);
+        })
+
         // end rendering step 2
     },
     renderLabTestList: function () {

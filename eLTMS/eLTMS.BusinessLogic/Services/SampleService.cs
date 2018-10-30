@@ -34,7 +34,7 @@ namespace eLTMS.BusinessLogic.Services
 
         public SampleGettingCalendar GetAvailableSlots()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public List<Sample> GetAll()
