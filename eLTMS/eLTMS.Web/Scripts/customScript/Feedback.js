@@ -164,10 +164,10 @@ var homeController = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Employee/GetAllFeedbacks',
+            url: '/Feedback/GetAllFeed',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, fullName: $('#txtSearch').val() },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, dateTime: $('#txtSearch').val() },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -180,6 +180,7 @@ var homeController = {
                             EmployeeName: item.EmployeeName,
                             PatientName: item.PatientName,
                             Status: item.Status,
+                            ReceiveDateTime: item.ReceivedDateTime
 
                         });
 
@@ -219,3 +220,4 @@ var homeController = {
             }
 }
 
+homeController.init();

@@ -20,7 +20,7 @@
                 <h3 class="box-title">Danh sách Feedback</h3>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <button class="btn btn-success" id="btnAddNew">Thêm Feedback</button>
+                  <!--<button class="btn btn-success" id="btnAddNew">Thêm Feedback</button>-->
                     <br />
                     <br />
 
@@ -34,6 +34,7 @@
                                 <th>Tên nhân viên</th>
                                 <th>Tên bệnh nhân</th>
                                 <th>Ngày nhận</th>
+                                <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
@@ -135,9 +136,9 @@
 </div>
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{FeedbackID}}</td>
         <td>{{EmployeeName}}</td>
         <td>{{PatientName}}</td>
+        <td>{{ReceiveDateTime}}</td>
         <td>{{Status}}</td>
         <td>
             <button class="btn btn-primary btn-edit" data-id="{{FeedbackID}}"><i class="fa fa-pencil-square-o"></i></button>

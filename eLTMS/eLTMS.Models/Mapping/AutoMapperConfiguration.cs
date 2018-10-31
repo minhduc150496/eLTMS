@@ -148,6 +148,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.NormalRange, src => src.MapFrom(x => x.NormalRange))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit));
 
+
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
                 .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))
@@ -169,6 +170,14 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
 
+                cfg.CreateMap<Feedback, FeedbackDto>()
+               .ForMember(dst => dst.FeedbackId, src => src.MapFrom(x => x.FeedbackId))
+               .ForMember(dst => dst.EmployeeName, src => src.MapFrom(x => x.Employee.FullName))
+               .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+               .ForMember(dst => dst.Content, src => src.MapFrom(x => x.Content))
+               .ForMember(dst => dst.ReceivedDateTime, src => src.MapFrom(x => x.ReceivedDateTime.HasValue ? (x.ReceivedDateTime.Value).ToString("dd-MM-yyyy") : ""))
+               .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+               .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
             });
 
         }
