@@ -92,7 +92,7 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<SampleGettingDto, SampleGetting>();
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
-                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
+                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate != null) ? (((DateTime)x.GettingDate).ToString("yyyy-MM-dd")) : null)) // DucBM
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
                 .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
@@ -175,6 +175,9 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
+
+                cfg.CreateMap<Slot, SlotDto>()
+                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
 
             });
 

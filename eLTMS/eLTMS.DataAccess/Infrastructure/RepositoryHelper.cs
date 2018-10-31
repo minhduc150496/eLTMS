@@ -129,6 +129,12 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+            if (typeof(TRepository) == typeof(ISlotRepository))
+            {
+                dynamic repo = new SlotRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
 
             TRepository repository = null;

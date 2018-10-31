@@ -211,6 +211,59 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // Slot
+    [Table("Slot", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class Slot
+    {
+        [Column(@"StartTime", Order = 1, TypeName = "int")]
+        [Display(Name = "Start time")]
+        public int? StartTime { get; set; } // StartTime
+
+        [Column(@"FinishTime", Order = 2, TypeName = "int")]
+        [Display(Name = "Finish time")]
+        public int? FinishTime { get; set; } // FinishTime
+
+        [Column(@"Date", Order = 3, TypeName = "date")]
+        [Display(Name = "Date")]
+        public System.DateTime? Date { get; set; } // Date
+
+        [Column(@"Quantity", Order = 4, TypeName = "int")]
+        [Display(Name = "Quantity")]
+        public int? Quantity { get; set; } // Quantity
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"SlotID", Order = 5, TypeName = "int")]
+        [Index(@"PK__Slot__0A124A4F1ED30403", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Slot ID")]
+        public int SlotId { get; set; } // SlotID (Primary key)
+
+        [Column(@"SampleGroupID", Order = 6, TypeName = "int")]
+        [Display(Name = "Sample group ID")]
+        public int? SampleGroupId { get; set; } // SampleGroupID
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child SampleGettings where [SampleGetting].[SlotID] point to this entity (FK_SampleGetting_Slot)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<SampleGetting> SampleGettings { get; set; } // SampleGetting.FK_SampleGetting_Slot
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent SampleGroup pointed by [Slot].([SampleGroupId]) (FK_Slot_SampleGroup)
+        /// </summary>
+        [ForeignKey("SampleGroupId")] public virtual SampleGroup SampleGroup { get; set; } // FK_Slot_SampleGroup
+
+        public Slot()
+        {
+            SampleGettings = new System.Collections.Generic.List<SampleGetting>();
+        }
+    }
+
     // SampleGroup
     [Table("SampleGroup", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -246,15 +299,24 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"NumberOfSlots", Order = 7, TypeName = "int")]
+        [Display(Name = "Number of slots")]
+        public int? NumberOfSlots { get; set; } // NumberOfSlots
+
         // Reverse navigation
 
         /// <summary>
         /// Child Samples where [Sample].[SampleGroupID] point to this entity (FK_Sample_SampleGroup)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Sample> Samples { get; set; } // Sample.FK_Sample_SampleGroup
+        /// <summary>
+        /// Child Slots where [Slot].[SampleGroupID] point to this entity (FK_Slot_SampleGroup)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Slot> Slots { get; set; } // Slot.FK_Slot_SampleGroup
 
         public SampleGroup()
         {
+            Slots = new System.Collections.Generic.List<Slot>();
             Samples = new System.Collections.Generic.List<Sample>();
         }
     }
@@ -308,6 +370,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample getting ID")]
         public int SampleGettingId { get; set; } // SampleGettingID (Primary key)
 
+        [Column(@"SlotID", Order = 10, TypeName = "int")]
+        [Display(Name = "Slot ID")]
+        public int? SlotId { get; set; } // SlotID
+
         // Reverse navigation
 
         /// <summary>
@@ -326,6 +392,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Sample pointed by [SampleGetting].([SampleId]) (FK_SampleGetting_Sample)
         /// </summary>
         [ForeignKey("SampleId")] public virtual Sample Sample { get; set; } // FK_SampleGetting_Sample
+
+        /// <summary>
+        /// Parent Slot pointed by [SampleGetting].([SlotId]) (FK_SampleGetting_Slot)
+        /// </summary>
+        [ForeignKey("SlotId")] public virtual Slot Slot { get; set; } // FK_SampleGetting_Slot
 
         public SampleGetting()
         {
@@ -454,6 +525,10 @@ namespace eLTMS.DataAccess.Models
         [Column(@"IsDeleted", Order = 10, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
+
+        [Column(@"IsOnline", Order = 11, TypeName = "bit")]
+        [Display(Name = "Is online")]
+        public bool? IsOnline { get; set; } // IsOnline
 
         // Reverse navigation
 
@@ -1284,6 +1359,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Appointment ID")]
         public int AppointmentId { get; set; } // AppointmentID (Primary key)
 
+        [Column(@"IsPaid", Order = 13, TypeName = "bit")]
+        [Display(Name = "Is paid")]
+        public bool? IsPaid { get; set; } // IsPaid
+
         // Reverse navigation
 
         /// <summary>
@@ -1425,6 +1504,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.ResultApproved).IsOptional();
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.IsPaid).IsOptional();
 
         }
     }
@@ -1709,6 +1789,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.HomeAddress).IsOptional();
             Property(x => x.CompanyAddress).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.IsOnline).IsOptional();
 
         }
     }
@@ -1751,6 +1832,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.GettingDate).IsOptional();
             Property(x => x.SampleGettingCode).IsOptional();
+            Property(x => x.SlotId).IsOptional();
 
         }
     }
@@ -1771,6 +1853,27 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.OpenTime).IsOptional();
             Property(x => x.CloseTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.NumberOfSlots).IsOptional();
+        }
+    }
+
+    // Slot
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class SlotConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Slot>
+    {
+        public SlotConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public SlotConfiguration(string schema)
+        {
+            Property(x => x.StartTime).IsOptional();
+            Property(x => x.FinishTime).IsOptional();
+            Property(x => x.Date).IsOptional();
+            Property(x => x.Quantity).IsOptional();
+            Property(x => x.SampleGroupId).IsOptional();
+
         }
     }
 

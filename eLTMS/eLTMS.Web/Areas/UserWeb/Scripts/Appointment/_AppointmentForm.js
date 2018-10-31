@@ -206,8 +206,9 @@ var Controller = {
                     'data-open-time="' + sampleDto.OpenTime + '" ' +
                     'data-close-time="' + sampleDto.CloseTime + '">\n';
                 var today = new Date();
+                today.setDate(today.getDate() + 1);
                 var year = today.getFullYear();
-                var month = today.getMonth();
+                var month = today.getMonth()+1;
                 if (month < 10) {
                     month = "0" + month;
                 }
@@ -264,7 +265,7 @@ var Controller = {
                         }
                         if (IsIntersect(start, end, time, time + sampleDuration)) {
                             bDisable = true;
-                            console.log("dis")
+                            //console.log("dis")
                         }
                     }
                 }
@@ -286,6 +287,7 @@ var Controller = {
     renderLabTestList: function () {
         // get all sampleDtos and LabTests
         var sSampleDtos = localStorage.getItem(CONFIG.SAMPLE_DTOS_KEY);
+        sSampleDtos = null; // TEMPORARILY
         if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
