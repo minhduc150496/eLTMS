@@ -123,8 +123,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
                 .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
-                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved))
-                .ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
+                .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
+                //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
@@ -162,7 +162,15 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""));
                 cfg.CreateMap<LabTesting, LabTestingDto>()
-               .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+                .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+                .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))
+                .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.SampleGetting.Appointment.AppointmentCode))
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleGetting.SampleId))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleGetting.Sample.SampleName))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.MachineSlot, src => src.MapFrom(x => x.MachineSlot))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
 
                 cfg.CreateMap<Appointment, AppointmentDto>()

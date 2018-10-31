@@ -50,9 +50,8 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .Include(x => x.LabTestings.Select(y => y.LabTest))
-                .Include(x => x.LabTestings.Select(y => y.LabTestingIndexes))
-                .Include(x => x.LabTestings)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
                 .ToList();
             return result;
         }
@@ -61,8 +60,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(appCode))
-                .Include(x => x.LabTestings)
-                .Include(x => x.SampleGettings)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings))
                 .FirstOrDefault();
             return result;
         }
@@ -74,9 +72,8 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .Include(x => x.LabTestings.Select(y => y.LabTest))
-                .Include(x => x.LabTestings.Select(y => y.LabTestingIndexes))
-                .Include(x => x.LabTestings)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
                 .ToList();
             return result;
         }
