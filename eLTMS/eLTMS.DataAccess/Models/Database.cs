@@ -957,6 +957,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"Status", Order = 7, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Status")]
+        public string Status { get; set; } // Status (length: 100)
+
         // Foreign keys
 
         /// <summary>
@@ -1520,6 +1526,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Content).IsOptional();
             Property(x => x.ReceivedDateTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.Status).IsOptional();
 
         }
     }

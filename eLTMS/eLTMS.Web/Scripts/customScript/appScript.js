@@ -1,0 +1,208 @@
+﻿var homeconfig = {
+    pageSize: 10,
+    pageIndex: 1,
+}
+var homeController = {
+    init: function () {
+        homeController.loadData();
+        homeController.registerEvent();
+    },
+    registerEvent: function () {
+
+        $('#btnSave').off('click').on('click', function () {
+            var code = $('#txtCode').val();
+            var name = $('#txtName').val();
+            var phone = $('#txtPhone').val();
+            var mau = $('#checkBox_loaiXetNghiem1').prop('checked');
+            var nuocTieu = $('#checkBox_loaiXetNghiem2').prop('checked');
+            var teBaoHoc = $('#checkBox_loaiXetNghiem3').prop('checked');
+            var phan = $('#checkBox_loaiXetNghiem4').prop('checked');
+            var dich = $('#checkBox_loaiXetNghiem5').prop('checked');
+            var item = {
+                AppCode: code,
+                Name: name,
+                Phone: phone,
+                Mau: mau,
+                NuocTieu: nuocTieu,
+                TeBaoHoc: teBaoHoc,
+                Phan: phan,
+                Dich: dich
+            };
+            $.ajax({
+                url: '/receptionist/AddApp',
+                type: 'Post',
+                dataType: 'json',
+                data: item,
+                success: function (res) {
+                    if (!res.sucess) {
+                        if (res.validation && res.validation.Errors) {
+                            toastr.error(res.validation.Errors[0].ErrorMessage);
+                        }
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $('#myModal').modal('hide');
+                        homeController.loadData();
+                    }
+                }
+            });
+          
+        })
+
+
+
+        $('#btnAddNew').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Thêm mới vật tư');
+            homeController.resetForm();
+            $('#myModal').modal('show');
+        });
+
+       
+        $('#btnSearch').off('click').on('click', function () {
+            homeController.loadData(true);
+        });
+       
+        $('#btnReset').off('click').on('click', function () {
+            $('#txtNameS').val('');
+            $('#ddlStatusS').val('');
+            homeController.loadData(true);
+        });
+        $('.btn-edit').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Cập nhật vật tư');
+            $('#myModal').modal('show');
+            var id = $(this).data('id');
+            homeController.loadDetail(id);
+        });
+
+        $('.btn-delete').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteSupply(id);
+            
+        });
+
+    },
+    deleteSupply: function (id) {
+        $.ajax({
+            url: '/WareHouse/Delete',
+            data: {
+                supplyId: id
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success == true) {
+                    toastr.success("Xóa thành công.");
+                    homeController.loadData(true);
+                }
+                else {
+                    toastr.error("Xóa không thành công.");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    },
+    loadDetail: function (id) {
+        $.ajax({
+            url: '/WareHouse/SupplyDetail',
+            data: {
+                id: id
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.sucess) {
+                    var data = response.data;
+                    $('#txtSupplyId').val(data.SuppliesId);
+                    $('#txtCode').val(data.SuppliesCode);
+                    $('#txtName').val(data.SuppliesName);
+                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
+                    $('#ddlSupplyUnit').val(data.Unit).change();
+                    $('#txtNote').val(data.Note);
+                   
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    },
+    saveData: function () {
+        
+    },
+    resetForm: function () {
+        $('#txtSupplyId').val('0');
+        $('#txtCode').val('');
+        $('#txtName').val('')
+        $('#ddlSupplyType').val('').change();
+        $('#ddlSupplyUnit').val('').change();
+        $('#txtNote').val('')
+    },
+    loadData: function (changePageSize) {
+        $.ajax({
+            url: '/receptionist/GetAllAppointment',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, suppliesCode: $('#txtSearch').val() },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#data-template').html();
+                    $.each(data, function (i, item) {
+                        var sample = "";
+                        $.each(item.SampleGettingDtos, function (e, etem) {
+                            sample = sample  + etem.SampleName + ": " + etem.StartTime +" ";
+                        });
+                        html += Mustache.render(template, {
+                            AppCode: item.AppointmentCode,
+                            FullName: item.PatientName,
+                            Phone: item.Phone,
+                            Address: item.Address,
+                            SampleName: sample /*+ item.SampleGettingDtos.StartTime +"/n"*/,
+                            //StartTime: item.Unit,
+                            //Note: item.Note,
+
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblData').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadData();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    paging: function (totalRow, callback, changePageSize) {
+        var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
+
+        //Unbind pagination if it existed or click change pagesize
+        if ($('#pagination a').length === 0 || changePageSize === true) {
+            $('#pagination').empty();
+            $('#pagination').removeData("twbs-pagination");
+            $('#pagination').unbind("page");
+        }
+
+        $('#pagination').twbsPagination({
+            totalPages: totalPage,
+            first: "Đầu",
+            next: "Tiếp",
+            last: "Cuối",
+            prev: "Trước",
+            visiblePages: 10,
+            onPageClick: function (event, page) {
+                homeconfig.pageIndex = page;
+                setTimeout(callback, 200);
+            }
+        });
+    }
+}
+homeController.init();

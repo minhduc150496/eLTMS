@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eLTMS.Models.Models.dto
 {
-    public class AppointmentGetByPhoneAndDateDto
+    public class AppointmentGetByPhoneDto
     {
         public string PatientName { get; set; }
 
@@ -17,5 +17,7 @@ namespace eLTMS.Models.Models.dto
         public string AppointmentCode { get; set; }
 
         public string SamplesName { get; set; }
+
+        public DateTime StartTime { get; set; }
     }
 }

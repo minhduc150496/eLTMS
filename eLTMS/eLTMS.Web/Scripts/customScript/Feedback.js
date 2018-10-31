@@ -8,41 +8,34 @@ var homeController = {
         homeController.registerEvent();
     },
     registerEvent: function () {
-
-        $('#btnSave').off('click').on('click', function () {
-            var code = $('#txtCode').val();
+        $('#btnSave').off('click').on('click', function () {     
             var accountId = parseInt($('#txtAccountId').val());
-            var id = $('#txtID').val();
-            var accountId = parseInt($('#txtAccountId').val());
-            var name = $('#txtName').val();
-            var gender = $('#ddlGender').val();         
-            var dateBirth = $('#txtDB').val();     
-            var phone = $('#txtPhoneNumber').val();
-            var homeAddress = $('#txtHomeAddress').val();   
-            var dateStart = $('#txtSD').val();     
-            var date = '06-10-2018';
+            var feedbackId = $('#txtFeedbackId').val();
+            var employeeName = $('#txtEmployeeName').val();
+            var patientName = $('#txtPatientName').val();
+            var context = $('#txtContext').val();
+            var day = $('#txtDay').val();
+            var status = $('#ddlStatus').val();
             var isDeleted = "False";
-            var employee = {
-                EmployeeId: id,      
-                FullName: name,
-                Gender: gender,
-                DateOfBirth: dateBirth,
-                StartDate: dateStart,
-                PhoneNumber: phone,
-                HomeAddress: homeAddress,
-                IsDeleted: isDeleted,
-                Account: {
-                    Role: $('#ddlRole').val()
+            var feedback = {
+                FeedbackId: feedbackId,
+                Patient: {
+                    PatientName: $('#txtPatientName').val()
                 },
+                Employee: {
+                    PatientName: $('#txtEmployeeName').val()
+                },
+                Content: $('#txtContext').val(),
+                ReceivedDateTime: $('#txtDay').val(),
                 Status: $('#ddlStatus').val()
             }
-            console.log(employee);
-            if (employee.EmployeeId == 0) {
+            console.log(feedback);
+            if (feedback.FeedbackId == 0) {
                 $.ajax({
-                    url: '/Employee/AddEmployee',
+                    url: '/Feedback/AddFeedback',
                     type: 'Post',
                     dataType: 'json',
-                    data: employee,
+                    data: feedback,
                     success: function (res) {
                         if (!res.sucess) {
                             if (res.validation && res.validation.Errors) {
@@ -59,15 +52,15 @@ var homeController = {
                 })
             } else {
                 $.ajax({
-                    url: '/Employee/UpdateEmployee',
+                    url: '/Feedback/UpdateFeedback',
                     type: 'Post',
                     dataType: 'json',
                     data: employee,
                     success: function (res) {
                         if (!res.sucess) {
-                           
-                                toastr.error("Cập nhật không thành công");
-                            
+
+                            toastr.error("Cập nhật không thành công");
+
 
                         }
                         else {
@@ -78,18 +71,13 @@ var homeController = {
                     }
                 })
             }
-          
+
         })
-
-
-
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới nhân viên');
+            $('#lblPopupTitle').text('Thêm mới feedback');
             homeController.resetForm();
             $('#myModal').modal('show');
         });
-
-       
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
@@ -104,19 +92,17 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteEmployee(id);
-            
-        });
 
+        });
     },
     deleteEmployee: function (id) {
         $.ajax({
-            url: '/Employee/DeleteEmployee',
+            url: '/Feedback/DeleteFeedback',
             data: {
-                employeId: id
+                feedbackId: id
             },
             type: 'POST',
             dataType: 'json',
@@ -136,7 +122,7 @@ var homeController = {
     },
     loadDetail: function (id) {
         $.ajax({
-            url: '/Employee/EmployeeDetail',
+            url: '/Feedback/FeedbackDetail',
             data: {
                 id: id
             },
@@ -144,17 +130,15 @@ var homeController = {
             dataType: 'json',
             success: function (response) {
                 if (response.sucess) {
-                    var data = response.data;          
-                    $('#txtID').val(data.EmployeeID);
-                    $('#txtAccountId').val(data.AccountId);
+                    var data = response.data;
+                    $('#txtFeedbackId').val(data.FeedbackId);
+                    $('#txtAccountId').val(data.accountId);
                     $('#ddlStatus').val(data.Status).change();
-                    $('#txtName').val(data.FullName); 
-                    $('#ddlGender').val(data.Gender.trim()).change();
-                    $('#txtDB').val(data.DateOfBirth);
-                    $('#txtPhoneNumber').val(data.PhoneNumber);
-                    $('#ddlRole').val(data.Role);
-                    $('#txtHomeAddress').val(data.HomeAddress);
-                    $('#txtSD').val(data.DateOfStart);           
+                    $('#txtPatientName').val(data.patientName);
+                    $('#txtEmployeeName').val(data.employeeName);
+                    $('#txtContext').val(data.Content);
+                    $('#txtDay').val(data.ReceivedDateTime);
+                    $('#ddlStatus').val(data.Status);                
                 }
                 else {
                     bootbox.alert(response.message);
@@ -166,23 +150,21 @@ var homeController = {
         });
     },
     saveData: function () {
-        
+
     },
     resetForm: function () {
-        $('#txtID').val('0');
-        $('#txtAccountId').val('')
-        $('#ddlStatus').val('').change();
-        $('#txtName').val('');
-        $('#ddlGender').val('').change();
-        $('#txtDB').val('');
-        $('#txtPhoneNumber').val('');
-        $('#ddlRole').val('').change();
-        $('#txtHomeAddress').val('');
-        $('#txtSD').val(''); 
+        $('#txtFeedbackId').val(data.FeedbackId);
+        $('#txtAccountId').val(data.accountId);
+        $('#ddlStatus').val(data.Status).change();
+        $('#txtPatientName').val(data.patientName);
+        $('#txtEmployeeName').val(data.employeeName);
+        $('#txtContext').val(data.Content);
+        $('#txtDay').val(data.ReceivedDateTime);
+        $('#ddlStatus').val(data.Status);   
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/Employee/GetAllEmployees',
+            url: '/Employee/GetAllFeedbacks',
             type: 'GET',
             dataType: 'json',
             data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, fullName: $('#txtSearch').val() },
@@ -194,11 +176,11 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            EmployeeID: item.EmployeeID,
-                            FullName: item.FullName,
-                            PhoneNumber: item.PhoneNumber,
-                            Role: item.RoleDisplay,
-                           
+                            FeedbackId: item.FeedbackId,
+                            EmployeeName: item.EmployeeName,
+                            PatientName: item.PatientName,
+                            Status: item.Status,
+
                         });
 
                     });
@@ -234,6 +216,6 @@ var homeController = {
                 setTimeout(callback, 200);
             }
         });
-    }
+            }
 }
-homeController.init();
+

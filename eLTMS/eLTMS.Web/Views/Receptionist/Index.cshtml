@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "Appointment";
+    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(16px);
+        -ms-transform: translateX(16px);
+        transform: translateX(16px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 10px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+<section class="content-header">
+    <h1>
+        QUẢN LÝ CUỘC HẸN
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-body">
+                    <button class="btn btn-success" id="btnAddNew">Thêm mới</button>
+                    <br />
+                    <br />
+
+                    <input type="text" id="txtSearch" placeholder="Mã vật tư" />
+                    <button class="btn btn-success" id="btnSearch">Search</button>
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Appointment Code</th>
+                                <th>Họ & tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Thông tin xét nghiệm</th>
+                                <th>Đã thanh toán</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="tblData"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<!-- Modal -->
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm mới cuộc hẹn</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Appointment Code</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtCode" name="txtCode">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Họ tên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtName" name="txtName">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Số điện thoại</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtPhone" name="txtPhone">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Loại xét nghiệm</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem1" value="1">Máu</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem2" value="2">Nước tiểu</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem3" value="3">Tế bào học</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem4" value="4">Phân</label>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="checkBox_loaiXetNghiem5" value="5">Dịch</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Ghi chú</label>
+                        <div class="col-sm-10">
+                            <textarea rows="4" id="txtNote" cols="50" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<script id="data-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{AppCode}}</td>
+        <td>{{FullName}}</td>
+        <td>{{Phone}}</td>
+        <td>{{Address}}</td>
+
+
+        <td>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Detail</button>
+            <div id="demo" class="collapse">
+
+            </div>
+            {{SampleName}}
+        </td>
+        <td>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+        </td>
+        @*<td>
+            <button class="btn btn-primary btn-edit" data-id="{{SupplyId}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-danger btn-delete" data-id="{{SupplyId}}"><i class="fa fa-trash"></i></button>
+
+        </td>*@
+    </tr>
+</script>
+
+
+
+
+
+
+<script src="~/Scripts/customScript/appScript.js"></script>

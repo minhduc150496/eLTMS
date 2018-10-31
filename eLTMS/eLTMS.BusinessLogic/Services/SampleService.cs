@@ -1,6 +1,7 @@
 ﻿using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
+using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         //bool Create(LabTest newTesting);
         //bool CreateMany(List<LabTest> newTestings);
         //bool Update(LabTest testing);
+        SampleGettingCalendar GetAvailableSlots();
         bool Delete(int id);
         bool AddSample(Sample sample);
         Sample GetSampleById(int id);
@@ -30,10 +32,15 @@ namespace eLTMS.BusinessLogic.Services
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
+        public SampleGettingCalendar GetAvailableSlots()
+        {
+            return null;
+        }
+
         public List<Sample> GetAll()
         {
             var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
-            var sample = repo.GetAllSample();
+            var sample = repo.GetAllSamples();
             return sample;
         }
 

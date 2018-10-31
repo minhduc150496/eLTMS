@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Utils;
 
 namespace eLTMS.Models.Mapping
 {
@@ -92,8 +93,8 @@ namespace eLTMS.Models.Mapping
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
                 .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
-                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => x.FinishTime))
-                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => x.StartTime))
+                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
+                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName));
 
@@ -107,11 +108,11 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.ExportPaperDetailDtos, src => src.MapFrom(x => x.ExportPaperDetails));
 
-                cfg.CreateMap<Appointment, AppointmentGetByPhoneAndDateDto>()
+                cfg.CreateMap<Appointment, AppointmentGetByPhoneDto>()
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.Patient.PhoneNumber))
-                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
-                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode));
+                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress));
+
                 cfg.CreateMap<Appointment, AppointmentGetResultDto>()
                 .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
@@ -124,10 +125,20 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
+<<<<<<< HEAD
                 //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
+=======
+>>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
+
+                cfg.CreateMap<Appointment, AppointmentGetAllDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+                .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
+                .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
+                .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 
                 cfg.CreateMap<Appointment, AppointmentUpdateDto>()
                 .ForMember(dst => dst.AppCode, src => src.MapFrom(x => x.AppointmentCode))

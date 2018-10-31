@@ -7,6 +7,20 @@
     color: black;
 }
 
+    .appoinment_form_area .sample-box {
+        border: 1px solid gray;
+        padding: 0 15px 15px 15px;
+        margin-bottom: 10px;
+    }
+
+    .appoinment_form_area .pretty label::before {
+        border-color: darkblue;
+    }
+
+    .appoinment_form_area .alert {
+        border-radius: 0;
+    }
+
     .appoinment_form_area h2 {
         font-size: 22px;
         font-weight: bold;
@@ -19,9 +33,14 @@
         margin: 20px 0 10px;
     }
 
-    .appoinment_form_area button {
+    .appoinment_form_area .custom_btn {
         font-weight: bold;
+        text-transform: uppercase;
     }
+
+        .appoinment_form_area .custom_btn i {
+            font-size: 12px;
+        }
 
     .appoinment_form_area .button-box {
         margin: 20px 0;
@@ -39,6 +58,7 @@
 
 .img-loader {
     display: inline-block;
+    max-width: 120px;
 }
 
 
@@ -47,9 +67,22 @@
     padding: 35px 25px;
 }
 
+.modal .button-box {
+    width: 100%;
+    text-align: center;
+}
+
+    .modal .button-box button {
+        display: inline-block;
+    }
+
 /* Create Appointment */
 .create_appointment_area .button-box {
     margin-top: 35px;
+}
+
+.create_appointment_area .alert {
+    display: none;
 }
 
 .create_appointment_area input[type="date"] {
@@ -60,8 +93,12 @@
     height: 29px;
 }
 
+    .create_appointment_area option[disabled] {
+        display: none;
+    }
+
 .create_appointment_area .step-box-2 {
-    max-width: 450px;
+    max-width: 430px;
     margin-left: auto;
     margin-right: auto;
 }

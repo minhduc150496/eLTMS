@@ -31,7 +31,7 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
-        //Tạo page cho View Employee-lay tat ca employee shoe tren bang
+        //Tạo page cho View Employee-lay tat ca employee show tren bang
         [HttpGet]
         public JsonResult GetAllEmployees(String fullName = "", int page = 1, int pageSize = 20)
         {
