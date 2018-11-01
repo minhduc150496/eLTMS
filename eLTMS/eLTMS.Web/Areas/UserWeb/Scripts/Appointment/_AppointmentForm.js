@@ -205,19 +205,19 @@ var Controller = {
                     'data-sample-duration="' + sampleDto.SampleDuration + '" ' +
                     'data-open-time="' + sampleDto.OpenTime + '" ' +
                     'data-close-time="' + sampleDto.CloseTime + '">\n';
-                var today = new Date();
-                today.setDate(today.getDate() + 1);
-                var year = today.getFullYear();
-                var month = today.getMonth()+1;
+                var defaultDate = new Date();
+                defaultDate.setDate(defaultDate.getDate() + 1);
+                var year = defaultDate.getFullYear();
+                var month = defaultDate.getMonth() + 1;
                 if (month < 10) {
                     month = "0" + month;
                 }
-                var date = today.getDate();
+                var date = defaultDate.getDate();
                 if (date < 10) {
                     date = "0" + date;
                 }
-                var sToday = "" + year + "-" + month + "-" + date;
-                sampleHtml += '<input type="date" value="' + sToday + '" />\n';
+                var sDefaultDate = "" + year + "-" + month + "-" + date;
+                sampleHtml += '<input type="date" value="' + sDefaultDate + '" min="' + sDefaultDate + '" />\n';
                 sampleHtml += '<select style="overflow-y: scroll" ' + firstSelect + '>\n';
                 sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
                 var sampleDuration = sampleDto.SampleDuration;
@@ -246,7 +246,7 @@ var Controller = {
             }
         }
         $("#step-2-form").append(sampleHtml);
-        
+
         var selects = $("#step-2-form select");
         for (var i = 0; i < selects.length; i++) {
             var options = $(selects[i]).children("option");
@@ -258,7 +258,7 @@ var Controller = {
                     if (i != j) {
                         var start = parseInt($(selects[j]).children("option:selected").val());
                         var end = start + sampleDtos[j].SampleDuration;
-                        var IsIntersect = function(A, B, a, b) {
+                        var IsIntersect = function (A, B, a, b) {
                             var boundary = Math.max(B, b) - Math.min(A, a);
                             var sum = (B - A) + (b - a);
                             return boundary <= sum;
