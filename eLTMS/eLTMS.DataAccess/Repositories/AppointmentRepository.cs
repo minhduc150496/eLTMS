@@ -67,11 +67,10 @@ namespace eLTMS.DataAccess.Repositories
                 .Where(x => x.PatientId == patientId)
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
-<<<<<<< HEAD
+
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
-=======
->>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
+
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
                 .ToList();
             return result;
@@ -81,11 +80,11 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(appCode))
-<<<<<<< HEAD
+
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings))
-=======
+
                 .Include(x => x.SampleGettings)
->>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
+
                 .FirstOrDefault();
             return result;
         }
@@ -96,11 +95,10 @@ namespace eLTMS.DataAccess.Repositories
                 .Where(x => x.AppointmentCode == appCode)
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
-<<<<<<< HEAD
+
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
-=======
->>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
+
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
                 .ToList();
             return result;

@@ -9,7 +9,6 @@ var homeController = {
     },
     registerEvent: function () {
         $('#btnSave').off('click').on('click', function () {     
-            var accountId = parseInt($('#txtAccountId').val());
             var feedbackId = $('#txtFeedbackId').val();
             var employeeName = $('#txtEmployeeName').val();
             var patientName = $('#txtPatientName').val();
@@ -20,10 +19,10 @@ var homeController = {
             var feedback = {
                 FeedbackId: feedbackId,
                 Patient: {
-                    PatientName: $('#txtPatientName').val()
+                    FullName: $('#txtPatientName').val()
                 },
                 Employee: {
-                    PatientName: $('#txtEmployeeName').val()
+                    FullName: $('#txtEmployeeName').val()
                 },
                 Content: $('#txtContext').val(),
                 ReceivedDateTime: $('#txtDay').val(),
@@ -55,7 +54,7 @@ var homeController = {
                     url: '/Feedback/UpdateFeedback',
                     type: 'Post',
                     dataType: 'json',
-                    data: employee,
+                    data: feedback,
                     success: function (res) {
                         if (!res.sucess) {
 
@@ -94,11 +93,11 @@ var homeController = {
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deleteEmployee(id);
+            homeController.deleteFeedback(id);
 
         });
     },
-    deleteEmployee: function (id) {
+    deleteFeedback: function (id) {
         $.ajax({
             url: '/Feedback/DeleteFeedback',
             data: {
@@ -131,14 +130,12 @@ var homeController = {
             success: function (response) {
                 if (response.sucess) {
                     var data = response.data;
-                    $('#txtFeedbackId').val(data.FeedbackId);
-                    $('#txtAccountId').val(data.accountId);
+                    $('#txtFeedbackId').val(data.FeedbackId);     
                     $('#ddlStatus').val(data.Status).change();
-                    $('#txtPatientName').val(data.patientName);
-                    $('#txtEmployeeName').val(data.employeeName);
+                    $('#txtPatientName').val(data.PatientName);
+                    $('#txtEmployeeName').val(data.EmployeeName);
                     $('#txtContext').val(data.Content);
-                    $('#txtDay').val(data.ReceivedDateTime);
-                    $('#ddlStatus').val(data.Status);                
+                    $('#txtDay').val(data.ReceivedDateTime);                
                 }
                 else {
                     bootbox.alert(response.message);
@@ -154,13 +151,11 @@ var homeController = {
     },
     resetForm: function () {
         $('#txtFeedbackId').val(data.FeedbackId);
-        $('#txtAccountId').val(data.accountId);
         $('#ddlStatus').val(data.Status).change();
-        $('#txtPatientName').val(data.patientName);
-        $('#txtEmployeeName').val(data.employeeName);
+        $('#txtPatientName').val(data.PatientName);
+        $('#txtEmployeeName').val(data.EmployeeName);
         $('#txtContext').val(data.Content);
-        $('#txtDay').val(data.ReceivedDateTime);
-        $('#ddlStatus').val(data.Status);   
+        $('#txtDay').val(data.ReceivedDateTime);   
     },
     loadData: function (changePageSize) {
         $.ajax({

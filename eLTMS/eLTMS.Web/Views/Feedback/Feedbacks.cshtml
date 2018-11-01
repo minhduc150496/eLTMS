@@ -64,9 +64,9 @@
                 <form class="form-horizontal" action="/action_page.php">
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Mã Account</label>
+                        <label class="control-label col-sm-2" for="email">Mã Feedback</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
+                            <input type="text" class="form-control" id="txtFeedbackId" name="txtFeedbackId">
                         </div>
                     </div>
                     <input type="hidden" class="form-control" id="txtFeedbackId" name="txtFeedbackId" value="0" readonly>
@@ -108,14 +108,14 @@
                                 <option value="">
                                     ----- Chọn -----
                                 </option>
-                                <option value="Working">
+                                <option value="Đã Đọc">
                                     Đã Đọc
                                 </option>
-                                <option value="Stop">
+                                <option value="Chưa Đọc">
                                     Chưa Đọc
                                 </option>
-                                <option value="Delete">
-                                    Quan Trọng
+                                <option value="Quan trọng">
+                                    Quan trọng
                                 </option>
                             </select>
                         </div>
@@ -141,8 +141,8 @@
         <td>{{ReceiveDateTime}}</td>
         <td>{{Status}}</td>
         <td>
-            <button class="btn btn-primary btn-edit" data-id="{{FeedbackID}}"><i class="fa fa-pencil-square-o"></i></button>
-            <button class="btn btn-danger btn-delete" data-id="{{FeedbackID}}"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-primary btn-edit" data-id="{{FeedbackId}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-danger btn-delete" data-id="{{FeedbackId}}"><i class="fa fa-trash"></i></button>
 
         </td>
     </tr>

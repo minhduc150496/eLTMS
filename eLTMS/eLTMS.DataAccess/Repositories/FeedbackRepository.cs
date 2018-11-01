@@ -11,7 +11,7 @@ namespace eLTMS.DataAccess.Repositories
 {
    public interface IFeedbackRepository: IRepository<Feedback>
     {
-        List<Feedback> GetAllFeed(String dateTime);
+        List<Feedback> GetAllFeed(string dateTime);
         Feedback GetSimpleById(int id);
     }
     public class FeedbackRepository: RepositoryBase<Feedback>, IFeedbackRepository
@@ -21,7 +21,7 @@ namespace eLTMS.DataAccess.Repositories
             var result = DbSet.AsQueryable()
                 .Include(x=>x.Employee)
                 .Include(x=>x.Patient)
-                    .Where(x => ((x.FeedbackId).ToString().Contains(dateTime) || (x.EmployeeId).ToString().Contains(dateTime) || (x.ReceivedDateTime).ToString().Contains(dateTime)) && x.IsDeleted == false)
+                    .Where(x => ((x.FeedbackId).ToString().Contains(dateTime) || (x.Patient.FullName).ToString().Contains(dateTime) || (x.Employee.FullName).ToString().Contains(dateTime) || (x.Status).ToString().Contains(dateTime) || (x.ReceivedDateTime).ToString().Contains(dateTime)) && x.IsDeleted == false)
                     .ToList();
             return result;
         }
