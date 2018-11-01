@@ -101,7 +101,7 @@ var homeController = {
         $.ajax({
             url: '/Feedback/DeleteFeedback',
             data: {
-                feedbackId: id
+                FeedbackId: id
             },
             type: 'POST',
             dataType: 'json',

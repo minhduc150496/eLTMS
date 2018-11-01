@@ -55,9 +55,9 @@ namespace eLTMS.Web.Controllers
                 data = supply
             }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult DeleteFeedback(int feedId)
+        public JsonResult DeleteFeedback(int feedbackId)
         {
-            var result = _feedbackService.DeleteFeedback(feedId);
+            var result = _feedbackService.DeleteFeedback(feedbackId);
             return Json(new
             {
                 success = result
