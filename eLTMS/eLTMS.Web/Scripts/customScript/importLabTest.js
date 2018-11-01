@@ -109,6 +109,76 @@ var homeController = {
             })
 
         })
+        $('#btnSaveLabTestingIndex').off('click').on('click', function () {
+            var allRows = $('.data-row');
+            var allData = [];
+            var allData1 = [];
+            $.each(allRows, function (i, item) {
+
+                var labTestingId = $(item).find('.colId').val();
+                console.log(labTestingId);
+                var name = $(item).find('.colName').val();
+                var value = $(item).find('.colValue').val();
+                var labTestingIndexStatus = $(item).find('.colStatus').val();
+                var nomal = $(item).find('.colNomal').val();
+                var unit = $(item).find('.colUnit').val();
+                var machineSlot = 0 ;
+                var status = "Done";
+                var data = {
+                    LabTestingId: labTestingId,
+                    MachineSlot: machineSlot,
+                    Status : status
+                }
+                var data1 = {
+                    LabTestingId: labTestingId,
+                    IndexName: name,
+                    IndexValue: value,
+                    LowNormalHigh: labTestingIndexStatus,
+                    NormalRange: nomal,
+                    Unit: unit
+                }
+        
+                    allData.push(data);
+                allData1.push(data1);
+
+
+            });
+            $.ajax({
+                url: '/LabTest/UpdateLabTesting',
+                type: 'Post',
+                dataType: 'json',
+                data: { labTesting: allData },
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Tạo mới không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+
+                    }
+                }
+            })
+            //$.ajax({
+            //    url: '/LabTest/AddLabTestingIndex',
+            //    type: 'Post',
+            //    dataType: 'json',
+            //    data: { labTestingIndex: allData1 },
+            //    async: false,
+            //    success: function (res) {
+            //        if (!res.success) {
+            //            toastr.success("Tạo mới không thành công.");
+
+            //        }
+            //        else {
+            //            toastr.success("Tạo mới thành công.");
+
+            //        }
+            //    }
+            //})
+
+        })
         $('#btnSaveSample').off('click').on('click', function () {
             var name = $('#txtSampleName').val();
             var type = parseInt($('#ddlSampleType').val());

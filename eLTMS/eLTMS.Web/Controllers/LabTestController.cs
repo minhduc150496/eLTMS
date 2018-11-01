@@ -18,12 +18,13 @@ namespace eLTMS.Web.Controllers
         private readonly ISampleGroupService _sampleGroupService;
         private readonly ILabTestService _labTestService;
         private readonly ILabTestingService _labTestingService;
-
+        private readonly ILabTestingIndexService _labTestingIndexService;
         //private readonly IImportPaperService _importPaperService;
-        public LabTestController(ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        public LabTestController(ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._labTestingService = labTestingService;
+            this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
             this._sampleGroupService = sampleGroupService;
         }
@@ -131,6 +132,15 @@ namespace eLTMS.Web.Controllers
         public JsonResult AddLabTest(LabTest labTest)
         {
             var result = _labTestService.AddLabTest(labTest);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpPost]
+        public JsonResult AddLabTestingIndex(List<LabTestingIndex> labTestingIndex)
+        {
+            var result = _labTestingIndexService.AddLabTestingIndex(labTestingIndex);
             return Json(new
             {
                 sucess = result

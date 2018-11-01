@@ -2,26 +2,37 @@
 using eLTMS.DataAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    public interface ILabTestingIndexRepository : IRepository<LabTestingIndexRepository>
+    public interface ILabTestingIndexRepository : IRepository<LabTestingIndex>
     {
-        List<LabTestingIndexRepository> GetAll();
+        List<LabTestingIndex> GetAllLabTestingIndex();
+        LabTestingIndex GetLabTestingIndexById(int id);
+      
     }
-
-    public class LabTestingIndexRepository : RepositoryBase<LabTestingIndexRepository>, ILabTestingIndexRepository
+    public class LabTestingIndexRepository : RepositoryBase<LabTestingIndex>, ILabTestingIndexRepository
     {
-        public List<LabTestingIndexRepository> GetAll()
+        public List<LabTestingIndex> GetAllLabTestingIndex()
         {
-            var results = DbSet.AsQueryable()
-                //.Include(x => x.LabTestSampleMappings)
+            var result = DbSet.AsQueryable()
+                .Include(x => x.LabTesting)
                 .ToList();
-            return results;
+            return result;
         }
+      
+
+        public LabTestingIndex GetLabTestingIndexById(int id)
+        {
+            var result = DbSet.Where(s => s.LabTestingId == id).ToList().FirstOrDefault();
+            return result;
+        }
+
+       
     }
 }
-

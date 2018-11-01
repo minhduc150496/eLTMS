@@ -7714,12 +7714,9 @@
     <Content Include="Views\WareHouse\Inventory.cshtml" />
     <Content Include="Views\LabTest\LabTests.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\LabTest\LabTesting.cshtml" />
-=======
     <Content Include="Views\Feedback\Feedbacks.cshtml" />
     <Content Include="Views\Receptionist\Index.cshtml" />
->>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
