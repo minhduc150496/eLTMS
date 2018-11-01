@@ -59,6 +59,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />
     <Compile Include="Services\LabTestingService.cs" />
+    <Compile Include="Services\ReceptionistService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
     <Compile Include="Services\SupplyService.cs" />
@@ -69,7 +70,7 @@
       <Name>eLTMS.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">
-      <Project>{26DC2CF1-D4E0-4BBE-99DF-EA0D33375D99}</Project>
+      <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
       <Name>eLTMS.Models</Name>
     </ProjectReference>
   </ItemGroup>

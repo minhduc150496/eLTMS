@@ -1,9 +1,13 @@
 ﻿var homeconfig = {
     pageSize: 10,
     pageIndex: 1,
+    allLabTesting: [],
+    ImportExcel: false, 
+    LoadFromDataBase: false
 }
 var homeController = {
     init: function () {
+        homeController.loadDataLabTestingAdd();
         homeController.loadData();
         homeController.registerEvent();
     },
@@ -68,6 +72,42 @@ var homeController = {
                 })
             }
           
+        })
+        $('#btnSaveLabTesting').off('click').on('click', function () {
+            var allRows = $('.data-row-lab-testing-import');
+            var allData = [];
+            $.each(allRows, function (i, item) {
+               
+                var labTestingId = $(item).find('.ddlCode').val();
+                var machineSlot = $(item).find('.txtSlot').val();
+                var data = {
+                    LabTestingId:labTestingId,
+                    MachineSlot:machineSlot
+                }
+                if (data.LabTestingId != null && data.LabTestingId != '' )
+                allData.push(data);
+
+
+             
+            });
+            $.ajax({
+                url: '/LabTest/UpdateLabTesting',
+                type: 'Post',
+                dataType: 'json',
+                data: { labTesting: allData },
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Tạo mới không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+
+                    }
+                }
+            })
+
         })
         $('#btnSaveSample').off('click').on('click', function () {
             var name = $('#txtSampleName').val();
@@ -151,6 +191,14 @@ var homeController = {
             $('#myModal4').modal('hide');
             $('#myModal2').modal('show');
         });
+        $('#btnAddNewLabTesting').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Thêm mới lab testing');
+            $('#myModalLabTesting').modal('hide');
+            $('#myModalLabTestingData').modal('show');
+            homeController.loadDataLabTestingAdd();
+           
+           
+        });
         $('#btnAddNewSample').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới xét nghiệm');
             $('#myModal3').modal('hide');
@@ -165,6 +213,12 @@ var homeController = {
             $('#lblPopupTitle').text('Danh sách các nhóm xét nghiệm');
             $('#myModal4').modal('show');
            homeController.loadDataSampleGroup(true);
+        });
+        $('#btnViewLabTesting').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
+            $('#myModalLabTesting').modal('show');
+            homeController.loadDataLabTesting(true);
+            
         });
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
@@ -195,6 +249,118 @@ var homeController = {
             var id = $(this).data('id');
             homeController.deleteSampleGroup(id);
         });
+        $("#input").off('change').on("change", function () {
+            var excelFile,
+                fileReader = new FileReader();
+
+            $("#result").hide();
+
+            fileReader.onload = function (e) {
+                var buffer = new Uint8Array(fileReader.result);
+                $('.data-row').remove();
+                $.ig.excel.Workbook.load(buffer, function (workbook) {
+                    for (var a = 0; a < 10; a++) {
+                    var column, row, newRow, cellValue, columnIndex, i,
+                        worksheet = workbook.worksheets(a),
+                        columnsNumber = 0,
+                        gridColumns = [],
+                        data = [],
+                        worksheetRowsCount;
+
+                    // Both the columns and rows in the worksheet are lazily created and because of this most of the time worksheet.columns().count() will return 0
+                    // So to get the number of columns we read the values in the first row and count. When value is null we stop counting columns:
+                    while (worksheet.rows(0).getCellValue(columnsNumber)) {
+                        columnsNumber++;
+                    }
+
+                    // Iterating through cells in first row and use the cell text as key and header text for the grid columns
+                    for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                        column = worksheet.rows(0).getCellText(columnIndex);
+                        switch (columnIndex) {
+                            case 0:
+                                column = "IndexName";
+                                break;
+                            case 1:
+                                column = "IndexValue";
+                                break;
+                            case 2:
+                                column = "Status";
+                                break;
+                            case 3:
+                                column = "Normal";
+                                break;
+                            case 4:
+                                column = "Unit";
+                                break;
+                        }
+                        gridColumns.push({ headerText: column, key: column });
+                    }
+
+                    // We start iterating from 1, because we already read the first row to build the gridColumns array above
+                    // We use each cell value and add it to json array, which will be used as dataSource for the grid
+                    for (i = 1, worksheetRowsCount = worksheet.rows().count(); i < worksheetRowsCount; i++) {
+                        newRow = {};
+                        row = worksheet.rows(i);
+
+                        for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                            cellValue = row.getCellText(columnIndex);
+                            newRow[gridColumns[columnIndex].key] = cellValue;
+                        }
+
+                        data.push(newRow);
+                    }
+
+                    homeconfig.ImportExcel = true;
+                    $.each(data, function (i, item) {
+                        console.log(item);
+                        for (var i = 0; i < homeconfig.allLabTesting.length; i++) {
+                            if (homeconfig.allLabTesting[i].MachineSlot == (a+1)) {
+                                item.LabTestingId = homeconfig.allLabTesting[i].LabTestingId;
+                              
+                                break;
+                            }
+                        }
+                        var newRow = $('#template-row').clone();
+                        $(newRow).addClass('data-row');
+                        $(newRow).find('.colId').text(item.LabTestingId);
+                        $(newRow).find('.colName').text(item.IndexName);
+                        $(newRow).find('.colValue').text(item.IndexValue);
+                        $(newRow).find('.colStatus').text(item.Status);
+                        $(newRow).find('.colNomal').text(item.Normal);
+                        $(newRow).find('.colUnit').text(item.Unit);
+                        $(newRow).insertAfter('#template-row');
+
+
+
+
+                    });
+
+                    var allRows = $('.data-row');
+
+                    for (var i = 0; i < allRows.length; i++) {
+                        $(allRows[i]).change();
+                    }
+                    $('.data-row').removeAttr('style');
+                    homeconfig.ImportExcel = false;
+                }
+                }, function (error) {
+                    $("#result").text("The excel file is corrupted.");
+                    $("#result").show(1000);
+                });
+            }
+
+            if (this.files.length > 0) {
+                excelFile = this.files[0];
+                if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
+                    fileReader.readAsArrayBuffer(excelFile);
+                } else {
+                    $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
+                    $("#result").show(1000);
+                }
+            }
+
+        });
+
     },
     delete: function (id) {
         $.ajax({
@@ -398,6 +564,126 @@ var homeController = {
             }
         })
     },
+    loadDataLabTestingAdd: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestings',
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    homeconfig.allLabTesting = data;   
+                    $('.data-row-lab-testing-import').remove();
+                    homeController.loadAddLabTesting();          
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataLabTesting: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTesting',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    //homeconfig.allLabTesting = data;
+                    var html = '';
+                    var template = $('#dataLabTesting-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            LabTestingId: item.LabTestingId,
+                            Name: item.LabTestName,
+                            Status: item.Status,
+                            Getting: item.AppointmentCode,
+                            Slot: item.MachineSlot,
+                            Group: item.SampleName,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblDataLabTesting').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadDataLabTesting();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadAddLabTesting: function () {
+        var i = 0;
+        for (i; i < 10; i++) {
+
+            var newRow = $('#template1-row').clone();
+            $(newRow).addClass('data-row-lab-testing-import');
+            console.log(newRow.html());
+            var ddlData = "<select class='form-control ddlCode'>";
+            ddlData += "<option value=''> --- Chọn vật tư --- </option>";
+            $.each(homeconfig.allLabTesting, function (i, item) {
+
+                ddlData += "<option value='" + item.LabTestingId + "' data-name='" + item.LabTestName + "'>" + item.AppointmentCode + " - " + item.LabTestName + "</option>"
+                
+
+            });
+            ddlData += "</select>";
+            var codeColumn = $(newRow).find('.colCode').html(ddlData);
+            $(newRow).insertAfter('#template1-row');
+            $(newRow).removeAttr('style');
+            homeController.registerEventForChangeDropDown();
+            
+        }
+
+    },
+    registerEventForChangeDropDown: function () {
+        $('.ddlCode').off('change').on('change', function () {
+
+            var value = $(this).find(':selected').val();
+            console.log(value);
+            var allRows = $('.data-row-lab-testing-import');
+          //  console.log(homeconfig.LoadFromDataBase);
+//console.log(homeconfig.ImportExcel);
+            //if (homeconfig.LoadFromDataBase == true || homeconfig.ImportExcel == true) {
+
+            //}
+            //else {
+            //    for (var i = 0; i < allRows.length; i++) {
+            //        if (i != 0 && $(allRows[i]).find('.ddlCode').val() == value) {
+            //            toastr.error("Vật tư với mã " + $(this).find(':selected').text() + " đã được chọn ");
+            //            return;
+            //        }
+            //    }
+            //}
+
+
+            var name = $(this).find(':selected').data('name');
+            var curentRow = $(this).closest('tr');
+            $(curentRow).find('.colName').text(name);
+        });
+    },
+    loadAllSuply: function () {
+        $.ajax({
+            url: '/WareHouse/GetAllSupply',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    homeconfig.allSupply = data;
+
+                }
+                else {
+                    bootbox.alert(response.message);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    },
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -422,4 +708,5 @@ var homeController = {
         });
     }
 }
+
 homeController.init();

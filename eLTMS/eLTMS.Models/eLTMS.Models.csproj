@@ -51,7 +51,9 @@
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
-    <Compile Include="Models\dto\AppointmentGetByPhoneAndDateDto.cs" />
+    <Compile Include="Models\dto\AppointmentAddDto.cs" />
+    <Compile Include="Models\dto\AppointmentGetAllDto.cs" />
+    <Compile Include="Models\dto\AppointmentGetByPhoneDto.cs" />
     <Compile Include="Models\dto\AppointmentGetResultDto.cs" />
     <Compile Include="Models\dto\AppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentUpdateDto.cs" />
@@ -65,6 +67,9 @@
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
+    <Compile Include="Models\SampleGettingCalendar\DateCollection.cs" />
+    <Compile Include="Models\SampleGettingCalendar\SampleGettingSlot.cs" />
+    <Compile Include="Models\SampleGettingCalendar\SampleGettingCalendar.cs" />
     <Compile Include="Models\dto\SampleGroupDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />

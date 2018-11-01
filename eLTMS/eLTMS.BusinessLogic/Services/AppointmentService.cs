@@ -19,7 +19,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetNewApp(int patientId);
         List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
-        List<Appointment> GetAppByPhoneNDate(string phone);
+        List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
         bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sgDtos);
         bool DeleteAppointment(string appointmentCode);
@@ -34,11 +34,11 @@ namespace eLTMS.BusinessLogic.Services
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
 
-        public List<Appointment> GetAppByPhoneNDate(string phone)
+        public List<Appointment> GetAppByPhone(string phone)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var apps = appRepo.GetAppointmentByPhoneNDate(phone);
+            var apps = appRepo.GetAppointmentByPhone(phone);
             return apps;
         }
 
@@ -145,5 +145,7 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
+
+        
     }
 }

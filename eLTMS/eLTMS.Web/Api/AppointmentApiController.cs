@@ -25,6 +25,46 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
+<<<<<<< HEAD
+            // manually map: apoinDto and appointment (entity)
+            //Appointment appointment = new Appointment();
+            //appointment.PatientId = appoinDto.PatientId;
+            //appointment.SampleGettings = new List<SampleGetting>();
+            //foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
+            //{
+            //    var sampleGetting = new SampleGetting();
+            //    sampleGetting.SampleId = sampleGettingDto.SampleId;
+            //    sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
+            //    sampleGetting.StartTime = sampleGettingDto.StartTime;
+            //    sampleGetting.FinishTime = sampleGettingDto.FinishTime;
+            //    appointment.SampleGettings.Add(sampleGetting);
+            //}
+            //appointment.LabTestings = new List<LabTesting>();
+            //if (appoinDto.SampleGettingDtos != null)
+            //{
+            //    foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
+            //    {
+            //        if (sampleGettingDto.LabTestIds != null)
+            //        {
+            //            foreach (var labTestId in sampleGettingDto.LabTestIds)
+            //            {
+            //                LabTesting labTesting = new LabTesting();
+            //                labTesting.LabTestId = labTestId;
+            //                appointment.LabTestings.Add(labTesting);
+            //            }
+            //        }
+            //    }
+            //}
+            ////
+            //var success = this._appointmentService.Create(appointment);
+            //var obj = new
+            //{
+            //    Success = success,
+            //    Message = success ? "Tạo mới thành công!" : "Xin vui lòng thử lại"
+            //};
+            //var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            return null;
+=======
             // Convert AppointmentDto to Appointment (DTO to Entity)
             Appointment appointment = Mapper.Map<AppointmentDto, Appointment>(appoinDto);
 
@@ -61,6 +101,7 @@ namespace eLTMS.Web.Api
             };
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
+>>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
         }
 
         [HttpGet]
@@ -137,8 +178,8 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/get-result-by-appointment-by-phone-and-date")]
         public HttpResponseMessage GetAppByPhoneNDate(string phone)
         {
-            var app = _appointmentService.GetAppByPhoneNDate(phone);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetByPhoneAndDateDto>>(app);
+            var app = _appointmentService.GetAppByPhone(phone);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetByPhoneDto>>(app);
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
