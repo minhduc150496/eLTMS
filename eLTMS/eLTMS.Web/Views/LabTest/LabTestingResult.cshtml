@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "LabTestingResult";
+    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+}
+
+<style>
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Quản Lý Kết Qủa Xét Nghiệm
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Danh sách kết quả</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Mã lịch hẹn</th>
+                                <th>Tên xét nghiệm</th>
+                                <th>Mẫu xét nghiệm</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblDataLabTestingResult"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.col -->
+</section>
+
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+
+
+<script id="dataLabTestingResult-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Getting}}</td>
+        <td>{{Name}}</td>
+        <td>{{Group}}</td>
+        <td>{{Status}}</td>
+        <td>
+            <button class="btn btn-success btn-deleteSampleGroup" data-id="{{LabTestingId}}"><i class="fa fa-pencil"></i></button>
+
+        </td>
+    </tr>
+</script>
+
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.lob.js"></script>
+
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_collections.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_text.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_io.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_ui.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_ui.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.documents.core_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_collectionsextended.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.excel_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_threading.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_web.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.xml.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.documents.core_openxml.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
+
+<script src="~/Scripts/customScript/importLabTest.js"></script>

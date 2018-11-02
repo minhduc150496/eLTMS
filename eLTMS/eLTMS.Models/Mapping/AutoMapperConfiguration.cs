@@ -126,11 +126,10 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
-<<<<<<< HEAD
-=======
-                //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
-
->>>>>>> d15abce0795bc092859b4a754703f9daa3c12730
+                cfg.CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));

@@ -13,6 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<LabTesting> GetAll();
         List<LabTesting> GetAllLabTesting();
+        List<LabTesting> GetAllLabTestingResult();
         bool Update(List<LabTesting> labTesting);
     }
 
@@ -63,6 +64,11 @@ namespace eLTMS.BusinessLogic.Services
             var labTesting = repo.GetAllLabTestings();
             return labTesting;
         }
-       
+        public List<LabTesting> GetAllLabTestingResult()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingResult();
+            return labTesting;
+        }
     }
 }

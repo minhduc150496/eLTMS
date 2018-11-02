@@ -10,6 +10,7 @@ var homeController = {
         homeController.loadDataLabTestingAdd();
         homeController.loadData();
         homeController.registerEvent();
+        homeController.loadDataLabTestingResult();
     },
     registerEvent: function () {
 
@@ -132,7 +133,7 @@ var homeController = {
                 var unit = $(item).find('.colUnit').text();
                 console.log("unit " + unit);
                 var machineSlot = 0 ;
-                var status = "Done";
+                var status = "LabtestDone";
                 var data = {
                     LabTestingId: labTestingId ,
                     MachineSlot: machineSlot,
@@ -686,6 +687,38 @@ var homeController = {
                     });
                     console.log(html);
                     $('#tblDataLabTesting').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadDataLabTesting();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataLabTestingResult: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestingResult',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    //homeconfig.allLabTesting = data;
+                    var html = '';
+                    var template = $('#dataLabTestingResult-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            LabTestingId: item.LabTestingId,
+                            Name: item.LabTestName,
+                            Status: item.Status,
+                            Getting: item.AppointmentCode,
+                            Group: item.SampleName,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblDataLabTestingResult').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadDataLabTesting();
                     }, changePageSize);

@@ -41,6 +41,10 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
+        public ActionResult LabTestingResult()
+        {
+            return View();
+        }
         [HttpGet]
         public JsonResult GetAllSamples( int page = 1, int pageSize = 20)
         {
@@ -82,7 +86,19 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult GetAllLabTestingResult(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingResult();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAllLabTestings()
         {
