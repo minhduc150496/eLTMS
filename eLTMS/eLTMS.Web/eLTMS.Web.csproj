@@ -192,6 +192,7 @@
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
@@ -7721,7 +7722,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
+    <Folder Include="Assets\Image\" />
+    <Folder Include="UploadedFiles\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>

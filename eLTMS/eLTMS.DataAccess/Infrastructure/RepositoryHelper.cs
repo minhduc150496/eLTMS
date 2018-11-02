@@ -129,6 +129,14 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+
+            if (typeof(TRepository) == typeof(IFeedbackRepository))
+            {
+                dynamic repo = new FeedbackRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
             if (typeof(TRepository) == typeof(ILabTestingRepository))
             {
                 dynamic repo = new LabTestingRepository();
