@@ -80,9 +80,11 @@ var homeController = {
                
                 var labTestingId = $(item).find('.ddlCode').val();
                 var machineSlot = $(item).find('.txtSlot').val();
+                var status = "Waiting";
                 var data = {
                     LabTestingId:labTestingId,
-                    MachineSlot:machineSlot
+                    MachineSlot: machineSlot,
+                    Status: status
                 }
                 if (data.LabTestingId != null && data.LabTestingId != '' )
                 allData.push(data);
@@ -107,7 +109,8 @@ var homeController = {
                     }
                 }
             })
-
+            homeController.loadDataLabTestingAdd();
+            $('#myModalLabTestingData').modal('hide');
         })
         $('#btnSaveLabTestingIndex').off('click').on('click', function () {
             var allRows = $('.data-row');
@@ -115,17 +118,23 @@ var homeController = {
             var allData1 = [];
             $.each(allRows, function (i, item) {
 
-                var labTestingId = $(item).find('.colId').val();
-                console.log(labTestingId);
-                var name = $(item).find('.colName').val();
-                var value = $(item).find('.colValue').val();
-                var labTestingIndexStatus = $(item).find('.colStatus').val();
-                var nomal = $(item).find('.colNomal').val();
-                var unit = $(item).find('.colUnit').val();
+                var labTestingId = $(item).find('.colId').text();
+                console.log("Lab testing ID " + labTestingId);
+               
+                var name = $(item).find('.colName').text();
+                console.log("LabcolName " + name);
+                var value = $(item).find('.colValue').text();
+                console.log("value " + value);
+                var labTestingIndexStatus = $(item).find('.colStatus').text();
+                console.log("labTestingIndexStatus " + labTestingIndexStatus);
+                var nomal = $(item).find('.colNomal').text();
+                console.log("nomal " + nomal);
+                var unit = $(item).find('.colUnit').text();
+                console.log("unit " + unit);
                 var machineSlot = 0 ;
                 var status = "Done";
                 var data = {
-                    LabTestingId: labTestingId,
+                    LabTestingId: labTestingId ,
                     MachineSlot: machineSlot,
                     Status : status
                 }
@@ -143,7 +152,20 @@ var homeController = {
 
 
             });
+           
             $.ajax({
+                url: '/labtest/addlabtestingindex',
+                type: 'post',
+                datatype: 'json',
+                data: { labtestingindex: allData1 },
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("tạo mới không thành công.");
+
+                    }
+                    else {
+                        $.ajax({
                 url: '/LabTest/UpdateLabTesting',
                 type: 'Post',
                 dataType: 'json',
@@ -160,23 +182,10 @@ var homeController = {
                     }
                 }
             })
-            //$.ajax({
-            //    url: '/LabTest/AddLabTestingIndex',
-            //    type: 'Post',
-            //    dataType: 'json',
-            //    data: { labTestingIndex: allData1 },
-            //    async: false,
-            //    success: function (res) {
-            //        if (!res.success) {
-            //            toastr.success("Tạo mới không thành công.");
-
-            //        }
-            //        else {
-            //            toastr.success("Tạo mới thành công.");
-
-            //        }
-            //    }
-            //})
+                        $('#btnSaveLabTestingIndex').hide();
+                    }
+                }
+            })
 
         })
         $('#btnSaveSample').off('click').on('click', function () {
@@ -382,8 +391,9 @@ var homeController = {
 
                     homeconfig.ImportExcel = true;
                     $.each(data, function (i, item) {
-                        console.log(item);
+                     
                         for (var i = 0; i < homeconfig.allLabTesting.length; i++) {
+                           
                             if (homeconfig.allLabTesting[i].MachineSlot == (a+1)) {
                                 item.LabTestingId = homeconfig.allLabTesting[i].LabTestingId;
                               
@@ -700,7 +710,8 @@ var homeController = {
 
             });
             ddlData += "</select>";
-            var codeColumn = $(newRow).find('.colCode').html(ddlData);
+            $(newRow).find('.txtSlot').val(10 - i);
+            $(newRow).find('.colCode').html(ddlData);
             $(newRow).insertAfter('#template1-row');
             $(newRow).removeAttr('style');
             homeController.registerEventForChangeDropDown();

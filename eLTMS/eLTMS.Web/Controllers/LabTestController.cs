@@ -143,7 +143,7 @@ namespace eLTMS.Web.Controllers
             var result = _labTestingIndexService.AddLabTestingIndex(labTestingIndex);
             return Json(new
             {
-                sucess = result
+                success = result
             });
         }
 

@@ -38,6 +38,7 @@ namespace eLTMS.BusinessLogic.Services
                 {
                     var curentLabTest = labtest.SingleOrDefault(x => x.LabTestingId == item.LabTestingId);
                     curentLabTest.MachineSlot = item.MachineSlot;
+                    curentLabTest.Status = item.Status;
                     repo.Update(curentLabTest);
                 }
                 var result = UnitOfWork.SaveChanges();
