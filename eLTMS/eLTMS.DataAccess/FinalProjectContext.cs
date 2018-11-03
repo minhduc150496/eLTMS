@@ -28,16 +28,27 @@ namespace eLTMS.DataAccess
        // public System.Data.Entity.DbSet<Faculty> Faculties { get; set; } // Faculty
         public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital
       //  public System.Data.Entity.DbSet<HospitalFacultyMapping> HospitalFacultyMappings { get; set; } // HospitalFacultyMapping
+<<<<<<< HEAD
+
+
+
+        //public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
+        //public System.Data.Entity.DbSet<Hospital> Hospitals { get; set; } // Hospital
+=======
 
 
 
         public System.Data.Entity.DbSet<Feedback> Feedbacks { get; set; } // Feedback
+>>>>>>> d15abce0795bc092859b4a754703f9daa3c12730
 
 
         public System.Data.Entity.DbSet<Department> Departments { get; set; } // Department
         public System.Data.Entity.DbSet<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> d15abce0795bc092859b4a754703f9daa3c12730
         public System.Data.Entity.DbSet<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting
         public System.Data.Entity.DbSet<ImportPaper> ImportPapers { get; set; } // ImportPaper
         public System.Data.Entity.DbSet<ImportPaperDetail> ImportPaperDetails { get; set; } // ImportPaperDetail

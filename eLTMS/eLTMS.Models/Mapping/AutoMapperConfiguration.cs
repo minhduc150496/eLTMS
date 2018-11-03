@@ -126,8 +126,11 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
+<<<<<<< HEAD
+=======
                 //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
 
+>>>>>>> d15abce0795bc092859b4a754703f9daa3c12730
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
@@ -152,6 +155,9 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
 
                 cfg.CreateMap<LabTestingIndex, LabTestingIndexDto>()
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))
+                .ForMember(dst => dst.LabtTestingIndexId, src => src.MapFrom(x => x.LabtTestingIndexId))
                 .ForMember(dst => dst.IndexName, src => src.MapFrom(x => x.IndexName))
                 .ForMember(dst => dst.IndexValue, src => src.MapFrom(x => x.IndexValue))
                 .ForMember(dst => dst.LowNormalHigh, src => src.MapFrom(x => x.LowNormalHigh))
