@@ -87,6 +87,30 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult GetAllLabTestingHaveAppointmentCode(string code = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingIndexHaveLabtestingId(int id)
+        {
+            var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(id);
+            var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+            return Json(new
+            {
+                data = result,
+                success = true
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult GetAllLabTestingResult(int page = 1, int pageSize = 20)
         {
             var queryResult = _labTestingService.GetAllLabTestingResult();

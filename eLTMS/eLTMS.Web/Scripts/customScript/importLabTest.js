@@ -322,12 +322,24 @@ var homeController = {
         $('.btn-deleteSample').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSample(id);
-
+            homeController.loadDataSample(true);
 
         });
         $('.btn-deleteSampleGroup').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSampleGroup(id);
+        });
+        $('.btn-editLabTestingResult').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.loadDataLabTestingResultHaveCode(id);
+            $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
+            $('#myModalLabTestingResult').modal('show');
+        });
+        $('.btn-viewLabTestingIndex').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.loadDataLabTestingIndexHaveLabtestingId(id);
+            $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
+            $('#myModalLabTestingIndexResult1').modal('show');
         });
         $("#input").off('change').on("change", function () {
             var excelFile,
@@ -704,7 +716,6 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
-                    //homeconfig.allLabTesting = data;
                     var html = '';
                     var template = $('#dataLabTestingResult-template').html();
                     $.each(data, function (i, item) {
@@ -722,6 +733,65 @@ var homeController = {
                     homeController.paging(response.total, function () {
                         homeController.loadDataLabTesting();
                     }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataLabTestingResultHaveCode: function (code) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestingHaveAppointmentCode',
+            type: 'GET',
+            dataType: 'json',
+            data: { code:code },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataLabTestingResult1-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            LabTestingId: item.LabTestingId,
+                            Name: item.LabTestName,
+                            Status: item.Status,
+                            Getting: item.AppointmentCode,
+                            Group: item.SampleName,
+                        });
+
+                    });
+                    console.log(html);
+                    $('#tblDataLabTestingResult1').html(html);
+                   
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataLabTestingIndexHaveLabtestingId: function (id) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestingIndexHaveLabtestingId',
+            type: 'GET',
+            dataType: 'json',
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataLabTestingIndexResult1-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            LabTestingId: item.LabTestingId,
+                            Name: item.IndexName,
+                            Value: item.IndexValue,
+                            Status: item.LowNormalHigh,
+                            Nomal: item.NormalRange,
+                            Unit: item.Unit,
+                        });
+                        
+                    });
+                    console.log(html);
+                    $('#tblDataLabTestingIndexResult1').html(html);
+
                     homeController.registerEvent();
                 }
             }

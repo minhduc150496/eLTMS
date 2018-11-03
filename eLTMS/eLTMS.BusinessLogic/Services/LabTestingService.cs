@@ -15,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAllLabTesting();
         List<LabTesting> GetAllLabTestingResult();
         bool Update(List<LabTesting> labTesting);
+        List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
     }
 
     public class LabTestingService : ILabTestingService
@@ -62,6 +63,12 @@ namespace eLTMS.BusinessLogic.Services
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
             var labTesting = repo.GetAllLabTestings();
+            return labTesting;
+        }
+        public List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingHaveAppointmentCode(code);
             return labTesting;
         }
         public List<LabTesting> GetAllLabTestingResult()
