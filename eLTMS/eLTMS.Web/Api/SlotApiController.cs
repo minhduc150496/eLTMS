@@ -38,5 +38,14 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(HttpStatusCode.OK, slotDtos);
             return response;
         }
+
+        [HttpGet]
+        [Route("api/slot/creat-new-slots-for-a-month")]
+        public HttpResponseMessage CreateNewSlotsForAMonth(int year, int month)
+        {
+            var success = _slotService.CreateNewSlotsForAMonth(year, month);
+            var response = Request.CreateResponse(HttpStatusCode.OK, success);
+            return response;
+        }
     }
 }

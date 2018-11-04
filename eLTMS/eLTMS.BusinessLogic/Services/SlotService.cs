@@ -13,6 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<Slot> GetByDateAndSampleId(DateTime date, int sampleId);
         List<Slot> GetAvailableSlots();
+        bool CreateNewSlotsForAMonth(int year, int month);
     }
     public class SlotService : ISlotService
     {
@@ -46,6 +47,47 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             var slots = slotRepo.GetAvailableSlots();
             return slots;
+        }
+
+        /*
+         * Create new Slots for a month
+         * Author: DucBM
+         */
+        public bool CreateNewSlotsForAMonth(int year, int month)
+        {
+            var sgRepo = this.RepositoryHelper.GetRepository<ISampleGroupRepository>(UnitOfWork);
+            var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var sampleGroups = sgRepo.GetAll().Where(x => x.IsDeleted == false);
+            // for days in month
+            var nDays = DateTime.DaysInMonth(year, month);
+            for (var day = 1; day <= 7; day++)
+            {
+                var date = new DateTime(year, month, day);
+                // for sample groups
+                foreach (var sampleGroup in sampleGroups)
+                {
+                    var duration = sampleGroup.GettingDuration;
+                    // for slot time from OpenTime to CloseTime
+                    if (sampleGroup.OpenTime >= sampleGroup.CloseTime)
+                    {
+                        continue;
+                    }
+                    for (var startTime = sampleGroup.OpenTime;
+                        startTime + duration <= sampleGroup.CloseTime;
+                        startTime += 2 * duration)
+                    {
+                        var slot = new Slot();
+                        slot.SampleGroupId = sampleGroup.SampleGroupId;
+                        slot.Quantity = sampleGroup.NumberOfSlots;
+                        slot.StartTime = startTime;
+                        slot.FinishTime = startTime + duration;
+                        slot.Date = date;
+                        slotRepo.Create(slot);
+                    }
+                }
+            }
+            UnitOfWork.SaveChanges();
+            return true;
         }
 
     }

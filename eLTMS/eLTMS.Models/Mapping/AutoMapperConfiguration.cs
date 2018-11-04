@@ -96,7 +96,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
                 .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
-                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName));
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
+                .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));
 
                 cfg.CreateMap<ExportPaper, ExportPaperDto>()
                 .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
