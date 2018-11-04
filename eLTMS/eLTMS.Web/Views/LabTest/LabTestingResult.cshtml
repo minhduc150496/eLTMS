@@ -63,25 +63,29 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
             </div>
-            <br />
-            <button class="btn btn-success" id="btnAddNewLabTesting">Xử lý</button>
-            <div class="modal-body">           
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>LabTestingId</th>
-                                <th>Mã lịch hẹn</th>
-                                <th>Tên xét nghiệm</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tblDataLabTestingResult1"></tbody>
-                    </table>
-                    <div style="margin-left:35%" id="pagination" class="pagination"></div>
+            <div class="modal-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>LabTestingId</th>
+                            <th>Mã lịch hẹn</th>
+                            <th>Tên xét nghiệm</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDataLabTestingResult1"></tbody>
+                </table>
+                <div style="margin-left:35%" id="pagination" class="pagination"></div>
+            </div>
+            <div style="margin-right:35%">  </div>
+            <input type="hidden" class="form-control"  id="txtCode" name="txtCode" value="0">
+            <label class="control-label col-sm-2" for="email">Nhận xét</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="txtResult" name="txtResult">
             </div>
             <div class="modal-footer">
-
+                <button class="btn btn-success" id="btnAddNewResult">Xử lý</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

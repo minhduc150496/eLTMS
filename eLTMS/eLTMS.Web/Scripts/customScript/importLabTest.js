@@ -73,7 +73,7 @@ var homeController = {
                 })
             }
           
-        })
+        })      
         $('#btnSaveLabTesting').off('click').on('click', function () {
             var allRows = $('.data-row-lab-testing-import');
             var allData = [];
@@ -106,7 +106,7 @@ var homeController = {
                     }
                     else {
                         toastr.success("Tạo mới thành công.");
-
+                        $('#input').show();
                     }
                 }
             })
@@ -119,25 +119,16 @@ var homeController = {
             var allData1 = [];
             $.each(allRows, function (i, item) {
 
-                var labTestingId = $(item).find('.colId').text();
-                console.log("Lab testing ID " + labTestingId);
-               
+                var labTestingId = $(item).find('.colId').text();               
                 var name = $(item).find('.colName').text();
-                console.log("LabcolName " + name);
                 var value = $(item).find('.colValue').text();
-                console.log("value " + value);
                 var labTestingIndexStatus = $(item).find('.colStatus').text();
-                console.log("labTestingIndexStatus " + labTestingIndexStatus);
                 var nomal = $(item).find('.colNomal').text();
-                console.log("nomal " + nomal);
                 var unit = $(item).find('.colUnit').text();
-                console.log("unit " + unit);
-                var machineSlot = 0 ;
-                var status = "LabtestDone";
                 var data = {
                     LabTestingId: labTestingId ,
-                    MachineSlot: machineSlot,
-                    Status : status
+                    MachineSlot: 0,
+                    Status: "LabtestDone"
                 }
                 var data1 = {
                     LabTestingId: labTestingId,
@@ -147,9 +138,9 @@ var homeController = {
                     NormalRange: nomal,
                     Unit: unit
                 }
-        
-                    allData.push(data);
                 allData1.push(data1);
+                allData.push(data);
+               
 
 
             });
@@ -334,13 +325,69 @@ var homeController = {
             homeController.loadDataLabTestingResultHaveCode(id);
             $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
             $('#myModalLabTestingResult').modal('show');
+           
         });
         $('.btn-viewLabTestingIndex').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.loadDataLabTestingIndexHaveLabtestingId(id);
             $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
             $('#myModalLabTestingIndexResult1').modal('show');
+     
         });
+        $('#btnAddNewResult').off('click').on('click', function () {
+            var ids = "" + $(this).data('ids') + "" ;
+            var listId = ids.split(',');
+            var code = $('#txtCode').val();
+            var con = $('#txtResult').val(); 
+            var allData = [];
+            $.each(listId, function (i, item) {
+                
+                var data = {
+                    LabTestingId: item,
+                    MachineSlot: 0,
+                    Status: "DOCTORDONE"
+                }
+                allData.push(data);
+            });
+            console.log(allData);
+            $.ajax({
+                url: '/LabTest/UpdateResult',
+                type: 'Post',
+                dataType: 'json',
+                data: { code: code, con: con },
+                success: function (res) {
+                    if (!res.sucess) {
+                        if (res.validation && res.validation.Errors) {
+                            toastr.error(res.validation.Errors[0].ErrorMessage);
+                        }
+
+                    }
+                    else {
+                        toastr.success("Tạo mới thành công.");
+                        $.ajax({
+                            url: '/LabTest/UpdateLabTesting',
+                            type: 'Post',
+                            dataType: 'json',
+                            data: { labTesting: allData },
+                            async: false,
+                            success: function (res) {
+                                if (!res.success) {
+                                    toastr.success("Update không thành công.");
+
+                                }
+                                else {
+                                    toastr.success("Update thành công.");
+                                    homeController.loadDataLabTestingResult();
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        })
+        $("#txtResult").off('change').on("change", function () {
+            $('#btnAddNewResult').show();
+        })
         $("#input").off('change').on("change", function () {
             var excelFile,
                 fileReader = new FileReader();
@@ -435,10 +482,12 @@ var homeController = {
                     }
                     $('.data-row').removeAttr('style');
                     homeconfig.ImportExcel = false;
+                        $("#result").show();
+                        $("#btnSaveLabTestingIndex").show();
                 }
                 }, function (error) {
                     $("#result").text("The excel file is corrupted.");
-                    $("#result").show(1000);
+                   
                 });
             }
 
@@ -683,7 +732,6 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
-                    //homeconfig.allLabTesting = data;
                     var html = '';
                     var template = $('#dataLabTesting-template').html();
                     $.each(data, function (i, item) {
@@ -749,21 +797,29 @@ var homeController = {
                     var data = response.data;
                     var html = '';
                     var template = $('#dataLabTestingResult1-template').html();
+                    var allIds = [];
                     $.each(data, function (i, item) {
+                        allIds.push(item.LabTestingId);
                         html += Mustache.render(template, {
                             LabTestingId: item.LabTestingId,
                             Name: item.LabTestName,
                             Status: item.Status,
                             Getting: item.AppointmentCode,
                             Group: item.SampleName,
+
                         });
 
+
                     });
+                    var allIdsString = JSON.stringify(allIds); 
+                    console.log(allIdsString);
+
+                    $('#btnAddNewResult').attr('data-ids', allIdsString);
                     console.log(html);
                     $('#tblDataLabTestingResult1').html(html);
-                   
+                    $('#txtCode').val(code);
                     homeController.registerEvent();
-                }
+                } $('#txtResult').val(''); $('#btnAddNewResult').hide();
             }
         })
     },
@@ -797,7 +853,7 @@ var homeController = {
             }
         })
     },
-    loadAddLabTesting: function () {
+   loadAddLabTesting: function () {
         var i = 0;
         for (i; i < 10; i++) {
 
@@ -848,26 +904,7 @@ var homeController = {
             $(curentRow).find('.colName').text(name);
         });
     },
-    loadAllSuply: function () {
-        $.ajax({
-            url: '/WareHouse/GetAllSupply',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    var data = response.data;
-                    homeconfig.allSupply = data;
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    },
+  
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 

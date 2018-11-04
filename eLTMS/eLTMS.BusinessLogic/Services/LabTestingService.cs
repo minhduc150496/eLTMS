@@ -15,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAllLabTesting();
         List<LabTesting> GetAllLabTestingResult();
         bool Update(List<LabTesting> labTesting);
+        bool UpdateStatus(List<LabTesting> labTesting);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
     }
 
@@ -52,7 +53,29 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
+        public bool UpdateStatus(List<LabTesting> labTesting)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
 
+            try
+            {
+                var ids = labTesting.Select(x => x.LabTestingId).ToList();
+                var labtest = repo.GetLabTestingByListId(ids);
+                foreach (var item in labTesting)
+                {
+                    var curentLabTest = labtest.SingleOrDefault(x => x.LabTestingId == item.LabTestingId);
+                    curentLabTest.Status = "DOCTORDONE";
+                    repo.Update(curentLabTest);
+                }
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
         public List<LabTesting> GetAll()
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
