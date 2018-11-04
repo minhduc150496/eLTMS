@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "LabTesting";
+    ViewBag.Title = "LabTestingResult";
     Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
 
@@ -21,102 +21,17 @@
 </section>
 
 <!-- Main content -->
+
 <section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Danh sách kết quả</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
 
-    <div class="box">
-        @*<div class="box-header">
-                <h3 class="box-title">Danh Sách Các Xét Nghiệm</h3>
-            </div>*@
-        <!-- /.box-header -->
-        <div class="box-body">
-            <button class="btn btn-success" id="btnViewLabTesting"> Lab Testing</button>
-            <button class="btn btn-success" id="btnSaveLabTestingIndex" style="display:none"> Xử Lý</button>
-            <input style="display:none" type="file" id="input" class="btn btn-info" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-
-        </div>
-        <table style="width:100%" class="table table-bordered">
-            <thead>
-                <tr>
-                    @*<th>#</th>*@
-                    <th>Labtesting ID</th>
-                    <th>Index Name</th>
-                    <th>Index Value</th>
-                    <th>Trạng Thái</th>
-                    <th>Mức Trung Bình</th>
-                    <th>Đơn Vị</th>
-
-                </tr>
-            </thead>
-            <tbody id="tblData1">
-
-                <tr id="template-row" style="display:none;">
-                    @*<td class="colIndex"></td>*@
-                    <td class="colId"></td>
-                    <td class="colName"></td>
-                    <td class="colValue"></td>
-                    <td class="colStatus"></td>
-                    <td class="colNomal"></td>
-                    <td class="colUnit"></td>
-                </tr>
-            </tbody>
-
-
-        </table>
-    </div>
-</section>
-<!-- /.content -->
-<!-- Modal -->
-
-
-<div id="myModalLabTestingData" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Thêm Mới Loại Xét Nghiệm</h4>
-            </div>
-            <button class="btn btn-primary" id="btnSaveLabTesting">Lưu</button>
-            <div class="modal-body">
-                <table style="width:100%" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            @*<th>#</th>*@
-                            <th>Mã lịch hẹn</th>
-                            <th>Tên xét nghiệm</th>
-                            <th>Vị trí</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tblData">
-
-                        <tr id="template1-row" style="display:none;">
-                            @*<td class="colIndex"></td>*@
-                            <td class="colCode"></td>
-                            <td class="colName"></td>
-                            <td class="colSlot"><input type="number" min="1" max="10" class="txtSlot form-control" value="" readonly /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div id="myModalLabTesting" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Danh sách các yêu cầu xét nghiệm</h4>
-            </div>
-            <br />
-            <button class="btn btn-success" id="btnAddNewLabTesting">Xử lý</button>
-            <div class="modal-body">
-                <form class="form-horizontal">
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -124,14 +39,85 @@
                                 <th>Tên xét nghiệm</th>
                                 <th>Mẫu xét nghiệm</th>
                                 <th>Trạng thái</th>
-                                <th>Vị trí</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody id="tblDataLabTesting"></tbody>
+                        <tbody id="tblDataLabTestingResult"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.col -->
+</section>
+
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+<div id="myModalLabTestingResult" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
+            </div>
+            <div class="modal-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>LabTestingId</th>
+                            <th>Mã lịch hẹn</th>
+                            <th>Tên xét nghiệm</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDataLabTestingResult1"></tbody>
+                </table>
+                <div style="margin-left:35%" id="pagination" class="pagination"></div>
+            </div>
+            <div style="margin-right:35%">  </div>
+            <input type="hidden" class="form-control"  id="txtCode" name="txtCode" value="0">
+            <label class="control-label col-sm-2" for="email">Nhận xét</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="txtResult" name="txtResult">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="btnAddNewResult">Xử lý</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="myModalLabTestingIndexResult1" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
+            </div>
+            <div class="modal-body">
+              
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Labtesting ID</th>
+                                <th>Index Name</th>
+                                <th>Index Value</th>
+                                <th>Trạng Thái</th>
+                                <th>Mức Trung Bình</th>
+                                <th>Đơn Vị</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblDataLabTestingIndexResult1"></tbody>
                     </table>
                     <div style="margin-left:35%" id="pagination" class="pagination"></div>
-                </form>
+   
             </div>
             <div class="modal-footer">
 
@@ -141,23 +127,41 @@
 
     </div>
 </div>
-
-
-
-<script id="dataLabTesting-template" type="x-tmpl-mustache">
+<script id="dataLabTestingResult-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Getting}}</td>
         <td>{{Name}}</td>
         <td>{{Group}}</td>
         <td>{{Status}}</td>
-        <td>{{Slot}}</td>
         <td>
-            <button class="btn btn-danger btn-deleteSampleGroup" data-id="{{LabTestingId}}"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-success btn-editLabTestingResult" data-id="{{Getting}}"><i class="fa fa-pencil"></i></button>
 
         </td>
     </tr>
 </script>
+<script id="dataLabTestingResult1-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{LabTestingId}}</td>
+        <td>{{Getting}}</td>
+        <td>{{Name}}</td>
+        <td>{{Status}}</td>
+        <td>
+            <button class="btn btn-success btn-viewLabTestingIndex" data-id="{{LabTestingId}}"><i class="fa fa-eye"></i></button>
 
+        </td>
+    </tr>
+</script>
+<script id="dataLabTestingIndexResult1-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{LabTestingId}}</td>
+        <td>{{Name}}</td>
+        <td>{{Value}}</td>
+        <td>{{Status}}</td>
+        <td>{{Nomal}}</td>
+        <td>{{Unit}}</td>
+       
+    </tr>
+</script>
 <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.core.js"></script>
 <script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.lob.js"></script>

@@ -14,7 +14,7 @@ namespace eLTMS.DataAccess.Repositories
     {
         List<LabTestingIndex> GetAllLabTestingIndex();
         LabTestingIndex GetLabTestingIndexById(int id);
-      
+        List<LabTestingIndex> GetAllLabTestingIndexById(int id);
     }
     public class LabTestingIndexRepository : RepositoryBase<LabTestingIndex>, ILabTestingIndexRepository
     {
@@ -32,7 +32,16 @@ namespace eLTMS.DataAccess.Repositories
             var result = DbSet.Where(s => s.LabTestingId == id).ToList().FirstOrDefault();
             return result;
         }
+        public List<LabTestingIndex> GetAllLabTestingIndexById(int id)
+        {
 
-       
+            var result = DbSet.AsQueryable()
+             .Where(x => x.LabTestingId==id)
+            
+             .ToList();
+            return result;
+
+        }
+
     }
 }

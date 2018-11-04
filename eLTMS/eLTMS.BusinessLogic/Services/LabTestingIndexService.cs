@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface ILabTestingIndexService
     {
         List<LabTestingIndex> GetAllLabTestingIndex();
+        List<LabTestingIndex> GetAllLabTestingIndexHaveLabtestingId(int labtestingId);
         bool AddLabTestingIndex(List<LabTestingIndex> labTestingIndex);
     }
 
@@ -25,7 +26,12 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
-      
+        public List<LabTestingIndex> GetAllLabTestingIndexHaveLabtestingId(int labtestingId)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingIndexById(labtestingId);
+            return labTesting;
+        }
         public bool AddLabTestingIndex(List<LabTestingIndex> labTestingIndex)
         {
 

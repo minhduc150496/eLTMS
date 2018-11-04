@@ -13,15 +13,23 @@ namespace eLTMS.DataAccess.Repositories
     public interface ILabTestingRepository : IRepository<LabTesting>
     {
         List<LabTesting> GetAllLabTesting();
-
+<<<<<<< HEAD
+=======
+        List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllLabTestings();
         LabTesting GetLabTestingById(int id);
         List<LabTesting> GetLabTestingByListId(List<int> ids);
+        List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
+>>>>>>> fd5215e282ad71dfec720f92b865abf77a8c9afa
 
+
+<<<<<<< HEAD
 
       
 
 
+=======
+>>>>>>> fd5215e282ad71dfec720f92b865abf77a8c9afa
     }
     public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
     {
@@ -46,7 +54,30 @@ namespace eLTMS.DataAccess.Repositories
             return result;
 
         }
+        public List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code)
+        {
 
+            var result = DbSet.AsQueryable()
+             .Where(x => x.SampleGetting.Appointment.AppointmentCode.Contains(code))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public List<LabTesting> GetAllLabTestingResult()
+        {
+
+            var result = DbSet.AsQueryable()
+             .Where(x => x.Status.Contains("LabtestDone"))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
         public LabTesting GetLabTestingById(int id)
         {
             var result = DbSet.Where(s => s.LabTestingId == id).ToList().FirstOrDefault();

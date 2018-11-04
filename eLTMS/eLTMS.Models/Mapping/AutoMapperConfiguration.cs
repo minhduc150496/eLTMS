@@ -92,11 +92,12 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<SampleGettingDto, SampleGetting>();
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
-                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null)) // DucBM
+                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate != null) ? (((DateTime)x.GettingDate).ToString("yyyy-MM-dd")) : null)) // DucBM
                 .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
                 .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
-                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName));
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
+                .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));
 
                 cfg.CreateMap<ExportPaper, ExportPaperDto>()
                 .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))
@@ -126,10 +127,17 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
+<<<<<<< HEAD
 
                 //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
 
 
+=======
+                cfg.CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+>>>>>>> fd5215e282ad71dfec720f92b865abf77a8c9afa
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
@@ -193,6 +201,9 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
+
+                cfg.CreateMap<Slot, SlotDto>()
+                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
 
                 cfg.CreateMap<Feedback, FeedbackDto>()
                .ForMember(dst => dst.FeedbackId, src => src.MapFrom(x => x.FeedbackId))

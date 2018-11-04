@@ -205,18 +205,19 @@ var Controller = {
                     'data-sample-duration="' + sampleDto.SampleDuration + '" ' +
                     'data-open-time="' + sampleDto.OpenTime + '" ' +
                     'data-close-time="' + sampleDto.CloseTime + '">\n';
-                var today = new Date();
-                var year = today.getFullYear();
-                var month = today.getMonth();
+                var defaultDate = new Date();
+                defaultDate.setDate(defaultDate.getDate() + 1);
+                var year = defaultDate.getFullYear();
+                var month = defaultDate.getMonth() + 1;
                 if (month < 10) {
                     month = "0" + month;
                 }
-                var date = today.getDate();
+                var date = defaultDate.getDate();
                 if (date < 10) {
                     date = "0" + date;
                 }
-                var sToday = "" + year + "-" + month + "-" + date;
-                sampleHtml += '<input type="date" value="' + sToday + '" />\n';
+                var sDefaultDate = "" + year + "-" + month + "-" + date;
+                sampleHtml += '<input type="date" value="' + sDefaultDate + '" min="' + sDefaultDate + '" />\n';
                 sampleHtml += '<select style="overflow-y: scroll" ' + firstSelect + '>\n';
                 sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
                 var sampleDuration = sampleDto.SampleDuration;
@@ -245,40 +246,46 @@ var Controller = {
             }
         }
         $("#step-2-form").append(sampleHtml);
-        
-        var selects = $("#step-2-form select");
-        for (var i = 0; i < selects.length; i++) {
-            var options = $(selects[i]).children("option");
-            var sampleDuration = sampleDtos[i].SampleDuration;
-            for (var k = 1; k < options.length; k++) {
-                var time = parseInt($(options[k]).val());
-                var bDisable = false;
-                for (var j = 0; j < selects.length; j++) {
-                    if (i != j) {
-                        var start = parseInt($(selects[j]).children("option:selected").val());
-                        var end = start + sampleDtos[j].SampleDuration;
-                        var IsIntersect = function(A, B, a, b) {
-                            var boundary = Math.max(B, b) - Math.min(A, a);
-                            var sum = (B - A) + (b - a);
-                            return boundary <= sum;
-                        }
-                        if (IsIntersect(start, end, time, time + sampleDuration)) {
-                            bDisable = true;
-                            console.log("dis")
+
+        var setOptions = function () {
+            var sampleDtos = Model.sampleDtos;
+            var selects = $("#step-2-form select");
+            // traverse selects
+            for (var i = 0; i < selects.length; i++) {
+                var options = $(selects[i]).children("option");
+                $(options).find("[selected]").removeAttr("selected");
+                var sampleDuration = sampleDtos[i].SampleDuration;
+                // traverse options
+                for (var k = 1; k < options.length; k++) {
+                    var time = parseInt($(options[k]).val());
+                    var bDisable = false;
+                    // traverse to check other selects
+                    for (var j = 0; j < selects.length; j++) {
+                        if (i != j) {
+                            var start = parseInt($(selects[j]).children("option:selected").val());
+                            var end = start + sampleDtos[j].SampleDuration;
+                            var IsIntersect = function (A, B, a, b) {
+                                var boundary = Math.max(B, b) - Math.min(A, a);
+                                var sum = (B - A) + (b - a);
+                                return boundary <= sum;
+                            }
+                            if (IsIntersect(start, end, time, time + sampleDuration)) {
+                                bDisable = true;
+                            }
                         }
                     }
-                }
-                if (bDisable) {
-                    $(options[k]).attr("disabled", "disabled");
-                } else {
-                    $(options[k]).removeAttr("disabled");
+                    if (bDisable) {
+                        $(options[k]).attr("disabled", "disabled");
+                    } else {
+                        $(options[k]).removeAttr("disabled");
+                    }
                 }
             }
         }
 
         $("#first-select").on("change", function () {
             var value = $(this).val();
-            Controller.renderStep2Html(sampleDtos, value - 1);
+            setOptions();
         })
 
         // end rendering step 2
@@ -286,6 +293,7 @@ var Controller = {
     renderLabTestList: function () {
         // get all sampleDtos and LabTests
         var sSampleDtos = localStorage.getItem(CONFIG.SAMPLE_DTOS_KEY);
+        sSampleDtos = null; // TEMPORARILY
         if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
@@ -368,3 +376,39 @@ var Controller = {
     }, // end Action
 }
 Controller.init();
+
+
+
+// test algorithms
+$.ajax({
+    method: "GET",
+    contentType: "application/json",
+    url: "/api/slot/get-available-slots",
+    async: true,
+}).success(function (data) {
+    var sampleDtos = [
+        {
+            SampleId: 1,
+            SampleGroupId: 1
+        },
+        {
+            SampleId: 2,
+            SampleGroupId: 1
+        },
+        {
+            SampleId: 5,
+            SampleGroupId: 4
+        },
+        {
+            SampleId: 3,
+            SampleGroupId: 2
+        },
+    ];
+    var result = AppointmentSuggestor.CalcTheBestTour(data, "2018-11-05", 14400, sampleDtos);
+    console.log("coming time: ", Utils.formatTimeShort(14400));
+    for (var i = 0; i < result.length; i++) {
+        result[i].StartTime = Utils.formatTimeShort(result[i].SlotDto.StartTime);
+        result[i].FinishTime = Utils.formatTimeShort(result[i].SlotDto.FinishTime);
+    }
+    console.log(result);
+})

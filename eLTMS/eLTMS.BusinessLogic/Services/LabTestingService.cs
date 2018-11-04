@@ -13,7 +13,10 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<LabTesting> GetAll();
         List<LabTesting> GetAllLabTesting();
+        List<LabTesting> GetAllLabTestingResult();
         bool Update(List<LabTesting> labTesting);
+        bool UpdateStatus(List<LabTesting> labTesting);
+        List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
     }
 
     public class LabTestingService : ILabTestingService
@@ -50,7 +53,29 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
+        public bool UpdateStatus(List<LabTesting> labTesting)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
 
+            try
+            {
+                var ids = labTesting.Select(x => x.LabTestingId).ToList();
+                var labtest = repo.GetLabTestingByListId(ids);
+                foreach (var item in labTesting)
+                {
+                    var curentLabTest = labtest.SingleOrDefault(x => x.LabTestingId == item.LabTestingId);
+                    curentLabTest.Status = "DOCTORDONE";
+                    repo.Update(curentLabTest);
+                }
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
         public List<LabTesting> GetAll()
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
@@ -63,6 +88,17 @@ namespace eLTMS.BusinessLogic.Services
             var labTesting = repo.GetAllLabTestings();
             return labTesting;
         }
-       
+        public List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingHaveAppointmentCode(code);
+            return labTesting;
+        }
+        public List<LabTesting> GetAllLabTestingResult()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingResult();
+            return labTesting;
+        }
     }
 }

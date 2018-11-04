@@ -19,10 +19,12 @@ namespace eLTMS.Web.Controllers
         private readonly ILabTestService _labTestService;
         private readonly ILabTestingService _labTestingService;
         private readonly ILabTestingIndexService _labTestingIndexService;
+        private readonly IAppointmentService _appointmentService;
         //private readonly IImportPaperService _importPaperService;
-        public LabTestController(ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        public LabTestController(IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
+            this._appointmentService = appointmentService;
             this._labTestingService = labTestingService;
             this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
@@ -38,6 +40,10 @@ namespace eLTMS.Web.Controllers
             return View();
         }
         public ActionResult LabTesting()
+        {
+            return View();
+        }
+        public ActionResult LabTestingResult()
         {
             return View();
         }
@@ -82,7 +88,43 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult GetAllLabTestingHaveAppointmentCode(string code = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingIndexHaveLabtestingId(int id)
+        {
+            var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(id);
+            var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+            return Json(new
+            {
+                data = result,
+                success = true
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingResult(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingResult();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAllLabTestings()
         {
@@ -127,7 +169,24 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-
+        [HttpPost]
+        public JsonResult UpdateStatus(List<LabTesting> labTesting)
+        {
+            var result = _labTestingService.UpdateStatus(labTesting);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult UpdateResult(string code,string con)
+        {
+            var result = _appointmentService.Update(code,con);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
         [HttpPost]
         public JsonResult AddLabTest(LabTest labTest)
         {

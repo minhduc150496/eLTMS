@@ -26,7 +26,10 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
-
+        public ActionResult Patients()
+        {
+            return View();
+        }
         public ActionResult Appointment()
         {
             return View();
