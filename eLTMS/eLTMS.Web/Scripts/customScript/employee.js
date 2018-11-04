@@ -32,7 +32,8 @@ var homeController = {
                 HomeAddress: homeAddress,
                 IsDeleted: isDeleted,
                 Account: {
-                    Role: $('#ddlRole').val()
+                    Role: $('#ddlRole').val(),
+                    AvatarURL: $('#avatar').val()
                 },
                 Status: $('#ddlStatus').val()
             }
