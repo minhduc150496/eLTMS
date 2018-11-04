@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "LabTestingResult";
+    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+}
+
+<style>
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Quản Lý Kết Qủa Xét Nghiệm
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Danh sách kết quả</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Mã lịch hẹn</th>
+                                <th>Tên xét nghiệm</th>
+                                <th>Mẫu xét nghiệm</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblDataLabTestingResult"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.col -->
+</section>
+
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+<div id="myModalLabTestingResult" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
+            </div>
+            <div class="modal-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>LabTestingId</th>
+                            <th>Mã lịch hẹn</th>
+                            <th>Tên xét nghiệm</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDataLabTestingResult1"></tbody>
+                </table>
+                <div style="margin-left:35%" id="pagination" class="pagination"></div>
+            </div>
+            <div style="margin-right:35%">  </div>
+            <input type="hidden" class="form-control"  id="txtCode" name="txtCode" value="0">
+            <label class="control-label col-sm-2" for="email">Nhận xét</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="txtResult" name="txtResult">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="btnAddNewResult">Xử lý</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="myModalLabTestingIndexResult1" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
+            </div>
+            <div class="modal-body">
+              
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Labtesting ID</th>
+                                <th>Index Name</th>
+                                <th>Index Value</th>
+                                <th>Trạng Thái</th>
+                                <th>Mức Trung Bình</th>
+                                <th>Đơn Vị</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblDataLabTestingIndexResult1"></tbody>
+                    </table>
+                    <div style="margin-left:35%" id="pagination" class="pagination"></div>
+   
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script id="dataLabTestingResult-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Getting}}</td>
+        <td>{{Name}}</td>
+        <td>{{Group}}</td>
+        <td>{{Status}}</td>
+        <td>
+            <button class="btn btn-success btn-editLabTestingResult" data-id="{{Getting}}"><i class="fa fa-pencil"></i></button>
+
+        </td>
+    </tr>
+</script>
+<script id="dataLabTestingResult1-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{LabTestingId}}</td>
+        <td>{{Getting}}</td>
+        <td>{{Name}}</td>
+        <td>{{Status}}</td>
+        <td>
+            <button class="btn btn-success btn-viewLabTestingIndex" data-id="{{LabTestingId}}"><i class="fa fa-eye"></i></button>
+
+        </td>
+    </tr>
+</script>
+<script id="dataLabTestingIndexResult1-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{LabTestingId}}</td>
+        <td>{{Name}}</td>
+        <td>{{Value}}</td>
+        <td>{{Status}}</td>
+        <td>{{Nomal}}</td>
+        <td>{{Unit}}</td>
+       
+    </tr>
+</script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/infragistics.lob.js"></script>
+
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_collections.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_text.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_io.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_ui.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_ui.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.documents.core_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_collectionsextended.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.excel_core.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_threading.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.ext_web.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.xml.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.documents.core_openxml.js"></script>
+<script type="text/javascript" src="http://cdn-na.infragistics.com/igniteui/2018.1/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
+
+<script src="~/Scripts/customScript/importLabTest.js"></script>

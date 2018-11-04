@@ -22,6 +22,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
         bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sgDtos);
+        bool Update(string code, string con);
         bool DeleteAppointment(string appointmentCode);
     }
     public class AppointmentService : IAppointmentService
@@ -120,7 +121,27 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-
+        public bool Update(string code,string con)
+        {
+            try
+            {
+                var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+                // get existing appointment by AppointmentCode
+                var appointment = appRepo.GetAppointmentByCode(code);
+                // modify SampleGettings property               
+                appointment.Conclusion = con;
+                appointment.Status = "DOCTORDONE";
+                // update entity
+                appRepo.Update(appointment);
+                // save to DB
+                this.UnitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
         public bool DeleteAppointment(string appointmentCode)
         {
             try

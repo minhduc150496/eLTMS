@@ -42,5 +42,36 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+
+        // Xem thông tin detail của feedback
+        [HttpGet]
+        public JsonResult FeedbackDetail(int id)
+        {
+            var result = _feedbackService.getFeedbackId(id);
+            var supply = Mapper.Map<Feedback, FeedbackDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = supply
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteFeedback(int feedbackId)
+        {
+            var result = _feedbackService.DeleteFeedback(feedbackId);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateFeedback(Feedback feedback)
+        {
+            var result = _feedbackService.Update(feedback);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
     }
 }

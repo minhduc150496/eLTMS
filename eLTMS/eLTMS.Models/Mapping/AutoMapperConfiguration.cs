@@ -127,6 +127,11 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
+                cfg.CreateMap<Appointment, AppointmentDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
 
@@ -150,11 +155,15 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
 
                 cfg.CreateMap<LabTestingIndex, LabTestingIndexDto>()
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))
+                .ForMember(dst => dst.LabtTestingIndexId, src => src.MapFrom(x => x.LabtTestingIndexId))
                 .ForMember(dst => dst.IndexName, src => src.MapFrom(x => x.IndexName))
                 .ForMember(dst => dst.IndexValue, src => src.MapFrom(x => x.IndexValue))
                 .ForMember(dst => dst.LowNormalHigh, src => src.MapFrom(x => x.LowNormalHigh))
                 .ForMember(dst => dst.NormalRange, src => src.MapFrom(x => x.NormalRange))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit));
+
 
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
@@ -170,7 +179,15 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""));
                 cfg.CreateMap<LabTesting, LabTestingDto>()
-               .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+                .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+                .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))
+                .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.SampleGetting.Appointment.AppointmentCode))
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleGetting.SampleId))
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleGetting.Sample.SampleName))
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+                .ForMember(dst => dst.MachineSlot, src => src.MapFrom(x => x.MachineSlot))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
 
                 cfg.CreateMap<Appointment, AppointmentDto>()
@@ -180,6 +197,14 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Slot, SlotDto>()
                 .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
 
+                cfg.CreateMap<Feedback, FeedbackDto>()
+               .ForMember(dst => dst.FeedbackId, src => src.MapFrom(x => x.FeedbackId))
+               .ForMember(dst => dst.EmployeeName, src => src.MapFrom(x => x.Employee.FullName))
+               .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
+               .ForMember(dst => dst.Content, src => src.MapFrom(x => x.Content))
+               .ForMember(dst => dst.ReceivedDateTime, src => src.MapFrom(x => x.ReceivedDateTime.HasValue ? (x.ReceivedDateTime.Value).ToString("dd-MM-yyyy") : ""))
+               .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
+               .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
             });
 
         }

@@ -21,6 +21,24 @@ C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.cs
 C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CopyComplete
 C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
 C:\Users\MSI\Desktop\Đồ Án\Code\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.pdb
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\System.ValueTuple.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\EntityFramework.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.pdb
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\eLTMS.DataAccess.dll.config
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.pdb
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.xml
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\System.ValueTuple.xml
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\bin\Debug\EntityFramework.xml
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csprojAssemblyReference.cache
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CoreCompileInputs.cache
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CopyComplete
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
+C:\Users\DELL's\Desktop\Capstone\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+=======
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.dll
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.pdb
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.dll
@@ -38,6 +56,7 @@ C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.C
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CopyComplete
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
 C:\Users\User\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+<<<<<<< HEAD
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.dll
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\eLTMS.Models.pdb
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\bin\Debug\AutoMapper.dll
@@ -55,3 +74,5 @@ C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.Co
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.csproj.CopyComplete
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.dll
 C:\Users\Duc\Documents\eLTMS\eLTMS\eLTMS.Models\obj\Debug\eLTMS.Models.pdb
+>>>>>>> 74cc0cdad23dc50a11c25ae504a8a36a1e7922c5
+>>>>>>> 68a5eaf0550f4321fb4950560a1ca1f10a6c2520

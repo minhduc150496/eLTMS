@@ -13,7 +13,13 @@ namespace eLTMS.DataAccess.Repositories
     public interface ILabTestingRepository : IRepository<LabTesting>
     {
         List<LabTesting> GetAllLabTesting();
-        List<LabTesting> GetByPatientId(int patientId);
+        List<LabTesting> GetAllLabTestingResult();
+        List<LabTesting> GetAllLabTestings();
+        LabTesting GetLabTestingById(int id);
+        List<LabTesting> GetLabTestingByListId(List<int> ids);
+        List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
+
+
     }
     public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
     {
@@ -25,11 +31,53 @@ namespace eLTMS.DataAccess.Repositories
                 .ToList();
             return result;
         }
-        public List<LabTesting> GetByPatientId(int patientId)
+
+        public List<LabTesting> GetAllLabTestings()
         {
+
             var result = DbSet.AsQueryable()
-                .Include(x => x.LabTest)
-                .ToList();
+             .Where(x => x.Status.Contains("Waiting"))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code)
+        {
+
+            var result = DbSet.AsQueryable()
+             .Where(x => x.SampleGetting.Appointment.AppointmentCode.Contains(code))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public List<LabTesting> GetAllLabTestingResult()
+        {
+
+            var result = DbSet.AsQueryable()
+             .Where(x => x.Status.Contains("LabtestDone"))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public LabTesting GetLabTestingById(int id)
+        {
+            var result = DbSet.Where(s => s.LabTestingId == id).ToList().FirstOrDefault();
+            return result;
+        }
+
+        public List<LabTesting> GetLabTestingByListId(List<int> ids)
+        {
+            var result = DbSet.Where(s => ids.Contains(s.LabTestingId)).ToList();
+
             return result;
         }
     }

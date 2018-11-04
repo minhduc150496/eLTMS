@@ -402,10 +402,8 @@ var homeController = {
            
 
             var name = $(this).find(':selected').data('name');
-            var unit = $(this).find(':selected').data('unit');
             var curentRow = $(this).closest('tr');
             $(curentRow).find('.colName').text(name);
-            $(curentRow).find('.colUnit').text(unit);
         });
     }
 }
