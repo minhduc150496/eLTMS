@@ -13,23 +13,18 @@ namespace eLTMS.DataAccess.Repositories
     public interface ILabTestingRepository : IRepository<LabTesting>
     {
         List<LabTesting> GetAllLabTesting();
-<<<<<<< HEAD
-=======
+
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllLabTestings();
         LabTesting GetLabTestingById(int id);
         List<LabTesting> GetLabTestingByListId(List<int> ids);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
->>>>>>> fd5215e282ad71dfec720f92b865abf77a8c9afa
 
-
-<<<<<<< HEAD
 
       
 
 
-=======
->>>>>>> fd5215e282ad71dfec720f92b865abf77a8c9afa
+
     }
     public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
     {
