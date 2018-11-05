@@ -324,59 +324,61 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!--<li class="header">MAIN NAVIGATION</li>-->
 
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-industry"></i>
+                            <span>Quản lý kho và vật tư</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Supplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý vật tư</span></a></li>
+                            <li><a href="@Url.Action("ImportSupplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý nhập kho</span></a></li>
+                            <li><a href="@Url.Action("ExportSupplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý xuất kho</span></a></li>
+                            <li><a href="@Url.Action("Inventory","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý kiểm kho</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-object-ungroup"></i>
+                            <span>Quản lý Xét nghiệm</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("LabTests","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các xét nghiệm</span></a></li>
+                            <li><a href="@Url.Action("LabTesting","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các kết quả xét nghiệm</span></a></li>
+                            <li><a href="@Url.Action("LabTestingResult","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-child"></i>
+                            <span>Quản lý Người Dùng</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Patients","Patient")"><i class="fa fa-hand-o-right"></i> <span>Quản lý bệnh nhân</span></a></li>
+                            <li><a href="@Url.Action("Employees","Employee")"><i class="fa fa-hand-o-right"></i> <span>Quản lý nhân viên</span></a></li>
+                        </ul>
+                    </li>
 
-
-                    <div class="dropdown ">
-                        <div class="dropdown-toggle text-danger" data-toggle="dropdown">
-                            <li><a href=""><i class="fa fa-book"></i> <span>Quản lý kho và vật tư</span></a></li>
-                        </div>
-                        <div class="dropdown-menu">
-                            <li><a href="@Url.Action("Supplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý vật tư</span></a></li>
-                            <li><a href="@Url.Action("ImportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý nhập kho</span></a></li>
-                            <li><a href="@Url.Action("ExportSupplies","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý xuất kho</span></a></li>
-                            <li><a href="@Url.Action("Inventory","WareHouse")"><i class="fa fa-book"></i> <span>Quản lý kiểm kho</span></a></li>
-                        </div>
-                    </div>
-                    </p>
-                    <div class="dropdown ">
-                        <div class="dropdown-toggle text-danger" data-toggle="dropdown">
-                            <li><a href=""><i class="fa fa-book"></i> <span>Quản lý Xét nghiệm</span></a></li>
-                        </div>
-                        <div class="dropdown-menu">
-                            <li><a href="@Url.Action("LabTests","LabTest")"><i class="fa fa-book"></i> <span>Quản lý các xét nghiệm</span></a></li>
-                            <li><a href="@Url.Action("LabTesting","LabTest")"><i class="fa fa-book"></i> <span>Quản lý các kết quả xét nghiệm</span></a></li>
-                            <li><a href="@Url.Action("LabTestingResult","LabTest")"><i class="fa fa-book"></i> <span>Kết quả xét nghiệm</span></a></li>
-                        </div>
-                    </div>
-                    </p>
-                    <div class="dropdown ">
-                        <div class="dropdown-toggle text-danger" data-toggle="dropdown">
-                            <li><a href=""><i class="fa fa-book"></i> <span>Quản lý Người Dùng</span></a></li>
-                        </div>
-                        <div class="dropdown-menu">
-                            <li><a href="@Url.Action("Patients","Patient")"><i class="fa fa-book"></i> <span>Quản lý bệnh nhân</span></a></li>
-                            <li><a href="@Url.Action("Employees","Employee")"><i class="fa fa-book"></i> <span>Quản lý nhân viên</span></a></li>
-                        </div>
-                    </div>
-                    </p>
-                    <div class="dropdown ">
-                        <div class="dropdown-toggle text-danger" data-toggle="dropdown">
-                            <li><a href=""><i class="fa fa-book"></i> <span>Quản lý Report</span></a></li>
-                        </div>
-                        <div class="dropdown-menu">
-
-                        </div>
-                    </div>
-                    </p>
-                    <div class="dropdown ">
-                        <div class="dropdown-toggle text-danger" data-toggle="dropdown">
-                            <li><a href=""><i class="fa fa-book"></i> <span>Quản lý Feedback</span></a></li>
-                        </div>
-                        <div class="dropdown-menu">
-                            <li><a href="@Url.Action("Feedbacks","Feedback")"><i class="fa fa-book"></i> <span>Quản lý Feedback</span></a></li>
-                        </div>
-                    </div>
-                    </p>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-newspaper-o"></i>
+                            <span>Quản lý Report</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Feedbacks","Feedback")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Feedback</span></a></li>
+                        </ul>
+                    </li>
                 </ul>
             <!-- /.sidebar -->
             <!-- /.sidebar -->
