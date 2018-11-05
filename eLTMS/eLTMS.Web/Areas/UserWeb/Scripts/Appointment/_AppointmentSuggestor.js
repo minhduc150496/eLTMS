@@ -76,11 +76,10 @@ var AppointmentSuggestor = {
                             if (A[i - 1][k].FinishTime < A[i][j].StartTime) {
                                 var waitTime = A[i][j].StartTime - A[i - 1][k].FinishTime;
                                 var tmpValue = dp[i - 1][k] + waitTime;
-                                if (tmpValue <= dpItem) {
+                                if (tmpValue < dpItem) {
                                     dpItem = tmpValue;
                                     traceItem = k;
                                 }
-                                dpItem = Math.min(tmpValue, dpItem);
                             }
                         }
                     }
