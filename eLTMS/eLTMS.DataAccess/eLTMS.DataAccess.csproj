@@ -84,6 +84,7 @@
     <Compile Include="Repositories\SampleGroupRepository.cs" />
     <Compile Include="Repositories\SampleRepository.cs" />
     <Compile Include="Repositories\LabTestRepository.cs" />
+    <Compile Include="Repositories\SlotRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
   </ItemGroup>
   <ItemGroup>

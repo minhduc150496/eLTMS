@@ -32,7 +32,8 @@ var homeController = {
                 HomeAddress: homeAddress,
                 IsDeleted: isDeleted,
                 Account: {
-                    Role: $('#ddlRole').val()
+                    Role: $('#ddlRole').val(),
+                    AvatarUrl: $('#avatar').attr('src')
                 },
                 Status: $('#ddlStatus').val()
             }
@@ -154,7 +155,8 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber);
                     $('#ddlRole').val(data.Role);
                     $('#txtHomeAddress').val(data.HomeAddress);
-                    $('#txtSD').val(data.DateOfStart);           
+                    $('#txtSD').val(data.DateOfStart);
+                    $('#avatar').attr('src', data.Avatar);
                 }
                 else {
                     bootbox.alert(response.message);
