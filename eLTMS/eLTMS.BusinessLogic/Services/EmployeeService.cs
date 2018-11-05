@@ -58,6 +58,7 @@ namespace eLTMS.BusinessLogic.Services
                 employee.StartDate = employeedto.StartDate;
                 account.Role = employeedto.Account.Role;
                 employee.AccountId = employee.AccountId;
+                account.AvatarUrl = employeedto.Account.AvatarUrl;
                 repo.Update(employee);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any()) return false;
