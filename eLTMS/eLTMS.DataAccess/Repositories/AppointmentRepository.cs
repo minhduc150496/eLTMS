@@ -18,6 +18,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetAllApp();
+        Appointment GetAppById(int appId);
         Appointment GetAppointmentByCode(string appCode);
         List<Appointment> GetResultByAppCode(string appCode);
         int? CountByDate(string sDate);
@@ -32,7 +33,14 @@ namespace eLTMS.DataAccess.Repositories
                .ToList();
             return result;
         }
-
+        public Appointment GetAppById(int appId)
+        {
+            var result = DbSet.AsQueryable()
+               .Include(x => x.Patient)
+               .Include(x => x.SampleGettings.Select(y => y.Sample))
+               .FirstOrDefault(p => p.AppointmentId == appId);
+            return result;
+        }
         public List<Appointment> GetNewAppByPatientId(int patientId)
         {
             var appointment = DbSet.AsQueryable()
@@ -116,6 +124,6 @@ namespace eLTMS.DataAccess.Repositories
             return result;
         }
 
-      
+       
     }
 }

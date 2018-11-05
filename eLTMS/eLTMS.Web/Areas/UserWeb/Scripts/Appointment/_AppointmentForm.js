@@ -55,7 +55,7 @@ var Controller = {
             // VALIDATION:
             var $checks = $("#step-1-form input[type='checkbox']:checked");
             //console.log($checks);
-            var noChecked = $checks.length == 0;
+            var noChecked = $checks.length === 0;
             if (noChecked) { // user did not check any checkbox, not allow to go to step 2
                 $("html, body").animate({
                     scrollTop: $("#step-1").offset().top,
@@ -82,12 +82,12 @@ var Controller = {
             // VALIDATION: required fill all fields
             var hasEmptyField = false;
             $("#step-2 [type='date']").each(function (index, element) {
-                if ($(this).val() == '') {
+                if ($(this).val() === '') {
                     hasEmptyField = true;
                 }
             });
             $("#step-2 select").each(function (index, element) {
-                if ($(this).val() == '') {
+                if ($(this).val() === '') {
                     hasEmptyField = true;
                 }
             });
@@ -105,7 +105,7 @@ var Controller = {
             };
             // create SampleGettingDtos and assign to Model
             var el_Samples = $("#step-2-form *[data-sampleid]");
-            if (el_Samples != null) {
+            if (el_Samples !== null) {
                 for (var i = 0; i < el_Samples.length; i++) {
                     // create new SampleGetingDto
                     var el_Sample = el_Samples[i];
@@ -131,7 +131,7 @@ var Controller = {
 
                     var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
                     //console.log(el_LabTests);
-                    if (el_LabTests != null) {
+                    if (el_LabTests !== null) {
                         for (var j = 0; j < el_LabTests.length; j++) {
                             var labTestId = $(el_LabTests[j]).data("labtestid");
                             //console.log(labTestId);
@@ -150,14 +150,14 @@ var Controller = {
     renderStep1Html: function (sampleDtos) {
         // render step 1 - choosing Samples & LabTests
         var sampleHtml = "";
-        if (sampleDtos != null) {
+        if (sampleDtos !== null) {
             for (var i = 0; i < sampleDtos.length; i++) {
                 var sampleDto = sampleDtos[i];
                 // append Sample Title: "1. Mau"
                 sampleHtml += "<div class='sample-box'>";
                 sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
                 sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" class="row">\n';
-                if (sampleDto.LabTests != null) {
+                if (sampleDto.LabTests !== null) {
                     for (var j = 0; j < sampleDto.LabTests.length; j++) {
                         // append Lab Tests in Sample
                         var labTest = sampleDto.LabTests[j];
@@ -183,12 +183,12 @@ var Controller = {
         $("#step-2-form").html("");
         // render step 2 - choosing Samples & LabTests
         var sampleHtml = "";
-        if (sampleDtos != null) {
+        if (sampleDtos !== null) {
             for (var i = 0; i < sampleDtos.length; i++) {
                 var sampleDto = sampleDtos[i];
                 var sampleId = sampleDto.SampleId;
                 var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
-                if (checkedLabTests == null || checkedLabTests.length == 0) {
+                if (checkedLabTests === null || checkedLabTests.length === 0) {
                     continue;
                 }
                 // append Sample Title: "1. Mau"
@@ -230,7 +230,7 @@ var Controller = {
     renderLabTestList: function () {
         // get all sampleDtos and LabTests
         var sSampleDtos = localStorage.getItem(CONFIG.SAMPLE_DTOS_KEY);
-        if (sSampleDtos == null) {
+        if (sSampleDtos === null) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
@@ -275,7 +275,7 @@ var Controller = {
             // 
             var checkResult = function (data) {
                 $("#processing-modal").modal('hide');
-                if (data.Success == true) {
+                if (data.Success === true) {
                     showModalWithMessage($("#success-modal"), data.Message);
                 } else {
                     showModalWithMessage($("#fail-modal"), data.Message);
