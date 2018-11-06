@@ -181,6 +181,7 @@ var homeController = {
         $('#ddlRole').val('').change();
         $('#txtHomeAddress').val('');
         $('#txtSD').val(''); 
+        $('#avatar').attr('src', data.Avatar);
     },
     loadData: function (changePageSize) {
         $.ajax({

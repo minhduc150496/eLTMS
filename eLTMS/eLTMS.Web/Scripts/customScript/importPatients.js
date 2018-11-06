@@ -30,8 +30,12 @@ var homeController = {
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
                 CompanyAddress: companyAddress,
-                IsDeleted: isDeleted
+                IsDeleted: isDeleted,
+                Account: {
+                    AvatarUrl: $('#avatar').attr('src')
+                }
             }
+            console.log(patient);
             if (patient.PatientId == 0) {
                 $.ajax({
                     url: '/Patient/AddPatient',
@@ -148,7 +152,7 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtCompanyAddress').val(data.CompanyAddress);
-                   
+                    $('#avatar').attr('src', data.Avatar);
                 }
                 else {
                     bootbox.alert(response.message);
@@ -171,6 +175,7 @@ var homeController = {
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
+        $('#avatar').attr('src', data.Avatar);
     },
     loadData: function (changePageSize) {
         $.ajax({

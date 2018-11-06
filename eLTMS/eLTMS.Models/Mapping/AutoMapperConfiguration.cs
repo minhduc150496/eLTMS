@@ -37,7 +37,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
-                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
+                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress))
+                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
