@@ -9,21 +9,7 @@
                 Xin quý khách vui lòng chọn các loại xét nghiệm cần làm!
             </div>
             <div id="step-1-form">
-                @*
-                    <h3>1. Máu</h3>
-                    <div data-sampleid="1">
-                        <input type="checkbox" data-labtestid="1" />
-                        Ct Máu
-                        <br>
-                        <input type="checkbox" data-labtestid="2" />
-                        VSS
-                        <br>
-                        <input type="checkbox" data-labtestid="3" />
-                        Tiểu cầu, độ tập trung
-                    </div>
-                *@
             </div>
-
             <div class="button-box">
                 <button id="btn-next" type="button" class="custom_btn next_btn">
                     Bước 2
@@ -39,17 +25,10 @@
                 Xin quý khách vui lòng điền đầy đủ thông tin: ngày, giờ
             </div>
             <div id="step-2-form">
-                @*
-                    <h3>1. Máu</h3>
-                    <div data-sampleid="1" data-sample-duration="10">
-                    <input type="date" />
-                    <select style="overflow-y: scroll">
-                        <option value="7:00">7:00 - 7:15</option>
-                        <option value="7:30">7:30 - 7:45</option>
-                        <option value="8:00">8:00 - 8:15</option>
-                    </select>
-                    </div>
-                *@
+                <div id="step-2a-form">
+                </div>
+                <div id="step-2b-form">
+                </div>
             </div>
 
             <div class="button-box text-left">
@@ -126,3 +105,68 @@
 
     </div>
 </div>
+
+
+<script id="step-1-template" type="x-tmpl-mustache">
+    {{#Samples}}
+    <div class="sample-box">
+        <h3>{{SampleName}}</h3>
+        <div data-sample-index="{{Index}}" class="row">
+            {{#LabTests}}
+            <div class="col-md-3">
+                <div class="pretty p-icon p-smooth p-bigger">
+                    <input type="checkbox" data-labtest-index="{{Index}}" 
+                           {{#IsSelected}}checked{{/IsSelected}} />
+                    <div class="state p-danger">
+                        <i class="icon fa fa-check"></i>
+                        <label>{{LabTestName}}</label>
+                    </div>
+                </div>
+            </div>
+            {{/LabTests}}
+        </div>
+    </div>
+    {{/Samples}}
+</script>
+
+<script id="step-2a-template" type="x-tmpl-mustache">
+    <hr />
+    <h3>Bạn sẽ đến vào ngày:</h3>
+    <input id="coming-date" type="date" value="{{Date}}" min="2018-11-06" max="2018-11-14"/>
+    <h3>Bạn có thể có mặt từ lúc:</h3>
+    <div>
+        <select id="coming-hour" style="overflow-y: scroll">
+            <option value="">--</option>
+            {{#Hours}}
+            <option value="{{.}}">{{.}}</option>
+            {{/Hours}}
+        </select>
+        giờ
+        <select id="coming-min" style="overflow-y: scroll">
+            <option value="">--</option>
+            {{#Mins}}
+            <option value="{{.}}">{{.}}</option>
+            {{/Mins}}
+        </select>
+        phút
+    </div>
+</script>
+
+<script id="step-2b-template" type="x-tmpl-mustache">
+    <hr />
+    {{#Samples}}
+    {{#IsDisplay}}
+    <h3>Thời gian lấy mẫu {{SampleName}}:</h3>
+    <div data-sampleid="{{SampleId}}" data-sample-duration="{{SampleDuration}}">
+        <select style="overflow-y: scroll">
+            <option value="">-- Vui lòng chọn một ca --</option>
+            {{#Slots}}
+            <option value="{{SlotId}}" {{#IsSelected}}selected {{/IsSelected}}>
+                {{FmStartTime}} - {{FmFinishTime}}
+            </option>
+            {{/Slots}}
+        </select>
+    </div>
+    {{/IsDisplay}}
+    {{/Samples}}
+</script>
