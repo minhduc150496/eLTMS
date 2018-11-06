@@ -8,9 +8,9 @@ namespace eLTMS.Models.Models.dto
 {
     public class AppointmentAddDto
     {
-        public string AppCode { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
+        public string Address { get; set; }
         public bool Mau { get; set; }
         public bool NuocTieu { get; set; }
         public bool TeBaoHoc { get; set; }
