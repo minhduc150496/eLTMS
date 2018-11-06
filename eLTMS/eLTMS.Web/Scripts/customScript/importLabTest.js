@@ -113,7 +113,7 @@ var homeController = {
             homeController.loadDataLabTestingAdd();
             $('#myModalLabTestingData').modal('hide');
         })
-        $('#btnSaveLabTestingIndex').off('click').on('click', function () {
+        $('#btnSaveLabTestingIndex').off('click').on('click', function () {          
             var allRows = $('.data-row');
             var allData = [];
             var allData1 = [];
@@ -175,6 +175,7 @@ var homeController = {
                 }
             })
                         $('#btnSaveLabTestingIndex').hide();
+                        $('#input').hide();
                     }
                 }
             })
@@ -291,13 +292,13 @@ var homeController = {
             homeController.loadDataLabTesting(true);
             
         });
-        $('#btnSearch').off('click').on('click', function () {
-            homeController.loadData(true);
-        });
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
             homeController.loadData(true);
+        });
+        $('#btnClose').off('click').on('click', function () {
+            $('#txtResult').val('');
         });
         $('.btn-edit').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật xét nghiệm');
@@ -348,8 +349,7 @@ var homeController = {
                     Status: "DOCTORDONE"
                 }
                 allData.push(data);
-            });
-            console.log(allData);
+            });          
             $.ajax({
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
@@ -387,6 +387,9 @@ var homeController = {
         })
         $("#txtResult").off('change').on("change", function () {
             $('#btnAddNewResult').show();
+        })
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
         })
         $("#input").off('change').on("change", function () {
             var excelFile,
@@ -461,6 +464,7 @@ var homeController = {
                             }
                         }
                         var newRow = $('#template-row').clone();
+                        $(newRow).insertAfter('#template-row');
                         $(newRow).addClass('data-row');
                         $(newRow).find('.colId').text(item.LabTestingId);
                         $(newRow).find('.colName').text(item.IndexName);
@@ -468,11 +472,7 @@ var homeController = {
                         $(newRow).find('.colStatus').text(item.Status);
                         $(newRow).find('.colNomal').text(item.Normal);
                         $(newRow).find('.colUnit').text(item.Unit);
-                        $(newRow).insertAfter('#template-row');
-
-
-
-
+                        
                     });
 
                     var allRows = $('.data-row');
@@ -639,7 +639,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadData();
@@ -669,7 +668,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblDataSample').html(html);
                     
                     homeController.registerEvent();
@@ -698,7 +696,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblDataSampleGroup').html(html);
 
                     homeController.registerEvent();
@@ -745,7 +742,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblDataLabTesting').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadDataLabTesting();
@@ -776,7 +772,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblDataLabTestingResult').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadDataLabTesting();
@@ -842,10 +837,10 @@ var homeController = {
                             Status: item.LowNormalHigh,
                             Nomal: item.NormalRange,
                             Unit: item.Unit,
+                            changeColor: homeController.getColorByStatus(item.LowNormalHigh)
                         });
                         
                     });
-                    console.log(html);
                     $('#tblDataLabTestingIndexResult1').html(html);
 
                     homeController.registerEvent();
@@ -853,7 +848,7 @@ var homeController = {
             }
         })
     },
-   loadAddLabTesting: function () {
+    loadAddLabTesting: function () {
         var i = 0;
         for (i; i < 10; i++) {
 
@@ -881,30 +876,13 @@ var homeController = {
     registerEventForChangeDropDown: function () {
         $('.ddlCode').off('change').on('change', function () {
 
-            var value = $(this).find(':selected').val();
-            console.log(value);
-            var allRows = $('.data-row-lab-testing-import');
-          //  console.log(homeconfig.LoadFromDataBase);
-//console.log(homeconfig.ImportExcel);
-            //if (homeconfig.LoadFromDataBase == true || homeconfig.ImportExcel == true) {
-
-            //}
-            //else {
-            //    for (var i = 0; i < allRows.length; i++) {
-            //        if (i != 0 && $(allRows[i]).find('.ddlCode').val() == value) {
-            //            toastr.error("Vật tư với mã " + $(this).find(':selected').text() + " đã được chọn ");
-            //            return;
-            //        }
-            //    }
-            //}
-
-
+            var value = $(this).find(':selected').val();       
+            var allRows = $('.data-row-lab-testing-import');         
             var name = $(this).find(':selected').data('name');
             var curentRow = $(this).closest('tr');
             $(curentRow).find('.colName').text(name);
         });
-    },
-  
+    },  
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -927,6 +905,16 @@ var homeController = {
                 setTimeout(callback, 200);
             }
         });
+    },
+    getColorByStatus: function (status) {
+        if (status == 'L') {
+            return 'background-color: yellow;'
+        } else if (status == 'H') {
+            return 'background-color: red;'
+        } else {
+            return "";
+        }
+                
     }
 }
 
