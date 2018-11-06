@@ -71,20 +71,11 @@ var homeController = {
             }
           
         })
-
-
-
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới vật tư');
             homeController.resetForm();
             $('#myModal').modal('show');
-        });
-
-       
-        $('#btnSearch').off('click').on('click', function () {
-            homeController.loadData(true);
-        });
-       
+        });       
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
@@ -96,13 +87,14 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSupply(id);
             
         });
-
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
     },
     deleteSupply: function (id) {
         $.ajax({
@@ -153,9 +145,6 @@ var homeController = {
                 console.log(err);
             }
         });
-    },
-    saveData: function () {
-        
     },
     resetForm: function () {
         $('#txtSupplyId').val('0');

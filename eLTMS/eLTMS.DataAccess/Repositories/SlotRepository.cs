@@ -10,11 +10,12 @@ using System.Data.Entity;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    
+
     public interface ISlotRepository : IRepository<Slot>
     {
         List<Slot> GetByDateAndSampleGroupId(DateTime date, int sampleId);
         List<Slot> GetAvailableSlots();
+        List<Slot> GetAllSlot();
     }
     public class SlotRepository : RepositoryBase<Slot>, ISlotRepository
     {
@@ -46,6 +47,12 @@ namespace eLTMS.DataAccess.Repositories
                     result.Add(item);
                 }
             }
+            return result;
+        }
+        public List<Slot> GetAllSlot()
+        {
+            var result = DbSet.AsQueryable()
+                .ToList();
             return result;
         }
     }

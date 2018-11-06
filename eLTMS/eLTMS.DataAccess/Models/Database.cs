@@ -1936,6 +1936,17 @@ namespace eLTMS.DataAccess.Models
     #region Stored procedure return models
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class GenslotsReturnModel
+    {
+        public System.Int32? StartTime { get; set; }
+        public System.Int32? FinishTime { get; set; }
+        public System.DateTime? Date { get; set; }
+        public System.Int32? Quantity { get; set; }
+        public System.Int32 SlotID { get; set; }
+        public System.Int32? SampleGroupID { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class SpHelpdiagramdefinitionReturnModel
     {
         public System.Int32? version { get; set; }

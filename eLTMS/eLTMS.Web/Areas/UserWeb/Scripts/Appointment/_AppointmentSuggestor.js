@@ -98,9 +98,9 @@ var AppointmentSuggestor = {
             }
             // update result
             if (tmpMinWait < minWait) {
-                /*console.log(A);*/
+                /*console.log(A);
                 console.log(dp);
-                /*console.log(trace);*/
+                console.log(trace);*/
                 var tmpResult = [];
                 var doTrace = function (i, j) {
                     if (i < 0) {
@@ -108,7 +108,8 @@ var AppointmentSuggestor = {
                     }
                     doTrace(i - 1, trace[i][j]);
                     var item = {
-                        SlotDto: A[i][j].Slot,
+                        SlotId: A[i][j].Slot.SlotId,
+                        SampleGroupId: A[i][j].Slot.SampleGroupId,
                     }
                     tmpResult.push(item);
                 }
@@ -117,16 +118,19 @@ var AppointmentSuggestor = {
             }
         }
 
-        var setSampleIdsIntoResult = function() {
+        var setSampleIdsIntoResult = function () {
             if (result == null) {
                 return;
             }
             for (var i = 0; i < chosedSamples.length; i++) {
                 var sampleId = chosedSamples[i].SampleId;
+                var sampleGroupId = chosedSamples[i].SampleGroupId;
                 for (var j = 0; j < result.length; j++) {
-                    if (result[j].SampleId == undefined || result[j].SampleId == null) {
-                        result[j].SampleId = sampleId;
-                        break;
+                    if (result[j].SampleGroupId == sampleGroupId) {
+                        if (result[j].SampleId == undefined || result[j].SampleId == null) {
+                            result[j].SampleId = sampleId;
+                            break;
+                        }
                     }
                 }
             }

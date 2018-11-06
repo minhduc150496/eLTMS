@@ -537,9 +537,9 @@
     <Content Include="Areas\UserWeb\Images\our-team.png" />
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
-    <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentSuggestion.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\Edit.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentForm.js" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentSuggestor.js" />
     <Content Include="Areas\UserWeb\Styles\Appointment\Appointment.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Index.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Layout.css" />
