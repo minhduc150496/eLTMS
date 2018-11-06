@@ -86,7 +86,7 @@ var homeController = {
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
+            $('#lblPopupTitle').text('Cập nhật Feedback');
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);

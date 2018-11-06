@@ -41,7 +41,7 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var patient = repo.GetById(patientdto.PatientId);
+                var patient = repo.GetSimpleById(patientdto.PatientId);
                 var account = patient.Account;
                 patient.PatientCode = patientdto.PatientCode;
                 patient.FullName = patientdto.FullName;
@@ -56,7 +56,7 @@ namespace eLTMS.BusinessLogic.Services
                 if (result.Any())
                     return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

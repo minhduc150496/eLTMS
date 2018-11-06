@@ -184,7 +184,7 @@ namespace eLTMS.BusinessLogic.Services
 
                 UnitOfWork.SaveChanges();
             }
-            catch (Exception e) { return false; }
+            catch (Exception ex) { return false; }
             return true;
         }
         public List<Appointment> GetNewApp(int patientId)

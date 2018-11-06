@@ -21,12 +21,12 @@ namespace eLTMS.DataAccess.Repositories
         public List<Patient> GetAllPatient(string phoneNumber)
         {
             var result = DbSet.AsQueryable()
-<<<<<<< HEAD
+
                 .Include(x=>x.Account)
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) && x.IsDeleted == false)
-=======
+
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber)  && x.IsDeleted == false)
->>>>>>> 3383418b6c70ca3ad57a481e079f2f199634d463
+
                 .ToList();
             return result;
         }
