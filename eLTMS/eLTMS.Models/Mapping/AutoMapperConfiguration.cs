@@ -184,7 +184,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.DateOfStart, src => src.MapFrom(x => x.StartDate.HasValue ? x.StartDate.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))
-                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl));
+                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl))
+                .ForMember(dst => dst.Email, src => src.MapFrom(x => x.Account.Email));
                 cfg.CreateMap<LabTesting, LabTestingDto>()
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
                 .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))

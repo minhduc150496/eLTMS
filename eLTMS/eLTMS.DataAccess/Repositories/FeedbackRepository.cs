@@ -21,7 +21,7 @@ namespace eLTMS.DataAccess.Repositories
             var result = DbSet.AsQueryable()
                 .Include(x=>x.Employee)
                 .Include(x=>x.Patient)
-                    .Where(x => ((x.Content).ToString().Contains(dateTime) || (x.FeedbackId).ToString().Contains(dateTime) || (x.Patient.FullName).ToString().Contains(dateTime) || (x.Employee.FullName).ToString().Contains(dateTime) || (x.Status).ToString().Contains(dateTime) || (x.ReceivedDateTime).ToString().Contains(dateTime)) && x.IsDeleted == false)
+                    .Where(x => ((x.Content).ToString().Contains(dateTime) || (x.FeedbackId).ToString().Contains(dateTime) || (x.Patient.FullName).ToString().Contains(dateTime) || (x.Employee.FullName).ToString().Contains(dateTime) || (x.Status).ToString().Contains(dateTime) || x.ReceivedDateTime.ToString().Contains(dateTime)) && x.IsDeleted == false)
                     .ToList();
             return result;
         }
