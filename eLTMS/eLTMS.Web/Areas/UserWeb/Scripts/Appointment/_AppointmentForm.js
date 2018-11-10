@@ -148,6 +148,12 @@ var Controller = {
             Controller.sendToServer(jsonData);
         }); // end event handler
 
+        newAp2 = function () {
+            $("#tr-2").hide();
+            $("#no-3").html("2");
+            $("#ap-2").fadeIn();
+        }
+
     }, // end Action
     renderStep1Html: function () {
         // render step 1:
@@ -170,6 +176,7 @@ var Controller = {
         Controller.renderStep2Html();
 
         // get avai. slots
+        return;
         $.ajax({
             method: "GET",
             contentType: "application/json",
@@ -312,7 +319,7 @@ var Controller = {
                 }
             }
         }
-        if (sSampleDtos == null && false) {
+        if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
