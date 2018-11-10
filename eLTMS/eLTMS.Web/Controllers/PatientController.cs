@@ -51,7 +51,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult UpdatePatient(Patient patient)
         {
-            var result = _patientService.Update(patient.PatientId, patient.PatientCode, patient.FullName, patient.Gender, patient.PhoneNumber, patient.HomeAddress, patient.CompanyAddress);
+            var result = _patientService.Update(patient);
             return Json(new
             {
                 sucess = result
