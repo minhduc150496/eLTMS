@@ -3,6 +3,7 @@ using eLTMS.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,18 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<Feedback> GetAllFeed(string dateTime)
         {
-            var result = DbSet.AsQueryable()
+            DateTime result;
+            var validateDay= DateTime.TryParseExact(dateTime,
+                                   "dd-MM-yyyy",
+                                   CultureInfo.InvariantCulture,
+                                   DateTimeStyles.None,
+                                   out result);
+            var resultRequrest = DbSet.AsQueryable()
                 .Include(x=>x.Employee)
                 .Include(x=>x.Patient)
-                    .Where(x => ((x.Content).ToString().Contains(dateTime) || (x.FeedbackId).ToString().Contains(dateTime) || (x.Patient.FullName).ToString().Contains(dateTime) || (x.Employee.FullName).ToString().Contains(dateTime) || (x.Status).ToString().Contains(dateTime) || x.ReceivedDateTime.ToString().Contains(dateTime)) && x.IsDeleted == false)
+                    .Where(x => ((x.Content).ToString().Contains(dateTime) || (x.FeedbackId).ToString().Contains(dateTime) || (x.Patient.FullName).ToString().Contains(dateTime) || (x.Employee.FullName).ToString().Contains(dateTime) || (x.Status).ToString().Contains(dateTime) || (validateDay == true&&DbFunctions.TruncateTime(result) == DbFunctions.TruncateTime(x.ReceivedDateTime.Value))) && x.IsDeleted == false)
                     .ToList();
-            return result;
+            return resultRequrest;
         }
         public Feedback GetSimpleById(int id)
         {
