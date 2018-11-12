@@ -21,47 +21,47 @@ namespace eLTMS.Web.Api
             this._appointmentService = appointmentService;
         }
 
-        [HttpPost]
-        [Route("api/appointment/create")]
-        public HttpResponseMessage Create(AppointmentDto appoinDto)
-        {
-            // Convert AppointmentDto to Appointment (DTO to Entity)
-            Appointment appointment = Mapper.Map<AppointmentDto, Appointment>(appoinDto);
+        //[HttpPost]
+        //[Route("api/appointment/create")]
+        //public HttpResponseMessage Create(AppointmentDto appoinDto)
+        //{
+        //    // Convert AppointmentDto to Appointment (DTO to Entity)
+        //    Appointment appointment = Mapper.Map<AppointmentDto, Appointment>(appoinDto);
 
-            appointment.PatientId = appoinDto.PatientId;
-            appointment.SampleGettings = new List<SampleGetting>();
-            foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
-            {
-                var sampleGetting = new SampleGetting();
-                sampleGetting.SampleId = sampleGettingDto.SampleId;
-                sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
-                try
-                {
-                    sampleGetting.StartTime = TimeSpan.Parse(sampleGettingDto.StartTime);
-                    sampleGetting.FinishTime = TimeSpan.Parse(sampleGettingDto.FinishTime);
-                }
-                catch (Exception ex)
-                {
-                    // bao loi 
-                }
-                foreach (var labTestId in sampleGettingDto.LabTestIds)
-                {
-                    var labTesting = new LabTesting();
-                    labTesting.LabTestId = labTestId;
-                    sampleGetting.LabTestings.Add(labTesting);
-                }
-                appointment.SampleGettings.Add(sampleGetting);
-            }
-            // call to AppointmentService
-            var success = this._appointmentService.Create(appointment);
-            var obj = new
-            {
-                Success = success,
-                Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
-            };
-            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
-            return response;
-        }
+        //    appointment.PatientId = appoinDto.PatientId;
+        //    appointment.SampleGettings = new List<SampleGetting>();
+        //    foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
+        //    {
+        //        var sampleGetting = new SampleGetting();
+        //        sampleGetting.SampleId = sampleGettingDto.SampleId;
+        //        sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
+        //        try
+        //        {
+        //            sampleGetting.StartTime = TimeSpan.Parse(sampleGettingDto.StartTime);
+        //            sampleGetting.FinishTime = TimeSpan.Parse(sampleGettingDto.FinishTime);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // bao loi 
+        //        }
+        //        foreach (var labTestId in sampleGettingDto.LabTestIds)
+        //        {
+        //            var labTesting = new LabTesting();
+        //            labTesting.LabTestId = labTestId;
+        //            sampleGetting.LabTestings.Add(labTesting);
+        //        }
+        //        appointment.SampleGettings.Add(sampleGetting);
+        //    }
+        //    // call to AppointmentService
+        //    var success = this._appointmentService.Create(appointment);
+        //    var obj = new
+        //    {
+        //        Success = success,
+        //        Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
+        //    };
+        //    var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+        //    return response;
+        //}
 
         [HttpGet]
         [Route("api/appointment/get-new-appointments-by-patient-id")]

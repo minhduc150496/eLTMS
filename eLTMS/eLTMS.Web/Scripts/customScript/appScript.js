@@ -8,8 +8,11 @@ var homeController = {
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
+    test: function (SampleGettingId) {
+        var a = 1;
+    },
     registerEvent: function () {
-
+        
         $(".Sample").change(function () {
             homeController.loadDataBySample();
         });
@@ -24,23 +27,32 @@ var homeController = {
             var phan = false;
             var dich = false;
 
-            if ($('#checkBox_loaiXetNghiem1') || $('#checkBox_loaiXetNghiem2') || $('#checkBox_loaiXetNghiem3')
-                || $('#checkBox_loaiXetNghiem4') || $('#checkBox_loaiXetNghiem5') || $('#checkBox_loaiXetNghiem6')
-                || $('#checkBox_loaiXetNghiem7') || $('#checkBox_loaiXetNghiem8') || $('#checkBox_loaiXetNghiem9')
-                || $('#checkBox_loaiXetNghiem10') || $('#checkBox_loaiXetNghiem11') || $('#checkBox_loaiXetNghiem12')
-                || $('#checkBox_loaiXetNghiem13') || $('#checkBox_loaiXetNghiem14') || $('#checkBox_loaiXetNghiem15')
-                || $('#checkBox_loaiXetNghiem16') || $('#checkBox_loaiXetNghiem17') || $('#checkBox_loaiXetNghiem18')
-                || $('#checkBox_loaiXetNghiem19') || $('#checkBox_loaiXetNghiem20') || $('#checkBox_loaiXetNghiem21')
+            if ($('#checkBox_loaiXetNghiem1').prop('checked') === true || $('#checkBox_loaiXetNghiem2').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem3').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem4').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem5').prop('checked') === true || $('#checkBox_loaiXetNghiem6').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem7').prop('checked') === true || $('#checkBox_loaiXetNghiem8').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem9').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem10').prop('checked') === true || $('#checkBox_loaiXetNghiem11').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem12').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem13').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem14').prop('checked') === true || $('#checkBox_loaiXetNghiem15').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem16').prop('checked') === true || $('#checkBox_loaiXetNghiem17').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem18').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem19').prop('checked') === true || $('#checkBox_loaiXetNghiem20').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem21').prop('checked') === true
                 || $('#checkBox_loaiXetNghiem22').prop('checked') === true)
                 mau = true;
-            if ($('#checkBox_loaiXetNghiem23') || $('#checkBox_loaiXetNghiem24').prop('checked') === true)
+            if ($('#checkBox_loaiXetNghiem23').prop('checked') === true || $('#checkBox_loaiXetNghiem24').prop('checked') === true)
                 nuocTieu = true;
-            if ($('#checkBox_loaiXetNghiem25') || $('#checkBox_loaiXetNghiem26').prop('checked') === true)
+            if ($('#checkBox_loaiXetNghiem25').prop('checked') === true || $('#checkBox_loaiXetNghiem26').prop('checked') === true)
                 teBaoHoc = true;
-            if ($('#checkBox_loaiXetNghiem27') || $('#checkBox_loaiXetNghiem28').prop('checked') === true)
+            if ($('#checkBox_loaiXetNghiem27').prop('checked') === true || $('#checkBox_loaiXetNghiem28').prop('checked') === true)
                 phan = true;
-            if ($('#checkBox_loaiXetNghiem29') || $('#checkBox_loaiXetNghiem30') || $('#checkBox_loaiXetNghiem31')
-                || $('#checkBox_loaiXetNghiem32') || $('#checkBox_loaiXetNghiem33') || $('#checkBox_loaiXetNghiem34').prop('checked') === true)
+            if ($('#checkBox_loaiXetNghiem29').prop('checked') === true || $('#checkBox_loaiXetNghiem30').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem31').prop('checked') === true
+                || $('#checkBox_loaiXetNghiem32').prop('checked') === true || $('#checkBox_loaiXetNghiem33').prop('checked') === true ||
+                $('#checkBox_loaiXetNghiem34').prop('checked') === true)
                 dich = true;
 
             var item = {
@@ -68,14 +80,16 @@ var homeController = {
                     else {
                         toastr.success("Tạo mới thành công.");
                         $('#myModal').modal('hide');
-                        homeController.loadData();
+                        homeController.loadDataBySample();
                     }
                 }
             });
 
         });
 
-
+        $('#cbIsPaid').change(function () {
+            $('#cbIsPaid').val($(this).is(':checked'));
+        });
 
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới vật tư');
@@ -245,26 +259,20 @@ var homeController = {
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
-                        var sample = "";
-                        $.each(item.SampleGettingDtos, function (e, etem) {
-                            sample = sample + etem.SampleName + ": " + etem.StartTime + " ";
-                        });
                         html += Mustache.render(template, {
                             AppCode: item.AppointmentCode,
                             FullName: item.PatientName,
                             Phone: item.Phone,
                             Address: item.Address,
-                            SampleName: sample /*+ item.SampleGettingDtos.StartTime +"/n"*/,
-                            //StartTime: item.Unit,
-                            //Note: item.Note,
-
+                            StartTime: item.StartTime,
+                            SampleGettingId: item.SampleGettingId
                         });
 
                     });
                     console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadDataBySample();
+                        //homeController.loadDataBySample();
                     }, changePageSize);
                     homeController.registerEvent();
                 }

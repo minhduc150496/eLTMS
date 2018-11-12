@@ -54,6 +54,7 @@
     <Compile Include="Models\dto\AppointmentAddDto.cs" />
     <Compile Include="Models\dto\AppointmentGetAllDto.cs" />
     <Compile Include="Models\dto\AppointmentGetByPhoneDto.cs" />
+    <Compile Include="Models\dto\AppointmentGetBySampleDto.cs" />
     <Compile Include="Models\dto\AppointmentGetResultDto.cs" />
     <Compile Include="Models\dto\AppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentUpdateDto.cs" />

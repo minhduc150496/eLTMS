@@ -47,6 +47,49 @@ namespace eLTMS.DataAccess.Models
 
 
 
+    // Table
+    [Table("Table", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class Table
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"TableID", Order = 1, TypeName = "int")]
+        [Index(@"PK_Table", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Table ID")]
+        public int TableId { get; set; } // TableID (Primary key)
+
+        [Column(@"SampleGroupID", Order = 2, TypeName = "int")]
+        [Display(Name = "Sample group ID")]
+        public int? SampleGroupId { get; set; } // SampleGroupID
+
+        [Column(@"TableName", Order = 3, TypeName = "nchar")]
+        [MaxLength(10)]
+        [StringLength(10)]
+        [Display(Name = "Table name")]
+        public string TableName { get; set; } // TableName (length: 10)
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child SampleGettings where [SampleGetting].[TableID] point to this entity (FK_SampleGetting_Table)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<SampleGetting> SampleGettings { get; set; } // SampleGetting.FK_SampleGetting_Table
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent SampleGroup pointed by [Table].([SampleGroupId]) (FK_Table_SampleGroup2)
+        /// </summary>
+        [ForeignKey("SampleGroupId")] public virtual SampleGroup SampleGroup { get; set; } // FK_Table_SampleGroup2
+
+        public Table()
+        {
+            SampleGettings = new System.Collections.Generic.List<SampleGetting>();
+        }
+    }
+
     // database_firewall_rules
     [Table("database_firewall_rules", Schema = "sys")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -224,25 +267,19 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Finish time")]
         public int? FinishTime { get; set; } // FinishTime
 
-        [Column(@"Date", Order = 3, TypeName = "date")]
-        [Display(Name = "Date")]
-        public System.DateTime? Date { get; set; } // Date
-
-        [Column(@"Quantity", Order = 4, TypeName = "int")]
-        [Display(Name = "Quantity")]
-        public int? Quantity { get; set; } // Quantity
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"SlotID", Order = 5, TypeName = "int")]
+        [Column(@"SlotID", Order = 3, TypeName = "int")]
         [Index(@"PK__Slot__0A124A4F1ED30403", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Slot ID")]
         public int SlotId { get; set; } // SlotID (Primary key)
 
-        [Column(@"SampleGroupID", Order = 6, TypeName = "int")]
-        [Display(Name = "Sample group ID")]
-        public int? SampleGroupId { get; set; } // SampleGroupID
+        [Column(@"SlotName", Order = 4, TypeName = "nchar")]
+        [MaxLength(10)]
+        [StringLength(10)]
+        [Display(Name = "Slot name")]
+        public string SlotName { get; set; } // SlotName (length: 10)
 
         // Reverse navigation
 
@@ -250,13 +287,6 @@ namespace eLTMS.DataAccess.Models
         /// Child SampleGettings where [SampleGetting].[SlotID] point to this entity (FK_SampleGetting_Slot)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<SampleGetting> SampleGettings { get; set; } // SampleGetting.FK_SampleGetting_Slot
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent SampleGroup pointed by [Slot].([SampleGroupId]) (FK_Slot_SampleGroup)
-        /// </summary>
-        [ForeignKey("SampleGroupId")] public virtual SampleGroup SampleGroup { get; set; } // FK_Slot_SampleGroup
 
         public Slot()
         {
@@ -310,13 +340,13 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Sample> Samples { get; set; } // Sample.FK_Sample_SampleGroup
         /// <summary>
-        /// Child Slots where [Slot].[SampleGroupID] point to this entity (FK_Slot_SampleGroup)
+        /// Child Tables where [Table].[SampleGroupID] point to this entity (FK_Table_SampleGroup2)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Slot> Slots { get; set; } // Slot.FK_Slot_SampleGroup
+        public virtual System.Collections.Generic.ICollection<Table> Tables { get; set; } // Table.FK_Table_SampleGroup2
 
         public SampleGroup()
         {
-            Slots = new System.Collections.Generic.List<Slot>();
+            Tables = new System.Collections.Generic.List<Table>();
             Samples = new System.Collections.Generic.List<Sample>();
         }
     }
@@ -334,43 +364,39 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample ID")]
         public int? SampleId { get; set; } // SampleID
 
-        [Column(@"StartTime", Order = 3, TypeName = "time")]
-        [Display(Name = "Start time")]
-        public System.TimeSpan? StartTime { get; set; } // StartTime
-
-        [Column(@"FinishTime", Order = 4, TypeName = "time")]
-        [Display(Name = "Finish time")]
-        public System.TimeSpan? FinishTime { get; set; } // FinishTime
-
-        [Column(@"Status", Order = 5, TypeName = "nvarchar")]
+        [Column(@"Status", Order = 3, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Status")]
         public string Status { get; set; } // Status (length: 20)
 
-        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"GettingDate", Order = 7, TypeName = "date")]
-        [Display(Name = "Getting date")]
-        public System.DateTime? GettingDate { get; set; } // GettingDate
-
-        [Column(@"SampleGettingCode", Order = 8, TypeName = "nvarchar")]
+        [Column(@"SampleGettingCode", Order = 5, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Sample getting code")]
         public string SampleGettingCode { get; set; } // SampleGettingCode (length: 20)
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"SampleGettingID", Order = 9, TypeName = "int")]
+        [Column(@"SampleGettingID", Order = 6, TypeName = "int")]
         [Index(@"PK__SampleGe__366AD1F732C6FE55", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Sample getting ID")]
         public int SampleGettingId { get; set; } // SampleGettingID (Primary key)
 
-        [Column(@"SlotID", Order = 10, TypeName = "int")]
+        [Column(@"IsPaid", Order = 7, TypeName = "bit")]
+        [Display(Name = "Is paid")]
+        public bool? IsPaid { get; set; } // IsPaid
+
+        [Column(@"TableID", Order = 8, TypeName = "int")]
+        [Display(Name = "Table ID")]
+        public int? TableId { get; set; } // TableID
+
+        [Column(@"SlotID", Order = 9, TypeName = "int")]
         [Display(Name = "Slot ID")]
         public int? SlotId { get; set; } // SlotID
 
@@ -397,6 +423,11 @@ namespace eLTMS.DataAccess.Models
         /// Parent Slot pointed by [SampleGetting].([SlotId]) (FK_SampleGetting_Slot)
         /// </summary>
         [ForeignKey("SlotId")] public virtual Slot Slot { get; set; } // FK_SampleGetting_Slot
+
+        /// <summary>
+        /// Parent Table pointed by [SampleGetting].([TableId]) (FK_SampleGetting_Table)
+        /// </summary>
+        [ForeignKey("TableId")] public virtual Table Table { get; set; } // FK_SampleGetting_Table
 
         public SampleGetting()
         {
@@ -1363,6 +1394,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is paid")]
         public bool? IsPaid { get; set; } // IsPaid
 
+        [Column(@"Date", Order = 14, TypeName = "date")]
+        [Display(Name = "Date")]
+        public System.DateTime? Date { get; set; } // Date
+
         // Reverse navigation
 
         /// <summary>
@@ -1505,6 +1540,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsPaid).IsOptional();
+            Property(x => x.Date).IsOptional();
 
         }
     }
@@ -1826,12 +1862,11 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.AppointmentId).IsOptional();
             Property(x => x.SampleId).IsOptional();
-            Property(x => x.StartTime).IsOptional();
-            Property(x => x.FinishTime).IsOptional();
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
-            Property(x => x.GettingDate).IsOptional();
             Property(x => x.SampleGettingCode).IsOptional();
+            Property(x => x.IsPaid).IsOptional();
+            Property(x => x.TableId).IsOptional();
             Property(x => x.SlotId).IsOptional();
 
         }
@@ -1870,10 +1905,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.StartTime).IsOptional();
             Property(x => x.FinishTime).IsOptional();
-            Property(x => x.Date).IsOptional();
-            Property(x => x.Quantity).IsOptional();
-            Property(x => x.SampleGroupId).IsOptional();
-
+            Property(x => x.SlotName).IsOptional().IsFixedLength();
         }
     }
 
@@ -1931,6 +1963,23 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // Table
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class TableConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Table>
+    {
+        public TableConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public TableConfiguration(string schema)
+        {
+            Property(x => x.SampleGroupId).IsOptional();
+            Property(x => x.TableName).IsOptional().IsFixedLength();
+
+        }
+    }
+
     #endregion
 
     #region Stored procedure return models
@@ -1940,10 +1989,8 @@ namespace eLTMS.DataAccess.Models
     {
         public System.Int32? StartTime { get; set; }
         public System.Int32? FinishTime { get; set; }
-        public System.DateTime? Date { get; set; }
-        public System.Int32? Quantity { get; set; }
         public System.Int32 SlotID { get; set; }
-        public System.Int32? SampleGroupID { get; set; }
+        public System.String SlotName { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
