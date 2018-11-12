@@ -68,7 +68,7 @@ namespace eLTMS.Web.Controllers
             });
         }
         [HttpPost]
-        public JsonResult Ispaid(int sampleGettingId, int page = 1, int pageSize = 20)
+        public JsonResult IsPaid(int sampleGettingId)
         {
             var result = _receptionistService.ChangeIsPaid(sampleGettingId);
             return Json(new

@@ -29,13 +29,13 @@ namespace eLTMS.Web.Api
             object loginResult = null;
             if (account != null)
             {
-                var patient = account.Patients.FirstOrDefault();
+                //var patient = account.Patients.FirstOrDefault();
                 loginResult = new
                 {
                     Success = true,
-                    PatientId = patient.PatientId,
+                    //PatientId = patient.PatientId,
                     PhoneNumber = phoneNumber,
-                    FullName = patient.FullName
+                    FullName = account.FullName,
                 };
             }
             else

@@ -281,12 +281,23 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Slot name")]
         public string SlotName { get; set; } // SlotName (length: 10)
 
+        [Column(@"SampleGroupId", Order = 5, TypeName = "int")]
+        [Display(Name = "Sample group ID")]
+        public int? SampleGroupId { get; set; } // SampleGroupId
+
         // Reverse navigation
 
         /// <summary>
         /// Child SampleGettings where [SampleGetting].[SlotID] point to this entity (FK_SampleGetting_Slot)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<SampleGetting> SampleGettings { get; set; } // SampleGetting.FK_SampleGetting_Slot
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent SampleGroup pointed by [Slot].([SampleGroupId]) (FK_Slot_SampleGroup)
+        /// </summary>
+        [ForeignKey("SampleGroupId")] public virtual SampleGroup SampleGroup { get; set; } // FK_Slot_SampleGroup
 
         public Slot()
         {
@@ -340,6 +351,10 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Sample> Samples { get; set; } // Sample.FK_Sample_SampleGroup
         /// <summary>
+        /// Child Slots where [Slot].[SampleGroupId] point to this entity (FK_Slot_SampleGroup)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Slot> Slots { get; set; } // Slot.FK_Slot_SampleGroup
+        /// <summary>
         /// Child Tables where [Table].[SampleGroupID] point to this entity (FK_Table_SampleGroup2)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Table> Tables { get; set; } // Table.FK_Table_SampleGroup2
@@ -347,6 +362,7 @@ namespace eLTMS.DataAccess.Models
         public SampleGroup()
         {
             Tables = new System.Collections.Generic.List<Table>();
+            Slots = new System.Collections.Generic.List<Slot>();
             Samples = new System.Collections.Generic.List<Sample>();
         }
     }
@@ -495,6 +511,46 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // PatientAccount
+    [Table("PatientAccount", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class PatientAccount
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column(@"PatientAccountID", Order = 1, TypeName = "int")]
+        [Index(@"PK__PatientA__048CB9917D834ECE", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Patient account ID")]
+        public int PatientAccountId { get; set; } // PatientAccountID (Primary key)
+
+        [Column(@"AccountID", Order = 2, TypeName = "int")]
+        [Required]
+        [Display(Name = "Account ID")]
+        public int AccountId { get; set; } // AccountID
+
+        [Column(@"PatientID", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Patient ID")]
+        public int PatientId { get; set; } // PatientID
+
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Account pointed by [PatientAccount].([AccountId]) (FK_PatientAccount_Account)
+        /// </summary>
+        [ForeignKey("AccountId"), Required] public virtual Account Account { get; set; } // FK_PatientAccount_Account
+
+        /// <summary>
+        /// Parent Patient pointed by [PatientAccount].([PatientId]) (FK_PatientAccount_Patient)
+        /// </summary>
+        [ForeignKey("PatientId"), Required] public virtual Patient Patient { get; set; } // FK_PatientAccount_Patient
+    }
+
     // Patient
     [Table("Patient", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -561,6 +617,18 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is online")]
         public bool? IsOnline { get; set; } // IsOnline
 
+        [Column(@"AvatarURL", Order = 12, TypeName = "nvarchar")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Avatar url")]
+        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
+
+        [Column(@"IdentityCardNumber", Order = 13, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Identity card number")]
+        public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
+
         // Reverse navigation
 
         /// <summary>
@@ -571,18 +639,16 @@ namespace eLTMS.DataAccess.Models
         /// Child Feedbacks where [Feedback].[PatientID] point to this entity (FK__Feedback__Patien__6B24EA82)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Feedback> Feedbacks { get; set; } // Feedback.FK__Feedback__Patien__6B24EA82
-
-        // Foreign keys
-
         /// <summary>
-        /// Parent Account pointed by [Patient].([AccountId]) (FK_Patient_Account)
+        /// Child PatientAccounts where [PatientAccount].[PatientID] point to this entity (FK_PatientAccount_Patient)
         /// </summary>
-        [ForeignKey("AccountId")] public virtual Account Account { get; set; } // FK_Patient_Account
+        public virtual System.Collections.Generic.ICollection<PatientAccount> PatientAccounts { get; set; } // PatientAccount.FK_PatientAccount_Patient
 
         public Patient()
         {
             IsDeleted = false;
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Appointments = new System.Collections.Generic.List<Appointment>();
         }
     }
@@ -1474,6 +1540,18 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"IdentityCardNumber", Order = 8, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Identity card number")]
+        public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
+
+        [Column(@"FullName", Order = 9, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "Full name")]
+        public string FullName { get; set; } // FullName (length: 50)
+
         // Reverse navigation
 
         /// <summary>
@@ -1481,14 +1559,14 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Employee> Employees { get; set; } // Employee.FK__Employee__Accoun__68487DD7
         /// <summary>
-        /// Child Patients where [Patient].[AccountID] point to this entity (FK_Patient_Account)
+        /// Child PatientAccounts where [PatientAccount].[AccountID] point to this entity (FK_PatientAccount_Account)
         /// </summary>
-        public virtual System.Collections.Generic.ICollection<Patient> Patients { get; set; } // Patient.FK_Patient_Account
+        public virtual System.Collections.Generic.ICollection<PatientAccount> PatientAccounts { get; set; } // PatientAccount.FK_PatientAccount_Account
 
         public Account()
         {
             IsDeleted = false;
-            Patients = new System.Collections.Generic.List<Patient>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Employees = new System.Collections.Generic.List<Employee>();
         }
     }
@@ -1514,6 +1592,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.AvatarUrl).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.IdentityCardNumber).IsOptional();
+            Property(x => x.FullName).IsOptional();
         }
     }
 
@@ -1826,6 +1906,23 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.CompanyAddress).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
+            Property(x => x.AvatarUrl).IsOptional();
+            Property(x => x.IdentityCardNumber).IsOptional();
+        }
+    }
+
+    // PatientAccount
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class PatientAccountConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<PatientAccount>
+    {
+        public PatientAccountConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public PatientAccountConfiguration(string schema)
+        {
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1906,6 +2003,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.StartTime).IsOptional();
             Property(x => x.FinishTime).IsOptional();
             Property(x => x.SlotName).IsOptional().IsFixedLength();
+            Property(x => x.SampleGroupId).IsOptional();
+
         }
     }
 
@@ -1991,6 +2090,7 @@ namespace eLTMS.DataAccess.Models
         public System.Int32? FinishTime { get; set; }
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
+        public System.Int32? SampleGroupId { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]

@@ -8,7 +8,10 @@ var homeController = {
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
-    test: function (SampleGettingId) {
+    checkIsPaid: function (SampleGettingId) {
+        homeController.ChangeIsPaid(SampleGettingId);
+    },
+    loadIsPaid: function (IsPaid, SampleGettingId) {
         var a = 1;
     },
     registerEvent: function () {
@@ -21,6 +24,8 @@ var homeController = {
             var name = $('#txtName').val();
             var address = $('#txtAddress').val();
             var phone = $('#txtPhone').val();
+            var dateOfBirth = $('#txtDateOfBirth').val();
+            var cmnd = $('#txtCMND').val();
             var mau = false;
             var nuocTieu = false;
             var teBaoHoc = false;
@@ -59,6 +64,8 @@ var homeController = {
                 Name: name,
                 Phone: phone,
                 Address: address,
+                DateOfBirth: dateOfBirth,
+                IdentityCardNumber: cmnd,
                 Mau: mau,
                 NuocTieu: nuocTieu,
                 TeBaoHoc: teBaoHoc,
@@ -99,7 +106,7 @@ var homeController = {
 
 
         $('#btnSearch').off('click').on('click', function () {
-            homeController.loadData(true);
+            homeController.loadDataBySample(true);
         });
 
         $('#btnReset').off('click').on('click', function () {
@@ -265,7 +272,8 @@ var homeController = {
                             Phone: item.Phone,
                             Address: item.Address,
                             StartTime: item.StartTime,
-                            SampleGettingId: item.SampleGettingId
+                            SampleGettingId: item.SampleGettingId,
+                            IsPaid: item.IsPaid
                         });
 
                     });
@@ -276,6 +284,20 @@ var homeController = {
                     }, changePageSize);
                     homeController.registerEvent();
                 }
+            }
+        })
+    },
+    ChangeIsPaid: function (SampleGettingId) {
+        $.ajax({
+            url: '/receptionist/IsPaid',
+            type: 'POST',
+            dataType: 'json',
+            data: { sampleGettingId: SampleGettingId },
+            success: function (response) {
+                if (response.success) {
+                    homeController.registerEvent();
+                }
+                homeController.loadDataBySample();
             }
         })
     }

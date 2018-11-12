@@ -85,22 +85,25 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 //tao account
-                accRepo.Create(new Account
-                {
-                    PhoneNumber = data.Phone,
+                //accRepo.Create(new Account
+                //{
+                //    PhoneNumber = data.Phone,
 
-                    //passWord default: qwe123
-                    Password = "qwe123",
-                    IsDeleted = false
-                });
-                UnitOfWork.SaveChanges();
+                //    //passWord default: qwe123
+                //    Password = "qwe123",
+                //    IsDeleted = false
+                //});
+                //UnitOfWork.SaveChanges();
+                
                 //tao benh nhan
-                var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
+                //var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
                 paRepo.Create(new Patient
                 {
-                    AccountId = accId,
+                    //AccountId = accId,
                     IsOnline = false,
-                    HomeAddress= data.Address,
+                    IdentityCardNumber = data.IdentityCardNumber,
+                    DateOfBirth = data.DateOfBirth,
+                    HomeAddress = data.Address,
                     FullName = data.Name,
                     PhoneNumber = data.Phone,
                     IsDeleted = false
