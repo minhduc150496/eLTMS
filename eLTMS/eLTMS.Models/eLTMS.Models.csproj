@@ -81,6 +81,10 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LoginResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Models\Utils\DateTimeUtils.cs" />
+>>>>>>> 09f7918a517f62e21112bb76b6b2967f1cb8c0af
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
