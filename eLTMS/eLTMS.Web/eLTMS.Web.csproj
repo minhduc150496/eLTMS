@@ -7721,6 +7721,7 @@
     <Content Include="Views\Feedback\Feedbacks.cshtml" />
     <Content Include="Views\Receptionist\Index.cshtml" />
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
+    <Content Include="Views\LabTest\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
