@@ -2070,12 +2070,11 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
-<<<<<<< HEAD
-=======
+
         public System.DateTime? Date { get; set; }
         public System.Int32? Quantity { get; set; }
         public System.Int32? SampleGroupID { get; set; }
->>>>>>> 68ac1c34f8d5d482adcc0208f7790ac42f92d8d1
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
