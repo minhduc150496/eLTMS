@@ -53,7 +53,9 @@
     <Compile Include="Services\FeedbackService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\ExportPaperService .cs" />
+    <Compile Include="Services\ImportPaperDetailService.cs" />
     <Compile Include="Services\ImportPaperService.cs" />
+    <Compile Include="Services\LabTestingIndexService.cs" />
     <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\AccountService.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Services\ReceptionistService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
+    <Compile Include="Services\SlotService.cs" />
     <Compile Include="Services\SupplyService.cs" />
   </ItemGroup>
   <ItemGroup>

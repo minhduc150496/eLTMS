@@ -92,12 +92,12 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
-            //if (typeof(TRepository) == typeof(ILabTestingRepository))
-            //{
-            //    dynamic repo = new LabTestingRepository();
-            //    repo.UnitOfWork = unitOfWork;
-            //    return (TRepository)repo;
-            //}
+            if (typeof(TRepository) == typeof(ILabTestingIndexRepository))
+            {
+                dynamic repo = new LabTestingIndexRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
             if (typeof(TRepository) == typeof(IImportPaperDetailRepository))
             {
@@ -142,6 +142,19 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
+            if (typeof(TRepository) == typeof(IFeedbackRepository))
+            {
+                dynamic repo = new FeedbackRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
+            if (typeof(TRepository) == typeof(ILabTestingRepository))
+            {
+                dynamic repo = new LabTestingRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
             TRepository repository = null;
             TryGetRepositoryPartial<TRepository>(unitOfWork, ref repository);

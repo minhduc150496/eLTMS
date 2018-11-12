@@ -17,11 +17,16 @@ namespace eLTMS.Web.Controllers
         private readonly ISampleService _sampleService;
         private readonly ISampleGroupService _sampleGroupService;
         private readonly ILabTestService _labTestService;
-
+        private readonly ILabTestingService _labTestingService;
+        private readonly ILabTestingIndexService _labTestingIndexService;
+        private readonly IAppointmentService _appointmentService;
         //private readonly IImportPaperService _importPaperService;
-        public LabTestController(ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        public LabTestController(IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
+            this._appointmentService = appointmentService;
+            this._labTestingService = labTestingService;
+            this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
             this._sampleGroupService = sampleGroupService;
         }
@@ -31,6 +36,14 @@ namespace eLTMS.Web.Controllers
         }
 
         public ActionResult LabTests()
+        {
+            return View();
+        }
+        public ActionResult LabTesting()
+        {
+            return View();
+        }
+        public ActionResult LabTestingResult()
         {
             return View();
         }
@@ -63,6 +76,67 @@ namespace eLTMS.Web.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetAllLabTesting(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTesting();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingHaveAppointmentCode(string code = "", int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingIndexHaveLabtestingId(int id)
+        {
+            var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(id);
+            var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+            return Json(new
+            {
+                data = result,
+                success = true
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingResult(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingResult();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestings()
+        {
+            var queryResult = _labTestingService.GetAllLabTesting();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult GetAllLabTests(string code = "", int page = 1, int pageSize = 20)
         {
             var queryResult = _labTestService.GetAllLabTests(code);
@@ -75,10 +149,39 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult UpdateLabTest(LabTest labTest)
         {
             var result = _labTestService.Update(labTest);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateLabTesting(List<LabTesting> labTesting)
+        {
+            var result = _labTestingService.Update(labTesting);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult UpdateStatus(List<LabTesting> labTesting)
+        {
+            var result = _labTestingService.UpdateStatus(labTesting);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult UpdateResult(string code,string con)
+        {
+            var result = _appointmentService.Update(code,con);
             return Json(new
             {
                 sucess = result
@@ -94,6 +197,16 @@ namespace eLTMS.Web.Controllers
             });
         }
         [HttpPost]
+        public JsonResult AddLabTestingIndex(List<LabTestingIndex> labTestingIndex)
+        {
+            var result = _labTestingIndexService.AddLabTestingIndex(labTestingIndex);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
+        [HttpPost]
         public JsonResult AddSample(Sample sample)
         {
             var result = _sampleService.AddSample(sample);
@@ -102,6 +215,7 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+
         [HttpPost]
         public JsonResult AddSampleGroup(SampleGroup sample)
         {
@@ -111,6 +225,7 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+
         [HttpGet]
         public JsonResult LabTestDetail(int id)
         {
@@ -122,6 +237,7 @@ namespace eLTMS.Web.Controllers
                 data = labTest
             }, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult DeleteLabTest(int id)
         {
@@ -131,6 +247,7 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
         [HttpPost]
         public JsonResult DeleteSample(int id)
         {
@@ -140,6 +257,7 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
         [HttpPost]
         public JsonResult DeleteSampleGroup(int id)
         {

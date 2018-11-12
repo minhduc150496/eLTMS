@@ -32,7 +32,9 @@ var Utils = {
 
 var Model = {
     sampleDtos: {},
-    appointmentDto: {}
+    slotDtos: {},
+    appointmentDto: {},
+    suggestResult: null
 }
 
 var Controller = {
@@ -55,7 +57,7 @@ var Controller = {
             // VALIDATION:
             var $checks = $("#step-1-form input[type='checkbox']:checked");
             //console.log($checks);
-            var noChecked = $checks.length === 0;
+            var noChecked = $checks.length == 0;
             if (noChecked) { // user did not check any checkbox, not allow to go to step 2
                 $("html, body").animate({
                     scrollTop: $("#step-1").offset().top,
@@ -64,7 +66,6 @@ var Controller = {
                 return;
             } // end VALIDATION
             // GO TO STEP 2:
-            Controller.renderStep2Html(Model.sampleDtos);
             var duration = 200;
             $("#step-1").fadeOut(duration, function () {
                 $("#step-2").fadeIn(duration);
@@ -78,16 +79,17 @@ var Controller = {
             });
         });
 
+        // fixing...
         $("#btn-submit").click(function () {
             // VALIDATION: required fill all fields
             var hasEmptyField = false;
             $("#step-2 [type='date']").each(function (index, element) {
-                if ($(this).val() === '') {
+                if ($(this).val() == '') {
                     hasEmptyField = true;
                 }
             });
             $("#step-2 select").each(function (index, element) {
-                if ($(this).val() === '') {
+                if ($(this).val() == '') {
                     hasEmptyField = true;
                 }
             });
@@ -105,7 +107,7 @@ var Controller = {
             };
             // create SampleGettingDtos and assign to Model
             var el_Samples = $("#step-2-form *[data-sampleid]");
-            if (el_Samples !== null) {
+            if (el_Samples != null) {
                 for (var i = 0; i < el_Samples.length; i++) {
                     // create new SampleGetingDto
                     var el_Sample = el_Samples[i];
@@ -131,7 +133,7 @@ var Controller = {
 
                     var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
                     //console.log(el_LabTests);
-                    if (el_LabTests !== null) {
+                    if (el_LabTests != null) {
                         for (var j = 0; j < el_LabTests.length; j++) {
                             var labTestId = $(el_LabTests[j]).data("labtestid");
                             //console.log(labTestId);
@@ -146,91 +148,178 @@ var Controller = {
             Controller.sendToServer(jsonData);
         }); // end event handler
 
+        newAp2 = function () {
+            $("#tr-2").hide();
+            $("#no-3").html("2");
+            $("#ap-2").fadeIn();
+        }
+
     }, // end Action
-    renderStep1Html: function (sampleDtos) {
-        // render step 1 - choosing Samples & LabTests
-        var sampleHtml = "";
-        if (sampleDtos !== null) {
-            for (var i = 0; i < sampleDtos.length; i++) {
-                var sampleDto = sampleDtos[i];
-                // append Sample Title: "1. Mau"
-                sampleHtml += "<div class='sample-box'>";
-                sampleHtml += "<h3>" + (i + 1) + ". " + sampleDto.SampleName + "</h3>\n";
-                sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" class="row">\n';
-                if (sampleDto.LabTests !== null) {
-                    for (var j = 0; j < sampleDto.LabTests.length; j++) {
-                        // append Lab Tests in Sample
-                        var labTest = sampleDto.LabTests[j];
-                        sampleHtml += '<div class="col-md-3">' +
-                            '<div class="pretty p-icon p-smooth p-bigger">' +
-                            '<input type = "checkbox" data-labtestid="' + labTest.LabTestId + '" />' +
-                            '<div class="state p-danger">' +
-                            '<i class="icon fa fa-check"></i>' +
-                            '<label>' + labTest.LabTestName + '</label>' +
-                            '</div>' +
-                            '</div >' +
-                            '</div>\n';
+    renderStep1Html: function () {
+        // render step 1:
+        var data = { Samples: Model.sampleDtos };
+        var template = $("#step-1-template").html();
+        var htmlStep1 = Mustache.render(template, data);
+        $("#step-1-form").html(htmlStep1);
+
+        $("#step-1-form [type='checkbox']").change(function () {
+            var sampleIndex = $(this).closest("[data-sample-index]").data("sample-index");
+            var labTestIndex = $(this).data("labtest-index");
+            var checked = $(this).val() == "on";
+
+            Model.sampleDtos[sampleIndex].LabTests[labTestIndex].IsSelected = checked;
+            Model.sampleDtos[sampleIndex].nChecked += (checked ? 1 : -1);
+            
+        });
+
+        // step 2a
+        Controller.renderStep2Html();
+
+        // get avai. slots
+        return;
+        $.ajax({
+            method: "GET",
+            contentType: "application/json",
+            url: "/api/slot/get-available-slots",
+            dataType: "JSON",
+            async: true,
+        }).success(function (data) {
+            Model.slotDtos = data;
+            console.log(data);
+        });
+
+    }, // end Action
+    renderStep2Html: function () {
+        Model.comingDate = '2018-11-06';
+        var data = {
+            Date: '2018-11-06',
+            Hours: [],
+            Mins: ['00', '15', '30', '45']
+        };
+        for (var i = 4; i <= 17; i++) {
+            data.Hours.push(i);
+        }
+        var template = $("#step-2a-template").html();
+        var html = Mustache.render(template, data);
+        $("#step-2a-form").html(html);
+
+        $("#coming-date").off("change").change(function () {
+            Controller.suggestSlots();
+        });
+        $("#coming-hour").off("change").change(function () {
+            Controller.suggestSlots();
+        });
+        $("#coming-min").off("change").change(function () {
+            Controller.suggestSlots();
+        });
+
+
+    }, // end Action
+    suggestSlots: function () {
+
+        Model.comingDate = $("#coming-date").val();
+        var hour = parseInt($("#coming-hour").val());
+        var min = parseInt($("#coming-min").val());
+        console.log(hour, min);
+        if (hour != null && min != null) {
+            Model.comingTime = hour * 60 * 60 + min * 60;
+            console.log(Model.sampleDtos);
+            var result = AppointmentSuggestor.CalcTheBestTour(Model.slotDtos, Model.comingDate, Model.comingTime, Model.sampleDtos);
+            Model.suggestResult = result;
+            console.log(result);
+            Controller.renderStep2bHtml();
+        }
+
+    }, // end Action
+    renderStep2bHtml: function () {
+        var data = {
+            Samples: []
+        };
+        // FOR-EACH sampleDtos
+        $(Model.sampleDtos).each(function (index, element) {
+            var sample = {
+                SampleId: element.SampleId,
+                SampleGroupId: element.SampleGroupId,
+                SampleName: element.SampleName,
+                IsDisplay: element.nChecked > 0,
+                Slots: []
+            };
+            // get suggest slot
+            var selectedSlotId = -1;
+            if (Model.suggestResult != null) {
+                $(Model.suggestResult).each(function (index, element) {
+                    if (element.SampleId == sample.SampleId) {
+                        selectedSlotId = element.SlotId;
+                        //console.log(sample.SampleId, selectedSlotId);
                     }
-                }
-                sampleHtml += '</div>\n';
-                sampleHtml += '</div>\n';
+                });
             }
-        }
-        $("#step-1-form").append(sampleHtml);
-        // end rendering step 1
+            // FOR-EACH slotDtos
+            for (var j = 0; j < Model.slotDtos.length; j++) {
+                var element = Model.slotDtos[j];
+                if (element.Date == Model.comingDate && element.SampleGroupId == sample.SampleGroupId && element.StartTime > Model.comingTime) {
+                    var slot = {
+                        SlotId: element.SlotId,
+                        StartTime: element.StartTime,
+                        FmStartTime: Utils.formatTimeShort(element.StartTime),
+                        FmFinishTime: Utils.formatTimeShort(element.FinishTime),
+                        Date: element.Date,
+                        IsSelected: false
+                    };
+                    if (slot.SlotId == selectedSlotId) {
+                        //console.log(slot.SlotId);
+                        slot.IsSelected = true
+                    };
+                    sample.Slots.push(slot);
+                }
+            }
+            // sort Slots in dropdown
+            sample.Slots.sort(function (a, b) {
+                return a.StartTime - b.StartTime;
+            });
+            data.Samples.push(sample);
+        });
+        // sort Samples
+        data.Samples.sort(function (sample1, sample2) {
+            var startTime1;
+            for (var i = 0; i < sample1.Slots.length; i++) {
+                if (sample1.Slots[i].IsSelected) {
+                    startTime1 = sample1.Slots[i].StartTime;
+                }
+            }
+            var startTime2;
+            for (var i = 0; i < sample2.Slots.length; i++) {
+                if (sample2.Slots[i].IsSelected) {
+                    startTime2 = sample1.Slots[i].StartTime;
+                }
+            }
+            return startTime1 - startTime2;
+        });
+
+        var template = $("#step-2b-template").html();
+        var html = Mustache.render(template, data);
+        $("#step-2b-form").html(html);
+
+        $("#step-2b-form").off("change").change(function () {
+
+        });
+
     }, // end Action
-    renderStep2Html: function (sampleDtos) {
-        $("#step-2-form").html("");
-        // render step 2 - choosing Samples & LabTests
-        var sampleHtml = "";
-        if (sampleDtos !== null) {
-            for (var i = 0; i < sampleDtos.length; i++) {
-                var sampleDto = sampleDtos[i];
-                var sampleId = sampleDto.SampleId;
-                var checkedLabTests = $("*[data-sampleid='" + sampleId + "'] input:checked");
-                if (checkedLabTests === null || checkedLabTests.length === 0) {
-                    continue;
-                }
-                // append Sample Title: "1. Mau"
-                sampleHtml += "<h3>" + sampleDto.SampleName + "</h3>\n";
-                sampleHtml += '<div data-sampleid="' + sampleDto.SampleId + '" ' +
-                    'data-sample-duration="' + sampleDto.SampleDuration + '" ' +
-                    'data-open-time="' + sampleDto.OpenTime + '" ' +
-                    'data-close-time="' + sampleDto.CloseTime + '">\n';
-                var today = new Date();
-                var year = today.getFullYear();
-                var month = today.getMonth();
-                if (month < 10) {
-                    month = "0" + month;
-                }
-                var date = today.getDate();
-                if (date < 10) {
-                    date = "0" + date;
-                }
-                var sToday = "" + year + "-" + month + "-" + date;
-                sampleHtml += '<input type="date" value="' + sToday + '" />\n';
-                sampleHtml += '<select style="overflow-y: scroll">\n';
-                sampleHtml += '<option value="">-- Vui lòng chọn một ca --</option>';
-                var sampleDuration = sampleDto.SampleDuration;
-                for (var time = sampleDto.OpenTime; time + sampleDuration <= sampleDto.CloseTime; time += 2 * sampleDuration) {
-                    // print slots for sample
-                    var startTime = Utils.formatTimeShort(time);
-                    var finishTime = Utils.formatTimeShort(time + sampleDuration);
-                    sampleHtml += '<option value="' + time + '">' +
-                        startTime + ' - ' + finishTime +
-                        '</option>\n';
-                }
-                sampleHtml += '</select>\n';
-                sampleHtml += '</div>\n';
-            }
-        }
-        $("#step-2-form").append(sampleHtml);
-        // end rendering step 2
-    },
     renderLabTestList: function () {
         // get all sampleDtos and LabTests
         var sSampleDtos = localStorage.getItem(CONFIG.SAMPLE_DTOS_KEY);
-        if (sSampleDtos === null) {
+        var setIndex = function () {
+            for (var i = 0; i < Model.sampleDtos.length; i++) {
+                var sample = Model.sampleDtos[i];
+                sample.Index = i;
+                sample.nChecked = 0;
+                for (var j = 0; j < sample.LabTests.length; j++) {
+                    var labTest = sample.LabTests[j];
+                    labTest.Index = j;
+                }
+            }
+        }
+        if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
@@ -239,14 +328,16 @@ var Controller = {
                 sSampleDtos = JSON.stringify(data);
                 // save to local storage
                 localStorage.setItem(CONFIG.SAMPLE_DTOS_KEY, sSampleDtos);
+                setIndex();
                 // render UI
-                Controller.renderStep1Html(Model.sampleDtos);
+                Controller.renderStep1Html();
             }) // end AJAX settings
         } else {
             // get data
             Model.sampleDtos = JSON.parse(sSampleDtos);
+            setIndex();
             // render UI
-            Controller.renderStep1Html(Model.sampleDtos);
+            Controller.renderStep1Html();
         }
     }, // end Action
     sendToServer: function (jsonData) {
@@ -275,7 +366,7 @@ var Controller = {
             // 
             var checkResult = function (data) {
                 $("#processing-modal").modal('hide');
-                if (data.Success === true) {
+                if (data.Success == true) {
                     showModalWithMessage($("#success-modal"), data.Message);
                 } else {
                     showModalWithMessage($("#fail-modal"), data.Message);

@@ -14,7 +14,8 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<Patient> GetAllPatients(string phoneNumber);
         bool AddPatient(Patient patient);
-        bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
+        //bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
+        bool Update(Patient patientdto);
         Patient GetPatientById(int id);
         bool Delete(int id);
         // bool UpdatePatient(Patient dto);
@@ -28,7 +29,46 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
+        public List<Patient> GetAllPatients(string phoneNumber)
+        {
+            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var patients = patientRepo.GetAllPatient(phoneNumber);
+            return patients;
+        }
+        public bool Update(Patient patientdto)
+        {
+            var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
 
+            try
+            {
+                var patient = repo.GetSimpleById(patientdto.PatientId);
+                //var account = patient.Account;
+                patient.PatientCode = patientdto.PatientCode;
+                patient.FullName = patientdto.FullName;
+                patient.Gender = patientdto.Gender;
+                patient.PhoneNumber = patientdto.PhoneNumber;
+                patient.HomeAddress = patientdto.HomeAddress;
+                patient.CompanyAddress = patientdto.CompanyAddress;
+                patient.AccountId = patientdto.AccountId;
+                patient.AvatarUrl = patientdto.AvatarUrl;
+                repo.Update(patient);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any())
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public Patient GetPatientById(int id)
+        {
+            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var patients = patientRepo.GetSimpleById(id);
+            return patients;
+        }
         public bool AddPatient(Patient patient)
         {
             var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -41,43 +81,34 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
-        public List<Patient> GetAllPatients(string phoneNumber)
-        {
-            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var patients = patientRepo.GetAllPatient(phoneNumber);
-            return patients;
-        }
-        public Patient GetPatientById(int id)
-        {
-            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var patients = patientRepo.GetSimpleById(id);
-            return patients;
-        }
-        public bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress)
-        {
-            var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
 
-            try
-            {
-                var patient = repo.GetById(id);
-                patient.PatientCode = code;
-                patient.FullName = name;
-                patient.Gender = gender;
-                patient.PhoneNumber = phone;
-                patient.HomeAddress = address;
-                patient.CompanyAddress = companyAddress;
-                repo.Update(patient);
-                var result = UnitOfWork.SaveChanges();
-                if (result.Any())
-                    return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+    
+        //public bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress)
+        //{
+        //    var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
 
-            return true;
-        }
+        //    try
+        //    {
+        //        var patient = repo.GetById(id);
+        //        patient.PatientCode = code;
+        //        patient.FullName = name;
+        //        patient.Gender = gender;
+        //        patient.PhoneNumber = phone;
+        //        patient.HomeAddress = address;
+        //        patient.CompanyAddress = companyAddress;
+        //        repo.Update(patient);
+        //        var result = UnitOfWork.SaveChanges();
+        //        if (result.Any())
+        //            return false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
+      
         // public bool UpdatePatient(Patient dto)
         //{
         //    var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);

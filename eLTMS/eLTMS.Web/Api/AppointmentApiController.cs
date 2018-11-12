@@ -2,7 +2,6 @@
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Models.Models.dto;
-using eLTMS.Models.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +78,7 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage GetOldAppointment(int patientId)
         {
             var app = _appointmentService.GetOldApp(patientId);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app); 
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }

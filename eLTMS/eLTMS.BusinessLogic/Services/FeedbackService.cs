@@ -12,6 +12,9 @@ namespace eLTMS.BusinessLogic.Services
     public interface IFeedbackService
     {
         List<Feedback> GetAllFeed(string dateTime);
+        Feedback getFeedbackId(int id);
+        bool DeleteFeedback(int id);
+        bool Update(Feedback feedbackdto);
     }
     public class FeedbackService: IFeedbackService
     {
@@ -27,6 +30,53 @@ namespace eLTMS.BusinessLogic.Services
             var feedRepo = this.RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
             var feedback = feedRepo.GetAllFeed(dateTime);
             return feedback;
+        }
+        public Feedback getFeedbackId(int id)
+        {
+            var feedbackRepo = this.RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
+            var feedbacks = feedbackRepo.GetSimpleById(id);
+            return feedbacks;
+        }
+        public bool DeleteFeedback(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
+            try
+            {
+                var feedback = repo.GetById(id);
+                feedback.IsDeleted = true;
+                repo.Update(feedback);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public bool Update (Feedback feedbackdto)
+        {
+            var repo = RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
+            try
+            {
+                var feedback = repo.GetSimpleById(feedbackdto.FeedbackId);
+                var employee = feedback.Employee;
+                var patient = feedback.Patient;
+                feedback.FeedbackId = feedbackdto.FeedbackId;
+                employee.FullName = feedbackdto.Employee.FullName;
+                patient.FullName = feedbackdto.Patient.FullName;
+                feedback.Content = feedbackdto.Content;
+                feedback.ReceivedDateTime = feedbackdto.ReceivedDateTime;
+                feedback.Status = feedbackdto.Status;
+                repo.Update(feedback);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

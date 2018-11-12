@@ -3,6 +3,7 @@ using eLTMS.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,17 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<Employee> GetAllEmployee(string fullName)
         {
-            var result = DbSet.AsQueryable()
+            DateTime result;
+            var validateDay = DateTime.TryParseExact(fullName,
+                                   "dd-MM-yyyy",
+                                   CultureInfo.InvariantCulture,
+                                   DateTimeStyles.None,
+                                   out result);
+            var resultRequrest = DbSet.AsQueryable()
                 .Include(x => x.Account)
-                .Where(x => (x.FullName.Contains(fullName)||x.PhoneNumber.Contains(fullName)||x.HomeAddress.Contains(fullName)||x.Account.Role.Contains(fullName)) && x.IsDeleted == false)
+                .Where(x => ((validateDay == true && DbFunctions.TruncateTime(result) == DbFunctions.TruncateTime(x.StartDate.Value)) || (validateDay==true&&DbFunctions.TruncateTime(result)==DbFunctions.TruncateTime(x.DateOfBirth.Value))||x.FullName.Contains(fullName)||x.PhoneNumber.Contains(fullName)||x.HomeAddress.Contains(fullName)||x.Account.Role.Contains(fullName))||x.Account.Email.Contains(fullName) && x.IsDeleted == false)
                 .ToList();
-            return result;
+            return resultRequrest;
         }
         public Employee GetSimpleById(int id)
         {

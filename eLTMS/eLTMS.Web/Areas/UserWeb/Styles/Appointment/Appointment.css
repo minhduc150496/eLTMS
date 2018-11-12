@@ -93,8 +93,11 @@
     height: 29px;
 }
 
+.create_appointment_area option[disabled] {
+    display: none;
+}
+
 .create_appointment_area .step-box-2 {
-    max-width: 430px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -126,28 +129,39 @@
     color: blue;
 }
 
-.current_appointment_area table {
+.appoinment_form_area table {
     margin: 0 auto 80px;
 }
 
-    .current_appointment_area table th {
+    .appoinment_form_area table th {
         text-align: center;
     }
 
-    .current_appointment_area table th,
-    .current_appointment_area table td {
+    .appoinment_form_area table th,
+    .appoinment_form_area table td {
         border: 1px solid lightgray;
     }
 
-    .current_appointment_area table th,
-    .current_appointment_area table td {
+    .appoinment_form_area table th,
+    .appoinment_form_area table td {
         padding: 0 15px;
     }
 
-        .current_appointment_area table td:nth-child(1),
-        .current_appointment_area table td:nth-child(3) {
+        .appoinment_form_area table td:nth-child(1),
+        .appoinment_form_area table td:nth-child(3) {
             text-align: right;
         }
+
+.create_appointment_area table {
+    margin-left: 0;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+    .create_appointment_area table ul {
+        list-style-type: inherit;
+        margin-left: 15px;
+    }
 
 .current_appointment_area .edit_btn,
 .create_appointment_area .next_btn,

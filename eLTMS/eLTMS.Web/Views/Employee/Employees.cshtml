@@ -1,11 +1,9 @@
 ﻿
 @{
-                /**/
-
                 ViewBag.Title = "Employees";
                 Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
-
+@model eLTMS.Models.Models.FileUploadModel
 <section class="content-header">
     <h1>
         Quản lý nhân viên
@@ -63,11 +61,11 @@
                 <h4 class="modal-title" id="lblPopupTitle"></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="/action_page.php">              
+                <form class="form-horizontal" action="/action_page.php">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Mã Account</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
+                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId" readonly="readonly">
                         </div>
                     </div>
                     <input type="hidden" class="form-control" id="txtEmployeeId" name="txtEmployeeId" value="0" readonly>
@@ -82,6 +80,12 @@
                         <label class="control-label col-sm-2" for="email">Tên Nhân Viên</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="txtName" name="txtName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtEmail" name="txtEmail" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
@@ -171,16 +175,17 @@
                             </select>
                         </div>
                     </div>
+                    <input type="file" id="FileUpload1" />
+                    <input type="button" id="btnUpload" value="Upload Files" />
+                    <img src="" id="avatar" width="160px" height="250px" style="display:block; margin-left:auto; margin-right:auto" />
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+                        <div class="text-center">
                             <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+            </div>      
         </div>
 
     </div>
@@ -207,3 +212,45 @@
 
 
 <script src="~/Scripts/customScript/employee.js"></script>
+<script>
+    $('#btnUpload').click(function () {
+
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+
+            var fileUpload = $("#FileUpload1").get(0);
+            var files = fileUpload.files;
+
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            // Adding one more key to FormData object
+
+
+            $.ajax({
+                url: '/FileUpload/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    if(result.success == true){
+                        var url = result.pictureUrl;
+                        $('#avatar').attr('src', url);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    });
+
+</script>

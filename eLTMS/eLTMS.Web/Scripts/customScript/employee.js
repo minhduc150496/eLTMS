@@ -32,7 +32,9 @@ var homeController = {
                 HomeAddress: homeAddress,
                 IsDeleted: isDeleted,
                 Account: {
-                    Role: $('#ddlRole').val()
+                    Role: $('#ddlRole').val(),
+                    AvatarUrl: $('#avatar').attr('src'),
+                    Email: $('#txtEmail').val(),
                 },
                 Status: $('#ddlStatus').val()
             }
@@ -99,7 +101,7 @@ var homeController = {
             homeController.loadData(true);
         });
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
+            $('#lblPopupTitle').text('Cập nhật nhân viên');
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);
@@ -154,7 +156,9 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber);
                     $('#ddlRole').val(data.Role);
                     $('#txtHomeAddress').val(data.HomeAddress);
-                    $('#txtSD').val(data.DateOfStart);           
+                    $('#txtSD').val(data.DateOfStart);
+                    $('#txtEmail').val(data.Email);
+                    $('#avatar').attr('src', data.Avatar);
                 }
                 else {
                     bootbox.alert(response.message);
@@ -179,6 +183,8 @@ var homeController = {
         $('#ddlRole').val('').change();
         $('#txtHomeAddress').val('');
         $('#txtSD').val(''); 
+        $('#txtEmail').val(data.Email);
+        $('#avatar').attr('src', data.Avatar);
     },
     loadData: function (changePageSize) {
         $.ajax({
@@ -197,8 +203,7 @@ var homeController = {
                             EmployeeID: item.EmployeeID,
                             FullName: item.FullName,
                             PhoneNumber: item.PhoneNumber,
-                            Role: item.RoleDisplay,
-                           
+                            Role: item.RoleDisplay,                    
                         });
 
                     });

@@ -30,8 +30,12 @@ var homeController = {
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
                 CompanyAddress: companyAddress,
-                IsDeleted: isDeleted
+                IsDeleted: isDeleted,
+                Account: {
+                    AvatarUrl: $('#avatar').attr('src')
+                }
             }
+            console.log(patient);
             if (patient.PatientId == 0) {
                 $.ajax({
                     url: '/Patient/AddPatient',
@@ -75,19 +79,11 @@ var homeController = {
             }
           
         })
-
-
-
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới bệnh nhân');
             homeController.resetForm();
             $('#myModal').modal('show');
-        });
-
-       
-        $('#btnSearch').off('click').on('click', function () {
-            homeController.loadData(true);
-        });
+        });       
         $('#btnReset').off('click').on('click', function () {
             $('#txtNameS').val('');
             $('#ddlStatusS').val('');
@@ -99,13 +95,14 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deletePatient(id);
             
         });
-
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
     },
     deletePatient: function (id) {
         $.ajax({
@@ -148,7 +145,7 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtCompanyAddress').val(data.CompanyAddress);
-                   
+                    $('#avatar').attr('src', data.Avatar);
                 }
                 else {
                     bootbox.alert(response.message);
@@ -159,9 +156,6 @@ var homeController = {
             }
         });
     },
-    saveData: function () {
-        
-    },
     resetForm: function () {
         $('#txtPatientId').val('0');
         $('#txtCode').val('');
@@ -171,6 +165,7 @@ var homeController = {
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
+        $('#avatar').attr('src', data.Avatar);
     },
     loadData: function (changePageSize) {
         $.ajax({
@@ -190,10 +185,6 @@ var homeController = {
                             FullName: item.FullName,
                             PhoneNumber: item.PhoneNumber,
                             HomeAddress: item.HomeAddress,
-                           // Unit: item.Unit,
-                            //Status: (item.ServiceStatusId === 1) ? "<span class=\"label label-success\">Hoạt động</span>" : "<span class=\"label label-danger\">Tạm ngưng</span>"
-                           // Note: item.Note,
-
                         });
 
                     });

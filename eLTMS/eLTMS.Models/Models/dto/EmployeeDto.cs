@@ -19,5 +19,7 @@ namespace eLTMS.Models.Models.dto
         public string RoleDisplay { get; set; }
         public string DateOfStart { get; set; } // Date Start Of Work
         public bool? IsDeleted { get; set; } // IsDeleted
+        public string Avatar { get; set; } // Avatar URL
+        public string Email { get; set; }// Email
     }
 }

@@ -182,6 +182,7 @@
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
+    <Compile Include="Api\SlotApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
@@ -537,6 +539,7 @@
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\Edit.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentForm.js" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentSuggestor.js" />
     <Content Include="Areas\UserWeb\Styles\Appointment\Appointment.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Index.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Layout.css" />
@@ -7714,13 +7717,19 @@
     <Content Include="Views\WareHouse\Inventory.cshtml" />
     <Content Include="Views\LabTest\LabTests.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\LabTest\LabTesting.cshtml" />
     <Content Include="Views\Feedback\Feedbacks.cshtml" />
     <Content Include="Views\Receptionist\Index.cshtml" />
+    <Content Include="Views\LabTest\LabTestingResult.cshtml" />
+    <Content Include="Views\LabTest\Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
+    <Folder Include="Assets\Image\" />
+    <Folder Include="UploadedFiles\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
   <ItemGroup>
@@ -7758,7 +7767,7 @@
       <Name>eLTMS.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
-      <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
+      <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>
       <Name>eLTMS.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">

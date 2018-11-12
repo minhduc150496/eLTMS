@@ -20,7 +20,7 @@
                 <h3 class="box-title">Danh sách Feedback</h3>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <button class="btn btn-success" id="btnAddNew">Thêm Feedback</button>
+                  <!--<button class="btn btn-success" id="btnAddNew">Thêm Feedback</button>-->
                     <br />
                     <br />
 
@@ -34,6 +34,7 @@
                                 <th>Tên nhân viên</th>
                                 <th>Tên bệnh nhân</th>
                                 <th>Ngày nhận</th>
+                                <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
@@ -63,41 +64,41 @@
                 <form class="form-horizontal" action="/action_page.php">
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Mã Account</label>
+                        <label class="control-label col-sm-2" for="email">Mã Feedback</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtAccountId" name="txtAccountId">
+                            <input type="text" class="form-control" id="txtFeedbackId" name="txtFeedbackId" readonly="readonly">
                         </div>
                     </div>
-                    <input type="hidden" class="form-control" id="txtFeedbackId" name="txtFeedbackId" value="0" readonly>
+                    <input type="hidden" class="form-control" id="txtFeedbackId" name="txtFeedbackId" value="0" readonly="readonly">
                     <div class="form-group" style="display:none">
                         <label class="control-label col-sm-2" for="email">Mã Feedback</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtFeedbackId" name="txtFeedbackId" readonly>
+                            <input type="text" class="form-control" id="txtFeedbackId" name="txtFeedbackId" readonly="readonly">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Tên Nhân Viên</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtEmployeeName" name="txtEmployeeName">
+                            <input type="text" class="form-control" id="txtEmployeeName" name="txtEmployeeName" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Tên Bệnh Nhân</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtPatientName" name="txtPatientName">
+                            <input type="text" class="form-control" id="txtPatientName" name="txtPatientName" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Nội Dung</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtContext" name="txtContext">
+                            <input type="text" class="form-control" id="txtContext" name="txtContext" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Ngày Nhận</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtDay" name="txtDay">
+                            <input type="text" class="form-control" id="txtDay" name="txtDay" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
@@ -107,14 +108,14 @@
                                 <option value="">
                                     ----- Chọn -----
                                 </option>
-                                <option value="Working">
+                                <option value="Đã Đọc">
                                     Đã Đọc
                                 </option>
-                                <option value="Stop">
+                                <option value="Chưa Đọc">
                                     Chưa Đọc
                                 </option>
-                                <option value="Delete">
-                                    Quan Trọng
+                                <option value="Quan trọng">
+                                    Quan trọng
                                 </option>
                             </select>
                         </div>
@@ -135,13 +136,13 @@
 </div>
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{FeedbackID}}</td>
         <td>{{EmployeeName}}</td>
         <td>{{PatientName}}</td>
+        <td>{{ReceiveDateTime}}</td>
         <td>{{Status}}</td>
         <td>
-            <button class="btn btn-primary btn-edit" data-id="{{FeedbackID}}"><i class="fa fa-pencil-square-o"></i></button>
-            <button class="btn btn-danger btn-delete" data-id="{{FeedbackID}}"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-primary btn-edit" data-id="{{FeedbackId}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-danger btn-delete" data-id="{{FeedbackId}}"><i class="fa fa-trash"></i></button>
 
         </td>
     </tr>
