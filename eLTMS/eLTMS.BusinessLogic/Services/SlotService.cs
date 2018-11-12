@@ -78,10 +78,10 @@ namespace eLTMS.BusinessLogic.Services
                     {
                         var slot = new Slot();
                         slot.SampleGroupId = sampleGroup.SampleGroupId;
-                        slot.Quantity = sampleGroup.NumberOfSlots;
+                        //slot.Quantity = sampleGroup.NumberOfSlots;
                         slot.StartTime = startTime;
                         slot.FinishTime = startTime + duration;
-                        slot.Date = date;
+                        //slot.Date = date;
                         slotRepo.Create(slot);
                     }
                 }

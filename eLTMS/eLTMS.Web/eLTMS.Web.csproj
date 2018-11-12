@@ -7767,7 +7767,7 @@
       <Name>eLTMS.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
-      <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
+      <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>
       <Name>eLTMS.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">

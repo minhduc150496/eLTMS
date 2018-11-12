@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using eLTMS.DataAccess.Models;
-using eLTMS.Models.Utils;
+
 
 namespace eLTMS.Models.Mapping
 {
@@ -38,7 +38,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress))
-                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl));
+                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.AvatarUrl));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
@@ -93,10 +93,12 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<SampleGettingDto, SampleGetting>();
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
-                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate != null) ? (((DateTime)x.GettingDate).ToString("yyyy-MM-dd")) : null)) // DucBM
-                .ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
-                .ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
-                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
+
+                /*.ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null))*/ // DucBM
+                //.ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
+                //.ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
+
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId)) 
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));
 
@@ -202,8 +204,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
 
-                cfg.CreateMap<Slot, SlotDto>()
-                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
+                //cfg.CreateMap<Slot, SlotDto>()
+                //.ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
 
                 cfg.CreateMap<Feedback, FeedbackDto>()
                .ForMember(dst => dst.FeedbackId, src => src.MapFrom(x => x.FeedbackId))

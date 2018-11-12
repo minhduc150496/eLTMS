@@ -42,7 +42,7 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var patient = repo.GetSimpleById(patientdto.PatientId);
-                var account = patient.Account;
+                //var account = patient.Account;
                 patient.PatientCode = patientdto.PatientCode;
                 patient.FullName = patientdto.FullName;
                 patient.Gender = patientdto.Gender;
@@ -50,7 +50,7 @@ namespace eLTMS.BusinessLogic.Services
                 patient.HomeAddress = patientdto.HomeAddress;
                 patient.CompanyAddress = patientdto.CompanyAddress;
                 patient.AccountId = patientdto.AccountId;
-                account.AvatarUrl = patientdto.Account.AvatarUrl;
+                patient.AvatarUrl = patientdto.AvatarUrl;
                 repo.Update(patient);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any())

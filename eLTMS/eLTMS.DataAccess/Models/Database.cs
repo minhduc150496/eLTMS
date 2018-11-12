@@ -623,6 +623,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Avatar url")]
         public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
+        [Column(@"IdentityCardNumber", Order = 13, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Identity card number")]
+        public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
+
         // Reverse navigation
 
         /// <summary>
@@ -1534,6 +1540,18 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
+        [Column(@"IdentityCardNumber", Order = 8, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Identity card number")]
+        public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
+
+        [Column(@"FullName", Order = 9, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "Full name")]
+        public string FullName { get; set; } // FullName (length: 50)
+
         // Reverse navigation
 
         /// <summary>
@@ -1574,6 +1592,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.PhoneNumber).IsOptional();
             Property(x => x.AvatarUrl).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
+            Property(x => x.IdentityCardNumber).IsOptional();
+            Property(x => x.FullName).IsOptional();
         }
     }
 
@@ -1887,6 +1907,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
             Property(x => x.AvatarUrl).IsOptional();
+            Property(x => x.IdentityCardNumber).IsOptional();
         }
     }
 
@@ -2070,11 +2091,9 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
-
         public System.DateTime? Date { get; set; }
         public System.Int32? Quantity { get; set; }
         public System.Int32? SampleGroupID { get; set; }
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]

@@ -12,12 +12,10 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IReceptionistService
     {
-        List<Appointment> GetNewApp(int patientId);
-        List<Appointment> GetOldApp(int patientId);
         bool Add(AppointmentAddDto data);
+        bool ChangeIsPaid(int sampleGettingId);
         List<Appointment> GetAllAppointment();
-        List<Appointment> GetAppBySample(int sampleId);
-        List<Appointment> OrderBySlot(List<Appointment> apps);
+        List<AppointmentGetBySampleDto> GetAllBySample(int sampleId);
     }
     class ReceptionistService : IReceptionistService
     {
@@ -28,6 +26,8 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
+
+        //ten ten
         public string CreateAppReturnCode(Appointment appointment)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -55,37 +55,26 @@ namespace eLTMS.BusinessLogic.Services
             return appointment.AppointmentCode;
         }
 
-        //public DateTime 
-        public Slot getFirstEmptySlot (int sampleId)
+        //ten ten
+        public bool ChangeIsPaid(int sampleGettingId)
         {
-            var paRepo= RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
-            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
-
-            var pas = paRepo.GetAll().Where(p => p.IsOnline == false);
-            var apps = new List<Appointment>();
-            foreach (var pa in pas)
+            try
             {
-                var appps=(appRepo.GetAll().Where(p => p.PatientId==pa.PatientId));
-                foreach(var appp in appps)
-                {
-                    apps.Add(appp);
-                }
+                var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+                var sampleGetting = sgRepo.GetFirst(p => p.SampleGettingId == sampleGettingId);
+                sampleGetting.IsPaid = true;
+                sgRepo.Update(sampleGetting);
+                UnitOfWork.SaveChanges();
+                return true;
             }
-            List<Slot> slots = new List<Slot>();
-            foreach(var app in apps)
+            catch(Exception e)
             {
-                var sgs = sgRepo.GetAll2().ToList().Where(p => p.AppointmentId == app.AppointmentId && p.SampleId == sampleId);
-                if (sgs != null) foreach (var sg in sgs) {
-                        if(sg.Slot!=null)
-                        slots.Add(sg.Slot);
-                    }
+                return false;
             }
-            slots.OrderByDescending(p => p.StartTime);
-            if (slots.Count <= 0) return null;
-            else return slots.FirstOrDefault();
+            
         }
         
+        //ten ten
         public bool Add(AppointmentAddDto data)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
@@ -96,20 +85,25 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 //tao account
-                accRepo.Create(new Account
-                {
-                    PhoneNumber = data.Phone,
+                //accRepo.Create(new Account
+                //{
+                //    PhoneNumber = data.Phone,
 
-                    //passWord default: qwe123
-                    Password = "qwe123",
-                    IsDeleted = false
-                });
-                UnitOfWork.SaveChanges();
+                //    //passWord default: qwe123
+                //    Password = "qwe123",
+                //    IsDeleted = false
+                //});
+                //UnitOfWork.SaveChanges();
+                
                 //tao benh nhan
-                var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
+                //var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
                 paRepo.Create(new Patient
                 {
-                    AccountId= accId,
+                    //AccountId = accId,
+                    IsOnline = false,
+                    IdentityCardNumber = data.IdentityCardNumber,
+                    DateOfBirth = data.DateOfBirth,
+                    HomeAddress = data.Address,
                     FullName = data.Name,
                     PhoneNumber = data.Phone,
                     IsDeleted = false
@@ -120,6 +114,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appCode= CreateAppReturnCode(new Appointment
                 {
                     PatientId = paId,
+                    Date= DateTime.Now.Date,
                     IsDeleted = false
                 });
                 UnitOfWork.SaveChanges();
@@ -127,59 +122,83 @@ namespace eLTMS.BusinessLogic.Services
                 var appId = appRepo.GetFirst(p=>p.AppointmentCode==appCode).AppointmentId;
                 if (data.Mau == true)
                 {
-                    //tim slot trong
-                    var firstSlot = getFirstEmptySlot(1);
-                    var allSlot = slotRepo.GetAll().ToList();
-                    var emtySlot = allSlot.FirstOrDefault();
-                    if (firstSlot != null) emtySlot = firstSlot;
-                    //tao lich hen loai xet nghiem mau 
-                    sgRepo.Create(new SampleGetting
+                    //tim slot va ban trong
+                    var slotAndTable = GetEmptyTableAndSlot(1);
+                    //neu con ban va slot trong thi moi tao lich hen
+                    if (slotAndTable != null)
                     {
-                        AppointmentId = appId,
-                        SampleId = 1,
-                        SlotId = emtySlot.SlotId,
-                        IsDeleted = false
-                    });
+                        //tao lich hen loai xet nghiem mau 
+                        sgRepo.Create(new SampleGetting
+                        {
+                            AppointmentId = appId,
+                            SampleId = 1,
+                            SlotId = slotAndTable.slotId,
+                            TableId = slotAndTable.tableId,
+                            IsDeleted = false
+                        });
+                    }
+                    
                 }
                 if (data.NuocTieu == true)
                 {
-                    var firstSlot = getFirstEmptySlot(2);
-                    sgRepo.Create(new SampleGetting
+                    //tim slot va ban trong
+                    var slotAndTable = GetEmptyTableAndSlot(1);
+                    //neu con ban va slot trong thi moi tao lich hen
+                    if (slotAndTable != null)
                     {
-                        AppointmentId = appId,
-                        SampleId = 2,
-                        IsDeleted = false
-                    });
+                        sgRepo.Create(new SampleGetting
+                        {
+                            AppointmentId = appId,
+                            SampleId = 2,
+                            SlotId=slotAndTable.slotId,
+                            TableId = slotAndTable.tableId,
+                            IsDeleted = false
+                        });
+                    }
                 }
                 if (data.TeBaoHoc == true)
                 {
-                    var firstSlot = getFirstEmptySlot(3);
-                    sgRepo.Create(new SampleGetting
-                    {
-                        AppointmentId = appId,
-                        SampleId = 3,
-                        IsDeleted = false
-                    });
+                    var slotAndTable = GetEmptyTableAndSlot(2);
+                    if(slotAndTable!=null) {
+                        sgRepo.Create(new SampleGetting
+                        {
+                            AppointmentId = appId,
+                            SampleId = 3,
+                            SlotId= slotAndTable.slotId,
+                            TableId= slotAndTable.tableId,
+                            IsDeleted = false
+                        });
+                    }
                 }
                 if (data.Phan == true)
                 {
-                    var firstSlot = getFirstEmptySlot(4);
-                    sgRepo.Create(new SampleGetting
+                    var slotAndTable = GetEmptyTableAndSlot(3);
+                    if (slotAndTable != null)
                     {
-                        AppointmentId = appId,
-                        SampleId = 4,
-                        IsDeleted = false
-                    });
+                        sgRepo.Create(new SampleGetting
+                        {
+                            AppointmentId = appId,
+                            SampleId = 4,
+                            SlotId = slotAndTable.slotId,
+                            TableId = slotAndTable.tableId,
+                            IsDeleted = false
+                        });
+                    }
                 }
                 if (data.Dich == true)
                 {
-                    var firstSlot = getFirstEmptySlot(5);
-                    sgRepo.Create(new SampleGetting
+                    var slotAndTable = GetEmptyTableAndSlot(4);
+                    if (slotAndTable != null)
                     {
-                        AppointmentId = appId,
-                        SampleId = 5,
-                        IsDeleted = false
-                    });
+                        sgRepo.Create(new SampleGetting
+                        {
+                            AppointmentId = appId,
+                            SampleId = 5,
+                            SlotId = slotAndTable.slotId,
+                            TableId = slotAndTable.tableId,
+                            IsDeleted = false
+                        });
+                    }
                 }
 
                 UnitOfWork.SaveChanges();
@@ -187,21 +206,8 @@ namespace eLTMS.BusinessLogic.Services
             catch (Exception ex) { return false; }
             return true;
         }
-        public List<Appointment> GetNewApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetNewAppByPatientId(patientId);
-            return apps;
-        }
-
-        public List<Appointment> GetOldApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var apps = appRepo.GetOldAppByPatientId(patientId);
-            return apps;
-        }
-
+        
+        //ten ten
         public List<Appointment> GetAllAppointment()
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -214,31 +220,121 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        public List<Appointment> GetAppBySample(int sampleId)
+        //ten ten
+        public class TableAndSlotId
         {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            public int tableId { get; set; }
+            public int slotId { get; set; }
+        }
+
+        //ten ten
+        public TableAndSlotId GetEmptyTableAndSlot(int sampleGroupId)
+        {
+            var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var tabRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+            var tabs = tabRepo.GetAllTable().Where(p=>p.SampleGroupId==sampleGroupId);
             var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            var apps = sgRepo.GetAllIncludeApp().Where(x => x.SampleId == sampleId).Select(p=>p.Appointment).ToList();
-            var result = new List<Appointment>();
-            foreach(var app in apps)
+            foreach (var tab in tabs)
             {
-                var appResult = appRepo.GetAppById(app.AppointmentId);
-                if (appResult != null) result.Add(appResult);
-                foreach(var sg in app.SampleGettings.ToList())
+                var sg = sgRepo.GetAll().Where(p => p.TableId == tab.TableId).ToList();
+                var apps = appRepo.GetAll();
+                var sgApp = sg.Join(apps, p => p.AppointmentId, c => c.AppointmentId, (p, c) => new
                 {
-                    if (sg.SampleId != sampleId) app.SampleGettings.Remove(sg);
+                    p.TableId,
+                    p.SlotId,
+                    c.Date
+                }).ToList()
+                .Where(p=>p.Date==DateTime.Now.Date).ToList();
+                if (sampleGroupId == 1)
+                {
+                    if (sgApp.Count >= 30) break;
+                    else
+                    {
+                        var slots = slotRepo.GetAll().Where(p => (p.FinishTime - p.StartTime) == 600)
+                            .OrderBy(p=>p.StartTime).ToList();
+                        return new TableAndSlotId
+                        {
+                            tableId = tab.TableId,
+                            slotId = slots[sgApp.Count].SlotId
+                        };
+                    }
+                }
+                else if (sampleGroupId == 2)
+                {
+                    if (sgApp.Count >= 21) break;
+                    else
+                    {
+                        var slots = slotRepo.GetAll().Where(p => (p.FinishTime - p.StartTime) == 900)
+                            .OrderBy(p => p.StartTime).ToList();
+                        return new TableAndSlotId
+                        {
+                            tableId = tab.TableId,
+                            slotId = slots[sgApp.Count].SlotId
+                        };
+                    }
+                }
+                else if (sampleGroupId == 3 || sampleGroupId == 4)
+                {
+                    if (sgApp.Count >= 16) break;
+                    else
+                    {
+                        var slots = slotRepo.GetAll().Where(p => (p.FinishTime - p.StartTime) == 1200)
+                            .OrderBy(p => p.StartTime).ToList();
+                        return new TableAndSlotId
+                        {
+                            tableId = tab.TableId,
+                            slotId = slots[sgApp.Count].SlotId
+                        };
+                    }
                 }
             }
+            //return null co nghia la het slot het ban
+            return null;
+        }
+
+        public List<AppointmentGetBySampleDto> GetAllBySample(int sampleId)
+        {
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+
+            var apps = appRepo.GetAll();
+            var pas = paRepo.GetAll();
+            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId);
+            var sps = spRepo.GetAll();
+            var slots = slotRepo.GetAll();
+            var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new {
+                app=p,
+                pa=c
+            });
+            var spSgs = sgs.Join(sps, p => p.SampleId, c => c.SampleId, (p, c) => new {
+                sg=p,
+                sp=c
+            });
+            var spSgSlots= spSgs.Join(slots, p => p.sg.SlotId, c => c.SlotId, (p, c) => new
+            {
+                spSg=p,
+                slot=c
+            });
+            var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
+                c => c.app.AppointmentId, (p, c) => new AppointmentGetBySampleDto
+                {
+                    StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
+                    SampleName = p.spSg.sp.SampleName,
+                    AppointmentCode = c.app.AppointmentCode,
+                    Phone = c.pa.PhoneNumber,
+                    Address = c.pa.HomeAddress,
+                    PatientName = c.pa.FullName,
+                    SampleGettingId = p.spSg.sg.SampleGettingId,
+                    IsPaid = p.spSg.sg.IsPaid
+
+                }).ToList();
             return result;
         }
-        public List<Appointment> OrderBySlot(List<Appointment> apps)
-        {
-            //foreach(var app in apps)
-            //{
-            //    app.
-            //}
-            return apps;
-        }
+        
        
     }
 }
