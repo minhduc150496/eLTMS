@@ -37,7 +37,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
-                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
+                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress))
+                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl));
 
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
@@ -183,7 +184,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.DateOfStart, src => src.MapFrom(x => x.StartDate.HasValue ? x.StartDate.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.HasValue ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))
-                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl));
+                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.Account.AvatarUrl))
+                .ForMember(dst => dst.Email, src => src.MapFrom(x => x.Account.Email));
                 cfg.CreateMap<LabTesting, LabTestingDto>()
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
                 .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))

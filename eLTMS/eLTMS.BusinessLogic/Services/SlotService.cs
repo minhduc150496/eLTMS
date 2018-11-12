@@ -60,7 +60,7 @@ namespace eLTMS.BusinessLogic.Services
             var sampleGroups = sgRepo.GetAll().Where(x => x.IsDeleted == false);
             // for days in month
             var nDays = DateTime.DaysInMonth(year, month);
-            for (var day = 1; day <= 7; day++)
+            for (var day = 6; day <= 15; day++)
             {
                 var date = new DateTime(year, month, day);
                 // for sample groups

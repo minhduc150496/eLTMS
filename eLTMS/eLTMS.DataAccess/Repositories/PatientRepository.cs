@@ -21,13 +21,19 @@ namespace eLTMS.DataAccess.Repositories
         public List<Patient> GetAllPatient(string phoneNumber)
         {
             var result = DbSet.AsQueryable()
+
+                .Include(x=>x.Account)
+                .Where(x => x.PhoneNumber.Contains(phoneNumber) && x.IsDeleted == false)
+
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber)  && x.IsDeleted == false)
+
                 .ToList();
             return result;
         }
         public Patient GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()
+                .Include(x => x.Account)
                 .SingleOrDefault(x => x.PatientId == id);
             return result;
         }

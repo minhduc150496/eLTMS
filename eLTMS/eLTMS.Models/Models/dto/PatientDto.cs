@@ -17,5 +17,6 @@ namespace eLTMS.Models.Models.dto
         public string HomeAddress { get; set; } // HomeAddress (length: 200)
         public string CompanyAddress { get; set; } // CompanyAddress (length: 200)
         public bool? IsDeleted { get; set; } // IsDeleted
+        public string Avatar { get; set; } // Avatar URL
     }
 }
