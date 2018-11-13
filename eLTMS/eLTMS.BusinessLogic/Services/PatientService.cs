@@ -42,7 +42,7 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var patient = repo.GetSimpleById(patientdto.PatientId);
-                var account = patient.Account;
+                //var account = patient.Account;
                 patient.PatientCode = patientdto.PatientCode;
                 patient.FullName = patientdto.FullName;
                 patient.Gender = patientdto.Gender;
@@ -50,7 +50,7 @@ namespace eLTMS.BusinessLogic.Services
                 patient.HomeAddress = patientdto.HomeAddress;
                 patient.CompanyAddress = patientdto.CompanyAddress;
                 patient.AccountId = patientdto.AccountId;
-                account.AvatarUrl = patientdto.Account.AvatarUrl;
+                patient.AvatarUrl = patientdto.AvatarUrl;
                 repo.Update(patient);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any())
@@ -66,8 +66,8 @@ namespace eLTMS.BusinessLogic.Services
         public Patient GetPatientById(int id)
         {
             var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var patients = patientRepo.GetSimpleById(id);
-            return patients;
+            var patient = patientRepo.GetSimpleById(id);
+            return patient;
         }
         public bool AddPatient(Patient patient)
         {

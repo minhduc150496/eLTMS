@@ -50,10 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SlotService.cs" />
     <Compile Include="Services\FeedbackService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\ExportPaperService .cs" />
+    <Compile Include="Services\ImportPaperDetailService.cs" />
     <Compile Include="Services\ImportPaperService.cs" />
     <Compile Include="Services\LabTestingIndexService.cs" />
     <Compile Include="Services\LabTestService.cs" />
@@ -64,15 +64,16 @@
     <Compile Include="Services\ReceptionistService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
+    <Compile Include="Services\SlotService.cs" />
     <Compile Include="Services\SupplyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
-      <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
+      <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>
       <Name>eLTMS.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.Models\eLTMS.Models.csproj">
-      <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
+      <Project>{26DC2CF1-D4E0-4BBE-99DF-EA0D33375D99}</Project>
       <Name>eLTMS.Models</Name>
     </ProjectReference>
   </ItemGroup>

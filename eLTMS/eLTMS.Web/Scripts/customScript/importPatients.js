@@ -31,9 +31,7 @@ var homeController = {
                 HomeAddress: homeAddress,
                 CompanyAddress: companyAddress,
                 IsDeleted: isDeleted,
-                Account: {
-                    AvatarUrl: $('#avatar').attr('src')
-                }
+                AvatarUrl: $('#avatar').attr('src')
             }
             console.log(patient);
             if (patient.PatientId == 0) {
@@ -137,6 +135,7 @@ var homeController = {
             success: function (response) {
                 if (response.sucess) {
                     var data = response.data;
+                    //console.log(data);
                     $('#txtPatientId').val(data.PatientId);
                     $('#txtAccountId').val(data.AccountId);
                     $('#txtCode').val(data.PatientCode);

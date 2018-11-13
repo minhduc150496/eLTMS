@@ -22,7 +22,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
 
-                .Include(x=>x.Account)
+                //.Include(x=>x.Account)
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) && x.IsDeleted == false)
 
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber)  && x.IsDeleted == false)
@@ -33,7 +33,7 @@ namespace eLTMS.DataAccess.Repositories
         public Patient GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()
-                .Include(x => x.Account)
+                //.Include(x => x.Account)
                 .SingleOrDefault(x => x.PatientId == id);
             return result;
         }

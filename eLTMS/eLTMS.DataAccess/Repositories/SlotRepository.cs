@@ -21,33 +21,35 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<Slot> GetByDateAndSampleGroupId(DateTime date, int sampleGroupId)
         {
-            var result = DbSet.AsQueryable()
+            /*var result = DbSet.AsQueryable()
                 .Where(x => x.SampleGroup.SampleGroupId == sampleGroupId && x.Date == date)
                 .ToList();
-            return result;
+            return result;*/
+            return null;
         }
-        public List<Slot> GetAvailableSlots()
+        public List<Slot> GetAvailableSlots() 
         {
-            var now = DateTime.Now;
-            var today = DateTime.Now.Date;
-            int secondNow = now.Hour * 60 * 60 + now.Minute * 60 + now.Second;
+            /* var now = DateTime.Now;
+             var today = DateTime.Now.Date;
+             int secondNow = now.Hour * 60 * 60 + now.Minute * 60 + now.Second;
 
-            var tmp = DbSet.AsQueryable()
-                .Where(x => x.Date > today || (x.Date == today && x.StartTime > secondNow))
-                .Include(x => x.SampleGettings)
-                .ToList();
-            var result = new List<Slot>();
-            foreach (var item in tmp)
-            {
-                var qty = item.Quantity;
-                var booked = item.SampleGettings.Count();
-                var available = qty - booked;
-                if (available > 0)
-                {
-                    result.Add(item);
-                }
-            }
-            return result;
+             var tmp = DbSet.AsQueryable()
+                 //.Where(x => x.Date > today || (x.Date == today && x.StartTime > secondNow))
+                 .Include(x => x.SampleGettings)
+                 .ToList();
+             var result = new List<Slot>();
+             foreach (var item in tmp)
+             {
+                 var qty = item.Quantity;
+                 var booked = item.SampleGettings.Count();
+                 var available = qty - booked;
+                 if (available > 0)
+                 {
+                     result.Add(item);
+                 }
+             } kkhoan ô
+             return result;*/ 
+            return null;
         }
         public List<Slot> GetAllSlot()
         {
