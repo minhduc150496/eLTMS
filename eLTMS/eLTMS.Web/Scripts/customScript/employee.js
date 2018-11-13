@@ -158,7 +158,7 @@ var homeController = {
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtSD').val(data.DateOfStart);
                     $('#txtEmail').val(data.Email);
-                    $('#avatar').attr('src', data.Avatar);
+                    $('#avatar').attr('src',data.Avatar);
                 }
                 else {
                     bootbox.alert(response.message);
@@ -183,8 +183,8 @@ var homeController = {
         $('#ddlRole').val('').change();
         $('#txtHomeAddress').val('');
         $('#txtSD').val(''); 
-        $('#txtEmail').val(data.Email);
-        $('#avatar').attr('src', data.Avatar);
+        $('#txtEmail').val('');
+        $('#avatar').attr('src','');
     },
     loadData: function (changePageSize) {
         $.ajax({
