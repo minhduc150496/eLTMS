@@ -112,7 +112,9 @@ var homeController = {
             homeController.deleteEmployee(id);
             
         });
-
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
     },
     deleteEmployee: function (id) {
         $.ajax({
