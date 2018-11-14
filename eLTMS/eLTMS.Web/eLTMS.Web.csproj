@@ -7762,8 +7762,15 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Assets\bower_components\moment\moment.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\eLTMS.BusinessLogic\eLTMS.BusinessLogic.csproj">
-      <Project>{CB202736-804F-47A7-9533-B67C1F2FBF74}</Project>
+      <Project>{cb202736-804f-47a7-9533-b67c1f2fbf74}</Project>
       <Name>eLTMS.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
@@ -7774,13 +7781,6 @@
       <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
       <Name>eLTMS.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Assets\bower_components\moment\moment.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

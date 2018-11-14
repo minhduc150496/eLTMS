@@ -40,6 +40,9 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress))
                 .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.AvatarUrl));
 
+                cfg.CreateMap<PatientDto, Patient>()
+                .ForMember(dst => dst.AvatarUrl, src => src.MapFrom(x => x.Avatar));
+
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))

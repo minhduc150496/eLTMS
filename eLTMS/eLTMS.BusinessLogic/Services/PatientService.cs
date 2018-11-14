@@ -66,8 +66,8 @@ namespace eLTMS.BusinessLogic.Services
         public Patient GetPatientById(int id)
         {
             var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var patients = patientRepo.GetSimpleById(id);
-            return patients;
+            var patient = patientRepo.GetSimpleById(id);
+            return patient;
         }
         public bool AddPatient(Patient patient)
         {
