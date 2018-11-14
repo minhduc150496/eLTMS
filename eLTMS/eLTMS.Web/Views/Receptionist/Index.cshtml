@@ -120,45 +120,45 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                 <form class="form-horizontal" action="/action_page.php">
-                    <div class="form-group" align="center"> 
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group" align="center">
                         <h2>NHẬP THÔNG TIN BỆNH NHÂN</h2>
                     </div>
                 </form>
-                 <form class="form-horizontal" action="/action_page.php">
-                     <div class="form-group">
-                         <label class="control-label col-sm-2" for="email">Họ tên</label>
-                         <div class="col-sm-10">
-                             <input type="text" class="form-control" id="txtName" name="txtName">
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label class="control-label col-sm-2" for="email">CMND</label>
-                         <div class="col-sm-10">
-                             <input type="text" class="form-control" id="txtCMND" name="txtCMND">
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label class="control-label col-sm-2" for="email">Ngày sinh</label>
-                         <div class="col-sm-10">
-                             <input  type="date" class="form-control" id="txtDateOfBirth" name="txtDateOfBirth">
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label class="control-label col-sm-2" for="email">Số điện thoại</label>
-                         <div class="col-sm-10">
-                             <input type="text" class="form-control" id="txtPhone" name="txtPhone">
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label class="control-label col-sm-2" for="email">Địa chỉ</label>
-                         <div class="col-sm-10">
-                             <input type="text" class="form-control" id="txtAddress" name="txtAddress">
-                         </div>
-                     </div>
-                 </form>
                 <form class="form-horizontal" action="/action_page.php">
-                    <div class="form-group" align="center"> 
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Họ tên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtName" name="txtName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">CMND</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtCMND" name="txtCMND">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Ngày sinh</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="txtDateOfBirth" name="txtDateOfBirth">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Số điện thoại</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtPhone" name="txtPhone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtAddress" name="txtAddress">
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group" align="center">
                         <h2> CHỌN LOẠI XÉT NGHIỆM</h2>
                     </div>
                 </form>
@@ -311,7 +311,7 @@
                                             <label><input type="checkbox" id="checkBox_loaiXetNghiem24" value="5">Heroin (test nhanh)</label>
                                         </div>
                                     </td>
-                                    
+
                                 </tr>
                             </table>
                         </div>
@@ -412,8 +412,6 @@
 
 
 
-
-
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{AppCode}}</td>
@@ -423,13 +421,39 @@
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">
-                <input id="{{SampleGettingId}}" onchange="homeController.checkIsPaid({{SampleGettingId}})" onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})" type="checkbox">
+                <input id="{{SampleGettingId}}" {{Checked}} @*onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})"*@ onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
                 <span class="slider round"></span>
             </label>
 
         </td>
-        
+
     </tr>
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD4vUTkPWkpHoPRph_C66gJLrYwjG8UAcs",
+    authDomain: "deleteappointment.firebaseapp.com",
+    databaseURL: "https://deleteappointment.firebaseio.com",
+    projectId: "deleteappointment",
+    storageBucket: "deleteappointment.appspot.com",
+    messagingSenderId: "406518127356"
+  };
+  firebase.initializeApp(config);
+
+    $( document ).ready(function() {
+        var autoDeleteMau = setInterval(function(){
+            var date = new Date();
+            if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
+                || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
+            console.log( date ); 
+            //clearInterval(getTimeRight);
+            }
+        }, 1000);
+    });
 </script>
 
 

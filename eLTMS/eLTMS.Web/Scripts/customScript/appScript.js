@@ -273,7 +273,8 @@ var homeController = {
                             Address: item.Address,
                             StartTime: item.StartTime,
                             SampleGettingId: item.SampleGettingId,
-                            IsPaid: item.IsPaid
+                            IsPaid: item.IsPaid,
+                            Checked: (item.IsPaid == true) ?  "checked" : ""
                         });
 
                     });
