@@ -79,16 +79,11 @@ var homeController = {
         })
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới bệnh nhân');
-            homeController.resetForm();
+            //homeController.resetForm();
             $('#myModal').modal('show');
-        });       
-        $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            homeController.loadData(true);
-        });
+        });   
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
+            $('#lblPopupTitle').text('Cập nhật thông tin bệnh nhân');
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);
@@ -164,7 +159,7 @@ var homeController = {
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
-        $('#avatar').attr('src', data.Avatar);
+        $('#avatar').attr('src', '');
     },
     loadData: function (changePageSize) {
         $.ajax({

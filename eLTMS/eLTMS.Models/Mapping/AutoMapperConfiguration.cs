@@ -132,6 +132,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
                 .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
                 //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
@@ -152,6 +153,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))
                 .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
                 .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
+                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 
                 cfg.CreateMap<Appointment, AppointmentUpdateDto>()

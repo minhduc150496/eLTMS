@@ -80,8 +80,8 @@
     <Reference Include="Google.Apis.Core, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.Core.1.36.1\lib\net45\Google.Apis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.36.1\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -7681,6 +7681,7 @@
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
     <Content Include="Scripts\customScript\Feedback.js" />
+    <Content Include="Scripts\customScript\labtestResult.js" />
     <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
@@ -7708,6 +7709,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="template-pdf\result.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -7738,6 +7740,7 @@
     <Content Include="Views\Receptionist\Index.cshtml" />
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
     <Content Include="Views\LabTest\Result.cshtml" />
+    <Content Include="Views\LabTest\LabTestingDone.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
