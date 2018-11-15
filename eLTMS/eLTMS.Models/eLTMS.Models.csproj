@@ -65,6 +65,7 @@
     <Compile Include="Models\dto\ExportPaperDto.cs" />
     <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
     <Compile Include="Models\dto\ImportPaperDto.cs" />
+    <Compile Include="Models\dto\HospitalSuggestionDto.cs" />
     <Compile Include="Models\dto\LabTestDto.cs" />
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />

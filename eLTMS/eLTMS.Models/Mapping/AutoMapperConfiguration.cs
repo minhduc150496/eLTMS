@@ -147,6 +147,11 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<AppointmentDto, Appointment>()
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettingDtos));
 
+                cfg.CreateMap<HospitalSuggestion, HospitalSuggestionDto>()
+                .ForMember(dst => dst.DiseaseName, src => src.MapFrom(x => x.DiseaseName))
+                .ForMember(dst => dst.HospitalList, src => src.MapFrom(x => x.HospitalList))
+                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
+
                 cfg.CreateMap<Appointment, AppointmentGetAllDto>()
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName))

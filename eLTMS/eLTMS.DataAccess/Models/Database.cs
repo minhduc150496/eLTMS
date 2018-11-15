@@ -275,7 +275,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Slot ID")]
         public int SlotId { get; set; } // SlotID (Primary key)
 
-        [Column(@"SlotName", Order = 4, TypeName = "nchar")]
+        [Column(@"SlotName", Order = 4, TypeName = "nvarchar")]
         [MaxLength(10)]
         [StringLength(10)]
         [Display(Name = "Slot name")]
@@ -948,149 +948,34 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // HospitalSuggesting
-    [Table("HospitalSuggesting", Schema = "dbo")]
+    // HospitalSuggestion
+    [Table("HospitalSuggestion", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalSuggesting
+    public class HospitalSuggestion
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"HospitalSuggestingID", Order = 1, TypeName = "int")]
+        [Column(@"HospitalSuggestionID", Order = 1, TypeName = "int")]
         [Index(@"PK__Hospital__3214EC2744CC6669", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
-        [Display(Name = "Hospital suggesting ID")]
-        public int HospitalSuggestingId { get; set; } // HospitalSuggestingID (Primary key)
+        [Display(Name = "Hospital suggestion ID")]
+        public int HospitalSuggestionId { get; set; } // HospitalSuggestionID (Primary key)
 
-        [Column(@"ResultPaperID", Order = 2, TypeName = "nchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Result paper ID")]
-        public string ResultPaperId { get; set; } // ResultPaperID (length: 20)
+        [Column(@"DiseaseName", Order = 2, TypeName = "nvarchar(max)")]
+        [Display(Name = "Disease name")]
+        public string DiseaseName { get; set; } // DiseaseName
 
-        [Column(@"HospitalID", Order = 3, TypeName = "int")]
-        [Display(Name = "Hospital ID")]
-        public int? HospitalId { get; set; } // HospitalID
-
-        [Column(@"FacultyID", Order = 4, TypeName = "int")]
-        [Display(Name = "Faculty ID")]
-        public int? FacultyId { get; set; } // FacultyID
-
-        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent Department pointed by [HospitalSuggesting].([FacultyId]) (FK__HospitalS__Facul__7F2BE32F)
-        /// </summary>
-        [ForeignKey("FacultyId")] public virtual Department Department { get; set; } // FK__HospitalS__Facul__7F2BE32F
-
-        /// <summary>
-        /// Parent Hospital pointed by [HospitalSuggesting].([HospitalId]) (FK__HospitalS__Hospi__00200768)
-        /// </summary>
-        [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalS__Hospi__00200768
-
-        public HospitalSuggesting()
-        {
-            IsDeleted = false;
-        }
-    }
-
-    // HospitalDepartment
-    [Table("HospitalDepartment", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalDepartment
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column(@"HospitalDepartmentID", Order = 1, TypeName = "int")]
-        [Index(@"PK__Hospital__275680DE8771BC40", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Hospital department ID")]
-        public int HospitalDepartmentId { get; set; } // HospitalDepartmentID (Primary key)
-
-        [Column(@"HospitalID", Order = 2, TypeName = "int")]
-        [Display(Name = "Hospital ID")]
-        public int? HospitalId { get; set; } // HospitalID
-
-        [Column(@"FacultyID", Order = 3, TypeName = "int")]
-        [Display(Name = "Faculty ID")]
-        public int? FacultyId { get; set; } // FacultyID
+        [Column(@"HospitalList", Order = 3, TypeName = "nvarchar(max)")]
+        [Display(Name = "Hospital list")]
+        public string HospitalList { get; set; } // HospitalList
 
         [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        // Foreign keys
-
-        /// <summary>
-        /// Parent Department pointed by [HospitalDepartment].([FacultyId]) (FK__HospitalF__Facul__10566F31)
-        /// </summary>
-        [ForeignKey("FacultyId")] public virtual Department Department { get; set; } // FK__HospitalF__Facul__10566F31
-
-        /// <summary>
-        /// Parent Hospital pointed by [HospitalDepartment].([HospitalId]) (FK__HospitalF__Hospi__114A936A)
-        /// </summary>
-        [ForeignKey("HospitalId")] public virtual Hospital Hospital { get; set; } // FK__HospitalF__Hospi__114A936A
-
-        public HospitalDepartment()
+        public HospitalSuggestion()
         {
             IsDeleted = false;
-        }
-    }
-
-    // Hospital
-    [Table("Hospital", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class Hospital
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"HospitalID", Order = 1, TypeName = "int")]
-        [Index(@"PK__Hospital__38C2E58F74E22A73", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Hospital ID")]
-        public int HospitalId { get; set; } // HospitalID (Primary key)
-
-        [Column(@"HospitalName", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(50)]
-        [StringLength(50)]
-        [Display(Name = "Hospital name")]
-        public string HospitalName { get; set; } // HospitalName (length: 50)
-
-        [Column(@"HospitalAddress", Order = 3, TypeName = "nvarchar")]
-        [MaxLength(200)]
-        [StringLength(200)]
-        [Display(Name = "Hospital address")]
-        public string HospitalAddress { get; set; } // HospitalAddress (length: 200)
-
-        [Column(@"Hotline", Order = 4, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Hotline")]
-        public string Hotline { get; set; } // Hotline (length: 20)
-
-        [Column(@"IsDeleted", Order = 5, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Reverse navigation
-
-        /// <summary>
-        /// Child HospitalDepartments where [HospitalDepartment].[HospitalID] point to this entity (FK__HospitalF__Hospi__114A936A)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment.FK__HospitalF__Hospi__114A936A
-        /// <summary>
-        /// Child HospitalSuggestings where [HospitalSuggesting].[HospitalID] point to this entity (FK__HospitalS__Hospi__00200768)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK__HospitalS__Hospi__00200768
-
-        public Hospital()
-        {
-            IsDeleted = false;
-            HospitalDepartments = new System.Collections.Generic.List<HospitalDepartment>();
-            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
         }
     }
 
@@ -1349,48 +1234,6 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // Department
-    [Table("Department", Schema = "dbo")]
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class Department
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(@"FacultyID", Order = 1, TypeName = "int")]
-        [Index(@"PK__Faculty__306F636E346C2475", 1, IsUnique = true, IsClustered = true)]
-        [Required]
-        [Key]
-        [Display(Name = "Faculty ID")]
-        public int FacultyId { get; set; } // FacultyID (Primary key)
-
-        [Column(@"FacultyName", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(200)]
-        [StringLength(200)]
-        [Display(Name = "Faculty name")]
-        public string FacultyName { get; set; } // FacultyName (length: 200)
-
-        [Column(@"IsDeleted", Order = 3, TypeName = "bit")]
-        [Display(Name = "Is deleted")]
-        public bool? IsDeleted { get; set; } // IsDeleted
-
-        // Reverse navigation
-
-        /// <summary>
-        /// Child HospitalDepartments where [HospitalDepartment].[FacultyID] point to this entity (FK__HospitalF__Facul__10566F31)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalDepartment> HospitalDepartments { get; set; } // HospitalDepartment.FK__HospitalF__Facul__10566F31
-        /// <summary>
-        /// Child HospitalSuggestings where [HospitalSuggesting].[FacultyID] point to this entity (FK__HospitalS__Facul__7F2BE32F)
-        /// </summary>
-        public virtual System.Collections.Generic.ICollection<HospitalSuggesting> HospitalSuggestings { get; set; } // HospitalSuggesting.FK__HospitalS__Facul__7F2BE32F
-
-        public Department()
-        {
-            IsDeleted = false;
-            HospitalDepartments = new System.Collections.Generic.List<HospitalDepartment>();
-            HospitalSuggestings = new System.Collections.Generic.List<HospitalSuggesting>();
-        }
-    }
-
     // Appointment
     [Table("Appointment", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -1625,22 +1468,6 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // Department
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class DepartmentConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Department>
-    {
-        public DepartmentConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public DepartmentConfiguration(string schema)
-        {
-            Property(x => x.FacultyName).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-        }
-    }
-
     // Employee
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class EmployeeConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Employee>
@@ -1727,58 +1554,20 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
-    // Hospital
+    // HospitalSuggestion
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Hospital>
+    public class HospitalSuggestionConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HospitalSuggestion>
     {
-        public HospitalConfiguration()
+        public HospitalSuggestionConfiguration()
             : this("dbo")
         {
         }
 
-        public HospitalConfiguration(string schema)
+        public HospitalSuggestionConfiguration(string schema)
         {
-            Property(x => x.HospitalName).IsOptional();
-            Property(x => x.HospitalAddress).IsOptional();
-            Property(x => x.Hotline).IsOptional();
+            Property(x => x.DiseaseName).IsOptional();
+            Property(x => x.HospitalList).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
-        }
-    }
-
-    // HospitalDepartment
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalDepartmentConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HospitalDepartment>
-    {
-        public HospitalDepartmentConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public HospitalDepartmentConfiguration(string schema)
-        {
-            Property(x => x.HospitalId).IsOptional();
-            Property(x => x.FacultyId).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-
-        }
-    }
-
-    // HospitalSuggesting
-    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class HospitalSuggestingConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<HospitalSuggesting>
-    {
-        public HospitalSuggestingConfiguration()
-            : this("dbo")
-        {
-        }
-
-        public HospitalSuggestingConfiguration(string schema)
-        {
-            Property(x => x.ResultPaperId).IsOptional().IsFixedLength();
-            Property(x => x.HospitalId).IsOptional();
-            Property(x => x.FacultyId).IsOptional();
-            Property(x => x.IsDeleted).IsOptional();
-
         }
     }
 
@@ -2002,7 +1791,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.StartTime).IsOptional();
             Property(x => x.FinishTime).IsOptional();
-            Property(x => x.SlotName).IsOptional().IsFixedLength();
+            Property(x => x.SlotName).IsOptional();
             Property(x => x.SampleGroupId).IsOptional();
 
         }

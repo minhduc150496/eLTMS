@@ -92,6 +92,7 @@
 
     </div>
 </div>
+
 <div id="myModalLabTestingIndexResult1" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
@@ -127,12 +128,14 @@
 
     </div>
 </div>
+<form action="/LabTest/ExportOrderDetailToPdf" style="display:none" id="hiddenForm" method="post"> <input type="text" class="form-control" id="txtResultCode" name="code"></form>
 <script id="dataLabTestingResult-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Getting}}</td>
         <td>{{Name}}</td>
         <td>{{Group}}</td>
         <td>{{Status}}</td>
+        
         <td>
             <button class="btn btn-success btn-printResult" data-id="{{Getting}}"><i class="fa fa-print"></i></button>
 

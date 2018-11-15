@@ -291,7 +291,7 @@ namespace eLTMS.Web.Controllers
         }
 
 
-       // [HttpPost]
+        [HttpPost]
         public ActionResult ExportOrderDetailToPdf(string code)
         {
             StringBuilder sb = new StringBuilder();

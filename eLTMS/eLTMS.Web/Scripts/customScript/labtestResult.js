@@ -144,14 +144,11 @@ var homeController = {
 
         });
         $('.btn-printResult').off('click').on('click', function () {
-            var id = $(this).data('id');
-            homeController.loadDataResultId(id);
-           // $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
-           // $('#myModalLabTestingIndexResult1').modal('show');
-            //window.open(
-            //    'localhost:52406/LabTest/Result',
-            //    '_blank'
-            //);
+            var code = $(this).data('id');
+            $('#txtResultCode').val(code)
+            //homeController.print(code);
+            $('#hiddenForm').submit();
+
         });
     },
    
@@ -221,6 +218,27 @@ var homeController = {
                 } $('#txtResult').val(''); $('#btnAddNewResult').hide();
             }
         })
+    },
+    print: function (code) {
+        $.ajax({
+            url: '/LabTest/ExportOrderDetailToPdf',
+            data: {
+                code: code
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success == true) {
+                    toastr.success("Thành công.");
+                }
+                else {
+                    toastr.error("Không thành công.");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     },
     loadDataResultId: function (id) {
         $.ajax({
