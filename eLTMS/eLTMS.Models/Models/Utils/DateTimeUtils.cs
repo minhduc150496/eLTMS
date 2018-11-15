@@ -49,5 +49,12 @@ namespace eLTMS.Models.Utils
             }
             return s;
         }
+        public static string ConvertSecondToShortHour(int second)
+        {
+            int hour = second / 60 / 60;
+            int min = second / 60 % 60;
+            string s = string.Format("{0}:{1:D2}", hour, min);
+            return s;
+        }
     }
 }

@@ -64,7 +64,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleDuration, src => src.MapFrom(x => x.SampleGroup.GettingDuration))
                 .ForMember(dst => dst.OpenTime, src => src.MapFrom(x => x.SampleGroup.OpenTime))
                 .ForMember(dst => dst.CloseTime, src => src.MapFrom(x => x.SampleGroup.CloseTime))
-                .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests));
+                .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTests))
+                .ForMember(dst => dst.SlotDtos, src => src.MapFrom(x => x.SampleGroup.Slots));
 
 
                 cfg.CreateMap<SampleGroup, SampleGroupDto>()
@@ -207,8 +208,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
 
-                //cfg.CreateMap<Slot, SlotDto>()
-                //.ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date == null ? "" : ((DateTime)x.Date).ToString("yyyy-MM-dd")));
+                cfg.CreateMap<Slot, SlotDto>();
 
                 cfg.CreateMap<Feedback, FeedbackDto>()
                .ForMember(dst => dst.FeedbackId, src => src.MapFrom(x => x.FeedbackId))

@@ -24,5 +24,7 @@ namespace eLTMS.Models.Models.dto
         public int? SampleGroupId { get; set; } // SampleGroupID
         public string Description { get; set; } // Description (length: 500)
         public bool? IsDeleted { get; set; } // IsDeleted
+
+        public List<SlotDto> SlotDtos { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Slot> GetByDateAndSampleId(DateTime date, int sampleId);
         List<Slot> GetAvailableSlots();
         bool CreateNewSlotsForAMonth(int year, int month);
+        List<Slot> GetAllSlots();
     }
     public class SlotService : ISlotService
     {
@@ -90,5 +91,11 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
+        public List<Slot> GetAllSlots()
+        {
+            var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var slots = slotRepo.GetAllSlot();
+            return slots;
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Slot> GetByDateAndSampleGroupId(DateTime date, int sampleId);
         List<Slot> GetAvailableSlots();
         List<Slot> GetAllSlot();
+        List<Slot> GetBySampleGroupId(int sampleGroupId);
     }
     public class SlotRepository : RepositoryBase<Slot>, ISlotRepository
     {
@@ -54,6 +55,15 @@ namespace eLTMS.DataAccess.Repositories
         public List<Slot> GetAllSlot()
         {
             var result = DbSet.AsQueryable()
+                .ToList();
+            return result;
+        }
+
+        // Author: DucBM
+        public List<Slot> GetBySampleGroupId(int sampleGroupId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.SampleGroupId == sampleGroupId)
                 .ToList();
             return result;
         }
