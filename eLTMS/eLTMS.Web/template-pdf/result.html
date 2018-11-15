@@ -1,7 +1,4 @@
-﻿@{
-    ViewBag.Title = "Result";
-}
-<html>
+﻿<html>
 <head>
     <title>Plumsail Invoice</title>
     <style>
@@ -28,8 +25,15 @@
             overflow: hidden;
             background: #fff
         }
+        h3 {
+            font-size: 20px;
+            color: #F05234;
 
-
+        }
+        h1 {
+            font-size: 20px;
+            color: #000080;
+        }
             #invoice.cancelled {
                 background: #fff url(/images/cancelled.gif) top left
             }
@@ -176,7 +180,7 @@
         }
 
         #invoice-amount .quantity_th {
-            width: 13%
+            width: 13%;text-align:center;
         }
 
         #invoice-amount .subtotal_th {
@@ -185,6 +189,7 @@
 
         #invoice-amount .unitprice_th {
             width: 15%;
+            text-align:center;
         }
 
         #invoice-amount .colValue {
@@ -197,6 +202,7 @@
 
         #invoice-amount .colUnit {
             width: 30%;
+            text-align: center;
         }
 
         #invoice-amount .colNomal {
@@ -209,7 +215,7 @@
 
         <div id="invoice-header">
             <div class="vcard" id="company-address">
-                <div class="fn org"><strong>Medic Lab</strong></div>
+                <div class="fn org"><h1><strong>Medic Lab</strong></h1></div>
                 <div class="adr">
                     <div class="street-address">
                         Địa chỉ: 254 Hòa Hảo, Quận 10, TP Hồ Chí Minh
@@ -224,20 +230,15 @@
 
         <!-- #invoice-header -->
         <div id="invoice-info">
-            <h4>Phiếu kết quả xét nghiệm</h4>
-            <h3>{{InvoiceDate}}</h3>
+            <h1>Phiếu kết quả xét nghiệm</h1>
+            <h2>{{InvoiceDate}}</h2>
         </div>
 
         <!-- #invoice-info -->
         <div class="vcard" id="client-details">
-            <div class="fn">{{ClientName}}</div>
-            <div class="org">{{ClientCompany}}</div>
-            <div class="adr">
-                <div class="street-address">{{ClientAddress}}</div>
-                <!-- street-address -->
-                <div class="locality">{{ClientCity}}</div>
-                <div id="client-postcode"><span class="region">{{ClientRegion}}</span> <span class="postal-code">{{ClientZip}}</span></div>
-            </div>
+            <div class="fn">Tên: {{ClientName}}</div>
+            <div class="org">Điện thoại: {{ClientCompany}}</div>
+            <div class="adr">ĐỊa chỉ: {{ClientAddress}}</div>
         </div>
 
         <!-- #client-details vcard -->
@@ -251,14 +252,9 @@
                     <th class="subtotal_th">Đơn Vị</th>
                 </tr>
             </thead>
-            <tbody id="tblDataResult"></tbody>
-            <tfoot>
-                <tr id="total_tr">
-                    <td colspan="2">&nbsp;</td>
-                    <td colspan="2" class="total" id="total_currency"><span class="currency">$ </span> Total</td>
-                    <td class="total">${{Total}}</td>
-                </tr>
-            </tfoot>
+            <tbody id="tblDataResult">
+                {{DataResult}}
+            </tbody>
         </table>
 
         <!-- invoice-amount -->
@@ -289,10 +285,9 @@
         <td class="colId">{{LabTestingId}}</td>
         <td>{{Name}}</td>
         <td>{{Value}}</td>
-        <td style="{{changeColor}}">{{Status}}</td>
+        <td class="unitprice_th" style="{{changeColor}}">{{Status}}</td>
         <td>{{Nomal}}</td>
         <td>{{Unit}}</td>
 
     </tr>
 </script>
-<script src="~/Scripts/customScript/labtestResult.js"></script>

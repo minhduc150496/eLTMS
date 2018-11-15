@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
 
 namespace eLTMS.Web.Controllers
 {
@@ -44,6 +45,14 @@ namespace eLTMS.Web.Controllers
             return View();
         }
         public ActionResult LabTestingResult()
+        {
+            return View();
+        }
+        public ActionResult LabTestingDone()
+        {
+            return View();
+        }
+        public ActionResult Result()
         {
             return View();
         }
@@ -126,6 +135,20 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult GetAllResult(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllResult();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public JsonResult GetAllLabTestings()
         {
             var queryResult = _labTestingService.GetAllLabTesting();
@@ -149,7 +172,6 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
         [HttpPost]
         public JsonResult UpdateLabTest(LabTest labTest)
         {
@@ -267,5 +289,56 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
+
+       // [HttpPost]
+        public ActionResult ExportOrderDetailToPdf(string code)
+        {
+            StringBuilder sb = new StringBuilder();
+            var queryResult2 = _appointmentService.GetResultByAppCode(code);
+            var result2 = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult2);
+            var queryResult1 = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var result1 = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult1);
+            foreach (var item1 in result1)
+            {
+                var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(item1.LabTestingId);
+                var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+             
+                sb.AppendLine($"<tr><td><h3>{item1.LabTestName}</h3><td></tr>");
+                foreach (var item in result)
+                {
+                    sb.AppendLine("<tr>");
+                    sb.AppendLine($"<td class='no'>{item.IndexName}</td>");
+                    sb.AppendLine($"<td class='colUnit'>{item.IndexValue}</td>");
+                    sb.AppendLine($"<td class='colUnit'>{item.LowNormalHigh}</td>");
+                    sb.AppendLine($"<td class='colUnit'>{item.NormalRange}</td>");
+                    sb.AppendLine($"<td class='colUnit'>{item.Unit}</td>");
+                    sb.AppendLine("</tr>");
+                }
+            }
+            var Renderer = new IronPdf.HtmlToPdf();
+            var allData = System.IO.File.ReadAllText(Server.MapPath("~/template-pdf/result.html"));
+            foreach (var item2 in result2)
+            {
+                allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
+                allData = allData.Replace("{{ClientName}}", $"{item2.PatientName}");
+                allData = allData.Replace("{{ClientCompany}}", $"{item2.Phone}");
+                allData = allData.Replace("{{ClientAddress}}", $"{item2.Address}");
+
+            }
+
+            allData = allData.Replace("{{DataResult}}", sb.ToString());
+            var PDF = Renderer.RenderHtmlAsPdf(allData);
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", $"attachment;filename=\"Result.pdf\"");
+            // edit this line to display ion browser and change the file name
+            Response.BinaryWrite(PDF.BinaryData);
+            Response.Flush();
+            Response.End();
+            return null;
+        }
+
+
     }
 }

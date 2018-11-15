@@ -363,7 +363,6 @@ var homeController = {
 
                     }
                     else {
-                        toastr.success("Tạo mới thành công.");
                         $.ajax({
                             url: '/LabTest/UpdateLabTesting',
                             type: 'Post',
@@ -372,11 +371,11 @@ var homeController = {
                             async: false,
                             success: function (res) {
                                 if (!res.success) {
-                                    toastr.success("Update không thành công.");
+                                    toastr.success("Nhận xét không thành công.");
 
                                 }
                                 else {
-                                    toastr.success("Update thành công.");
+                                    toastr.success("Nhận xét thành công.");
                                     homeController.loadDataLabTestingResult();
                                 }
                             }
@@ -440,7 +439,7 @@ var homeController = {
 
                     // We start iterating from 1, because we already read the first row to build the gridColumns array above
                     // We use each cell value and add it to json array, which will be used as dataSource for the grid
-                    for (i = 1, worksheetRowsCount = worksheet.rows().count(); i < worksheetRowsCount; i++) {
+                    for (i = ((worksheet.rows().count())-1); i >0; i--) {
                         newRow = {};
                         row = worksheet.rows(i);
 

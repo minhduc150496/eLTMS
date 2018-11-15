@@ -30,5 +30,6 @@ namespace eLTMS.Models.Models.dto
         public string Conclusion { get; set; }
 
         public bool ResultApproved { get; set; }
+        public DateTime Date { get; set; } // CreateDate
     }
 }

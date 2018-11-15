@@ -13,7 +13,7 @@ namespace eLTMS.DataAccess.Repositories
     public interface ILabTestingRepository : IRepository<LabTesting>
     {
         List<LabTesting> GetAllLabTesting();
-
+        List<LabTesting> GetAllResult();
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllLabTestings();
         LabTesting GetLabTestingById(int id);
@@ -66,6 +66,18 @@ namespace eLTMS.DataAccess.Repositories
 
             var result = DbSet.AsQueryable()
              .Where(x => x.Status.Contains("LabtestDone"))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public List<LabTesting> GetAllResult()
+        {
+
+            var result = DbSet.AsQueryable()
+             .Where(x => x.Status.Contains("DoctorDone"))
              .Include(x => x.LabTest)
              .Include(x => x.SampleGetting.Appointment)
              .Include(x => x.SampleGetting.Sample)
