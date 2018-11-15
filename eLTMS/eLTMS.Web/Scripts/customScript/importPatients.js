@@ -159,7 +159,7 @@ var homeController = {
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
-        $('#avatar').attr('src', data.Avatar);
+        $('#avatar').attr('src', '');
     },
     loadData: function (changePageSize) {
         $.ajax({
