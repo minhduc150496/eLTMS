@@ -969,7 +969,15 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Hospital list")]
         public string HospitalList { get; set; } // HospitalList
 
-        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Column(@"HospitalAdd", Order = 4, TypeName = "nvarchar(max)")]
+        [Display(Name = "Hospital add")]
+        public string HospitalAdd { get; set; } // HospitalAdd
+
+        [Column(@"HospitalPhone", Order = 5, TypeName = "nvarchar(max)")]
+        [Display(Name = "Hospital phone")]
+        public string HospitalPhone { get; set; } // HospitalPhone
+
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
@@ -1567,6 +1575,8 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.DiseaseName).IsOptional();
             Property(x => x.HospitalList).IsOptional();
+            Property(x => x.HospitalAdd).IsOptional();
+            Property(x => x.HospitalPhone).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
         }
     }

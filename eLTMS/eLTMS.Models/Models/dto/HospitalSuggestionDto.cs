@@ -11,6 +11,7 @@ namespace eLTMS.Models.Models.dto
          public string DiseaseName { get; set; } // DiseaseName
          public string HospitalList { get; set; } // HospitalList
          public bool? IsDeleted { get; set; } // IsDeleted
-
+         public string HospitalAdd { get; set; } // HospitalAdd
+          public string HospitalPhone { get; set; } // HospitalPhone
     }
 }

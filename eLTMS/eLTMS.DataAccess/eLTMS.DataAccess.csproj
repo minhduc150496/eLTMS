@@ -73,6 +73,7 @@
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\ExportPaperRepository.cs" />
     <Compile Include="Repositories\ExportPaperDetailRepository.cs" />
+    <Compile Include="Repositories\HospitalSuggestionRepository.cs" />
     <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\ImportPaperDetailRepository.cs" />
     <Compile Include="Repositories\ImportPaperRepository.cs" />

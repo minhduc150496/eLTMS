@@ -150,6 +150,8 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<HospitalSuggestion, HospitalSuggestionDto>()
                 .ForMember(dst => dst.DiseaseName, src => src.MapFrom(x => x.DiseaseName))
                 .ForMember(dst => dst.HospitalList, src => src.MapFrom(x => x.HospitalList))
+                .ForMember(dst => dst.HospitalAdd, src => src.MapFrom(x => x.HospitalAdd))
+                .ForMember(dst => dst.HospitalPhone, src => src.MapFrom(x => x.HospitalPhone))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted));
 
                 cfg.CreateMap<Appointment, AppointmentGetAllDto>()
@@ -158,6 +160,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
                 .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
                 .ForMember(dst => dst.Date, src => src.MapFrom(x => x.ReturnTime))
+                .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 
                 cfg.CreateMap<Appointment, AppointmentUpdateDto>()
