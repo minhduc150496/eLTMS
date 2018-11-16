@@ -22,28 +22,13 @@ namespace eLTMS.Web.Api
 
         [HttpGet]
         [Route("api/sample/get-all")]
-        public HttpResponseMessage GetAllLabTest()
+        public HttpResponseMessage GetAllSampleDtos()
         {
-            var sample = _sampleService.GetAll();
-
-            var sampleDtos = Mapper.Map<IEnumerable<Sample>, IEnumerable<SampleDto>>(sample);
-
+            var sampleDtos = _sampleService.GetAllSampleDtos();
             var response = Request.CreateResponse(HttpStatusCode.OK, sampleDtos);
             return response;
         }
-
-        /*
-         *  Author: DucBM
-         */
-        [HttpGet]
-        [Route("api/sample/get-available-slots")]
-        public HttpResponseMessage GetAvailableSlotsIn30Days()
-        {
-            var sampleGettingCalendar = _sampleService.GetAvailableSlots();
-            var response = Request.CreateResponse(HttpStatusCode.OK, sampleGettingCalendar);
-            return response;
-        }
-
+        
         [HttpGet]
         [Route("api/sample/getSampleById")]
         public HttpResponseMessage GetSampleById(int id)

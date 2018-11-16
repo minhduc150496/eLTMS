@@ -1,7 +1,9 @@
-﻿using eLTMS.DataAccess.Infrastructure;
+﻿using AutoMapper;
+using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
 using eLTMS.Models.Models.dto;
+using eLTMS.Models.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,10 @@ namespace eLTMS.BusinessLogic.Services
     public interface ISampleService
     {
         List<Sample> GetAll();
+        List<SampleDto> GetAllSampleDtos();
         //bool Create(LabTest newTesting);
         //bool CreateMany(List<LabTest> newTestings);
         //bool Update(LabTest testing);
-        SampleGettingCalendar GetAvailableSlots();
         bool Delete(int id);
         bool AddSample(Sample sample);
         Sample GetSampleById(int id);
@@ -31,17 +33,34 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
-
-        public SampleGettingCalendar GetAvailableSlots()
-        {
-            return null;
-        }
-
+       
         public List<Sample> GetAll()
         {
-            var repo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
-            var sample = repo.GetAllSamples();
-            return sample;
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var samples = sampleRepo.GetAllSamples();
+            return samples;
+        }
+
+        public List<SampleDto> GetAllSampleDtos()
+        {
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
+            var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var samples = sampleRepo.GetAllSamples();
+            foreach (var sample in samples)
+            {
+                var slots = slotRepo.GetBySampleGroupId((int)sample.SampleGroupId);
+                sample.SampleGroup.Slots = slots;
+            }
+            var sampleDtos = Mapper.Map<IEnumerable<Sample>, IEnumerable<SampleDto>>(samples).ToList();
+            foreach (var sampleDto in sampleDtos)
+            {
+                foreach (var slot in sampleDto.SlotDtos)
+                {
+                    slot.FmStartTime = DateTimeUtils.ConvertSecondToShortHour(slot.StartTime);
+                    slot.FmFinishTime = DateTimeUtils.ConvertSecondToShortHour(slot.FinishTime);
+                }
+            }
+            return sampleDtos;
         }
 
         public Sample GetSampleById(int id)

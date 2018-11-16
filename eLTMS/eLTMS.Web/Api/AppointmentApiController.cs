@@ -4,11 +4,17 @@ using eLTMS.DataAccess.Models;
 using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Web.Script.Serialization;
+using Google.Apis.Auth.OAuth2;
+using System.Threading.Tasks;
 
 namespace eLTMS.Web.Api
 {
@@ -20,47 +26,99 @@ namespace eLTMS.Web.Api
             this._appointmentService = appointmentService;
         }
 
-        //[HttpPost]
-        //[Route("api/appointment/create")]
-        //public HttpResponseMessage Create(AppointmentDto appoinDto)
-        //{
-        //    // Convert AppointmentDto to Appointment (DTO to Entity)
-        //    Appointment appointment = Mapper.Map<AppointmentDto, Appointment>(appoinDto);
+        /*async Task<string> GetToken()
+        {
+            GoogleCredential credential;
+            using (var stream = new System.IO.FileStream("gckey.json",
+                System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            {
+                credential = GoogleCredential.FromStream(stream).CreateScoped(
+                    new string[] {
+                "https://www.googleapis.com/auth/firebase.database",
+                "https://www.googleapis.com/auth/userinfo.email" }
+                    );
+            }
 
-        //    appointment.PatientId = appoinDto.PatientId;
-        //    appointment.SampleGettings = new List<SampleGetting>();
-        //    foreach (var sampleGettingDto in appoinDto.SampleGettingDtos)
-        //    {
-        //        var sampleGetting = new SampleGetting();
-        //        sampleGetting.SampleId = sampleGettingDto.SampleId;
-        //        sampleGetting.GettingDate = DateTimeUtils.ConvertStringToDate(sampleGettingDto.GettingDate);
-        //        try
-        //        {
-        //            sampleGetting.StartTime = TimeSpan.Parse(sampleGettingDto.StartTime);
-        //            sampleGetting.FinishTime = TimeSpan.Parse(sampleGettingDto.FinishTime);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // bao loi 
-        //        }
-        //        foreach (var labTestId in sampleGettingDto.LabTestIds)
-        //        {
-        //            var labTesting = new LabTesting();
-        //            labTesting.LabTestId = labTestId;
-        //            sampleGetting.LabTestings.Add(labTesting);
-        //        }
-        //        appointment.SampleGettings.Add(sampleGetting);
-        //    }
-        //    // call to AppointmentService
-        //    var success = this._appointmentService.Create(appointment);
-        //    var obj = new
-        //    {
-        //        Success = success,
-        //        Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
-        //    };
-        //    var response = Request.CreateResponse(HttpStatusCode.OK, obj);
-        //    return response;
-        //}
+            ITokenAccess c = credential as ITokenAccess;
+            return await c.GetAccessTokenForRequestAsync();
+        }
+
+        [HttpGet]
+        [Route("api/SendMessage")]
+        public IHttpActionResult SendMessage()
+        {
+            var token = GetToken();
+            var data = new
+            {
+                to = "/topics/news",
+                data = new
+                {
+                    message = "Je suis un garcon",
+                    name = "DucBM",
+                    userId = "123",
+                    status = true
+                }
+            };
+            SendNotification(data);
+            return Ok();
+        }
+
+        public void SendNotification(object data)
+        {
+            var serializer = new JavaScriptSerializer();
+            var json = serializer.Serialize(data);
+            Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+
+            SendNotification(byteArray);
+        }
+
+        public void SendNotification(byte[] byteArray)
+        {
+            try
+            {
+                string server_api_key = ConfigurationManager.AppSettings["SERVER_API_KEY"];
+                string sender_id = ConfigurationManager.AppSettings["SENDER_ID"];
+
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+                tRequest.Method = "POST";
+                tRequest.ContentType = "application/json";
+                tRequest.Headers.Add($"Authorization: key={server_api_key}");
+                tRequest.Headers.Add($"Sender: id={sender_id}");
+
+                tRequest.ContentLength = byteArray.Length;
+                Stream dataStream = tRequest.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                WebResponse tresponse = tRequest.GetResponse();
+                dataStream = tresponse.GetResponseStream();
+                StreamReader tReader = new StreamReader(dataStream);
+
+                string sResponseFromServer = tReader.ReadToEnd();
+
+                tReader.Close();
+                dataStream.Close();
+            }  catch (Exception ex)
+            {
+                //
+            }
+            
+        }*/
+
+        [HttpPost]
+        [Route("api/appointment/create")]
+        public HttpResponseMessage Create(AppointmentDto appoinDto)
+        {
+            // call to AppointmentService
+            var success = this._appointmentService.Create(appoinDto);
+            var obj = new
+            {
+                Success = success,
+                Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
+            };
+            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            return response;
+        }
 
         [HttpGet]
         [Route("api/appointment/get-new-appointments-by-patient-id")]

@@ -1,9 +1,0 @@
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\bin\Debug\netstandard2.0\eLTMS.Model.deps.json
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\bin\Debug\netstandard2.0\eLTMS.Model.dll
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\bin\Debug\netstandard2.0\eLTMS.Model.pdb
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.csprojAssemblyReference.cache
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.csproj.CoreCompileInputs.cache
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.AssemblyInfoInputs.cache
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.AssemblyInfo.cs
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.dll
-C:\Users\MinhDuc\source\repos\eLTMS\eLTMS.Model\obj\Debug\netstandard2.0\eLTMS.Model.pdb

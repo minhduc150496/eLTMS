@@ -163,6 +163,10 @@
         margin-left: 15px;
     }
 
+        .create_appointment_area table ul.ul-price {
+            list-style-type: none;
+        }
+
 .current_appointment_area .edit_btn,
 .create_appointment_area .next_btn,
 .create_appointment_area .prev_btn {

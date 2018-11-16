@@ -15,7 +15,7 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IAppointmentService
     {
-        bool Create(Appointment appointment);
+        bool Create(AppointmentDto appointment);
         List<Appointment> GetNewApp(int patientId);
         List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
@@ -43,11 +43,13 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        public bool Create(Appointment appointment)
+        // Author: DucBM
+        public bool Create(AppointmentDto appointmentDto)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             try
             {
+                var appointment = new Appointment();
                 // Convert AppointmentDto to Appointment
                 var now = DateTime.Now;
                 var sDate = now.ToString("yyyy-MM-dd");
@@ -55,6 +57,25 @@ namespace eLTMS.BusinessLogic.Services
                 var code = sDate + "-" + count;
                 appointment.AppointmentCode = code;
                 appointment.Status = "NEW";
+                appointment.Date = appointmentDto.Date;
+
+                var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+                appointment.SampleGettings = new List<SampleGetting>();
+
+                foreach(var sgDto in appointmentDto.SampleGettingDtos)
+                {
+                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                    sg.LabTestings = new List<LabTesting>();
+                    foreach (var id in sgDto.LabTestIds)
+                    {
+                        var labTesting = new LabTesting();
+                        labTesting.LabTestId = id;
+                        labTesting.SampleGettingId = sg.SampleGettingId;
+                        labTesting.Status = "NEW";
+                        sg.LabTestings.Add(labTesting);
+                    }
+                    appointment.SampleGettings.Add(sg);
+                }
                 // Create
                 appointmentRepo.Create(appointment);
                 var result = this.UnitOfWork.SaveChanges();
