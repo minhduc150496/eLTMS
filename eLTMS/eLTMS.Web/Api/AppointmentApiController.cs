@@ -15,6 +15,7 @@ using System.Web.Http;
 using System.Web.Script.Serialization;
 using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
+using eLTMS.Web.Utils;
 
 namespace eLTMS.Web.Api
 {
@@ -25,86 +26,39 @@ namespace eLTMS.Web.Api
         {
             this._appointmentService = appointmentService;
         }
-
-        /*async Task<string> GetToken()
-        {
-            GoogleCredential credential;
-            using (var stream = new System.IO.FileStream("gckey.json",
-                System.IO.FileMode.Open, System.IO.FileAccess.Read))
-            {
-                credential = GoogleCredential.FromStream(stream).CreateScoped(
-                    new string[] {
-                "https://www.googleapis.com/auth/firebase.database",
-                "https://www.googleapis.com/auth/userinfo.email" }
-                    );
-            }
-
-            ITokenAccess c = credential as ITokenAccess;
-            return await c.GetAccessTokenForRequestAsync();
-        }
-
+        
         [HttpGet]
         [Route("api/SendMessage")]
         public IHttpActionResult SendMessage()
         {
-            var token = GetToken();
-            var data = new
+            var tokens = new List<string>();
+            tokens.Add("fbrXtn3nY94:APA91bGxtktkg-3aYO-D9LEDiDD1sYClUPwjrfag7zFRejq6gfqHgheX1k7Qzad1A_MQhD-TEcyXfiZVUwv8ZLl78Dk51lMhKEyYIXcr-DcgSvSTW0DU0gJTRk9126kKxbL4DUoOHg_z");
+            tokens.Add("eu0prJJXZtE:APA91bFqjZ0XWrAkgDdd7CFgjpy80w3f6mJrPS1n1Q7NIl9Z9Eng4OruP56Qqlk-r5eAPtX7ciN_R04IBQVcsJAksGP-fArymagg9PhQYe6Pxc3UjCMGNEqZuqS4qC6g3AT-pi64_G0B");
+            tokens.Add("f2tPIkvPYmc:APA91bG9DMXwl5hpUAYU1uYFyn-e7r3BR6Qb4yJdvk7BUwfE-_PZZ94fqrIxRfkQ-9scD6ZNmBdL_BQc-EUiHOTQ9hhF0rFO2c_ycidzZUmSKzjEGxsymF3Ul9TY8VgU_stLN_U6UZ0-");
+            foreach(var token in tokens)
             {
-                to = "/topics/news",
-                data = new
+                var data = new
                 {
-                    message = "Je suis un garcon",
-                    name = "DucBM",
-                    userId = "123",
-                    status = true
+                    to = token,
+                    data = new
+                    {
+                        message = "Je suis un garcon",
+                        name = "DucBM",
+                        userId = "123",
+                        status = true
+                    }
+                };
+                try
+                {
+                    SendNotificationUtils.SendNotification(data);
+                } catch (Exception ex)
+                {
+                    //
                 }
-            };
-            SendNotification(data);
+            }
             return Ok();
         }
-
-        public void SendNotification(object data)
-        {
-            var serializer = new JavaScriptSerializer();
-            var json = serializer.Serialize(data);
-            Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-
-            SendNotification(byteArray);
-        }
-
-        public void SendNotification(byte[] byteArray)
-        {
-            try
-            {
-                string server_api_key = ConfigurationManager.AppSettings["SERVER_API_KEY"];
-                string sender_id = ConfigurationManager.AppSettings["SENDER_ID"];
-
-                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
-                tRequest.Method = "POST";
-                tRequest.ContentType = "application/json";
-                tRequest.Headers.Add($"Authorization: key={server_api_key}");
-                tRequest.Headers.Add($"Sender: id={sender_id}");
-
-                tRequest.ContentLength = byteArray.Length;
-                Stream dataStream = tRequest.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-
-                WebResponse tresponse = tRequest.GetResponse();
-                dataStream = tresponse.GetResponseStream();
-                StreamReader tReader = new StreamReader(dataStream);
-
-                string sResponseFromServer = tReader.ReadToEnd();
-
-                tReader.Close();
-                dataStream.Close();
-            }  catch (Exception ex)
-            {
-                //
-            }
-            
-        }*/
-
+        
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)

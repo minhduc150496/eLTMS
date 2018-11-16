@@ -51,7 +51,7 @@
         <!-- Logo -->
             <a href="index2.html" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>A</b>LT</span>
+                <span class="logo-mini"><b>M</b>L</span>
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><b>Medic</b>Lab</span>
             </a>
@@ -325,6 +325,12 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!--<li class="header">MAIN NAVIGATION</li>-->
 
+                    <li>
+                        <a href="@Url.Action("","Receptionist")">
+                            <i class="fa fa-calendar"></i>
+                            <span>Quản lý cuộc hẹn</span>
+                        </a>
+                    </li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-industry"></i>
@@ -368,19 +374,13 @@
                             <li><a href="@Url.Action("Employees","Employee")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Nhân viên</span></a></li>
                         </ul>
                     </li>
-
-                    <li class="treeview">
-                        <a href="#">
+                    <li>
+                        <a href="@Url.Action("Feedbacks","Feedback")">
                             <i class="fa fa-newspaper-o"></i>
                             <span>Quản lý Feedback</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
                         </a>
-                        <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Feedbacks","Feedback")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Feedback</span></a></li>
-                        </ul>
                     </li>
+
                 </ul>
             <!-- /.sidebar -->
             <!-- /.sidebar -->
@@ -604,6 +604,8 @@
     <script src="~/Assets/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="~/Assets/dist/js/demo.js"></script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>
 

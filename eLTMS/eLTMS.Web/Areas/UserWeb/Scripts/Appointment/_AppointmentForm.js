@@ -184,9 +184,10 @@ var Controller = {
                 labTest.FmPrice = labTest.Price.toLocaleString("VN-vi");
             }
         }
-        console.log(Model.sampleDtos);
+        //console.log(Model.sampleDtos);
 
         // config Firebase
+        /*
         var config = {
             apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
             authDomain: "eltms-test1.firebaseapp.com",
@@ -200,7 +201,7 @@ var Controller = {
 
         Model.firebaseDB.on("value", function (snapshot) {
             Model.bookings = snapshot.val();
-        });
+        });/**/
         
     }, // end Action
     renderStep2Html: function () {

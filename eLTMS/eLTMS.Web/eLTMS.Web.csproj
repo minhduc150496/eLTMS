@@ -310,6 +310,7 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\SendNotificationUtils.cs" />
     <Compile Include="Validator\EmployeeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7067,6 +7068,7 @@
       <LastGenOutput>eLTMS.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="firebase-messaging-sw.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
