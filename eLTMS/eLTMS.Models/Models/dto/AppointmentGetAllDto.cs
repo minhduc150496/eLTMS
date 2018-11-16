@@ -15,7 +15,7 @@ namespace eLTMS.Models.Models.dto
 
         public string Address { get; set; }
         public DateTime Date { get; set; }
-
+        public string Conclusion { get; set; }
         public List<SampleGettingDto> SampleGettingDtos { get; set; }
     }
 }

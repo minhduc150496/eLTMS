@@ -41,13 +41,18 @@ namespace eLTMS.DataAccess.Infrastructure
             //    return (TRepository)repo;
             //}
 
+            if (typeof(TRepository) == typeof(IHospitalSuggestionRepository))
+            {
+                dynamic repo = new HospitalSuggestionRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
             if (typeof(TRepository) == typeof(ISupplyRepository))
             {
                 dynamic repo = new SupplyRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
-            
             if (typeof(TRepository) == typeof(IAccountRepository))
             {
                 dynamic repo = new AccountRepository();

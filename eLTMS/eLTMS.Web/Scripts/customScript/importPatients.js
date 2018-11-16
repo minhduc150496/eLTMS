@@ -79,7 +79,7 @@ var homeController = {
         })
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới bệnh nhân');
-            //homeController.resetForm();
+            homeController.resetForm();
             $('#myModal').modal('show');
         });   
         $('.btn-edit').off('click').on('click', function () {
@@ -130,7 +130,6 @@ var homeController = {
             success: function (response) {
                 if (response.sucess) {
                     var data = response.data;
-                    //console.log(data);
                     $('#txtPatientId').val(data.PatientId);
                     $('#txtAccountId').val(data.AccountId);
                     $('#txtCode').val(data.PatientCode);

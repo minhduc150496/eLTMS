@@ -21,8 +21,8 @@ namespace eLTMS.Web.Controllers
         private readonly ILabTestingService _labTestingService;
         private readonly ILabTestingIndexService _labTestingIndexService;
         private readonly IAppointmentService _appointmentService;
-        //private readonly IImportPaperService _importPaperService;
-        public LabTestController(IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        private readonly IHospitalSuggestionService _hospitalSuggestionService;
+        public LabTestController(IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._appointmentService = appointmentService;
@@ -30,6 +30,7 @@ namespace eLTMS.Web.Controllers
             this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
             this._sampleGroupService = sampleGroupService;
+            this._hospitalSuggestionService = hospitalSuggestionService;
         }
         public ActionResult Index()
         {
@@ -291,7 +292,7 @@ namespace eLTMS.Web.Controllers
         }
 
 
-       // [HttpPost]
+        [HttpPost]
         public ActionResult ExportOrderDetailToPdf(string code)
         {
             StringBuilder sb = new StringBuilder();
@@ -324,7 +325,12 @@ namespace eLTMS.Web.Controllers
                 allData = allData.Replace("{{ClientName}}", $"{item2.PatientName}");
                 allData = allData.Replace("{{ClientCompany}}", $"{item2.Phone}");
                 allData = allData.Replace("{{ClientAddress}}", $"{item2.Address}");
-
+                allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
+                string x = item2.Conclusion + "";
+                var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
+                var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
+                foreach (var item3 in result3)
+                { allData = allData.Replace("{{Hos}}", $"{item3.HospitalList}"); }
             }
 
             allData = allData.Replace("{{DataResult}}", sb.ToString());
