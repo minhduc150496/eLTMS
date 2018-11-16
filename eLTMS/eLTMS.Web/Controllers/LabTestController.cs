@@ -70,6 +70,17 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult GetAllxxx(int page = 1, int pageSize = 20)
+        {
+            var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions("tim");
+            var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
+            return Json(new
+            {
+                success = true,
+                data = result3
+            }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult GetAllSampleGroups(int page = 1, int pageSize = 20)
@@ -296,6 +307,7 @@ namespace eLTMS.Web.Controllers
         public ActionResult ExportOrderDetailToPdf(string code)
         {
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder(); StringBuilder sb2 = new StringBuilder();
             var queryResult2 = _appointmentService.GetResultByAppCode(code);
             var result2 = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult2);
             var queryResult1 = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
@@ -322,18 +334,24 @@ namespace eLTMS.Web.Controllers
             foreach (var item2 in result2)
             {
                 allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
-                allData = allData.Replace("{{ClientName}}", $"{item2.PatientName}");
-                allData = allData.Replace("{{ClientCompany}}", $"{item2.Phone}");
-                allData = allData.Replace("{{ClientAddress}}", $"{item2.Address}");
+                sb2.AppendLine($"<tr><td class='no'>Tên: {item2.PatientName}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'>Địa chỉ: {item2.Address}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'>Điện thoại: {item2.Phone}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
                 foreach (var item3 in result3)
-                { allData = allData.Replace("{{Hos}}", $"{item3.HospitalList}"); }
+                {                 
+                    sb1.AppendLine($"<tr><td class='no'><strong>{item3.HospitalList}</strong></td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'>{item3.HospitalAdd}</td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'>{item3.HospitalPhone}</td></tr>");
+                }               
             }
 
             allData = allData.Replace("{{DataResult}}", sb.ToString());
+            allData = allData.Replace("{{DataResult1}}", sb1.ToString());
+            allData = allData.Replace("{{DataResult2}}", sb2.ToString());
             var PDF = Renderer.RenderHtmlAsPdf(allData);
             Response.Clear();
             Response.ContentType = "application/pdf";

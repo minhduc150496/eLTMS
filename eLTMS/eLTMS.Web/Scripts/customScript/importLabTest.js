@@ -299,6 +299,7 @@ var homeController = {
         });
         $('#btnClose').off('click').on('click', function () {
             $('#txtResult').val('');
+            homeController.loadDataLabTestingResult();
         });
         $('.btn-edit').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật xét nghiệm');
@@ -773,7 +774,7 @@ var homeController = {
                     });
                     $('#tblDataLabTestingResult').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadDataLabTesting();
+                        homeController.loadDataLabTestingResult();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
