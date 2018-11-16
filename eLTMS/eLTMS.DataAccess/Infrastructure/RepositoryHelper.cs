@@ -161,6 +161,13 @@ namespace eLTMS.DataAccess.Infrastructure
                 return (TRepository)repo;
             }
 
+            if (typeof(TRepository) == typeof(ITokenRepository))
+            {
+                dynamic repo = new TokenRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+
             TRepository repository = null;
             TryGetRepositoryPartial<TRepository>(unitOfWork, ref repository);
             return repository;

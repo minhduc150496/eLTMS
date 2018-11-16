@@ -28,18 +28,15 @@ namespace eLTMS.Web.Api
         }
         
         [HttpGet]
-        [Route("api/SendMessage")]
+        [Route("api/SendMessage")] // just for testing
         public IHttpActionResult SendMessage()
         {
-            var tokens = new List<string>();
-            tokens.Add("fbrXtn3nY94:APA91bGxtktkg-3aYO-D9LEDiDD1sYClUPwjrfag7zFRejq6gfqHgheX1k7Qzad1A_MQhD-TEcyXfiZVUwv8ZLl78Dk51lMhKEyYIXcr-DcgSvSTW0DU0gJTRk9126kKxbL4DUoOHg_z");
-            tokens.Add("eu0prJJXZtE:APA91bFqjZ0XWrAkgDdd7CFgjpy80w3f6mJrPS1n1Q7NIl9Z9Eng4OruP56Qqlk-r5eAPtX7ciN_R04IBQVcsJAksGP-fArymagg9PhQYe6Pxc3UjCMGNEqZuqS4qC6g3AT-pi64_G0B");
-            tokens.Add("f2tPIkvPYmc:APA91bG9DMXwl5hpUAYU1uYFyn-e7r3BR6Qb4yJdvk7BUwfE-_PZZ94fqrIxRfkQ-9scD6ZNmBdL_BQc-EUiHOTQ9hhF0rFO2c_ycidzZUmSKzjEGxsymF3Ul9TY8VgU_stLN_U6UZ0-");
+            var tokens = _appointmentService.GetAllTokens();
             foreach(var token in tokens)
             {
                 var data = new
                 {
-                    to = token,
+                    to = token.TokenString,
                     data = new
                     {
                         message = "Je suis un garcon",
@@ -70,6 +67,32 @@ namespace eLTMS.Web.Api
                 Success = success,
                 Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
             };
+            if (success)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Je suis un garcon",
+                            name = "DucBM",
+                            userId = "123",
+                            status = true
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }

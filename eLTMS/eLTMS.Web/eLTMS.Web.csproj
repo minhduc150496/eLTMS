@@ -7680,6 +7680,7 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\receptionistSampleGettings.js" />
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
     <Content Include="Scripts\customScript\Feedback.js" />
@@ -7743,6 +7744,7 @@
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
     <Content Include="Views\LabTest\Result.cshtml" />
     <Content Include="Views\LabTest\LabTestingDone.cshtml" />
+    <Content Include="Views\Receptionist\SampleGettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

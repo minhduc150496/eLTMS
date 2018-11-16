@@ -24,6 +24,25 @@ namespace eLTMS.Web.Controllers
             return View();
         }
 
+        // DucBM
+        public ActionResult SampleGettings()
+        {
+            return View("SampleGettings");
+        }
+
+        [HttpGet]
+        public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
+        {
+            var queryResult = _receptionistService.GetSampleGettingsBySampleGroupId(sampleGroupId);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<SampleGetting>, IEnumerable<SampleGettingForReceptionistDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )

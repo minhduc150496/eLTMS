@@ -48,7 +48,7 @@ namespace eLTMS.DataAccess.Repositories
                  {
                      result.Add(item);
                  }
-             } kkhoan ô
+             } 
              return result;*/ 
             return null;
         }

@@ -12,7 +12,6 @@ namespace eLTMS.Web.Utils
 {
     public class SendNotificationUtils
     {
-
         public static void SendNotification(object data)
         {
             var serializer = new JavaScriptSerializer();

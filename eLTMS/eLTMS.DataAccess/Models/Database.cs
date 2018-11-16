@@ -47,6 +47,28 @@ namespace eLTMS.DataAccess.Models
 
 
 
+    // Token
+    [Table("Token", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class Token
+    {
+        [Column(@"TokenString", Order = 1, TypeName = "nvarchar(max)")]
+        [Display(Name = "Token string")]
+        public string TokenString { get; set; } // TokenString
+
+        [Column(@"IsDeleted", Order = 2, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"TokenID", Order = 3, TypeName = "int")]
+        [Index(@"PK__Token__658FEE8AE1B80E4B", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Token ID")]
+        public int TokenId { get; set; } // TokenID (Primary key)
+    }
+
     // Table
     [Table("Table", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -415,6 +437,10 @@ namespace eLTMS.DataAccess.Models
         [Column(@"SlotID", Order = 9, TypeName = "int")]
         [Display(Name = "Slot ID")]
         public int? SlotId { get; set; } // SlotID
+
+        [Column(@"GettingDate", Order = 10, TypeName = "datetime")]
+        [Display(Name = "Getting date")]
+        public System.DateTime? GettingDate { get; set; } // GettingDate
 
         // Reverse navigation
 
@@ -1764,6 +1790,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsPaid).IsOptional();
             Property(x => x.TableId).IsOptional();
             Property(x => x.SlotId).IsOptional();
+            Property(x => x.GettingDate).IsOptional();
 
         }
     }
@@ -1875,6 +1902,22 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.SampleGroupId).IsOptional();
             Property(x => x.TableName).IsOptional().IsFixedLength();
 
+        }
+    }
+
+    // Token
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class TokenConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Token>
+    {
+        public TokenConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public TokenConfiguration(string schema)
+        {
+            Property(x => x.TokenString).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 

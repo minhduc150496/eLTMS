@@ -24,6 +24,7 @@ namespace eLTMS.BusinessLogic.Services
         bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sgDtos);
         bool Update(string code, string con);
         bool DeleteAppointment(string appointmentCode);
+        List<Token> GetAllTokens();
     }
     public class AppointmentService : IAppointmentService
     {
@@ -57,14 +58,14 @@ namespace eLTMS.BusinessLogic.Services
                 var code = sDate + "-" + count;
                 appointment.AppointmentCode = code;
                 appointment.Status = "NEW";
-                appointment.Date = appointmentDto.Date;
+                appointment.PatientId = appointmentDto.PatientId;
 
-                var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
                 appointment.SampleGettings = new List<SampleGetting>();
 
                 foreach(var sgDto in appointmentDto.SampleGettingDtos)
                 {
                     var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                    sg.TableId = null;
                     sg.LabTestings = new List<LabTesting>();
                     foreach (var id in sgDto.LabTestIds)
                     {
@@ -188,6 +189,11 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
-        
+        public List<Token> GetAllTokens()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
+            var tokens = repo.GetAll();
+            return tokens;
+        }
     }
 }

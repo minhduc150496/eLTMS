@@ -83,23 +83,22 @@
 
                     <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
                     <button class="btn btn-success" id="btnSearch">Search</button>
-                    Loại xét nghiệm:
+                    Phòng xét nghiệm:
                     <select class="Sample" id="select-sample">
-                        <option value="1">Máu</option>
-                        <option value="2">Nước tiểu</option>
-                        <option value="3">Tế bào học</option>
-                        <option value="4">Phân</option>
-                        <option value="5">Dịch</option>
+                        <option value="1">Máu và Nước tiểu</option>
+                        <option value="2">Tế bào học</option>
+                        <option value="3">Phân</option>
+                        <option value="4">Dịch</option>
                     </select><table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Appointment Code</th>
                                 <th>Họ & tên</th>
-                                <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Thông tin xét nghiệm</th>
+                                <th>Số điện thoại</th>
+                                <th>Giờ xét nghiệm</th>
+                                <th>Bàn</th>
                                 <th>Đã thanh toán</th>
-
                             </tr>
                         </thead>
                         <tbody id="tblData"></tbody>
@@ -418,10 +417,11 @@
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{AppCode}}</td>
-        <td>{{FullName}}</td>
-        <td>{{Phone}}</td>
-        <td>{{Address}}</td>
-        <td>{{StartTime}}</td>
+        <td>{{PatientName}}</td>
+        <td>{{PatientAddress}}</td>
+        <td>{{PatientPhone}}</td>
+        <td>{{FmStartTime}} - {{FmFinishTime}}</td>
+        <td>{{TableName}}</td>
         <td>
             <label class="switch">
                 <input id="{{SampleGettingId}}" onchange="homeController.checkIsPaid({{SampleGettingId}})" onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})" type="checkbox">
@@ -440,7 +440,7 @@
 
 
 
-<script src="~/Scripts/customScript/appScript.js"></script>
+<script src="~/Scripts/customScript/receptionistSampleGettings.js"></script>
 
 
 
