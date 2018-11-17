@@ -163,7 +163,7 @@
                     </div>
                 </form>
                 <form class="form-horizontal" action="/action_page.php">
-                    <div class="form-group">
+                    <div class="form-group" id="mauCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Máu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -296,7 +296,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="nuocTieuCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Nước tiểu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -316,7 +316,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="teBaoHocCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Tế bào học</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -335,7 +335,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="phanCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Phân</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -354,7 +354,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dichCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Dịch</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -445,11 +445,22 @@
   firebase.initializeApp(config);
 
     $( document ).ready(function() {
+        //auto delete
         var autoDeleteMau = setInterval(function(){
             var date = new Date();
+            console.log(date.getMinutes()+'-'+date.getSeconds());
             if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
                 || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
-            console.log( date ); 
+                $.ajax({
+                    url: '/receptionist/CheckAndDelete',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() }, 
+                    success: function (response) {
+                        alert('Đã xóa ' + response.success + ' cuộc hẹn');
+                        homeController.loadDataBySample();
+                    }
+                });
             //clearInterval(getTimeRight);
             }
         }, 1000);

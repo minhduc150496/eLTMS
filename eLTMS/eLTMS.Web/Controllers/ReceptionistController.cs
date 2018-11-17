@@ -68,6 +68,15 @@ namespace eLTMS.Web.Controllers
             });
         }
         [HttpPost]
+        public JsonResult CheckAndDelete(DateTime dateTime)
+       {
+            var result = _receptionistService.CheckAndDeleteMauAndNuocTieu(dateTime);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpPost]
         public JsonResult IsPaid(int sampleGettingId)
         {
             var result = _receptionistService.ChangeIsPaid(sampleGettingId);
@@ -76,5 +85,7 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+        
+        
     }
 }

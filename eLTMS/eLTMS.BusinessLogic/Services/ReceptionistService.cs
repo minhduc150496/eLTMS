@@ -16,6 +16,9 @@ namespace eLTMS.BusinessLogic.Services
         bool ChangeIsPaid(int sampleGettingId);
         List<Appointment> GetAllAppointment();
         List<AppointmentGetBySampleDto> GetAllBySample(int sampleId);
+        int CheckAndDeleteMauAndNuocTieu(DateTime dateTime);
+        int CheckAndDeleteTeBaoAndDich(DateTime dateTime);
+        int CheckAndDeletePhan(DateTime dateTime);
     }
     class ReceptionistService : IReceptionistService
     {
@@ -301,10 +304,10 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
 
-            var apps = appRepo.GetAll();
-            var pas = paRepo.GetAll();
-            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId);
-            var sps = spRepo.GetAll();
+            var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
+            var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
+            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId).Where(p => p.IsDeleted != true);
+            var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
             var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new {
                 app=p,
@@ -334,7 +337,70 @@ namespace eLTMS.BusinessLogic.Services
                 }).ToList();
             return result;
         }
-        
-       
+
+        public int CheckAndDeleteMauAndNuocTieu(DateTime dateTime)
+        {
+            var dateNow = dateTime.Date;
+            //lay so giay trong slot
+            var hours = dateTime.Hour;
+            var minutes = dateTime.Minute;
+            var seconds = dateTime.Second;
+            var time = hours * 3600 + minutes * 60 + seconds;
+
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            try
+            {
+                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
+                var apps = appRepo.GetAll().Where(p => p.Date == dateNow).ToList();
+                var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.IsPaid == false && (p.SampleId == 1 || p.SampleId == 2)).ToList();
+                var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new {
+                    app = p,
+                    pa = c
+                }).ToList();
+                var sgSlots = sgs.Join(slots, p => p.SlotId, c => c.SlotId, (p, c) => new
+                {
+                    sg = p,
+                    slot = c
+                }).ToList();
+                var result = sgSlots.Join(appPas, p => p.sg.AppointmentId,
+                c => c.app.AppointmentId, (p, c) => new
+                {
+                    sgId = p.sg.SampleGettingId
+                }).ToList();
+                var count = 0;
+                if (result.Count > 0)
+                {
+                    
+                    foreach(var item in result)
+                    {
+                        var sg = sgRepo.GetById(item.sgId);
+                        sg.IsDeleted = true;
+                        count++;
+                    }
+                    UnitOfWork.SaveChanges();
+                }
+                return count;
+                   
+            }
+            catch(Exception e)
+            {
+                return 0;
+            }
+        }
+
+        public int CheckAndDeleteTeBaoAndDich(DateTime dateTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CheckAndDeletePhan(DateTime dateTime)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
