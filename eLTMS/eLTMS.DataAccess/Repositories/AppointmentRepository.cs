@@ -18,6 +18,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetOldAppByPatientId(int patientId);
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
+        List<Appointment> GetResultDoneByPatientId(int patientId);
         List<Appointment> GetAllApp();
         Appointment GetAppById(int appId);
         Appointment GetAppointmentByCode(string code);
@@ -97,7 +98,23 @@ namespace eLTMS.DataAccess.Repositories
                 .ToList();
             return result;
         }
+        public List<Appointment> GetResultDoneByPatientId(int patientId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.PatientId == patientId&&x.Status.Contains("DOCTORDONE"))
+                .Include(x => x.Patient)
+                .Include(x => x.Employee)
 
+<<<<<<< HEAD
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
+                .ToList();
+            return result;
+        }
+        public Appointment GetAppointmentByCode(string appCode)
+=======
         public Appointment GetAppointmentById(int id)
         {
             var result = DbSet.AsQueryable()
@@ -120,6 +137,7 @@ namespace eLTMS.DataAccess.Repositories
         }
 
         public Appointment GetAppointmentByCode(string code)
+>>>>>>> 9db750cb4b24a515f05b41741b092bd07bbbe3a8
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(code))

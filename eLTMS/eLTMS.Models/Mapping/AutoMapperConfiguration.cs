@@ -35,14 +35,10 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
                 .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
-                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth))
+                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.Value.ToString("dd-MM-yyyy")))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
-                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress))
-                .ForMember(dst => dst.Avatar, src => src.MapFrom(x => x.AvatarUrl));
-
-                cfg.CreateMap<PatientDto, Patient>()
-                .ForMember(dst => dst.AvatarUrl, src => src.MapFrom(x => x.Avatar));
-
+                .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
+          
                 cfg.CreateMap<LabTest, LabTestDto>()
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTestName))

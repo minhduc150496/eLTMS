@@ -61,6 +61,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="lblPopupTitle">Mã bệnh nhân</h4>
             </div>
+            <button class="btn btn-success" id="btnHistory">Lịch sử</button>
             <div class="modal-body">
                 <form class="form-horizontal" action="/action_page.php">
 
@@ -107,7 +108,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Ngày tháng năm sinh</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" value="06-10-2018" id="txtDate" readonly>
+                            <input type="text" class="form-control" id="txtDate">
                         </div>
                     </div>
                     <div class="form-group">
@@ -146,7 +147,38 @@
 </div>
 
 
+<div id="myModalHistory" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Danh sách các kết quả xét nghiệm</h4>
+            </div>
+            <div class="modal-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã lịch hẹn</th>
+                            <th>Ngày xét nghiệm</th>
+                            <th>Kết luận xét nghiệm</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDataLabTestingResult"></tbody>
+                </table>
+                <div style="margin-left:35%" id="pagination" class="pagination"></div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 <script id="data-template" type="x-tmpl-mustache">
@@ -155,14 +187,27 @@
         <td>{{FullName}}</td>
         <td>{{PhoneNumber}}</td>
         <td>{{HomeAddress}}</td>
-            <td>
+        <td>
             <button class="btn btn-primary btn-edit" data-id="{{PatientId}}"><i class="fa fa-pencil-square-o"></i></button>
             <button class="btn btn-danger btn-delete" data-id="{{PatientId}}"><i class="fa fa-trash"></i></button>
 
         </td>
     </tr>
 </script>
+<form action="/LabTest/ExportOrderDetailToPdf" style="display:none" id="hiddenForm" method="post"> <input type="text" class="form-control" id="txtResultCode" name="code"></form>
+<script id="dataLabTestingResult-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Getting}}</td>
+        <td>{{Name}}</td>
+        <td>{{Group}}</td>
+        <td>{{Status}}</td>
 
+        <td>
+            <button class="btn btn-success btn-printResult" data-id="{{Getting}}"><i class="fa fa-print"></i></button>
+
+        </td>
+    </tr>
+</script>
 
 
 <script src="~/Scripts/customScript/importPatients.js"></script>
