@@ -22,20 +22,19 @@ namespace eLTMS.DataAccess.Repositories
 
         public List<HospitalSuggestion> GetAllHospitalSuggestion(string con)
         {
-            var result = DbSet.AsQueryable()
+            string[] arrListStr = con.Split(new char[] { ',' });
+            List<HospitalSuggestion> add = new List< HospitalSuggestion > ();
+            foreach (var item in arrListStr)
+            {
+                var result = DbSet.AsQueryable()
 
-                //.Include(x=>x.Account)
-                .Where(x => x.DiseaseName.Contains(con) && x.IsDeleted == false)
+                    //.Include(x=>x.Account)
+                    .Where(x => x.DiseaseName.Contains(item) && x.IsDeleted == false)
 
-                .ToList();
-            return result;
+                    .ToList();
+                add.AddRange(result);
+            }
+            return add;
         }
-        //public Patient GetSimpleById(int id)
-        //{
-        //    var result = DbSet.AsQueryable()
-        //        //.Include(x => x.Account)
-        //        .SingleOrDefault(x => x.PatientId == id);
-        //    return result;
-        //}
     }
 }

@@ -856,7 +856,7 @@ var homeController = {
             $(newRow).addClass('data-row-lab-testing-import');
             console.log(newRow.html());
             var ddlData = "<select class='form-control ddlCode'>";
-            ddlData += "<option value=''> --- Chọn vật tư --- </option>";
+            ddlData += "<option value=''> --- Chọn mẫu xét nghiệm --- </option>";
             $.each(homeconfig.allLabTesting, function (i, item) {
 
                 ddlData += "<option value='" + item.LabTestingId + "' data-name='" + item.LabTestName + "'>" + item.AppointmentCode + " - " + item.LabTestName + "</option>"
