@@ -42,7 +42,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.Sample.SampleGroupId == sampleGroupId)
+                .Where(x => x.Sample.SampleGroupId == sampleGroupId && x.IsDeleted == false)
                 .Include(x => x.Appointment.Patient)
                 .Include(x => x.Slot)
                 .Include(x => x.Table)

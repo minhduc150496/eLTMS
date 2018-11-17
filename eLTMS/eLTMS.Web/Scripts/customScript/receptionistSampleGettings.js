@@ -16,7 +16,7 @@ var homeController = {
     },
     registerEvent: function () {
         
-        $(".Sample").change(function () {
+        $("#select-sample").change(function () {
             homeController.loadDataBySample();
         });
 
@@ -253,13 +253,17 @@ var homeController = {
     },
 
 
-    loadDataBySample: function (changePageSize) {
-        var selectedSample = $(".Sample").children("option:selected").val();
+    loadDataBySample: function () {
+        var selectedSample = $("#select-sample").children("option:selected").val();
         $.ajax({
             url: '/receptionist/GetAllSampleGettingsBySampleGroupId',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleGroupId: selectedSample },
+            data: {
+                page: homeconfig.pageIndex,
+                pageSize: homeconfig.pageSize,
+                sampleGroupId: selectedSample
+            },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -268,12 +272,12 @@ var homeController = {
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, item);
                     });
-                    console.log(html);
+                    //console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        //homeController.loadDataBySample();
+                        homeController.loadDataBySample();
                     }, changePageSize);
-                    homeController.registerEvent();
+                    //homeController.registerEvent();
                 }
             }
         })

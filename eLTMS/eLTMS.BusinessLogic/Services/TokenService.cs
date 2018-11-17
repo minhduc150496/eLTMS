@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface ITokenService
     {
         List<Token> GetAll();
+        bool Create(string tokenString);
     }
     public class TokenService : ITokenService
     {
@@ -27,6 +28,30 @@ namespace eLTMS.BusinessLogic.Services
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
             var tokens = repo.GetAll();
             return tokens;
+        }
+
+        //DucBM
+        public bool Create(string tokenString)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
+            // check if exist
+            var t = repo.GetByTokenString(tokenString);
+            if (t != null)
+            {
+                return false; // exist
+            }
+            // create new
+            var token = new Token();
+            token.TokenString = tokenString;
+            token.IsDeleted = false;
+            repo.Create(token);
+            // save change
+            var result = UnitOfWork.SaveChanges();
+            if (result.Any())
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -16,15 +16,16 @@ namespace eLTMS.BusinessLogic.Services
     public interface IAppointmentService
     {
         bool Create(AppointmentDto appointment);
+        List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // DucBM
         List<Appointment> GetNewApp(int patientId);
         List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
-        bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sgDtos);
+        bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
         bool Update(string code, string con);
-        bool DeleteAppointment(string appointmentCode);
+        bool DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
     public class AppointmentService : IAppointmentService
@@ -93,6 +94,15 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
+        // DucBM
+        public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var apps = appRepo.GetAppointmentsByPatientId(patientId);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(apps).ToList();
+            return appDtos;
+        }
+
         public List<Appointment> GetNewApp(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -130,26 +140,57 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        public bool UpdateAppointment(string appointmentCode, List<SampleGettingDto> sampleGettingDtos)
+        // DucBM
+        public bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
             try
             {
                 var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
                 // get existing appointment by AppointmentCode
-                var appointment = appRepo.GetAppointmentByCode(appointmentCode);
+
+                var appointment = appRepo.GetAppointmentByIdInclude(appointmentId);
+                // delete old records
+                // TEMPORARY !! -> too waist memory !!
+                foreach (var sg in appointment.SampleGettings)
+                {
+                    sg.IsDeleted = true;
+                    foreach(var lt in sg.LabTestings)
+                    {
+                        lt.IsDeleted = true;
+                    }
+                }
+
                 // modify SampleGettings property
-                var sampleGettings = Mapper.Map<List<SampleGettingDto>, List<SampleGetting>>(sampleGettingDtos);
-                appointment.SampleGettings = sampleGettings;
+                appointment.SampleGettings = new List<SampleGetting>();
+                foreach(var sgDto in sampleGettingDtos)
+                {
+                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                    sg.SampleGettingCode = ""; // Need a Formula for this Code !!
+                    sg.LabTestings = new List<LabTesting>();
+                    sg.Status = "NEW";
+                    sg.TableId = 1;
+                    sg.IsDeleted = false;
+                    foreach (var id in sgDto.LabTestIds)
+                    {
+                        var lt = new LabTesting();
+                        lt.LabTestId = id;
+                        sg.LabTestings.Add(lt);
+                    }
+                    appointment.SampleGettings.Add(sg);
+                }
+                
                 // update entity
                 appRepo.Update(appointment);
                 // save to DB
                 this.UnitOfWork.SaveChanges();
+
             } catch(Exception ex)
             {
-                return false;
+                return false; 
             }
             return true;
         }
+
         public bool Update(string code,string con)
         {
             try
@@ -171,13 +212,15 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-        public bool DeleteAppointment(string appointmentCode)
+
+        // DucBM
+        public bool DeleteAppointment(int appointmentId)
         {
             try
             {
                 var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
                 // get existing appointment by AppointmentCode
-                var appointment = appRepo.GetAppointmentByCode(appointmentCode);
+                var appointment = appRepo.GetAppointmentById(appointmentId);
                 if (appointment==null)
                 {
                     return false;
@@ -196,6 +239,7 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
+        // DucBM
         public List<Token> GetAllTokens()
         {
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);

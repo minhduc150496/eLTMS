@@ -649,6 +649,12 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
 
+        [Column(@"AvatarURL", Order = 13, TypeName = "nvarchar")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Avatar url")]
+        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
+
         // Reverse navigation
 
         /// <summary>
@@ -1726,6 +1732,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
+            Property(x => x.AvatarUrl).IsOptional();
         }
     }
 
