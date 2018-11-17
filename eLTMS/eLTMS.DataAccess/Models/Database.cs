@@ -438,7 +438,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Slot ID")]
         public int? SlotId { get; set; } // SlotID
 
-        [Column(@"GettingDate", Order = 10, TypeName = "datetime")]
+        [Column(@"GettingDate", Order = 10, TypeName = "date")]
         [Display(Name = "Getting date")]
         public System.DateTime? GettingDate { get; set; } // GettingDate
 
@@ -612,7 +612,7 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Gender")]
         public string Gender { get; set; } // Gender (length: 10)
 
-        [Column(@"DateOfBirth", Order = 6, TypeName = "datetime")]
+        [Column(@"DateOfBirth", Order = 6, TypeName = "date")]
         [Display(Name = "Date of birth")]
         public System.DateTime? DateOfBirth { get; set; } // DateOfBirth
 
@@ -643,17 +643,17 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is online")]
         public bool? IsOnline { get; set; } // IsOnline
 
-        [Column(@"AvatarURL", Order = 12, TypeName = "nvarchar")]
-        [MaxLength(500)]
-        [StringLength(500)]
-        [Display(Name = "Avatar url")]
-        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
-
-        [Column(@"IdentityCardNumber", Order = 13, TypeName = "nvarchar")]
+        [Column(@"IdentityCardNumber", Order = 12, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
+
+        [Column(@"AvatarURL", Order = 13, TypeName = "nvarchar")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Avatar url")]
+        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
         // Reverse navigation
 
@@ -673,9 +673,9 @@ namespace eLTMS.DataAccess.Models
         public Patient()
         {
             IsDeleted = false;
-            Feedbacks = new System.Collections.Generic.List<Feedback>();
-            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Appointments = new System.Collections.Generic.List<Appointment>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
+            Feedbacks = new System.Collections.Generic.List<Feedback>();
         }
     }
 
@@ -1731,8 +1731,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.CompanyAddress).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
-            Property(x => x.AvatarUrl).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
+            Property(x => x.AvatarUrl).IsOptional();
         }
     }
 

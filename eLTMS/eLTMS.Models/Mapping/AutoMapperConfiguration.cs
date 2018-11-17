@@ -97,11 +97,7 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<SampleGettingDto, SampleGetting>();
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
-
-                /*.ForMember(dst => dst.GettingDate, src => src.MapFrom(x => (x.GettingDate!=null)?(((DateTime)x.GettingDate).ToString("yyyy-MM-dd")):null))*/ // DucBM
-                //.ForMember(dst => dst.FinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.FinishTime)))
-                //.ForMember(dst => dst.StartTime, src => src.MapFrom(x => DateTimeUtils.ConvertTimeSpanToShortHour(x.StartTime)))
-
+                .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => ((DateTime)x.GettingDate).ToString("yyyy-MM-dd"))) // DucBM
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId)) 
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));

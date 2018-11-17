@@ -71,40 +71,13 @@
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bell-o"></i>
-                                <span class="label label-danger">10</span>
+                                <span class="label label-danger" id="number-of-noti" style="display: none">0</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 10 notifications</li>
+                                <li class="header">Thông báo mới:</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                                                page and may cause design problems
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-users text-red"></i> 5 new members joined
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-user text-red"></i> You changed your username
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <ul class="menu" id="menu-noti"></ul>
                                 </li>
                                 <li class="footer"><a href="#">View all</a></li>
                             </ul>
@@ -124,21 +97,6 @@
                                         Trần Tuấn Dũng - Web Developer
                                         <small>Member since Oct. 2018</small>
                                     </p>
-                                </li>
-                                <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
-                                    </div>
-                                    <!-- /.row -->
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
@@ -300,6 +258,87 @@
     <script src="~/Assets/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="~/Assets/dist/js/demo.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-messaging.js"></script>
+
+    <script id="menu-noti-item-template" type="x-tmpl-mustache">
+        <li>
+            <a href="{{Url}}">
+                <i class="fa fa-users text-aqua"></i> {{Message}}
+            </a>
+        </li>
+    </script>
+
+    <script>
+        // DucBM
+
+        var config = {
+            apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
+            authDomain: "eltms-test1.firebaseapp.com",
+            databaseURL: "https://eltms-test1.firebaseio.com",
+            projectId: "eltms-test1",
+            storageBucket: "eltms-test1.appspot.com",
+            messagingSenderId: "1013768931631"
+        };
+        firebase.initializeApp(config);
+
+        const messaging = firebase.messaging();
+        messaging
+            .requestPermission()
+            .then(function () {
+                console.log("Notification permission granted.");
+
+                // get the token in the form of promise
+                return messaging.getToken()
+            })
+            .then(function (token) {
+                //console.log("token: ", token);
+                $.ajax({
+                    url: '/api/token/create',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: { TokenString: token },
+                    success: function (result) {
+                        if (result.sucess) {
+                            console.log("Token has registered. Now you will receive notifications on this device.");
+                        }
+                        else {
+                            console.log("Token is existing.");
+                        }
+                    },
+                    fail: function () {
+                        console.log("Token registration failed.");
+                    }
+                });
+            })
+            .catch(function (err) {
+                console.log("Unable to get permission to notify. ", err);
+            });
+
+        var loadMessage = function (payload) {
+            console.log("Message received. ", payload);
+            var nNoti = $("#number-of-noti").html();
+            nNoti = parseInt(nNoti) + 1;
+            $("#number-of-noti").html(nNoti);
+            if (nNoti == 0) {
+                $("#number-of-noti").hide(0);
+            } else {
+                $("#number-of-noti").show(0);
+            }
+            var template = $("#menu-noti-item-template").html();
+            var data = {
+                Url: "#",
+                Message: payload.data.message
+            };
+            var html = Mustache.render(template, data);
+            $("#menu-noti").prepend(html);
+        }
+        messaging.onMessage(loadMessage);
+
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

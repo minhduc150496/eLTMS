@@ -7,6 +7,7 @@ namespace eLTMS.Models.Models.dto
 {
     public class AppointmentDto
     {
+        public int AppointmentId { get; set; }
         public string AppointmentCode { get; set; }
 
         public int PatientId { get; set; }

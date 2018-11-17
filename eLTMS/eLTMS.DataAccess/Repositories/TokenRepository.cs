@@ -14,12 +14,18 @@ namespace eLTMS.DataAccess.Repositories
     public interface ITokenRepository : IRepository<Token>
     {
         List<Token> GetAll();
+        Token GetByTokenString(string tokenString);
     }
     public class TokenRepository : RepositoryBase<Token>, ITokenRepository
     {
         public List<Token> GetAll()
         {
             List<Token> result = DbSet.AsQueryable().Where(x=>x.IsDeleted==false).ToList();
+            return result;
+        }
+        public Token GetByTokenString(string tokenString)
+        {
+            Token result = DbSet.AsQueryable().Where(x => x.TokenString == tokenString).FirstOrDefault();
             return result;
         }
     }

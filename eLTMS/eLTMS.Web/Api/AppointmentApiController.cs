@@ -26,36 +26,34 @@ namespace eLTMS.Web.Api
         {
             this._appointmentService = appointmentService;
         }
-        
+
         [HttpGet]
         [Route("api/SendMessage")] // just for testing
         public IHttpActionResult SendMessage()
         {
             var tokens = _appointmentService.GetAllTokens();
-            foreach(var token in tokens)
+            foreach (var token in tokens)
             {
                 var data = new
                 {
                     to = token.TokenString,
                     data = new
                     {
-                        message = "Je suis un garcon",
-                        name = "DucBM",
-                        userId = "123",
-                        status = true
+                        message = "This is a test notification.",
                     }
                 };
                 try
                 {
                     SendNotificationUtils.SendNotification(data);
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     //
                 }
             }
             return Ok();
         }
-        
+
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
@@ -77,10 +75,7 @@ namespace eLTMS.Web.Api
                         to = token.TokenString,
                         data = new
                         {
-                            message = "Je suis un garcon",
-                            name = "DucBM",
-                            userId = "123",
-                            status = true
+                            message = "Có thêm cuộc hẹn mới. ",
                         }
                     };
                     try
@@ -94,6 +89,15 @@ namespace eLTMS.Web.Api
                 }
             }
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            return response;
+        }
+        
+        [HttpGet]
+        [Route("api/appointment/get-appointments-by-patient-id")]
+        public HttpResponseMessage GetAppointmentsByPatientId(int patientId) // DucBM
+        {
+            var appDtos = _appointmentService.GetAppointmentsByPatientId(patientId);
+            var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
 
@@ -113,7 +117,7 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage GetOldAppointment(int patientId)
         {
             var app = _appointmentService.GetOldApp(patientId);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app); 
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
         }
@@ -123,26 +127,72 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage UpdateAppointment(AppointmentDto appointmentDto)
         {
             var success = _appointmentService.UpdateAppointment
-                (appointmentDto.AppointmentCode, appointmentDto.SampleGettingDtos);
+                (appointmentDto.AppointmentId, appointmentDto.SampleGettingDtos);
             var obj = new
             {
                 Success = success,
                 Message = success ? "Cập nhật thành công!" : "Xin vui lòng thử lại"
             };
+            if (success)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Có cuộc hẹn vừa thay đổi. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }
 
-        [HttpDelete]
+        [HttpPut]
         [Route("api/appointment/delete-appointment")]
-        public HttpResponseMessage DeleteAppointment(string appointmentCode)
+        public HttpResponseMessage DeleteAppointment(int appointmentId)
         {
-            var success = _appointmentService.DeleteAppointment(appointmentCode);
+            var success = _appointmentService.DeleteAppointment(appointmentId);
             var obj = new
             {
                 Success = success,
                 Message = success ? "Hủy cuộc hẹn thành công!" : "Xin vui lòng thử lại"
             };
+            if (success)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Có cuộc hẹn vừa được hủy. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }

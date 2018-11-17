@@ -13,14 +13,16 @@ const messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function (payload) {
     //debugger;
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  // Customize notification here
-  const notificationTitle = 'Medic Lab';
-  const notificationOptions = {
-    body: 'Một bệnh nhân mới đặt lịch.',
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    // Customize notification here
+    const notificationTitle = 'Medic Lab';
+    const notificationOptions = {
+    body: payload.data.message,
     icon: '/itwonders-web-logo.png'
-  };
+    };
 
-  return self.registration.showNotification(notificationTitle,
-      notificationOptions);
+    //loadMessage();
+
+    return self.registration.showNotification(notificationTitle,
+        notificationOptions);
 });
