@@ -3,7 +3,7 @@
 */
 
 CONFIG = {
-    PATIENT_ID: 1, // hard code for dev-ing
+    PATIENT_ID: 5, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
 };
 
@@ -109,40 +109,28 @@ var Controller = {
                 SampleGettingDtos: []
             };
             // create SampleGettingDtos and assign to Model
-            var el_Samples = $("#step-2-form *[data-sampleid]");
-            if (el_Samples != null) {
-                for (var i = 0; i < el_Samples.length; i++) {
-                    // create new SampleGetingDto
-                    var el_Sample = el_Samples[i];
-                    // get date, start time & finish time
-                    var sampleId = $(el_Sample).data("sampleid");
-                    var sampleDuration = $(el_Sample).data("sample-duration");
-                    sampleDuration = parseInt(sampleDuration);
-                    var startTime = $(el_Sample).find(":selected").val(); // double
-                    startTime = parseInt(startTime);
-                    var finishTime = startTime + sampleDuration;
-                    // format to 07:00
-                    startTime = Utils.formatTimeShort(startTime);
-                    finishTime = Utils.formatTimeShort(finishTime);
-                    var gettingDate = $(el_Sample).find("*[type='date']").val();
-                    // assign to sampleGetting Dto
-                    var sampleGettingDto = {
-                        SampleId: sampleId,
-                        LabTestIds: [],
-                        GettingDate: gettingDate,
-                        StartTime: startTime,
-                        FinishTime: finishTime
-                    };
+            for (var i = 0; i < Model.sampleDtos.length; i++) {
+                var sampleDto = Model.sampleDtos[i];
+                if (sampleDto.IsSelected) {
+                    var sampleGettingDto = {};
+                    sampleGettingDto.SampleId = sampleDto.SampleId;
 
-                    var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
-                    //console.log(el_LabTests);
-                    if (el_LabTests != null) {
-                        for (var j = 0; j < el_LabTests.length; j++) {
-                            var labTestId = $(el_LabTests[j]).data("labtestid");
-                            //console.log(labTestId);
+                    var trSample = $("tr[data-sample-index='" + sampleDto.Index + "']");
+
+                    var gettingDate = trSample.find("[type=date]").val();
+                    sampleGettingDto.GettingDate = gettingDate;
+
+                    var slotId = trSample.find("select").val();
+                    sampleGettingDto.SlotId = slotId;
+
+                    sampleGettingDto.LabTestIds = [];
+                    for (var j = 0; j < sampleDto.LabTests.length; j++) {
+                        if (sampleDto.LabTests[j].IsChecked) {
+                            var labTestId = sampleDto.LabTests[j].LabTestId;
                             sampleGettingDto.LabTestIds.push(labTestId);
                         }
                     }
+
                     Model.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
                 }
             }
@@ -184,9 +172,10 @@ var Controller = {
                 labTest.FmPrice = labTest.Price.toLocaleString("VN-vi");
             }
         }
-        console.log(Model.sampleDtos);
+        //console.log(Model.sampleDtos);
 
         // config Firebase
+        /*
         var config = {
             apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
             authDomain: "eltms-test1.firebaseapp.com",
@@ -200,7 +189,7 @@ var Controller = {
 
         Model.firebaseDB.on("value", function (snapshot) {
             Model.bookings = snapshot.val();
-        });
+        });/**/
         
     }, // end Action
     renderStep2Html: function () {

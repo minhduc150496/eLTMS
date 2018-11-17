@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using eLTMS.DataAccess.Models;
-
+using eLTMS.Models.Utils;
 
 namespace eLTMS.Models.Mapping
 {
@@ -105,6 +105,15 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId)) 
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));
+
+                cfg.CreateMap<SampleGetting, SampleGettingForReceptionistDto>()
+                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.Appointment.AppointmentCode))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName))
+                .ForMember(dst => dst.PatientAddress, src => src.MapFrom(x => x.Appointment.Patient.HomeAddress))
+                .ForMember(dst => dst.PatientPhone, src => src.MapFrom(x => x.Appointment.Patient.PhoneNumber))
+                .ForMember(dst => dst.TableName, src => src.MapFrom(x => x.Table.TableName))
+                .ForMember(dst => dst.FmStartTime, src => src.MapFrom(x => DateTimeUtils.ConvertSecondToShortHour((int)x.Slot.StartTime)))
+                .ForMember(dst => dst.FmFinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertSecondToShortHour((int)x.Slot.FinishTime)));
 
                 cfg.CreateMap<ExportPaper, ExportPaperDto>()
                 .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))

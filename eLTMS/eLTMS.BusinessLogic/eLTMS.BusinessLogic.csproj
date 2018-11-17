@@ -65,6 +65,7 @@
     <Compile Include="Services\ReceptionistService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleService.cs" />
+    <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\SlotService.cs" />
     <Compile Include="Services\SupplyService.cs" />
   </ItemGroup>

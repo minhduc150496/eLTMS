@@ -15,6 +15,7 @@ using System.Web.Http;
 using System.Web.Script.Serialization;
 using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
+using eLTMS.Web.Utils;
 
 namespace eLTMS.Web.Api
 {
@@ -25,86 +26,36 @@ namespace eLTMS.Web.Api
         {
             this._appointmentService = appointmentService;
         }
-
-        /*async Task<string> GetToken()
-        {
-            GoogleCredential credential;
-            using (var stream = new System.IO.FileStream("gckey.json",
-                System.IO.FileMode.Open, System.IO.FileAccess.Read))
-            {
-                credential = GoogleCredential.FromStream(stream).CreateScoped(
-                    new string[] {
-                "https://www.googleapis.com/auth/firebase.database",
-                "https://www.googleapis.com/auth/userinfo.email" }
-                    );
-            }
-
-            ITokenAccess c = credential as ITokenAccess;
-            return await c.GetAccessTokenForRequestAsync();
-        }
-
+        
         [HttpGet]
-        [Route("api/SendMessage")]
+        [Route("api/SendMessage")] // just for testing
         public IHttpActionResult SendMessage()
         {
-            var token = GetToken();
-            var data = new
+            var tokens = _appointmentService.GetAllTokens();
+            foreach(var token in tokens)
             {
-                to = "/topics/news",
-                data = new
+                var data = new
                 {
-                    message = "Je suis un garcon",
-                    name = "DucBM",
-                    userId = "123",
-                    status = true
+                    to = token.TokenString,
+                    data = new
+                    {
+                        message = "Je suis un garcon",
+                        name = "DucBM",
+                        userId = "123",
+                        status = true
+                    }
+                };
+                try
+                {
+                    SendNotificationUtils.SendNotification(data);
+                } catch (Exception ex)
+                {
+                    //
                 }
-            };
-            SendNotification(data);
+            }
             return Ok();
         }
-
-        public void SendNotification(object data)
-        {
-            var serializer = new JavaScriptSerializer();
-            var json = serializer.Serialize(data);
-            Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-
-            SendNotification(byteArray);
-        }
-
-        public void SendNotification(byte[] byteArray)
-        {
-            try
-            {
-                string server_api_key = ConfigurationManager.AppSettings["SERVER_API_KEY"];
-                string sender_id = ConfigurationManager.AppSettings["SENDER_ID"];
-
-                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
-                tRequest.Method = "POST";
-                tRequest.ContentType = "application/json";
-                tRequest.Headers.Add($"Authorization: key={server_api_key}");
-                tRequest.Headers.Add($"Sender: id={sender_id}");
-
-                tRequest.ContentLength = byteArray.Length;
-                Stream dataStream = tRequest.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-
-                WebResponse tresponse = tRequest.GetResponse();
-                dataStream = tresponse.GetResponseStream();
-                StreamReader tReader = new StreamReader(dataStream);
-
-                string sResponseFromServer = tReader.ReadToEnd();
-
-                tReader.Close();
-                dataStream.Close();
-            }  catch (Exception ex)
-            {
-                //
-            }
-            
-        }*/
-
+        
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
@@ -116,6 +67,32 @@ namespace eLTMS.Web.Api
                 Success = success,
                 Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
             };
+            if (success)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Je suis un garcon",
+                            name = "DucBM",
+                            userId = "123",
+                            status = true
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }

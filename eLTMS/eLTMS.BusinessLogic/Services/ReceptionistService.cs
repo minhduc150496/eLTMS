@@ -16,6 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         bool ChangeIsPaid(int sampleGettingId);
         List<Appointment> GetAllAppointment();
         List<AppointmentGetBySampleDto> GetAllBySample(int sampleId);
+        List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId); // DucBM
     }
     class ReceptionistService : IReceptionistService
     {
@@ -334,7 +335,14 @@ namespace eLTMS.BusinessLogic.Services
                 }).ToList();
             return result;
         }
-        
-       
+
+        // DucBM
+        public List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId)
+        {
+            var repo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var result = repo.GetBySampleGroupIdForReceptionist(sampleGroupId);
+            return result;
+        }
+
     }
 }

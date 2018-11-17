@@ -88,6 +88,7 @@
     <Compile Include="Repositories\SlotRepository.cs" />
     <Compile Include="Repositories\SupplyRepository.cs" />
     <Compile Include="Repositories\TableRepository.cs" />
+    <Compile Include="Repositories\TokenRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
