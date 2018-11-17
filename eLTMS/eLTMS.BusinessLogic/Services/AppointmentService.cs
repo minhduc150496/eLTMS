@@ -16,6 +16,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface IAppointmentService
     {
         bool Create(AppointmentDto appointment);
+        Appointment GetSingleById(int appointmentId); // DucBM
         List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // DucBM
         List<Appointment> GetNewApp(int patientId);
         List<Appointment> GetOldApp(int patientId);
@@ -44,6 +45,14 @@ namespace eLTMS.BusinessLogic.Services
             var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
             var apps = appRepo.GetAppointmentByPhone(phone);
             return apps;
+        }
+
+        // DucBM
+        public Appointment GetSingleById(int appointmentId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var result = appRepo.GetAppointmentByIdInclude(appointmentId);
+            return result;
         }
 
         // Author: DucBM

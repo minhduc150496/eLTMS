@@ -49,7 +49,7 @@
         <td>{{Status}}</td>
         <td>
             {{#IsNew}}
-            <button class="btn btn-info btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></button>
+            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-info btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
             <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash"></i></button>
             {{/IsNew}}
             {{#IsDone}}

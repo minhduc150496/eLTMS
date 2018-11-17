@@ -37,8 +37,11 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         }
 
         // GET: UserWeb/Appointment/Edit/{apId}
-        public ActionResult Edit()
+        public ActionResult Edit(int appointmentId)
         {
+            Appointment app = _appointmentService.GetSingleById(appointmentId);
+            AppointmentDto appDto = Mapper.Map<Appointment, AppointmentDto>(app);
+            ViewBag.appDto = appDto;
             return View("Edit", "_Layout");
         }
 

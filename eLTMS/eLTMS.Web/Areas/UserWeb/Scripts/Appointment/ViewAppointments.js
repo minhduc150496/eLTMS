@@ -19,25 +19,20 @@ var Controller = {
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            Controller.deleteSupply(id);
-
+            Controller.deleteAppointment(id);
         });
     },
-    deleteSupply: function (id) {
+    deleteAppointment: function (id) {
         $.ajax({
-            url: '/WareHouse/Delete',
-            data: {
-                supplyId: id
-            },
-            type: 'POST',
-            dataType: 'json',
+            url: '/api/appointment/delete-appointment?appointmentId='+id,
+            type: 'PUT',
             success: function (response) {
-                if (response.success == true) {
-                    toastr.success("Xóa thành công.");
+                if (response.Success == true) {
+                    alert("Xóa thành công.");
                     Controller.loadData(true);
                 }
                 else {
-                    toastr.error("Xóa không thành công.");
+                    alert(response.Message);
                 }
             },
             error: function (err) {
@@ -122,8 +117,8 @@ var Controller = {
                 $('#tblData').html(html);
                 /*Controller.paging(response.total, function () {
                     Controller.loadData();
-                }, changePageSize);
-                Controller.registerEvent(); */
+                }, changePageSize);*/
+                Controller.registerEvent(); 
             }
         })
     },
