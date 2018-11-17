@@ -50,7 +50,6 @@ namespace eLTMS.BusinessLogic.Services
                 patient.HomeAddress = patientdto.HomeAddress;
                 patient.CompanyAddress = patientdto.CompanyAddress;
                 patient.AccountId = patientdto.AccountId;
-                patient.AvatarUrl = patientdto.AvatarUrl;
                 repo.Update(patient);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any())

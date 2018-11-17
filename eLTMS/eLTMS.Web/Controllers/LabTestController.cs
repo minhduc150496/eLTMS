@@ -71,18 +71,6 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GetAllxxx(int page = 1, int pageSize = 20)
-        {
-            var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions("tim");
-            var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
-            return Json(new
-            {
-                success = true,
-                data = result3
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
         public JsonResult GetAllSampleGroups(int page = 1, int pageSize = 20)
         {
             var queryResult = _sampleGroupService.GetAll();

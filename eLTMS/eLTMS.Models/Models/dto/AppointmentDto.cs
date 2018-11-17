@@ -15,8 +15,7 @@ namespace eLTMS.Models.Models.dto
 
         public string TestPurpose { get; set; }
 
-        public DateTime Date { get; set; }
-        
+        public string Date { get; set; }
         public List<SampleGettingDto> SampleGettingDtos { get; set; }
         public string Conclusion { get; set; } // Conclusion (length: 500)
         public string Status { get; set; } // Status (length: 20)

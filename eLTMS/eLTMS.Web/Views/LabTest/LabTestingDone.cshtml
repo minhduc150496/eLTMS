@@ -93,41 +93,6 @@
     </div>
 </div>
 
-<div id="myModalLabTestingIndexResult1" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
-            </div>
-            <div class="modal-body">
-              
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Labtesting ID</th>
-                                <th>Index Name</th>
-                                <th>Index Value</th>
-                                <th>Trạng Thái</th>
-                                <th>Mức Trung Bình</th>
-                                <th>Đơn Vị</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tblDataLabTestingIndexResult1"></tbody>
-                    </table>
-                    <div style="margin-left:35%" id="pagination" class="pagination"></div>
-   
-            </div>
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" id="btnClose"data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 <form action="/LabTest/ExportOrderDetailToPdf" style="display:none" id="hiddenForm" method="post"> <input type="text" class="form-control" id="txtResultCode" name="code"></form>
 <script id="dataLabTestingResult-template" type="x-tmpl-mustache">
     <tr>
@@ -140,29 +105,6 @@
             <button class="btn btn-success btn-printResult" data-id="{{Getting}}"><i class="fa fa-print"></i></button>
 
         </td>
-    </tr>
-</script>
-<script id="dataLabTestingResult1-template" type="x-tmpl-mustache">
-    <tr>
-        <td>{{LabTestingId}}</td>
-        <td>{{Getting}}</td>
-        <td>{{Name}}</td>
-        <td>{{Status}}</td>
-        <td>
-            <button class="btn btn-success btn-viewLabTestingIndex" data-id="{{LabTestingId}}"><i class="fa fa-eye"></i></button>
-
-        </td>
-    </tr>
-</script>
-<script id="dataLabTestingIndexResult1-template" type="x-tmpl-mustache">
-    <tr>
-        <td>{{LabTestingId}}</td>
-        <td>{{Name}}</td>
-        <td>{{Value}}</td>
-        <td  style="{{changeColor}}">{{Status}}</td>
-        <td>{{Nomal}}</td>
-        <td>{{Unit}}</td>
-       
     </tr>
 </script>
 

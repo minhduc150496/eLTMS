@@ -8,7 +8,13 @@ var homeController = {
         homeController.registerEvent();
     },
     registerEvent: function () {
+        $('#btnHistory').off('click').on('click', function () {
+            var patientId = parseInt($('#txtPatientId').val());
+            $('#lblPopupTitle').text('Danh sách kết quả xét nghiệm');
+            $('#myModalHistory').modal('show');
+            homeController.loadDataResult(patientId);
 
+        });
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
             var accountId = parseInt($('#txtAccountId').val());
@@ -18,7 +24,7 @@ var homeController = {
             var phone = $('#txtPhoneNumber').val();
             var homeAddress = $('#txtHomeAddress').val();
             var companyAddress = $('#txtCompanyAddress').val();
-            var date = '06-10-2018';
+            var date = $('#txtDate').val();
             var isDeleted = "False";
             var patient = {
                 PatientId: patientId,
@@ -134,6 +140,7 @@ var homeController = {
                     $('#txtAccountId').val(data.AccountId);
                     $('#txtCode').val(data.PatientCode);
                     $('#txtName').val(data.FullName);
+                    $('#txtDate').val(data.DateOfBirth);
                     $('#ddlGender').val(data.Gender).change();
                     $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
@@ -154,11 +161,43 @@ var homeController = {
         $('#txtCode').val('');
         $('#txtAccountId').val('');
         $('#txtName').val('');
+        $('#txtDate').val('');
         $('#ddlGender').val('').change();
         $('#txtPhoneNumber').val('');
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
         $('#avatar').attr('src', '');
+    },
+    loadDataResult: function (id,changePageSize) {
+        $.ajax({
+            url: '/Patient/GetAllResults',
+            type: 'GET',
+            dataType: 'json',
+            data: { id:id,page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataLabTestingResult-template').html();
+                    $.each(data, function (i, item) {
+                        
+                        html += Mustache.render(template, {
+                            LabTestingId: item.LabTestingId,
+                            Name: item.Date,
+                            Status: item.Status,
+                            Getting: item.AppointmentCode,
+                            Group: item.Conclusion,
+                        });
+
+                    });
+                    $('#tblDataLabTestingResult').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadDataLabTesting();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
     },
     loadData: function (changePageSize) {
         $.ajax({

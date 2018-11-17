@@ -26,7 +26,6 @@ namespace eLTMS.DataAccess.Repositories
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) && x.IsDeleted == false)
 
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber)  && x.IsDeleted == false)
-
                 .ToList();
             return result;
         }
