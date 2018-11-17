@@ -32,8 +32,10 @@ namespace eLTMS.DataAccess.Repositories
         public List<Appointment> GetAppointmentsByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.PatientId == patientId)
+                .Where(x => x.PatientId == patientId && x.IsDeleted==false)
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings))
+                .Include(x => x.Employee)
+                .OrderByDescending(x => x.AppointmentId)
                 .ToList();
             return result;
         }

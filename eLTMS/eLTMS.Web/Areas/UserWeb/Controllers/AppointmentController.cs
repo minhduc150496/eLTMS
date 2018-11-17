@@ -29,32 +29,23 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         {
             return View("Create", "_Layout");
         }
-
-        // GET: UserWeb/Appointment/Current
-        public ActionResult Current()
+        
+        // GET: UserWeb/Appointment/ViewAppointments
+        public ActionResult ViewAppointments() 
         {
-            var patientId = 1;
-            var appointment = _appointmentService.GetNewApp(patientId).LastOrDefault();            
-            ViewBag.Appointment = appointment;
-            return View("Current", "_Layout");
+            return View("ViewAppointments", "_Layout");
         }
 
-        // GET: UserWeb/Appointment/History
-        public ActionResult History() // Old Appointment
-        {
-            return View("History", "_Layout");
-        }
-
-        // GET: UserWeb/Appointment/Edit
+        // GET: UserWeb/Appointment/Edit/{apId}
         public ActionResult Edit()
         {
             return View("Edit", "_Layout");
         }
 
-        // GET: UserWeb/Appointment/Results
-        public ActionResult Results()
+        // GET: UserWeb/Appointment/Result/{apId}
+        public ActionResult Result()
         {
-            return View("Results", "_Layout");
+            return View("Result", "_Layout");
         }
 
     }

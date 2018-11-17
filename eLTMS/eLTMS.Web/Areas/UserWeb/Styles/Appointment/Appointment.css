@@ -178,3 +178,19 @@
     /*background: #da251c;*/ /*red*/
     background: #0a408a; /*blue*/
 }
+
+
+/* View Appointments */
+.view_appointments_area .content-box {
+    margin: 0 auto;
+}
+
+    .view_appointments_area table th {
+        padding: 5px 10px;
+        border-color: black;
+    }
+
+    .view_appointments_area table td {
+        padding: 10px;
+        border-color: black;
+    }

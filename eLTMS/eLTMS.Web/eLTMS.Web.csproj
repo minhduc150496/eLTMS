@@ -556,6 +556,7 @@
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
     <Content Include="Areas\UserWeb\Images\y-ta.jpg" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\ViewAppointments.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\Edit.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentForm.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentSuggestor.js" />
@@ -567,9 +568,8 @@
     <Content Include="Areas\UserWeb\Views\Home\Gallery.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\FAQ.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\Create.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\History.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\Current.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\Results.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\ViewAppointments.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\Result.cshtml" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\maps\pretty-checkbox.css.map" />
     <Content Include="Areas\UserWeb\Views\Appointment\Edit.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\_AppointmentForm.cshtml" />

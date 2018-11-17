@@ -1,0 +1,64 @@
+﻿@{ 
+    ViewBag.Title = "Danh sách cuộc hẹn";
+}
+@section styles {
+    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
+}
+
+<!-- breadcroumb Area Start-->
+<div class="breadvroumb_area">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h1>Cuộc hẹn của bạn</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcroumb Area End-->
+<!-- appoinment Page Start-->
+<div class="view_appointments_area p100">
+    <div class="container">
+        <div class="content-box">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Mã cuộc hẹn</th>
+                        <th>Mục đích</th>
+                        <th>Bác sĩ</th>
+                        <th>Kết luận</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="tblData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script id="data-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Index}}</td>
+        <td>{{AppointmentCode}}</td>
+        <td>{{TestPurpose}}</td>
+        <td>{{DoctorName}}</td>
+        <td>{{Conclusion}}</td>
+        <td>{{Status}}</td>
+        <td>
+            {{#IsNew}}
+            <button class="btn btn-info btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash"></i></button>
+            {{/IsNew}}
+            {{#IsDone}}
+            <button class="btn btn-success btn-result" data-id="{{AppointmentId}}"><i class="fa fa-eye"></i></button>
+            {{/IsDone}}
+        </td>
+    </tr>
+</script>
+
+@section scripts{
+    <script src="~/Areas/UserWeb/Scripts/Appointment/ViewAppointments.js"></script>    
+}

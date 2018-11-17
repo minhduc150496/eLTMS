@@ -98,7 +98,7 @@ namespace eLTMS.Models.Mapping
 
                 cfg.CreateMap<SampleGetting, SampleGettingDto>()
                 .ForMember(dst => dst.GettingDate, src => src.MapFrom(x => ((DateTime)x.GettingDate).ToString("yyyy-MM-dd"))) // DucBM
-                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId)) 
+                .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleId))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)));
 
@@ -147,7 +147,10 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
-                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
+                .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => (x.Employee != null) ? x.Employee.FullName : ""))
+                .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
 
 
                 cfg.CreateMap<AppointmentDto, Appointment>()
@@ -220,10 +223,6 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.MachineSlot, src => src.MapFrom(x => x.MachineSlot))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
-
-                cfg.CreateMap<Appointment, AppointmentDto>()
-                .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
-                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
 
                 cfg.CreateMap<Slot, SlotDto>();
 
