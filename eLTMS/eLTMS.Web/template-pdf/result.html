@@ -7,6 +7,7 @@
             margin: 0;
             padding: 0;
             font: 62.5%/1.5 Helvetica, Arial, Verdana, sans-serif;
+
         }
 
         ul, ul li, p, div, ol {
@@ -27,12 +28,16 @@
         }
         h3 {
             font-size: 20px;
-            color: #F05234;
+            color: #FF0000;
 
         }
         h1 {
-            font-size: 20px;
+            font-size: 35px;
             color: #000080;
+        }
+        h4 {
+            font-size: 10px;
+            color: #9C9C9C;
         }
             #invoice.cancelled {
                 background: #fff url(/images/cancelled.gif) top left
@@ -64,7 +69,7 @@
         }
 
         #invoice #client-details, #invoice-info p, #invoice #invoice-other, #invoice #payment-details {
-            font-size: 9pt;
+            font-size: 15pt;
             line-height: 12pt;
         }
 
@@ -125,7 +130,7 @@
 
         #invoice #payment-details {
             float: left;
-            width: 250px;
+            width: 450px;
         }
 
         #invoice-amount {
@@ -221,7 +226,12 @@
                         Địa chỉ: 254 Hòa Hảo, Quận 10, TP Hồ Chí Minh
                     </div>
                 </div>
-                <div class="email">Mail: mediclab@medic.com.vn</div>
+                <div class="email">
+                    Website: mediclab.com.vn
+                </div>
+                <div class="email">
+                    ĐT: 0285 4110 025
+                </div>
             </div>
             <div class="vcard" id="company-img">
                 <img src="/Areas/UserWeb/Images/logo.JPG" width="50" height="50">
@@ -236,9 +246,7 @@
 
         <!-- #invoice-info -->
         <div class="vcard" id="client-details">
-            <div class="fn">Tên: {{ClientName}}</div>
-            <div class="org">Điện thoại: {{ClientCompany}}</div>
-            <div class="adr">ĐỊa chỉ: {{ClientAddress}}</div>
+            <div class="fn"> <table>{{DataResult2}}</table></div>
         </div>
 
         <!-- #client-details vcard -->
@@ -255,6 +263,12 @@
             <tbody id="tblDataResult">
                 {{DataResult}}
             </tbody>
+            <tfoot>
+                <tr id="total_tr">
+                    <td class="total"><h4>Ghi chú trạng thái(L-thấp, N-bình thường, H-cao)</h4></td>
+                </tr>
+            </tfoot>
+            
         </table>
 
         <!-- invoice-amount -->
@@ -265,12 +279,12 @@
         <!-- invoice-other -->
         <div id="payment-details">
             <h2>Nghi ngờ:  {{Con}}</h2>
-            <div id="bank_name">{{Hos}}</div>
-            <div id="sort-code"><strong>Bank/Sort Code:</strong> 32-75-97</div>
-            <div id="account-number"><strong>Account Number:</strong> 28270761</div>
-            <div id="iban"><strong>IBAN:</strong> 973547</div>
-            <div id="bic"><strong>BIC:</strong> 220197</div>
-            <div id="payment-reference"><strong>Payment Reference:</strong> INV {{InvoiceNum}}</div>
+            <h2>Danh sách các bệnh viện chuyên khoa:</h2>
+            <div id="iban">
+                <table>
+                    {{DataResult1}}
+                </table>
+            </div>
         </div>
 
         <!-- payment-details -->

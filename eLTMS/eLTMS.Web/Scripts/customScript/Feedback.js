@@ -96,6 +96,9 @@ var homeController = {
             homeController.deleteFeedback(id);
 
         });
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
     },
     deleteFeedback: function (id) {
         $.ajax({

@@ -70,6 +70,17 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult GetAllxxx(int page = 1, int pageSize = 20)
+        {
+            var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions("tim");
+            var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
+            return Json(new
+            {
+                success = true,
+                data = result3
+            }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult GetAllSampleGroups(int page = 1, int pageSize = 20)
@@ -296,6 +307,7 @@ namespace eLTMS.Web.Controllers
         public ActionResult ExportOrderDetailToPdf(string code)
         {
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder(); StringBuilder sb2 = new StringBuilder();
             var queryResult2 = _appointmentService.GetResultByAppCode(code);
             var result2 = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult2);
             var queryResult1 = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
@@ -304,16 +316,20 @@ namespace eLTMS.Web.Controllers
             {
                 var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(item1.LabTestingId);
                 var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
-             
+                var changeColor = "";
                 sb.AppendLine($"<tr><td><h3>{item1.LabTestName}</h3><td></tr>");
                 foreach (var item in result)
+                    
                 {
+                    if (item.LowNormalHigh.Contains("L")) changeColor = "'background-color: yellow;'";
+                    if (item.LowNormalHigh.Contains("H")) changeColor = "'background-color: #FF6A6A;'";
+                    if (item.LowNormalHigh.Contains("N")) changeColor = "'background-color: white;'";
                     sb.AppendLine("<tr>");
                     sb.AppendLine($"<td class='no'>{item.IndexName}</td>");
-                    sb.AppendLine($"<td class='colUnit'>{item.IndexValue}</td>");
-                    sb.AppendLine($"<td class='colUnit'>{item.LowNormalHigh}</td>");
-                    sb.AppendLine($"<td class='colUnit'>{item.NormalRange}</td>");
-                    sb.AppendLine($"<td class='colUnit'>{item.Unit}</td>");
+                    sb.AppendLine($"<td class='colUnit' style= {changeColor}>{item.IndexValue}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.LowNormalHigh}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.NormalRange}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.Unit}</td>");
                     sb.AppendLine("</tr>");
                 }
             }
@@ -322,18 +338,26 @@ namespace eLTMS.Web.Controllers
             foreach (var item2 in result2)
             {
                 allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
-                allData = allData.Replace("{{ClientName}}", $"{item2.PatientName}");
-                allData = allData.Replace("{{ClientCompany}}", $"{item2.Phone}");
-                allData = allData.Replace("{{ClientAddress}}", $"{item2.Address}");
+                sb2.AppendLine($"<tr><td class='no'><strong>Tên: </strong>{item2.PatientName}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Ngày sinh: </strong>{item2.DateOB}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{item2.Gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
                 foreach (var item3 in result3)
-                { allData = allData.Replace("{{Hos}}", $"{item3.HospitalList}"); }
+                {                 
+                    sb1.AppendLine($"<tr><td class='no'><strong>{item3.HospitalList}</strong></td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item3.HospitalAdd}</td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item3.HospitalPhone}</td></tr>");
+                }               
             }
 
             allData = allData.Replace("{{DataResult}}", sb.ToString());
+            allData = allData.Replace("{{DataResult1}}", sb1.ToString());
+            allData = allData.Replace("{{DataResult2}}", sb2.ToString());
             var PDF = Renderer.RenderHtmlAsPdf(allData);
             Response.Clear();
             Response.ContentType = "application/pdf";

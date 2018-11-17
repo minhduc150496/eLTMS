@@ -166,6 +166,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
                 .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
                 .ForMember(dst => dst.Date, src => src.MapFrom(x => x.ReturnTime))
+                 .ForMember(dst => dst.DateOB, src => src.MapFrom(x => x.Patient.DateOfBirth))
+                 .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Patient.Gender))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings));
 
