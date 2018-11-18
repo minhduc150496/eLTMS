@@ -13,6 +13,7 @@ namespace eLTMS.DataAccess.Repositories
     {
         List<Patient> GetAllPatient(string phoneNumber);
         Patient GetSimpleById(int id);
+        string GetLastPatientCode(); // DucBM
     }
 
 
@@ -29,6 +30,17 @@ namespace eLTMS.DataAccess.Repositories
                 .ToList();
             return result;
         }
+
+        // DucBM
+        public string GetLastPatientCode()
+        {
+            var result = DbSet.AsQueryable()
+                .Select(x => x.PatientCode)
+                .OrderBy(x => x)
+                .LastOrDefault();
+            return result;
+        }
+
         public Patient GetSimpleById(int id)
         {
             var result = DbSet.AsQueryable()

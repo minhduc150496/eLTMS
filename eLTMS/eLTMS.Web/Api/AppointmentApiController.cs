@@ -160,7 +160,7 @@ namespace eLTMS.Web.Api
             return response;
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("api/appointment/delete-appointment")]
         public HttpResponseMessage DeleteAppointment(int appointmentId)
         {

@@ -108,6 +108,7 @@ var Controller = {
                         DoctorName: item.DoctorName,
                         TestPurpose: item.TestPurpose,
                         GettingDates: gettingDates,
+                        Conclusion: item.Conclusion,
                         Status: vieStatus,
                         IsNew: item.Status == "NEW",
                         IsDone: item.Status == "DONE"
