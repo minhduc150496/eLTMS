@@ -101,6 +101,7 @@ namespace eLTMS.Web.Api
             return response;
         }
 
+        /*
         [HttpGet]
         [Route("api/appointment/get-new-appointments-by-patient-id")]
         public HttpResponseMessage GetNewAppointment(int patientId)
@@ -110,8 +111,9 @@ namespace eLTMS.Web.Api
 
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
-        }
+        }/**/
 
+        /*
         [HttpGet]
         [Route("api/appointment/get-old-appointments-by-patient-id")]
         public HttpResponseMessage GetOldAppointment(int patientId)
@@ -120,7 +122,7 @@ namespace eLTMS.Web.Api
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
             return response;
-        }
+        }/**/
 
         [HttpPut]
         [Route("api/appointment/update-appointment")]
@@ -224,6 +226,16 @@ namespace eLTMS.Web.Api
             var app = _appointmentService.GetAppByPhone(phone);
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetByPhoneDto>>(app);
             var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("api/appointment/get-result-by-appointment-id")]
+        public HttpResponseMessage GetResultByAppointmentId(int appointmentId)
+        {
+            var app = _appointmentService.GetResultDoneByAppointmentId(appointmentId);
+            var appDto = Mapper.Map<Appointment, ResultOfAppointmentDto>(app);
+            var response = Request.CreateResponse(HttpStatusCode.OK, appDto);
             return response;
         }
 

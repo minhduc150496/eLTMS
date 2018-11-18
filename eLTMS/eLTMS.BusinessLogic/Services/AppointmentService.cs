@@ -16,8 +16,9 @@ namespace eLTMS.BusinessLogic.Services
     public interface IAppointmentService
     {
         bool Create(AppointmentDto appointment);
-        Appointment GetSingleById(int appointmentId); // DucBM
-        List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // DucBM
+        Appointment GetSingleById(int appointmentId); // Author: DucBM
+        Appointment GetResultDoneByAppointmentId(int appointmentId); // Author: DucBM
+        List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // Author: DucBM
         List<Appointment> GetNewApp(int patientId);
         List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
@@ -47,11 +48,19 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        // DucBM
+        // Author: DucBM
         public Appointment GetSingleById(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var result = appRepo.GetAppointmentByIdInclude(appointmentId);
+            return result;
+        }
+
+        // Author: DucBM
+        public Appointment GetResultDoneByAppointmentId(int appointmentId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var result = appRepo.GetResultDoneByAppointmentId(appointmentId);
             return result;
         }
 
@@ -103,7 +112,7 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
-        // DucBM
+        // Author: DucBM
         public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -149,7 +158,7 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        // DucBM
+        // Author: DucBM
         public bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
             try
@@ -222,7 +231,7 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
-        // DucBM
+        // Author: DucBM
         public bool DeleteAppointment(int appointmentId)
         {
             try
@@ -248,7 +257,7 @@ namespace eLTMS.BusinessLogic.Services
             return true;
         }
 
-        // DucBM
+        // Author: DucBM
         public List<Token> GetAllTokens()
         {
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);

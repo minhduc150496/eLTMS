@@ -54,6 +54,10 @@
     <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
     <Compile Include="Models\dto\AppointmentAddDto.cs" />
+    <Compile Include="Models\dto\ResultOfLabTestingIndexDtos.cs" />
+    <Compile Include="Models\dto\ResultOfLabTestingDtos.cs" />
+    <Compile Include="Models\dto\ResultOfSampleGettingDto.cs" />
+    <Compile Include="Models\dto\ResultOfAppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentGetAllDto.cs" />
     <Compile Include="Models\dto\AppointmentGetByPhoneDto.cs" />
     <Compile Include="Models\dto\AppointmentGetBySampleDto.cs" />

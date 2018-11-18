@@ -19,6 +19,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetResultDoneByPatientId(int patientId);
+        Appointment GetResultDoneByAppointmentId(int patientId); // DucBM
         List<Appointment> GetAllApp();
         Appointment GetAppById(int appId);
         Appointment GetAppointmentByCode(string code);
@@ -96,6 +97,23 @@ namespace eLTMS.DataAccess.Repositories
 
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
                 .ToList();
+            return result;
+        }
+
+        // DucBM
+        public Appointment GetResultDoneByAppointmentId(int apId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.AppointmentId == apId)
+                .Include(x => x.Patient)
+                .Include(x => x.Employee)
+
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
+                .FirstOrDefault();
+
             return result;
         }
 
