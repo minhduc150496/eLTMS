@@ -206,7 +206,7 @@ namespace eLTMS.Web.Controllers
             var result = _appointmentService.Update(code,con);
             return Json(new
             {
-                sucess = result
+                success = result
             });
         }
         [HttpPost]
