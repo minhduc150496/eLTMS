@@ -46,8 +46,11 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         }
 
         // GET: UserWeb/Appointment/Result/{apId}
-        public ActionResult Result()
+        public ActionResult Result(int appointmentId)
         {
+            Appointment app = _appointmentService.GetResultDoneByAppointmentId(appointmentId);
+            ResultOfAppointmentDto dto = Mapper.Map<Appointment, ResultOfAppointmentDto>(app);
+            ViewBag.ResultDto = dto;
             return View("Result", "_Layout");
         }
 

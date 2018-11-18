@@ -17,6 +17,12 @@ namespace eLTMS.Models.Models.dto
 
         public string PatientName { get; set; }
 
+        public string PatientBirthYear { get; set; }
+
+        public string PatientGender { get; set; }
+
+        public string PatientAddress { get; set; }
+
         public string TestPurpose { get; set; }
 
         public DateTime EnterTime { get; set; }

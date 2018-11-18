@@ -53,7 +53,9 @@
             <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash"></i></button>
             {{/IsNew}}
             {{#IsDone}}
-            <button class="btn btn-success btn-result" data-id="{{AppointmentId}}"><i class="fa fa-eye"></i></button>
+            <a href="/UserWeb/Appointment/Result?appointmentId={{AppointmentId}}" class="btn btn-success btn-result" data-id="{{AppointmentId}}">
+                <i class="fa fa-eye"></i>
+            </a>
             {{/IsDone}}
         </td>
     </tr>
