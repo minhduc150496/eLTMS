@@ -194,6 +194,15 @@
     padding: 10px;
     border-color: black;
 }
+.view_appointments_area .btn-edit {
+    background: #0a408a;
+}
+.view_appointments_area .btn-delete {
+    background: #da251c;
+}
+.view_appointments_area .btn-success {
+    background: #00923f;
+}
 
 
 /* Appointment Result */

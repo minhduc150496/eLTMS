@@ -6913,6 +6913,7 @@
     <Content Include="Assets\pages\UI\sliders.html" />
     <Content Include="Assets\pages\UI\timeline.html" />
     <Content Include="Assets\pages\widgets.html" />
+    <Content Include="Areas\UserWeb\Assets\plugins\bootbox.min.js" />
     <Content Include="Assets\plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Assets\plugins\bootstrap-slider\slider.css" />
     <Content Include="Assets\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />

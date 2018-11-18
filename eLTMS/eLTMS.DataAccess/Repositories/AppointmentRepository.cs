@@ -104,7 +104,7 @@ namespace eLTMS.DataAccess.Repositories
         public Appointment GetResultDoneByAppointmentId(int apId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.AppointmentId == apId)
+                .Where(x => x.AppointmentId == apId) // lack of status doctor done
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
 

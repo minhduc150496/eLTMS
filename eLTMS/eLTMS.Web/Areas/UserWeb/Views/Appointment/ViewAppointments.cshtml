@@ -27,7 +27,7 @@
                         <th>Mã cuộc hẹn</th>
                         <th>Mục đích</th>
                         <th>Bác sĩ</th>
-                        <th>Kết luận</th>
+                        <th>Các loại xét nghiệm</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
@@ -49,11 +49,11 @@
         <td>{{Status}}</td>
         <td>
             {{#IsNew}}
-            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-info btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
-            <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash"></i></button>
+            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
+            <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash-alt"></i></button>
             {{/IsNew}}
             {{#IsDone}}
-            <a href="/UserWeb/Appointment/Result?appointmentId={{AppointmentId}}" class="btn btn-success btn-result" data-id="{{AppointmentId}}">
+            <a href="/UserWeb/Appointment/Result?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-success btn-result" data-id="{{AppointmentId}}">
                 <i class="fa fa-eye"></i>
             </a>
             {{/IsDone}}

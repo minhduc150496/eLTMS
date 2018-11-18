@@ -10,7 +10,7 @@ var Controller = {
         Controller.registerEvent();
     },
     registerEvent: function () {
-        
+
         $('.btn-edit').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật vật tư');
             $('#myModal').modal('show');
@@ -19,24 +19,39 @@ var Controller = {
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            Controller.deleteAppointment(id);
+            bootbox.confirm({
+                message: "Bạn có chắc chắn muốn xóa cuộc hẹn này?",
+                buttons: {
+                    confirm: {
+                        label: "Có"
+                    },
+                    cancel: {
+                        label: "Không"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        Controller.deleteAppointment(id);
+                    }
+                }
+            });
         });
     },
     deleteAppointment: function (id) {
         $.ajax({
-            url: '/api/appointment/delete-appointment?appointmentId='+id,
-            type: 'PUT',
+            url: '/api/appointment/delete-appointment?appointmentId=' + id,
+            type: 'DELETE',
             success: function (response) {
                 if (response.Success == true) {
-                    alert("Xóa thành công.");
+                    toastr["success"]("Hủy lịch thành công.");
                     Controller.loadData(true);
                 }
                 else {
-                    alert(response.Message);
+                    toastr["error"](response.Message);
                 }
             },
             error: function (err) {
-                console.log(err);
+                toastr["error"](err);
             }
         });
     },
@@ -78,13 +93,14 @@ var Controller = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/api/appointment/get-appointments-by-patient-id?patientId='+CONFIG.PatientId,
+            url: '/api/appointment/get-appointments-by-patient-id?patientId=' + CONFIG.PatientId,
             type: 'GET',
             dataType: 'json',
             //data: { page: CONFIG.pageIndex, pageSize: CONFIG.pageSize, suppliesCode: $('#txtSearch').val() },
             success: function (data) {
                 var html = '';
                 var template = $('#data-template').html();
+                var labTests = "";
                 $.each(data, function (index, item) {
                     var gettingDates = [];
                     for (var i = 0; i < item.SampleGettingDtos.length; i++) {
@@ -108,7 +124,7 @@ var Controller = {
                         DoctorName: item.DoctorName,
                         TestPurpose: item.TestPurpose,
                         GettingDates: gettingDates,
-                        Conclusion: item.Conclusion,
+                        LabTests: item.Conclusion,
                         Status: vieStatus,
                         IsNew: item.Status == "NEW",
                         IsDone: item.Status == "DONE"
@@ -119,7 +135,7 @@ var Controller = {
                 /*Controller.paging(response.total, function () {
                     Controller.loadData();
                 }, changePageSize);*/
-                Controller.registerEvent(); 
+                Controller.registerEvent();
             }
         })
     },
