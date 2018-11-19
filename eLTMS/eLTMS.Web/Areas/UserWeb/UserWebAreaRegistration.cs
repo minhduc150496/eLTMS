@@ -17,7 +17,7 @@ namespace eLTMS.Web.Areas.UserWeb
             context.MapRoute(
                 "UserWeb_default",
                 "UserWeb/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new { controller = "HomePage", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "eLTMS.Web.Areas.UserWeb.Controllers" }
             );
         }

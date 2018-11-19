@@ -35,7 +35,10 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.PatientId == patientId && x.IsDeleted==false)
-                .Include(x => x.SampleGettings.Select(y => y.LabTestings))
+                .Include(x => x.SampleGettings)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.Slot))
                 .Include(x => x.Employee)
                 .OrderByDescending(x => x.AppointmentId)
                 .ToList();

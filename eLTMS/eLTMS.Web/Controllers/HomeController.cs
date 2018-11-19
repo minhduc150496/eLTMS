@@ -11,7 +11,7 @@ namespace eLTMS.Web.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Home", new { area = "UserWeb"});
+            return RedirectToAction("Index", "HomePage", new { area = "UserWeb"});
         }
     }
 }
