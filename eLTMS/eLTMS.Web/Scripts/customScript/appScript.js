@@ -15,7 +15,7 @@ var homeController = {
         var a = 1;
     },
     registerEvent: function () {
-        
+
         $(".Sample").change(function () {
             homeController.loadDataBySample();
         });
@@ -102,6 +102,35 @@ var homeController = {
             $('#lblPopupTitle').text('Thêm mới vật tư');
             homeController.resetForm();
             $('#myModal').modal('show');
+            var selectedSample = $(".Sample").children("option:selected").val();
+            if (selectedSample == 1 || selectedSample == 2) {
+                $('#mauCheckGroup').show();
+                $('#nuocTieuCheckGroup').show();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 3) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').show();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 4) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').show();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 5) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').show();
+            }
         });
 
 
@@ -195,7 +224,7 @@ var homeController = {
             url: '/receptionist/GetAllAppointment',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },             
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -273,7 +302,8 @@ var homeController = {
                             Address: item.Address,
                             StartTime: item.StartTime,
                             SampleGettingId: item.SampleGettingId,
-                            IsPaid: item.IsPaid
+                            IsPaid: item.IsPaid,
+                            Checked: (item.IsPaid == true) ?  "checked" : ""
                         });
 
                     });
