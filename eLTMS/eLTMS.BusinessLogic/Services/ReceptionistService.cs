@@ -19,6 +19,8 @@ namespace eLTMS.BusinessLogic.Services
         int CheckAndDeleteMauAndNuocTieu(DateTime dateTime);
         int CheckAndDeleteTeBaoAndDich(DateTime dateTime);
         int CheckAndDeletePhan(DateTime dateTime);
+        //DUCBM
+        List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId);
     }
     class ReceptionistService : IReceptionistService
     {
@@ -401,6 +403,13 @@ namespace eLTMS.BusinessLogic.Services
         public int CheckAndDeletePhan(DateTime dateTime)
         {
             throw new NotImplementedException();
+        }
+        // DucBM
+        public List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId)
+        {
+            var repo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var result = repo.GetBySampleGroupIdForReceptionist(sampleGroupId);
+            return result;
         }
     }
 }
