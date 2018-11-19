@@ -163,6 +163,10 @@
         margin-left: 15px;
     }
 
+        .create_appointment_area table ul.ul-price {
+            list-style-type: none;
+        }
+
 .current_appointment_area .edit_btn,
 .create_appointment_area .next_btn,
 .create_appointment_area .prev_btn {
@@ -173,4 +177,103 @@
 .create_appointment_area .submit_btn {
     /*background: #da251c;*/ /*red*/
     background: #0a408a; /*blue*/
+}
+
+
+/* View Appointments */
+.view_appointments_area .content-box {
+    margin: 0 auto;
+}
+
+.view_appointments_area table th {
+    padding: 5px 10px;
+    border-color: black;
+}
+
+.view_appointments_area table td {
+    padding: 10px;
+    border-color: black;
+}
+.view_appointments_area .btn-edit {
+    background: #0a408a;
+}
+.view_appointments_area .btn-delete {
+    background: #da251c;
+}
+.view_appointments_area .btn-success {
+    background: #00923f;
+}
+
+
+/* Appointment Result */
+.appointment_result_area {
+    /*background: lightgray;*/
+}
+.appointment_result_area .content-box {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid gray;
+    padding: 25px;
+    color: black;
+}
+    .appointment_result_area table td {
+        border: none;
+    }
+    .appointment_result_area .result-title {
+        text-transform: uppercase;
+        color: #0a408a;
+        font-size: 26px;
+        font-weight: bolder;
+        text-align: center;
+    }
+    .appointment_result_area table.table-result {
+        border: none;
+    }
+
+        .appointment_result_area table.table-result thead {
+            border-bottom: 2px solid black;
+            text-transform: uppercase;
+        }
+
+        .appointment_result_area table.table-result th,
+        .appointment_result_area table.table-result td {
+            padding: 0 5px;
+            border: none;
+        }
+
+            .appointment_result_area table.table-result th:nth-child(1),
+            .appointment_result_area table.table-result td:nth-child(1) {
+                text-align: right;
+            }
+
+            .appointment_result_area table.table-result th:nth-child(2),
+            .appointment_result_area table.table-result td:nth-child(2) {
+                font-weight: bold;
+                text-align: center;
+            }
+
+                .appointment_result_area table.table-result td:nth-child(2).result-high {
+                    text-decoration: underline;
+                    font-style: italic;
+                    text-align: right;
+                }
+
+                .appointment_result_area table.table-result td:nth-child(2).result-low {
+                    text-decoration: underline;
+                    font-style: italic;
+                    text-align: left;
+                }
+
+            .appointment_result_area table.table-result th:nth-child(3),
+            .appointment_result_area table.table-result td:nth-child(3) {
+                text-align: left;
+            }
+
+.appointment_result_area .return-time {
+    border-top: 2px solid black;
+    font-weight: bold;
+    text-align: right;
+    max-width: 150px;
+    margin: 0 0 0 auto;
 }

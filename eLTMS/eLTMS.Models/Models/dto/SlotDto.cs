@@ -12,6 +12,8 @@ namespace eLTMS.Models.Models.dto
         public int SampleGroupId { get; set; }
         public int StartTime { get; set; }
         public int FinishTime { get; set; }
+        public string FmStartTime { get; set; }
+        public string FmFinishTime { get; set; }
         public string Date { get; set; }
         public int Quantity { get; set; }
         public int RemainQuantity { get; set; }

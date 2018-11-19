@@ -1,0 +1,440 @@
+﻿
+@{
+    ViewBag.Title = "Appointment";
+    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(16px);
+        -ms-transform: translateX(16px);
+        transform: translateX(16px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 10px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+<section class="content-header">
+    <h1>
+        QUẢN LÝ CUỘC HẸN
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-body">
+                    <button class="btn btn-success" id="btnAddNew">Thêm mới</button>
+                    <br />
+                    <br />
+
+                    <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
+                    <button class="btn btn-success" id="btnSearch">Tìm</button>
+                    Phòng xét nghiệm:
+                    <select class="Sample" id="select-sample">
+                        <option value="1">Máu và Nước tiểu</option>
+                        <option value="2">Tế bào học</option>
+                        <option value="3">Phân</option>
+                        <option value="4">Dịch</option>
+                    </select><table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Appointment Code</th>
+                                <th>Họ & tên</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Giờ xét nghiệm</th>
+                                <th>Bàn</th>
+                                <th>Đã thanh toán</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblData"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<!-- Modal -->
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group" align="center">
+                        <h2>NHẬP THÔNG TIN BỆNH NHÂN</h2>
+                    </div>
+                </form>
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Họ tên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtName" name="txtName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">CMND</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtCMND" name="txtCMND">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Ngày sinh</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="txtDateOfBirth" name="txtDateOfBirth">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Số điện thoại</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtPhone" name="txtPhone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txtAddress" name="txtAddress">
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group" align="center">
+                        <h2> CHỌN LOẠI XÉT NGHIỆM</h2>
+                    </div>
+                </form>
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Máu</label>
+                        <div class="col-sm-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem1" value="1">Ct Máu</label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem2" value="2">Huyết đồ</label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem3" value="3">Anti HBsAg định lượng</label>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem4" value="4">Anti HBs (test nhanh)</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem5" value="5">Điện di Hb</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem6" value="5">CK</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem7" value="5">VSS</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem8" value="5">Chức năng đông máu toàn bộ</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem9" value="5">HBsAg định tính</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem10" value="1">Anti HBc</label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem11" value="2">Điện giải đồ</label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem12" value="3">CK-MB</label>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem13" value="4">Tiểu cầu, độ tập trung</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem14" value="5">Nhóm máu ABO</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem15" value="5">HBeAg (test nhanh)</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem16" value="5">Protein, Albumin, A/G</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem17" value="5">Fibrinogen</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem18" value="5">TS, TC</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem19" value="5">Nhóm máu Rhesus</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem20" value="5">Anti Hbe (test nhanh)</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem21" value="5">Điện di protein huyết thanh</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem22" value="5">Tỷ prothrobin (T.P)/INR</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Nước tiểu</label>
+                        <div class="col-sm-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem23" value="5">Nước tiểu toàn phần</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem24" value="5">Heroin (test nhanh)</label>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Tế bào học</label>
+                        <div class="col-sm-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem25" value="5">Pap'smear</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem26" value="5">U, nang, hạch</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Phân</label>
+                        <div class="col-sm-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem27" value="5">Soi tươi tìm KSTĐR</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem28" value="5">Máu ẩn (FOB)</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="pwd">Dịch</label>
+                        <div class="col-sm-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem29" value="5">Tinh dịch đồ</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem30" value="5">Soi tươi tìm nấm, da, tóc, móng...</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem31" value="5">Soi tươi, nhuộm Gram</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem32" value="5">Cấy, KSĐ</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem33" value="5">Chlamydia</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem34" value="5">Demodex</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" id="btnSave" class="btn btn-success">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<script id="data-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{AppointmentCode}}</td>
+        <td>{{PatientName}}</td>
+        <td>{{PatientAddress}}</td>
+        <td>{{PatientPhone}}</td>
+        <td>{{FmStartTime}} - {{FmFinishTime}}</td>
+        <td>{{TableName}}</td>
+        <td>
+            <label class="switch">
+                <input id="{{SampleGettingId}}" onchange="homeController.checkIsPaid({{SampleGettingId}})" onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+        </td>
+
+    </tr>
+</script>
+
+
+
+@section scripts{
+    <script src="~/Scripts/customScript/receptionistSampleGettings.js"></script>
+}

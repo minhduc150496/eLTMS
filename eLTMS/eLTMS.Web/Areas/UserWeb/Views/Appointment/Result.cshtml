@@ -1,0 +1,98 @@
+﻿@using eLTMS.Models.Models.dto
+@{
+    ViewBag.Title = "Đặt lịch xét nghiệm";
+    ResultOfAppointmentDto resultDto = ViewBag.ResultDto;
+}
+
+
+@section styles {
+    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
+}
+
+<!-- breadcroumb Area Start-->
+<div class="breadvroumb_area">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h1>Kết quả xét nghiệm</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcroumb Area End-->
+
+<div class="appointment_result_area p100">
+    <div class="container">
+        <div class="content-box">
+            <table class="table">
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <h2 class="result-title">
+                Phiếu kết quả xét nghiệm
+            </h2>
+            <table class="table">
+                <tr>
+                    <td>
+                        Họ tên: @(resultDto.PatientName)<br />
+                        Địa chỉ: @(resultDto.PatientAddress)
+                    </td>
+                    <td>
+                        Năm sinh: @(resultDto.PatientBirthYear)<br />
+                        Phái: @(resultDto.PatientGender == "Male" ? "Nam" : "Nữ")
+                    </td>
+                    <td>
+                        Ngày ĐK: @(resultDto.EnterTime.ToString("dd-MM-yyyy"))<br />
+                        Giờ ĐK: @(resultDto.EnterTime.TimeOfDay)
+                    </td>
+                </tr>
+            </table>
+            <table class="table table-result">
+                <thead>
+                    <tr>
+                        <th>Tên xét nghiệm</th>
+                        <th>Kết quả</th>
+                        <th>Chỉ số bình thường</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sample in resultDto.SampleGettings)
+                    {
+                        foreach (var labTesting in sample.LabTestings)
+                        {
+                            <tr>
+                                <td>NFC(C.B.C)(CÔNG THỨC MÁU)</td>
+                                <td>*</td>
+                                <td></td>
+                            </tr>
+                            foreach (var index in labTesting.LabTestingIndexes)
+                            {
+                                <tr>
+                                    <td>@(index.IndexName)</td>
+                                    @{
+                                        var classStatus = "";
+                                        if (index.LowNormalHigh == "L")
+                                        {
+                                            classStatus = "result-low";
+                                        }
+                                        else if (index.LowNormalHigh == "H")
+                                        {
+                                            classStatus = "result-high";
+                                        }
+                                    }
+                                    <td class="@(classStatus)">@(index.IndexValue)</td>
+                                    <td>(@(index.NormalRange))@(index.Unit)</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="return-time">
+                Ngày: @(resultDto.ReturnTime.ToString("dd-MM-yyyy"))
+            </div>
+        </div>
+    </div>
+</div>

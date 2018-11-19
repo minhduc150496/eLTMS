@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
 
 namespace eLTMS.Web.Controllers
 {
@@ -20,8 +21,8 @@ namespace eLTMS.Web.Controllers
         private readonly ILabTestingService _labTestingService;
         private readonly ILabTestingIndexService _labTestingIndexService;
         private readonly IAppointmentService _appointmentService;
-        //private readonly IImportPaperService _importPaperService;
-        public LabTestController(IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        private readonly IHospitalSuggestionService _hospitalSuggestionService;
+        public LabTestController(IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._appointmentService = appointmentService;
@@ -29,6 +30,7 @@ namespace eLTMS.Web.Controllers
             this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
             this._sampleGroupService = sampleGroupService;
+            this._hospitalSuggestionService = hospitalSuggestionService;
         }
         public ActionResult Index()
         {
@@ -47,6 +49,14 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
+        public ActionResult LabTestingDone()
+        {
+            return View();
+        }
+        public ActionResult Result()
+        {
+            return View();
+        }
         [HttpGet]
         public JsonResult GetAllSamples( int page = 1, int pageSize = 20)
         {
@@ -60,7 +70,6 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
         [HttpGet]
         public JsonResult GetAllSampleGroups(int page = 1, int pageSize = 20)
         {
@@ -126,6 +135,20 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult GetAllResult(int page = 1, int pageSize = 20)
+        {
+            var queryResult = _labTestingService.GetAllResult();
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public JsonResult GetAllLabTestings()
         {
             var queryResult = _labTestingService.GetAllLabTesting();
@@ -149,7 +172,6 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
         [HttpPost]
         public JsonResult UpdateLabTest(LabTest labTest)
         {
@@ -267,5 +289,74 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
+
+        [HttpPost]
+        public ActionResult ExportOrderDetailToPdf(string code)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder(); StringBuilder sb2 = new StringBuilder();
+            var queryResult2 = _appointmentService.GetResultByAppCode(code);
+            var result2 = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult2);
+            var queryResult1 = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var result1 = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult1);
+            foreach (var item1 in result1)
+            {
+                var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(item1.LabTestingId);
+                var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+                var changeColor = "";
+                sb.AppendLine($"<tr><td><h3>{item1.LabTestName}</h3><td></tr>");
+                foreach (var item in result)
+                    
+                {
+                    if (item.LowNormalHigh.Contains("L")) changeColor = "'background-color: yellow;'";
+                    if (item.LowNormalHigh.Contains("H")) changeColor = "'background-color: #FF6A6A;'";
+                    if (item.LowNormalHigh.Contains("N")) changeColor = "'background-color: white;'";
+                    sb.AppendLine("<tr>");
+                    sb.AppendLine($"<td class='no'>{item.IndexName}</td>");
+                    sb.AppendLine($"<td class='colUnit' style= {changeColor}>{item.IndexValue}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.LowNormalHigh}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.NormalRange}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.Unit}</td>");
+                    sb.AppendLine("</tr>");
+                }
+            }
+            var Renderer = new IronPdf.HtmlToPdf();
+            var allData = System.IO.File.ReadAllText(Server.MapPath("~/template-pdf/result.html"));
+            foreach (var item2 in result2)
+            {
+                allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
+                sb2.AppendLine($"<tr><td class='no'><strong>Tên: </strong>{item2.PatientName}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Ngày sinh: </strong>{item2.DateOB}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{item2.Gender}</td></tr>");
+                allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
+                string x = item2.Conclusion + "";
+                var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
+                var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
+                foreach (var item3 in result3)
+                {                 
+                    sb1.AppendLine($"<tr><td class='no'><strong>{item3.HospitalList}</strong></td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item3.HospitalAdd}</td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item3.HospitalPhone}</td></tr>");
+                }               
+            }
+
+            allData = allData.Replace("{{DataResult}}", sb.ToString());
+            allData = allData.Replace("{{DataResult1}}", sb1.ToString());
+            allData = allData.Replace("{{DataResult2}}", sb2.ToString());
+            var PDF = Renderer.RenderHtmlAsPdf(allData);
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", $"attachment;filename=\"Result.pdf\"");
+            // edit this line to display ion browser and change the file name
+            Response.BinaryWrite(PDF.BinaryData);
+            Response.Flush();
+            Response.End();
+            return null;
+        }
+
+
     }
 }

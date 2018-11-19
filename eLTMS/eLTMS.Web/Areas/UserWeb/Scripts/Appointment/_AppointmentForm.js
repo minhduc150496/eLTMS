@@ -3,7 +3,7 @@
 */
 
 CONFIG = {
-    PATIENT_ID: 1, // hard code for dev-ing
+    PATIENT_ID: 71, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
 };
 
@@ -31,7 +31,9 @@ var Utils = {
 };
 
 var Model = {
+    firebaseDB: {},
     sampleDtos: {},
+    bookings: [],
     slotDtos: {},
     appointmentDto: {},
     suggestResult: null
@@ -66,6 +68,7 @@ var Controller = {
                 return;
             } // end VALIDATION
             // GO TO STEP 2:
+            Controller.renderStep2Html();
             var duration = 200;
             $("#step-1").fadeOut(duration, function () {
                 $("#step-2").fadeIn(duration);
@@ -106,40 +109,28 @@ var Controller = {
                 SampleGettingDtos: []
             };
             // create SampleGettingDtos and assign to Model
-            var el_Samples = $("#step-2-form *[data-sampleid]");
-            if (el_Samples != null) {
-                for (var i = 0; i < el_Samples.length; i++) {
-                    // create new SampleGetingDto
-                    var el_Sample = el_Samples[i];
-                    // get date, start time & finish time
-                    var sampleId = $(el_Sample).data("sampleid");
-                    var sampleDuration = $(el_Sample).data("sample-duration");
-                    sampleDuration = parseInt(sampleDuration);
-                    var startTime = $(el_Sample).find(":selected").val(); // double
-                    startTime = parseInt(startTime);
-                    var finishTime = startTime + sampleDuration;
-                    // format to 07:00
-                    startTime = Utils.formatTimeShort(startTime);
-                    finishTime = Utils.formatTimeShort(finishTime);
-                    var gettingDate = $(el_Sample).find("*[type='date']").val();
-                    // assign to sampleGetting Dto
-                    var sampleGettingDto = {
-                        SampleId: sampleId,
-                        LabTestIds: [],
-                        GettingDate: gettingDate,
-                        StartTime: startTime,
-                        FinishTime: finishTime
-                    };
+            for (var i = 0; i < Model.sampleDtos.length; i++) {
+                var sampleDto = Model.sampleDtos[i];
+                if (sampleDto.IsSelected) {
+                    var sampleGettingDto = {};
+                    sampleGettingDto.SampleId = sampleDto.SampleId;
 
-                    var el_LabTests = $("#step-1-form [data-sampleid='" + sampleId + "'] input[data-labtestid]:checked");
-                    //console.log(el_LabTests);
-                    if (el_LabTests != null) {
-                        for (var j = 0; j < el_LabTests.length; j++) {
-                            var labTestId = $(el_LabTests[j]).data("labtestid");
-                            //console.log(labTestId);
+                    var trSample = $("tr[data-sample-index='" + sampleDto.Index + "']");
+
+                    var gettingDate = trSample.find("[type=date]").val();
+                    sampleGettingDto.GettingDate = gettingDate;
+
+                    var slotId = trSample.find("select").val();
+                    sampleGettingDto.SlotId = slotId;
+
+                    sampleGettingDto.LabTestIds = [];
+                    for (var j = 0; j < sampleDto.LabTests.length; j++) {
+                        if (sampleDto.LabTests[j].IsChecked) {
+                            var labTestId = sampleDto.LabTests[j].LabTestId;
                             sampleGettingDto.LabTestIds.push(labTestId);
                         }
                     }
+
                     Model.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
                 }
             }
@@ -165,55 +156,72 @@ var Controller = {
         $("#step-1-form [type='checkbox']").change(function () {
             var sampleIndex = $(this).closest("[data-sample-index]").data("sample-index");
             var labTestIndex = $(this).data("labtest-index");
-            var checked = $(this).val() == "on";
+            var checked = $(this).is(":checked"); 
 
-            Model.sampleDtos[sampleIndex].LabTests[labTestIndex].IsSelected = checked;
+            Model.sampleDtos[sampleIndex].LabTests[labTestIndex].IsChecked = checked;
             Model.sampleDtos[sampleIndex].nChecked += (checked ? 1 : -1);
-            
+            Model.sampleDtos[sampleIndex].IsSelected = Model.sampleDtos[sampleIndex].nChecked > 0;
+
+            //console.log("checkbox change", sampleIndex, labTestIndex, checked)            
         });
 
-        // step 2a
-        Controller.renderStep2Html();
+        for (var i = 0; i < Model.sampleDtos.length; i++) {
+            var sample = Model.sampleDtos[i];
+            for (var j = 0; j < sample.LabTests.length; j++) {
+                var labTest = sample.LabTests[j];
+                labTest.FmPrice = labTest.Price.toLocaleString("VN-vi");
+            }
+        }
+        //console.log(Model.sampleDtos);
 
-        // get avai. slots
-        return;
-        $.ajax({
-            method: "GET",
-            contentType: "application/json",
-            url: "/api/slot/get-available-slots",
-            dataType: "JSON",
-            async: true,
-        }).success(function (data) {
-            Model.slotDtos = data;
-            console.log(data);
-        });
+        // config Firebase
+        /*
+        var config = {
+            apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
+            authDomain: "eltms-test1.firebaseapp.com",
+            databaseURL: "https://eltms-test1.firebaseio.com",
+            projectId: "eltms-test1",
+            storageBucket: "eltms-test1.appspot.com",
+            messagingSenderId: "1013768931631"
+        };
+        firebase.initializeApp(config);
+        Model.firebaseDB = firebase.database().ref().child("/bookings/");
 
+        Model.firebaseDB.on("value", function (snapshot) {
+            Model.bookings = snapshot.val();
+        });/**/
+        
     }, // end Action
     renderStep2Html: function () {
-        Model.comingDate = '2018-11-06';
-        var data = {
-            Date: '2018-11-06',
-            Hours: [],
-            Mins: ['00', '15', '30', '45']
-        };
-        for (var i = 4; i <= 17; i++) {
-            data.Hours.push(i);
+
+        var data = { Samples: Model.sampleDtos };
+        var template = $("#step-2-template").html();
+        var htmlStep1 = Mustache.render(template, data);
+        $("#step-2-form").html(htmlStep1);
+        
+        data = { Samples: Model.sampleDtos };
+        template = $("#step-2-template").html();
+        htmlStep1 = Mustache.render(template, data);
+        $("#step-2-form").html(htmlStep1);
+
+        $("#step-2-form table tbody tr:not(:last-child()) td:first-child()").each(function (index, el) {
+            $(this).html(index + 1);
+        });
+
+        var totalPrice = 0;
+        for (var i = 0; i < Model.sampleDtos.length; i++) {
+            var sample = Model.sampleDtos[i];
+            for (var j = 0; j < sample.LabTests.length; j++) {
+                var labTest = sample.LabTests[j];
+                console.log(labTest.IsChecked);
+                if (labTest.IsChecked == true) {
+                    totalPrice += labTest.Price;
+                }
+            }
         }
-        var template = $("#step-2a-template").html();
-        var html = Mustache.render(template, data);
-        $("#step-2a-form").html(html);
-
-        $("#coming-date").off("change").change(function () {
-            Controller.suggestSlots();
-        });
-        $("#coming-hour").off("change").change(function () {
-            Controller.suggestSlots();
-        });
-        $("#coming-min").off("change").change(function () {
-            Controller.suggestSlots();
-        });
-
-
+        var sTotalPrice = totalPrice.toLocaleString("VN-vi");
+        $("#total-price").html(sTotalPrice);
+        
     }, // end Action
     suggestSlots: function () {
 
@@ -223,86 +231,12 @@ var Controller = {
         console.log(hour, min);
         if (hour != null && min != null) {
             Model.comingTime = hour * 60 * 60 + min * 60;
-            console.log(Model.sampleDtos);
+            // console.log(Model.sampleDtos);
             var result = AppointmentSuggestor.CalcTheBestTour(Model.slotDtos, Model.comingDate, Model.comingTime, Model.sampleDtos);
             Model.suggestResult = result;
             console.log(result);
             Controller.renderStep2bHtml();
         }
-
-    }, // end Action
-    renderStep2bHtml: function () {
-        var data = {
-            Samples: []
-        };
-        // FOR-EACH sampleDtos
-        $(Model.sampleDtos).each(function (index, element) {
-            var sample = {
-                SampleId: element.SampleId,
-                SampleGroupId: element.SampleGroupId,
-                SampleName: element.SampleName,
-                IsDisplay: element.nChecked > 0,
-                Slots: []
-            };
-            // get suggest slot
-            var selectedSlotId = -1;
-            if (Model.suggestResult != null) {
-                $(Model.suggestResult).each(function (index, element) {
-                    if (element.SampleId == sample.SampleId) {
-                        selectedSlotId = element.SlotId;
-                        //console.log(sample.SampleId, selectedSlotId);
-                    }
-                });
-            }
-            // FOR-EACH slotDtos
-            for (var j = 0; j < Model.slotDtos.length; j++) {
-                var element = Model.slotDtos[j];
-                if (element.Date == Model.comingDate && element.SampleGroupId == sample.SampleGroupId && element.StartTime > Model.comingTime) {
-                    var slot = {
-                        SlotId: element.SlotId,
-                        StartTime: element.StartTime,
-                        FmStartTime: Utils.formatTimeShort(element.StartTime),
-                        FmFinishTime: Utils.formatTimeShort(element.FinishTime),
-                        Date: element.Date,
-                        IsSelected: false
-                    };
-                    if (slot.SlotId == selectedSlotId) {
-                        //console.log(slot.SlotId);
-                        slot.IsSelected = true
-                    };
-                    sample.Slots.push(slot);
-                }
-            }
-            // sort Slots in dropdown
-            sample.Slots.sort(function (a, b) {
-                return a.StartTime - b.StartTime;
-            });
-            data.Samples.push(sample);
-        });
-        // sort Samples
-        data.Samples.sort(function (sample1, sample2) {
-            var startTime1;
-            for (var i = 0; i < sample1.Slots.length; i++) {
-                if (sample1.Slots[i].IsSelected) {
-                    startTime1 = sample1.Slots[i].StartTime;
-                }
-            }
-            var startTime2;
-            for (var i = 0; i < sample2.Slots.length; i++) {
-                if (sample2.Slots[i].IsSelected) {
-                    startTime2 = sample1.Slots[i].StartTime;
-                }
-            }
-            return startTime1 - startTime2;
-        });
-
-        var template = $("#step-2b-template").html();
-        var html = Mustache.render(template, data);
-        $("#step-2b-form").html(html);
-
-        $("#step-2b-form").off("change").change(function () {
-
-        });
 
     }, // end Action
     renderLabTestList: function () {
@@ -319,7 +253,7 @@ var Controller = {
                 }
             }
         }
-        if (sSampleDtos == null) {
+        if (sSampleDtos == null || true) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
@@ -360,46 +294,42 @@ var Controller = {
             dataType: "JSON",
             async: true,
             data: jsonData,
-        }).success(function (data) {
-            console.log("response: ");
-            console.log(data);
-            // 
-            var checkResult = function (data) {
-                $("#processing-modal").modal('hide');
-                if (data.Success == true) {
-                    showModalWithMessage($("#success-modal"), data.Message);
+            success: function (data) {
+                var checkResult = function (data) {
+                    $("#processing-modal").modal('hide');
+                    if (data.Success == true) {
+                        showModalWithMessage($("#success-modal"), data.Message);
+                    } else {
+                        showModalWithMessage($("#fail-modal"), data.Message);
+                    }
+                }
+                if (openingProcessingModal) {
+                    $("#processing-modal").on("shown.bs.modal", function (e) {
+                        e.stopPropagation();
+                        openingProcessingModal = false;
+                        checkResult(data);
+                    });
                 } else {
-                    showModalWithMessage($("#fail-modal"), data.Message);
+                    checkResult(data);
+                }
+            },
+            fail: function (data) {
+                console.log("response: ");
+                console.log(data);
+                if (openingProcessingModal) {
+                    $("#processing-modal").on("shown.bs.modal", function (e) {
+                        e.stopPropagation();
+                        openingProcessingModal = false;
+                        $("#processing-modal").modal('hide');
+                        showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra."); // Lỗi 500
+                    });
+                } else {
+                    $("#processing-modal").modal('hide');
+                    showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra");
                 }
             }
-            if (openingProcessingModal) {
-                $("#processing-modal").on("shown.bs.modal", function (e) {
-                    e.stopPropagation();
-                    openingProcessingModal = false;
-                    checkResult(data);
-                });
-            } else {
-                checkResult(data);
-            }
-        }).fail(function (data) {
-            console.log("response: ");
-            console.log(data);
-            if (openingProcessingModal) {
-                $("#processing-modal").on("shown.bs.modal", function (e) {
-                    e.stopPropagation();
-                    openingProcessingModal = false;
-                    $("#processing-modal").modal('hide');
-                    showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra."); // Lỗi 500
-                });
-            } else {
-                $("#processing-modal").modal('hide');
-                showModalWithMessage($("#fail-modal"), "Có lỗi xảy ra");
-            }
-        });
-
-        //}, 1000);
-
-
+        }); // end AJAX define
+        
     }, // end Action
 }
 Controller.init();

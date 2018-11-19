@@ -24,277 +24,7 @@
             <div id="alert-required-datetime" class="alert alert-danger" role="alert">
                 Xin quý khách vui lòng điền đầy đủ thông tin: ngày, giờ
             </div>
-            <div id="step-2-form" style="display: none">
-                <div id="step-2a-form">
-                </div>
-                <div id="step-2b-form">
-                </div>
-            </div>
-
-            <div>
-
-                <div id="ap-1">
-                    <div class="row" style="display: none">
-                        <div class="col-md-2">
-                            <h3>Ngày:</h3>
-                            <input id="coming-date" type="date" value="2018-11-08" min="2018-11-08" max="2018-11-16">
-                        </div>
-                        <div class="col-md-2">
-                            <h3>Giờ có mặt:</h3>
-                            <div>
-                                <select id="coming-hour" style="overflow-y: scroll">
-                                    <option value="">--</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7" selected>7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                </select>
-                                giờ
-                                <select id="coming-min" style="overflow-y: scroll">
-                                    <option value="">--</option>
-                                    <option value="00" selected>00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                                phút
-                            </div>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Lấy mẫu</th>
-                                <th>Loại xét nghiệm</th>
-                                <th>Ngày</th>
-                                <th>Giờ</th>
-                                <th>Giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Máu</td>
-                                <td>
-                                    <ul class="text-left">
-                                        <li>Ct Máu</li>
-                                        <li>Huyết đồ</li>
-                                        <li>Chức năng đông máu toàn bộ</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <input id="coming-date" type="date" value="2018-11-08" min="2018-11-08" max="2018-11-14" />
-                                </td>
-                                <td>
-                                    <select style="overflow-y: scroll" id="first-select">
-                                        <option value="">-- Vui lòng chọn một ca --</option>
-                                        <option value="25200" selected="">7:00 - 7:20</option>
-                                        <option value="27600">7:40 - 8:00</option>
-                                        <option value="30000">8:20 - 8:40</option>
-                                        <option value="32400">9:00 - 9:20</option>
-                                        <option value="34800">9:40 - 10:00</option>
-                                        <option value="37200">10:20 - 10:40</option>
-                                        <option value="39600">11:00 - 11:20</option>
-                                        <option value="42000">11:40 - 12:00</option>
-                                        <option value="44400">12:20 - 12:40</option>
-                                        <option value="46800">13:00 - 13:20</option>
-                                        <option value="49200">13:40 - 14:00</option>
-                                        <option value="51600">14:20 - 14:40</option>
-                                        <option value="54000">15:00 - 15:20</option>
-                                        <option value="56400">15:40 - 16:00</option>
-                                        <option value="58800">16:20 - 16:40</option>
-                                        <option value="61200">17:00 - 17:20</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    200.000 đ
-                                </td>
-                            </tr>
-                            <tr id="tr-2">
-                                <td>2</td>
-                                <td>Nước tiểu</td>
-                                <td>
-                                    <ul class="text-left">
-                                        <li>Nước tiểu toàn phần</li>
-                                        <li>Heroin (test nhanh)</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <input id="coming-date" type="date" value="2018-11-08" min="2018-11-08" max="2018-11-14" onchange="ewAp2()" />
-                                </td>
-                                <td>
-                                    <select style="overflow-y: scroll" id="first-select">
-                                        <option value="">-- Vui lòng chọn một ca --</option>
-                                        <option value="25200">7:00 - 7:20</option>
-                                        <option value="27600" selected>7:40 - 8:00</option>
-                                        <option value="30000">8:20 - 8:40</option>
-                                        <option value="32400">9:00 - 9:20</option>
-                                        <option value="34800">9:40 - 10:00</option>
-                                        <option value="37200">10:20 - 10:40</option>
-                                        <option value="39600">11:00 - 11:20</option>
-                                        <option value="42000">11:40 - 12:00</option>
-                                        <option value="44400">12:20 - 12:40</option>
-                                        <option value="46800">13:00 - 13:20</option>
-                                        <option value="49200">13:40 - 14:00</option>
-                                        <option value="51600">14:20 - 14:40</option>
-                                        <option value="54000">15:00 - 15:20</option>
-                                        <option value="56400">15:40 - 16:00</option>
-                                        <option value="58800">16:20 - 16:40</option>
-                                        <option value="61200">17:00 - 17:20</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    500.000 đ
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="no-3">3</td>
-                                <td>Dịch</td>
-                                <td>
-                                    <ul class="text-left">
-                                        <li>Soi tươi, nhuộm Gram</li>
-                                        <li>Chlamydia</li>
-                                        <li>Demodex</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <input id="coming-date" type="date" value="2018-11-08" min="2018-11-08" max="2018-11-14" />
-                                </td>
-                                <td>
-                                    <select style="overflow-y: scroll" id="first-select">
-                                        <option value="">-- Vui lòng chọn một ca --</option>
-                                        <option value="25200">7:00 - 7:20</option>
-                                        <option value="27600">7:40 - 8:00</option>
-                                        <option value="30000" selected>8:20 - 8:40</option>
-                                        <option value="32400">9:00 - 9:20</option>
-                                        <option value="34800">9:40 - 10:00</option>
-                                        <option value="37200">10:20 - 10:40</option>
-                                        <option value="39600">11:00 - 11:20</option>
-                                        <option value="42000">11:40 - 12:00</option>
-                                        <option value="44400">12:20 - 12:40</option>
-                                        <option value="46800">13:00 - 13:20</option>
-                                        <option value="49200">13:40 - 14:00</option>
-                                        <option value="51600">14:20 - 14:40</option>
-                                        <option value="54000">15:00 - 15:20</option>
-                                        <option value="56400">15:40 - 16:00</option>
-                                        <option value="58800">16:20 - 16:40</option>
-                                        <option value="61200">17:00 - 17:20</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    300.000 đ
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>TỔNG CỘNG:</td>
-                                <td>1.000.000 đ</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="ap-2" style="display: none">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <h3>Ngày:</h3>
-                            <input id="coming-date" type="date" value="2018-11-09" min="2018-11-08" max="2018-11-16">
-                        </div>
-                        <div class="col-md-2">
-                            <h3>Giờ có mặt:</h3>
-                            <div>
-                                <select id="coming-hour" style="overflow-y: scroll">
-                                    <option value="">--</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7" selected>7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                </select>
-                                giờ
-                                <select id="coming-min" style="overflow-y: scroll">
-                                    <option value="">--</option>
-                                    <option value="00" selected>00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                                phút
-                            </div>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Lấy mẫu</th>
-                                <th>Loại xét nghiệm</th>
-                                <th>Ngày</th>
-                                <th>Giờ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Nước tiểu</td>
-                                <td>
-                                    <ul class="text-left">
-                                        <li>Nước tiểu toàn phần</li>
-                                        <li>Heroin (test nhanh)</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <input id="coming-date" type="date" value="2018-11-09" min="2018-11-08" max="2018-11-14" />
-                                </td>
-                                <td>
-                                    <select style="overflow-y: scroll" id="first-select">
-                                        <option value="">-- Vui lòng chọn một ca --</option>
-                                        <option value="25200">7:00 - 7:20</option>
-                                        <option value="27600" selected>7:40 - 8:00</option>
-                                        <option value="30000">8:20 - 8:40</option>
-                                        <option value="32400">9:00 - 9:20</option>
-                                        <option value="34800">9:40 - 10:00</option>
-                                        <option value="37200">10:20 - 10:40</option>
-                                        <option value="39600">11:00 - 11:20</option>
-                                        <option value="42000">11:40 - 12:00</option>
-                                        <option value="44400">12:20 - 12:40</option>
-                                        <option value="46800">13:00 - 13:20</option>
-                                        <option value="49200">13:40 - 14:00</option>
-                                        <option value="51600">14:20 - 14:40</option>
-                                        <option value="54000">15:00 - 15:20</option>
-                                        <option value="56400">15:40 - 16:00</option>
-                                        <option value="58800">16:20 - 16:40</option>
-                                        <option value="61200">17:00 - 17:20</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+            <div id="step-2-form">
             </div>
 
             <div class="button-box text-center">
@@ -322,9 +52,7 @@
             </div>
             <div class="modal-footer">
                 <div class="button-box">
-                    <a href="/UserWeb/Appointment/Current">
-                        <button type="button" class="btn btn-success">Đồng ý</button>
-                    </a>
+                    <button type="button" class="btn btn-success"data-dismiss="modal">Đồng ý</button>
                 </div>
             </div>
         </div>
@@ -395,42 +123,64 @@
     {{/Samples}}
 </script>
 
-<script id="step-2a-template" type="x-tmpl-mustache">
-    <h3>Bạn sẽ đến vào ngày:</h3>
-    <input id="coming-date" type="date" value="{{Date}}" min="2018-11-06" max="2018-11-14"/>
-    <h3>Bạn có thể có mặt từ lúc:</h3>
-    <div>
-        <select id="coming-hour" style="overflow-y: scroll">
-            <option value="">--</option>
-            {{#Hours}}
-            <option value="{{.}}">{{.}}</option>
-            {{/Hours}}
-        </select>
-        giờ
-        <select id="coming-min" style="overflow-y: scroll">
-            <option value="">--</option>
-            {{#Mins}}
-            <option value="{{.}}">{{.}}</option>
-            {{/Mins}}
-        </select>
-        phút
-    </div>
-</script>
-
-<script id="step-2b-template" type="x-tmpl-mustache">
-    {{#Samples}}
-    {{#IsDisplay}}
-    <h3>Thời gian lấy mẫu {{SampleName}}:</h3>
-    <div data-sampleid="{{SampleId}}" data-sample-duration="{{SampleDuration}}">
-        <select style="overflow-y: scroll">
-            <option value="">-- Vui lòng chọn một ca --</option>
-            {{#Slots}}
-            <option value="{{SlotId}}" {{#IsSelected}}selected {{/IsSelected}}>
-                {{FmStartTime}} - {{FmFinishTime}}
-            </option>
-            {{/Slots}}
-        </select>
-    </div>
-    {{/IsDisplay}}
-    {{/Samples}}
+<script id="step-2-template" type="x-tmpl-mustache">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Lấy mẫu</th>
+                <th>Loại xét nghiệm</th>
+                <th>Giá (vnđ)</th>
+                <th>Ngày</th>
+                <th>Giờ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#Samples}}
+            {{#IsSelected}}
+            <tr data-sample-index="{{Index}}">
+                <td></td>
+                <td>{{SampleName}}</td>
+                <td>
+                    <ul class="text-left">
+                        {{#LabTests}}
+                        {{#IsChecked}}
+                        <li>{{LabTestName}}</li>
+                        {{/IsChecked}}
+                        {{/LabTests}}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="ul-price text-right">
+                        {{#LabTests}}
+                        {{#IsChecked}}
+                        <li>{{FmPrice}}</li>
+                        {{/IsChecked}}
+                        {{/LabTests}}
+                    </ul>
+                </td>
+                <td>
+                    <input type="date" value="2018-11-08" min="2018-11-08" max="2018-11-14" />
+                </td>
+                <td>
+                    <select style="overflow-y: scroll">
+                        <option value="">-- Vui lòng chọn một ca --</option>
+                        {{#SlotDtos}}
+                        <option value="{{SlotId}}">{{FmStartTime}} - {{FmFinishTime}}</option>
+                        {{/SlotDtos}}
+                    </select>
+                </td>
+            </tr>
+            {{/IsSelected}}
+            {{/Samples}}
+            <tr>
+                <td></td>
+                <td></td>
+                <td><b>Tổng cộng:</b></td>
+                <td id="total-price" class="text-right"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 </script>

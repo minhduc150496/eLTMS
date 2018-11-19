@@ -68,6 +68,21 @@
     <Reference Include="GemBox.Spreadsheet, Version=43.0.35.1076, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">
       <HintPath>..\packages\GemBox.Spreadsheet.43.0.0.1076\lib\net35\GemBox.Spreadsheet.dll</HintPath>
     </Reference>
+    <Reference Include="Google.Apis, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.36.1\lib\net45\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.36.1\lib\net45\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.36.1\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.36.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.36.1\lib\net45\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPdf, Version=4.4.9.15720, Culture=neutral, PublicKeyToken=94e1c31412563c75, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPdf.4.4.9\lib\net40\IronPdf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -81,6 +96,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -182,6 +198,7 @@
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
+    <Compile Include="Api\TokenApiController.cs" />
     <Compile Include="Api\SlotApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -294,6 +311,7 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\SendNotificationUtils.cs" />
     <Compile Include="Validator\EmployeeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -523,20 +541,22 @@
     <Content Include="Areas\UserWeb\Assets\plugins\DataTables\datatables.min.js" />
     <Content Include="Areas\UserWeb\Images\app-demo.jpg" />
     <Content Include="Areas\UserWeb\Images\Benh_vien_108.jpg" />
+    <Content Include="Areas\UserWeb\Images\sample-getting.jpg" />
     <Content Include="Areas\UserWeb\Images\cho-ray.jpg" />
     <Content Include="Areas\UserWeb\Images\color-dots-loader.gif" />
     <Content Include="Areas\UserWeb\Images\DoctorMan.png" />
     <Content Include="Areas\UserWeb\Images\download-android.png" />
     <Content Include="Areas\UserWeb\Images\download-ios.png" />
-    <Content Include="Areas\UserWeb\Images\home-sample-getting.jpg" />
     <Content Include="Areas\UserWeb\Images\logo.JPG" />
     <Content Include="Areas\UserWeb\Images\nhi-dong-1.jpg" />
     <Content Include="Areas\UserWeb\Images\nhi-dong-2.jpg" />
     <Content Include="Areas\UserWeb\Images\nurse.jpg" />
-    <Content Include="Areas\UserWeb\Images\online-booking.jpg" />
+    <Content Include="Areas\UserWeb\Images\result-search.jpg" />
     <Content Include="Areas\UserWeb\Images\our-team.png" />
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
+    <Content Include="Areas\UserWeb\Images\y-ta.jpg" />
+    <Content Include="Areas\UserWeb\Scripts\Appointment\ViewAppointments.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\Edit.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentForm.js" />
     <Content Include="Areas\UserWeb\Scripts\Appointment\_AppointmentSuggestor.js" />
@@ -548,9 +568,8 @@
     <Content Include="Areas\UserWeb\Views\Home\Gallery.cshtml" />
     <Content Include="Areas\UserWeb\Views\Home\FAQ.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\Create.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\History.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\Current.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Appointment\Results.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\ViewAppointments.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\Result.cshtml" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\maps\pretty-checkbox.css.map" />
     <Content Include="Areas\UserWeb\Views\Appointment\Edit.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\_AppointmentForm.cshtml" />
@@ -6894,6 +6913,7 @@
     <Content Include="Assets\pages\UI\sliders.html" />
     <Content Include="Assets\pages\UI\timeline.html" />
     <Content Include="Assets\pages\widgets.html" />
+    <Content Include="Areas\UserWeb\Assets\plugins\bootbox.min.js" />
     <Content Include="Assets\plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Assets\plugins\bootstrap-slider\slider.css" />
     <Content Include="Assets\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
@@ -7051,6 +7071,7 @@
       <LastGenOutput>eLTMS.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="firebase-messaging-sw.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
@@ -7662,9 +7683,11 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\receptionistSampleGettings.js" />
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
     <Content Include="Scripts\customScript\Feedback.js" />
+    <Content Include="Scripts\customScript\labtestResult.js" />
     <Content Include="Scripts\customScript\importLabTest.js" />
     <Content Include="Scripts\customScript\importPatients.js" />
     <Content Include="Scripts\customScript\allSupplies.js" />
@@ -7692,6 +7715,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="template-pdf\result.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -7722,6 +7746,8 @@
     <Content Include="Views\Receptionist\Index.cshtml" />
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
     <Content Include="Views\LabTest\Result.cshtml" />
+    <Content Include="Views\LabTest\LabTestingDone.cshtml" />
+    <Content Include="Views\Receptionist\SampleGettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -7781,6 +7807,9 @@
       <Project>{26dc2cf1-d4e0-4bbe-99df-ea0d33375d99}</Project>
       <Name>eLTMS.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

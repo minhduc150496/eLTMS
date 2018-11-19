@@ -1,4 +1,9 @@
-﻿@section styles {
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    var appDto = ViewBag.appDto;
+}
+
+@section styles {
     <!-- === customized css for Index Page === -->
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Home/Index.css">
 }
@@ -8,12 +13,12 @@
     <div class="container">
         <div class="welcome_slider owl-carousel">
             <div class="single_welcome_slider">
-                <div class="w_man"><img src="~/Areas/UserWeb/Images/online-booking.jpg" alt=""></div>
+                <div class="w_man"><img src="~/Areas/UserWeb/Images/y-ta.jpg" alt="" style="max-width: 600px"></div>
                 <div class="row align-items-center">
                     <div class="col-lg-12 col-md-12">
                         <div class="welcome_content">
                             <h1>Đặt hẹn online</h1>
-                            <p>Tiết kiệm thời gian chờ đợi của bạn</p>
+                            <p>Tiết kiệm thời gian chờ đợi của quý khách</p>
                             <p>Được báo giá trước khi đến phòng xét nghiệm</p>
                             <a href="/UserWeb/Appointment/Create" class="custom_btn">Trải nghiệm ngay</a>
                         </div>
@@ -21,13 +26,13 @@
                 </div>
             </div>
             <div class="single_welcome_slider">
-                <div class="w_man"><img src="~/Areas/UserWeb/Images/home-sample-getting.jpg" alt=""></div>
+                <div class="w_man"><img src="~/Areas/UserWeb/Images/result-search.jpg" alt=""></div>
                 <div class="row align-items-center">
                     <div class="col-lg-12 col-md-12">
                         <div class="welcome_content">
-                            <h1>Lấy mẫu tại nhà</h1>
-                            <p>Đặt hẹn lấy mẫu online</p>
-                            <p>Y sĩ của chúng tôi đến lấy mẫu tại nhà và tư vấn cho quý khách</p>
+                            <h1>Tra cứu kết quả</h1>
+                            <p>Kết quả luôn được lưu trữ</p>
+                            <p>Quý khách có thể xem và in bất cứ khi nào</p>
                             <a href="#" class="custom_btn">Trải nghiệm ngay</a>
                         </div>
                     </div>

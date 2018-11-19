@@ -47,5 +47,14 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(HttpStatusCode.OK, success);
             return response;
         }
+
+        [HttpGet]
+        [Route("api/slot/get-all")]
+        public HttpResponseMessage GetAll()
+        {
+            var slots = _slotService.GetAllSlots();
+            var response = Request.CreateResponse(HttpStatusCode.OK, slots);
+            return response;
+        }
     }
 }

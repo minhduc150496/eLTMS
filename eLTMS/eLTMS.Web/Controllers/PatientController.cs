@@ -15,12 +15,13 @@ namespace eLTMS.Web.Controllers
     {
         // GET: Patient
         private readonly IPatientService _patientService;
+        private readonly IAppointmentService _appointmentService;
 
         //private readonly IImportPaperService _importPaperService;
-        public PatientController(IPatientService patientService)
+        public PatientController(IAppointmentService appointmentService, IPatientService patientService)
         {
             this._patientService = patientService;
-            //this._importPaperService = importPaperService;
+            this._appointmentService = appointmentService;
         }
         public ActionResult Index()
         {
@@ -34,7 +35,19 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
-
+        [HttpGet]
+        public JsonResult GetAllResults(int id, int page = 1, int pageSize = 20)
+        {
+            var queryResult = _appointmentService.GetResultDone(id);
+            var totalRows = queryResult.Count();
+            var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAllPatients(string phoneNumber = "", int page = 1, int pageSize = 20)
         {

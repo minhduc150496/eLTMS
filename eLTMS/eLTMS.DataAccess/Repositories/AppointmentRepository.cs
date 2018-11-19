@@ -13,18 +13,34 @@ namespace eLTMS.DataAccess.Repositories
 {
     public interface IAppointmentRepository : IRepository<Appointment>
     {
+        List<Appointment> GetAppointmentsByPatientId(int patientId); // DucBM
         List<Appointment> GetNewAppByPatientId(int patientId);
         List<Appointment> GetOldAppByPatientId(int patientId);
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
+        List<Appointment> GetResultDoneByPatientId(int patientId);
+        Appointment GetResultDoneByAppointmentId(int patientId); // DucBM
         List<Appointment> GetAllApp();
         Appointment GetAppById(int appId);
-        Appointment GetAppointmentByCode(string appCode);
+        Appointment GetAppointmentByCode(string code);
+        Appointment GetAppointmentById(int id);
+        Appointment GetAppointmentByIdInclude(int id);
         List<Appointment> GetResultByAppCode(string appCode);
         int? CountByDate(string sDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
+        // DucBM
+        public List<Appointment> GetAppointmentsByPatientId(int patientId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.PatientId == patientId && x.IsDeleted==false)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings))
+                .Include(x => x.Employee)
+                .OrderByDescending(x => x.AppointmentId)
+                .ToList();
+            return result;
+        }
         public List<Appointment> GetAllApp()
         {
             var result = DbSet.AsQueryable()
@@ -84,10 +100,63 @@ namespace eLTMS.DataAccess.Repositories
             return result;
         }
 
-        public Appointment GetAppointmentByCode(string appCode)
+        // DucBM
+        public Appointment GetResultDoneByAppointmentId(int apId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(appCode))
+                .Where(x => x.AppointmentId == apId) // lack of status doctor done
+                .Include(x => x.Patient)
+                .Include(x => x.Employee)
+
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
+                .FirstOrDefault();
+
+            return result;
+        }
+
+        public List<Appointment> GetResultDoneByPatientId(int patientId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.PatientId == patientId&&x.Status.Contains("DOCTORDONE"))
+                .Include(x => x.Patient)
+                .Include(x => x.Employee)
+
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTestingIndexes)))
+                .ToList();
+            return result;
+        }
+
+        public Appointment GetAppointmentById(int id)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.IsDeleted != true && x.AppointmentId.Equals(id))
+                .FirstOrDefault();
+            return result;
+        }
+
+        public Appointment GetAppointmentByIdInclude(int id)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.IsDeleted != true && x.AppointmentId.Equals(id))
+
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings))
+
+                .Include(x => x.SampleGettings)
+
+                .FirstOrDefault();
+            return result;
+        }
+
+        public Appointment GetAppointmentByCode(string code)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(code))
 
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings))
 

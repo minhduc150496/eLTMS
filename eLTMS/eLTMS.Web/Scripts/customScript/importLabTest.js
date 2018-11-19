@@ -299,6 +299,7 @@ var homeController = {
         });
         $('#btnClose').off('click').on('click', function () {
             $('#txtResult').val('');
+            homeController.loadDataLabTestingResult();
         });
         $('.btn-edit').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật xét nghiệm');
@@ -363,7 +364,6 @@ var homeController = {
 
                     }
                     else {
-                        toastr.success("Tạo mới thành công.");
                         $.ajax({
                             url: '/LabTest/UpdateLabTesting',
                             type: 'Post',
@@ -372,11 +372,11 @@ var homeController = {
                             async: false,
                             success: function (res) {
                                 if (!res.success) {
-                                    toastr.success("Update không thành công.");
+                                    toastr.success("Nhận xét không thành công.");
 
                                 }
                                 else {
-                                    toastr.success("Update thành công.");
+                                    toastr.success("Nhận xét thành công.");
                                     homeController.loadDataLabTestingResult();
                                 }
                             }
@@ -440,7 +440,7 @@ var homeController = {
 
                     // We start iterating from 1, because we already read the first row to build the gridColumns array above
                     // We use each cell value and add it to json array, which will be used as dataSource for the grid
-                    for (i = 1, worksheetRowsCount = worksheet.rows().count(); i < worksheetRowsCount; i++) {
+                    for (i = ((worksheet.rows().count())-1); i >0; i--) {
                         newRow = {};
                         row = worksheet.rows(i);
 
@@ -774,7 +774,7 @@ var homeController = {
                     });
                     $('#tblDataLabTestingResult').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadDataLabTesting();
+                        homeController.loadDataLabTestingResult();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
@@ -856,7 +856,7 @@ var homeController = {
             $(newRow).addClass('data-row-lab-testing-import');
             console.log(newRow.html());
             var ddlData = "<select class='form-control ddlCode'>";
-            ddlData += "<option value=''> --- Chọn vật tư --- </option>";
+            ddlData += "<option value=''> --- Chọn mẫu xét nghiệm --- </option>";
             $.each(homeconfig.allLabTesting, function (i, item) {
 
                 ddlData += "<option value='" + item.LabTestingId + "' data-name='" + item.LabTestName + "'>" + item.AppointmentCode + " - " + item.LabTestName + "</option>"

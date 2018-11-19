@@ -50,7 +50,6 @@ namespace eLTMS.BusinessLogic.Services
                 patient.HomeAddress = patientdto.HomeAddress;
                 patient.CompanyAddress = patientdto.CompanyAddress;
                 patient.AccountId = patientdto.AccountId;
-                patient.AvatarUrl = patientdto.AvatarUrl;
                 repo.Update(patient);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any())
@@ -74,6 +73,15 @@ namespace eLTMS.BusinessLogic.Services
             var repo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
             try
             {
+                // create Patient Code in format BN-00000001
+                int newCode = 0;
+                var lastCode = repo.GetLastPatientCode();
+                if (lastCode != null)
+                {
+                    newCode = int.Parse(lastCode) + 1;
+                }
+                patient.PatientCode = newCode.ToString("D8"); // format as 8 digits
+
                 repo.Create(patient);
                 UnitOfWork.SaveChanges();
             }

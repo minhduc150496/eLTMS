@@ -29,32 +29,29 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         {
             return View("Create", "_Layout");
         }
-
-        // GET: UserWeb/Appointment/Current
-        public ActionResult Current()
+        
+        // GET: UserWeb/Appointment/ViewAppointments
+        public ActionResult ViewAppointments() 
         {
-            var patientId = 1;
-            var appointment = _appointmentService.GetNewApp(patientId).LastOrDefault();            
-            ViewBag.Appointment = appointment;
-            return View("Current", "_Layout");
+            return View("ViewAppointments", "_Layout");
         }
 
-        // GET: UserWeb/Appointment/History
-        public ActionResult History() // Old Appointment
+        // GET: UserWeb/Appointment/Edit/{apId}
+        public ActionResult Edit(int appointmentId)
         {
-            return View("History", "_Layout");
-        }
-
-        // GET: UserWeb/Appointment/Edit
-        public ActionResult Edit()
-        {
+            Appointment app = _appointmentService.GetSingleById(appointmentId);
+            AppointmentDto appDto = Mapper.Map<Appointment, AppointmentDto>(app);
+            ViewBag.appDto = appDto;
             return View("Edit", "_Layout");
         }
 
-        // GET: UserWeb/Appointment/Results
-        public ActionResult Results()
+        // GET: UserWeb/Appointment/Result/{apId}
+        public ActionResult Result(int appointmentId)
         {
-            return View("Results", "_Layout");
+            Appointment app = _appointmentService.GetResultDoneByAppointmentId(appointmentId);
+            ResultOfAppointmentDto dto = Mapper.Map<Appointment, ResultOfAppointmentDto>(app);
+            ViewBag.ResultDto = dto;
+            return View("Result", "_Layout");
         }
 
     }

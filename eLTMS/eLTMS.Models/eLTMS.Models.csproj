@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -53,6 +54,10 @@
     <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
     <Compile Include="Models\dto\AppointmentAddDto.cs" />
+    <Compile Include="Models\dto\ResultOfLabTestingIndexDtos.cs" />
+    <Compile Include="Models\dto\ResultOfLabTestingDtos.cs" />
+    <Compile Include="Models\dto\ResultOfSampleGettingDto.cs" />
+    <Compile Include="Models\dto\ResultOfAppointmentDto.cs" />
     <Compile Include="Models\dto\AppointmentGetAllDto.cs" />
     <Compile Include="Models\dto\AppointmentGetByPhoneDto.cs" />
     <Compile Include="Models\dto\AppointmentGetBySampleDto.cs" />
@@ -65,15 +70,15 @@
     <Compile Include="Models\dto\ExportPaperDto.cs" />
     <Compile Include="Models\dto\ImportPaperDetailDto.cs" />
     <Compile Include="Models\dto\ImportPaperDto.cs" />
+    <Compile Include="Models\dto\HospitalSuggestionDto.cs" />
     <Compile Include="Models\dto\LabTestDto.cs" />
     <Compile Include="Models\dto\LabTestingDto.cs" />
     <Compile Include="Models\dto\LabTestingIndexDto.cs" />
     <Compile Include="Models\dto\PatientDto.cs" />
+    <Compile Include="Models\dto\SampleGettingForReceptionistDto.cs" />
+    <Compile Include="Models\dto\TokenDto.cs" />
     <Compile Include="Models\dto\SlotDto.cs" />
     <Compile Include="Models\FileUploadModel.cs" />
-    <Compile Include="Models\SampleGettingCalendar\DateCollection.cs" />
-    <Compile Include="Models\SampleGettingCalendar\SampleGettingSlot.cs" />
-    <Compile Include="Models\SampleGettingCalendar\SampleGettingCalendar.cs" />
     <Compile Include="Models\dto\SampleGroupDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
@@ -81,7 +86,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LoginResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Utils\DateTimeUtils.cs" />
+    <Compile Include="Utils\DateTimeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -93,7 +98,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utils\" />
+    <Folder Include="Models\Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

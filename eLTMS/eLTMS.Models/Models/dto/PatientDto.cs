@@ -12,7 +12,7 @@ namespace eLTMS.Models.Models.dto
         public int? AccountId { get; set; } // AccountID
         public string FullName { get; set; } // FullName (length: 100)
         public string Gender { get; set; } // Gender (length: 10)
-        public System.DateTime? DateOfBirth { get; set; } // DateOfBirth
+        public string DateOfBirth { get; set; } // DateOfBirth
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
         public string HomeAddress { get; set; } // HomeAddress (length: 200)
         public string CompanyAddress { get; set; } // CompanyAddress (length: 200)

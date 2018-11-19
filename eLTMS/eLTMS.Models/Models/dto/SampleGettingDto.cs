@@ -19,5 +19,9 @@ namespace eLTMS.Models.Models.dto
         
         public string FinishTime { get; set; }
 
+        public int SlotId { get; set; }
+
+        public int TableId { get; set; }
+
     }
 }

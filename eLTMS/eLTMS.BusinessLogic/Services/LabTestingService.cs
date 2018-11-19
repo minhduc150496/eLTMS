@@ -14,6 +14,7 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAll();
         List<LabTesting> GetAllLabTesting();
         List<LabTesting> GetAllLabTestingResult();
+        List<LabTesting> GetAllResult();
         bool Update(List<LabTesting> labTesting);
         bool UpdateStatus(List<LabTesting> labTesting);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
@@ -64,7 +65,7 @@ namespace eLTMS.BusinessLogic.Services
                 foreach (var item in labTesting)
                 {
                     var curentLabTest = labtest.SingleOrDefault(x => x.LabTestingId == item.LabTestingId);
-                    curentLabTest.Status = "DOCTORDONE";
+                    curentLabTest.Status = "DoctorDone";
                     repo.Update(curentLabTest);
                 }
                 var result = UnitOfWork.SaveChanges();
@@ -99,6 +100,27 @@ namespace eLTMS.BusinessLogic.Services
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
             var labTesting = repo.GetAllLabTestingResult();
             return labTesting;
+        }
+        public List<LabTesting> GetAllResult()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTestingResult = repo.GetAllResult();
+            var dupplicatedCode = labTestingResult
+                .GroupBy(x => x.SampleGetting.Appointment.AppointmentCode)
+                .Where(x => x.Count() > 1)
+                .Select(x => x.Key);
+
+            // list labtesting id  bị xóa
+            List<int> removeLabTestingIds = new List<int>();
+            foreach (var item in dupplicatedCode)
+            {
+                var dupplicatedAppointment = labTestingResult.Where(x => x.SampleGetting.Appointment.AppointmentCode == item).Skip(1).Select(x => x.LabTestingId).ToList();
+                removeLabTestingIds.AddRange(dupplicatedAppointment);
+                
+            }
+            // insert 1 list  bị xóa, xong xóa 1 lần.
+            labTestingResult.RemoveAll(x => removeLabTestingIds.Contains(x.LabTestingId));
+            return labTestingResult;
         }
     }
 }
