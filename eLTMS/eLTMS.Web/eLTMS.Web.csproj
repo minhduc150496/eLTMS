@@ -573,6 +573,7 @@
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\maps\pretty-checkbox.css.map" />
     <Content Include="Areas\UserWeb\Views\Appointment\Edit.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\_AppointmentForm.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\Suggest.cshtml" />
     <None Include="Areas\UserWeb\Views\HomePage\Index.cshtml" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
