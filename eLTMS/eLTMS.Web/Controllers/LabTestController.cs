@@ -53,10 +53,7 @@ namespace eLTMS.Web.Controllers
         {
             return View();
         }
-        public ActionResult Result()
-        {
-            return View();
-        }
+        
         [HttpGet]
         public JsonResult GetAllSamples( int page = 1, int pageSize = 20)
         {
@@ -331,7 +328,7 @@ namespace eLTMS.Web.Controllers
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{item2.Gender}</td></tr>");
-                allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
+                allData = allData.Replace("{{Con}}", $"<h2>{item2.Conclusion}</h2>");
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
