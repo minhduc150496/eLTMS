@@ -5,6 +5,8 @@
 var homeController = {
     init: function () {
         //homeController.loadData();
+        var dateNow = homeController.formatDate(new Date());
+        document.getElementById("select-date").value = dateNow;
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
@@ -14,11 +16,27 @@ var homeController = {
     loadIsPaid: function (IsPaid, SampleGettingId) {
         var a = 1;
     },
+    formatDate: function (date) {
+        var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    },
     registerEvent: function () {
 
         $(".Sample").change(function () {
             homeController.loadDataBySample();
         });
+        
+        $(".Date").change(function () {
+            homeController.loadDataBySample();
+        });
+        
 
         $('#btnSave').off('click').on('click', function () {
             var name = $('#txtName').val();
@@ -270,11 +288,12 @@ var homeController = {
 
     loadDataBySample: function (changePageSize) {
         var selectedSample = $(".Sample").children("option:selected").val();
+        var selectDate = $(".Date").val();
         $.ajax({
             url: '/receptionist/GetAppBySample',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate  },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -287,8 +306,9 @@ var homeController = {
                             Phone: item.Phone,
                             Address: item.Address,
                             StartTime: item.StartTime,
-                            //OrderNumber: item.OrderNumber,
-                            //Table: item.Table,
+                            OrderNumber: item.OrderNumber,
+                            Date: item.Date,
+                            Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
                             IsPaid: item.IsPaid,
                             ReadOnly: (item.IsPaid === true) ? "return false;" : "",

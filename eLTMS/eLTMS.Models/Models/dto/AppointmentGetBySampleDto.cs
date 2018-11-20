@@ -22,6 +22,8 @@ namespace eLTMS.Models.Models.dto
 
         public string Table { get; set; }
 
+        public string Date { get; set; }
+
         public string StartTime { get; set; }
 
         public int SampleGettingId { get; set; }
