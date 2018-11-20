@@ -5,6 +5,7 @@
 CONFIG = {
     PATIENT_ID: 71, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
+    IS_UPDATE: false,
 };
 
 var Utils = {
@@ -35,7 +36,10 @@ var Model = {
     sampleDtos: {},
     bookings: [],
     slotDtos: {},
-    appointmentDto: {},
+    appointmentDto: {
+        PatientId: CONFIG.PATIENT_ID,
+        SampleGettingDtos: []
+    },
     suggestResult: null
 }
 
@@ -104,10 +108,7 @@ var Controller = {
                 return;
             } // end VALIDATION
 
-            Model.appointmentDto = {
-                PatientId: CONFIG.PATIENT_ID,
-                SampleGettingDtos: []
-            };
+
             // create SampleGettingDtos and assign to Model
             for (var i = 0; i < Model.sampleDtos.length; i++) {
                 var sampleDto = Model.sampleDtos[i];
@@ -136,6 +137,7 @@ var Controller = {
             }
             // ajax for create new appointment
             var jsonData = JSON.stringify(Model.appointmentDto);
+            console.log(Model.appointmentDto);
             Controller.sendToServer(jsonData);
         }); // end event handler
 
@@ -153,17 +155,45 @@ var Controller = {
         var htmlStep1 = Mustache.render(template, data);
         $("#step-1-form").html(htmlStep1);
 
-        $("#step-1-form [type='checkbox']").change(function () {
+
+        var handleCheckboxChanged = function () {
             var sampleIndex = $(this).closest("[data-sample-index]").data("sample-index");
             var labTestIndex = $(this).data("labtest-index");
-            var checked = $(this).is(":checked"); 
+            var checked = $(this).is(":checked");
 
             Model.sampleDtos[sampleIndex].LabTests[labTestIndex].IsChecked = checked;
             Model.sampleDtos[sampleIndex].nChecked += (checked ? 1 : -1);
             Model.sampleDtos[sampleIndex].IsSelected = Model.sampleDtos[sampleIndex].nChecked > 0;
+        }
+        $("#step-1-form [type='checkbox']").change(handleCheckboxChanged);
 
-            //console.log("checkbox change", sampleIndex, labTestIndex, checked)            
-        });
+        if (AppointDto != undefined && AppointDto != null) {
+            CONFIG.IS_UPDATE = true;
+            Model.AppointmentDto = AppointDto;
+            for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
+                var sample = AppointDto.SampleGettingDtos[i];
+                // set getting date for Model.sampleDtos
+                for (var j = 0; j < Model.sampleDtos.length; j++) {
+                    if (Model.sampleDtos[j].SampleId == sample.SampleId) {
+                        Model.sampleDtos[j].GettingDate = sample.GettingDate;
+                    }
+                }
+                for (var j = 0; j < sample.LabTestIds.length; j++) {
+                    var labTestId = sample.LabTestIds[j];
+                    var checkbox = $("[data-labtest-id='" + labTestId + "']");
+                    checkbox.prop('checked', true);
+
+                    var sampleIndex = $(checkbox).closest("[data-sample-index]").data("sample-index");
+                    var labTestIndex = $(checkbox).data("labtest-index");
+                    var checked = $(checkbox).is(":checked");
+
+                    Model.sampleDtos[sampleIndex].LabTests[labTestIndex].IsChecked = checked;
+                    Model.sampleDtos[sampleIndex].nChecked += (checked ? 1 : -1);
+                    Model.sampleDtos[sampleIndex].IsSelected = Model.sampleDtos[sampleIndex].nChecked > 0;
+                }
+            }
+            AppointDto = null;
+        }
 
         for (var i = 0; i < Model.sampleDtos.length; i++) {
             var sample = Model.sampleDtos[i];
@@ -174,23 +204,6 @@ var Controller = {
         }
         //console.log(Model.sampleDtos);
 
-        // config Firebase
-        /*
-        var config = {
-            apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
-            authDomain: "eltms-test1.firebaseapp.com",
-            databaseURL: "https://eltms-test1.firebaseio.com",
-            projectId: "eltms-test1",
-            storageBucket: "eltms-test1.appspot.com",
-            messagingSenderId: "1013768931631"
-        };
-        firebase.initializeApp(config);
-        Model.firebaseDB = firebase.database().ref().child("/bookings/");
-
-        Model.firebaseDB.on("value", function (snapshot) {
-            Model.bookings = snapshot.val();
-        });/**/
-        
     }, // end Action
     renderStep2Html: function () {
 
@@ -198,11 +211,19 @@ var Controller = {
         var template = $("#step-2-template").html();
         var htmlStep1 = Mustache.render(template, data);
         $("#step-2-form").html(htmlStep1);
-        
+
         data = { Samples: Model.sampleDtos };
         template = $("#step-2-template").html();
         htmlStep1 = Mustache.render(template, data);
         $("#step-2-form").html(htmlStep1);
+
+        if (CONFIG.IS_UPDATE) {
+            $(Model.appointmentDto.SampleGettingDtos).each(function (index, el) {
+                var $option = $("[data-sample-id='" + el.SampleId + "'] select [value='" + el.SlotId + "']");
+                console.log($option);
+                $option.prop('selected', true);
+            });
+        }
 
         $("#step-2-form table tbody tr:not(:last-child()) td:first-child()").each(function (index, el) {
             $(this).html(index + 1);
@@ -221,7 +242,7 @@ var Controller = {
         }
         var sTotalPrice = totalPrice.toLocaleString("VN-vi");
         $("#total-price").html(sTotalPrice);
-        
+
     }, // end Action
     suggestSlots: function () {
 
@@ -250,10 +271,11 @@ var Controller = {
                 for (var j = 0; j < sample.LabTests.length; j++) {
                     var labTest = sample.LabTests[j];
                     labTest.Index = j;
+                    labTest.FmPrice = labTest.Price.toLocaleString("VN-vi");
                 }
             }
         }
-        if (sSampleDtos == null || true) {
+        if (sSampleDtos == null || 1 == 1) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
@@ -286,11 +308,18 @@ var Controller = {
             $modal.modal('show');
             $modal.find(".out-message").html(message);
         }
+
+        var sURL = "/api/appointment/create";
+        var sMethod = "POST";
+        if (CONFIG.IS_UPDATE) {
+            sMethod = "PUT";
+            sURL = "/api/appointment/update-appointment";
+        }
         // call AJAX to create a new Appointment
         $.ajax({
-            method: "POST",
+            method: sMethod,
             contentType: "application/json",
-            url: "/api/appointment/create",
+            url: sURL,
             dataType: "JSON",
             async: true,
             data: jsonData,
@@ -329,7 +358,7 @@ var Controller = {
                 }
             }
         }); // end AJAX define
-        
+
     }, // end Action
 }
 Controller.init();
