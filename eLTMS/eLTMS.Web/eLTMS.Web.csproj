@@ -329,6 +329,7 @@
     <Content Include="Areas\UserWeb\Assets\css\slick.css" />
     <Content Include="Areas\UserWeb\Assets\css\slicknav.min.css" />
     <Content Include="Areas\UserWeb\Assets\css\style.css" />
+    <Content Include="Areas\UserWeb\Images\400dpiLogo.jpg" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\pretty-checkbox.css" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\pretty-checkbox.min.css" />
     <Content Include="Areas\UserWeb\Assets\img\about1.jpg" />
@@ -553,6 +554,7 @@
     <Content Include="Areas\UserWeb\Images\nurse.jpg" />
     <Content Include="Areas\UserWeb\Images\result-search.jpg" />
     <Content Include="Areas\UserWeb\Images\our-team.png" />
+    <Content Include="Areas\UserWeb\Images\ScreenShot_20181119121635.png" />
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
     <Content Include="Areas\UserWeb\Images\y-ta.jpg" />
