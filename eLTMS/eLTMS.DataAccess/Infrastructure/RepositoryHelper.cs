@@ -167,6 +167,12 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
+             if (typeof(TRepository) == typeof(ITableRepository))
+            {
+                dynamic repo = new TableRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
 
             TRepository repository = null;
             TryGetRepositoryPartial<TRepository>(unitOfWork, ref repository);

@@ -90,14 +90,18 @@
                         <option value="3">Tế bào học</option>
                         <option value="4">Phân</option>
                         <option value="5">Dịch</option>
-                    </select><table id="example2" class="table table-bordered table-hover">
+                    </select>
+                    Ngày:
+                    <input type="date" class="Date" id="select-date" />
+                    <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                @*<th>STT</th>*@
+                                <th>STT</th>
                                 <th>Họ & tên</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                @*<th>Bàn</th>*@
+                                <th>Bàn</th>
+                                <th>Ngày</th>
                                 <th>Giờ xét nghiệm</th>
                                 <th>Đã thanh toán</th>
 
@@ -416,11 +420,12 @@
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        @*<td>{{OrderNumber}}</td>*@
+        <td>{{OrderNumber}}</td>
         <td>{{FullName}}</td>
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
-        @*<td>{{Table}}</td>*@
+        <td>{{Table}}</td>
+        <td>{{Date}}</td>
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">

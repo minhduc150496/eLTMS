@@ -15,7 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         bool Add(AppointmentAddDto data);
         bool ChangeIsPaid(int sampleGettingId);
         List<Appointment> GetAllAppointment();
-        List<AppointmentGetBySampleDto> GetAllBySample(int sampleId);
+        List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId);
         int CheckAndDeleteMauAndNuocTieu(DateTime dateTime);
         int CheckAndDeleteTeBaoAndDich(DateTime dateTime);
         int CheckAndDeletePhan(DateTime dateTime);
@@ -239,7 +239,6 @@ namespace eLTMS.BusinessLogic.Services
             public int slotId { get; set; }
         }
 
-        //ten ten
         public TableAndSlotId GetEmptyTableAndSlot(int sampleGroupId)
         {
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
@@ -247,62 +246,62 @@ namespace eLTMS.BusinessLogic.Services
             var tabRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
             var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
 
-            //lay tat ca ban
-            var tabs = tabRepo.GetAllTable().Where(p => p.SampleGroupId == sampleGroupId);
-
             //lay gio hien tai
             var nowTime = DateTime.Now;
             var nowTimeToSecond = nowTime.Hour * 3600 + nowTime.Minute * 60 + nowTime.Second;
-            foreach (var tab in tabs)
+            //lay tat ca slot
+            var slots = slotRepo.GetAll().Where(p => p.StartTime >= nowTimeToSecond
+                            && p.SampleGroupId==sampleGroupId)
+                            .OrderBy(p => p.StartTime).ToList();
+            var tables = tabRepo.GetAll()
+                            .Where(p => p.SampleGroupId == sampleGroupId)
+                            .OrderBy(p => p.TableId).ToList();
+            foreach (var slot in slots)
             {
-                var sgs = sgRepo.GetAll().Where(p => p.TableId == tab.TableId && p.GettingDate == DateTime.Now.Date).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.SlotId == slot.SlotId && p.GettingDate == DateTime.Now.Date).ToList();
                 //mau va nuoc tieu
                 if (sampleGroupId == 1)
                 {
-                    if (sgs.Count >= 30) break;
-                    else
+                    if (sgs.Count < tables.Count)
                     {
-                        var slots = slotRepo.GetAll()
-                            .Where(p => (p.FinishTime - p.StartTime) == 600
-                            && p.StartTime >= nowTimeToSecond)
-                            .OrderBy(p => p.StartTime).ToList();
-                        if (slots.Count > 0)
                             return new TableAndSlotId
                             {
-                                tableId = tab.TableId,
-                                slotId = slots[sgs.Count].SlotId
+                                //neu co 9 cuoc hen ma co 10 cai ban thi lay cai ban stt la 9(tuc la cai ban thu 10) do c# list dem tu 0
+                                tableId = tables[sgs.Count].TableId,
+                                slotId = slot.SlotId
                             };
                     }
                 }
                 else if (sampleGroupId == 2)
                 {
-                    if (sgs.Count >= 21) break;
-                    else
+                    if (sgs.Count < tables.Count) 
                     {
-                        var slots = slotRepo.GetAll().Where(p => (p.FinishTime - p.StartTime) == 900
-                        && p.StartTime >= nowTimeToSecond)
-                            .OrderBy(p => p.StartTime).ToList();
-                        if (slots.Count > 0)
                             return new TableAndSlotId
                             {
-                                tableId = tab.TableId,
-                                slotId = slots[sgs.Count].SlotId
+                                tableId = tables[sgs.Count].TableId,
+                                slotId = slot.SlotId
                             };
                     }
                 }
-                else if (sampleGroupId == 3 || sampleGroupId == 4)
+                else if (sampleGroupId == 3)
                 {
-                    if (sgs.Count >= 16) break;
-                    else
+                    if (sgs.Count < tables.Count)
                     {
-                        var slots = slotRepo.GetAll().Where(p => (p.FinishTime - p.StartTime) == 1200
-                        && p.StartTime >= nowTimeToSecond)
-                            .OrderBy(p => p.StartTime).ToList();
-                        if (slots.Count > 0)
                             return new TableAndSlotId
                             {
-                                tableId = tab.TableId,
-                                slotId = slots[sgs.Count].SlotId
+                                tableId = tables[sgs.Count].TableId,
+                                slotId = slot.SlotId
+                            };
+                    }
+                }
+                else if (sampleGroupId == 4)
+                {
+                    if (sgs.Count < tables.Count)
+                    {
+                            return new TableAndSlotId
+                            {
+                                tableId = tables[sgs.Count].TableId,
+                                slotId = slot.SlotId
                             };
                     }
                 }
@@ -311,19 +310,21 @@ namespace eLTMS.BusinessLogic.Services
             return null;
         }
 
-        public List<AppointmentGetBySampleDto> GetAllBySample(int sampleId)
+        public List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
             var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+            var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
-            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId).Where(p => p.IsDeleted != true);
+            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date);
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
+            var tables = tableRepo.GetAll();
             var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
             {
                 app = p,
@@ -339,17 +340,24 @@ namespace eLTMS.BusinessLogic.Services
                 spSg = p,
                 slot = c
             });
+            //var spSgSlotTable= spSgSlots.Join(tables, p => p.spSg.sg.TableId, c => c.TableId, (p, c) => new
+            //{
+            //    spSgSlot = p,
+            //    table = c
+            //});
+            var count = 1;
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
                 c => c.app.AppointmentId, (p, c) => new AppointmentGetBySampleDto
                 {
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     SampleName = p.spSg.sp.SampleName,
                     AppointmentCode = c.app.AppointmentCode,
-                    OrderNumber = p.spSg.sg.OrderNumber,
+                    OrderNumber = count++,
                     Phone = c.pa.PhoneNumber,
                     Address = c.pa.HomeAddress,
                     PatientName = c.pa.FullName,
-                    Table = "",
+                    Date = p.spSg.sg.GettingDate.Value.ToShortDateString(),
+                    //Table = p.table.TableName,
                     SampleGettingId = p.spSg.sg.SampleGettingId,
                     IsPaid = p.spSg.sg.IsPaid
 
