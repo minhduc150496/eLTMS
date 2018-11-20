@@ -10,7 +10,17 @@ var Controller = {
         Controller.registerEvent();
     },
     registerEvent: function () {
-        
+
+        toastr.options = {
+            "debug": false,
+            "positionClass": "toast-bottom-left",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000
+        }
+
         $('.btn-edit').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật vật tư');
             $('#myModal').modal('show');
@@ -19,24 +29,39 @@ var Controller = {
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
-            Controller.deleteAppointment(id);
+            bootbox.confirm({
+                message: "Bạn có chắc chắn muốn xóa cuộc hẹn này?",
+                buttons: {
+                    confirm: {
+                        label: "Có"
+                    },
+                    cancel: {
+                        label: "Không"
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        Controller.deleteAppointment(id);
+                    }
+                }
+            });
         });
     },
     deleteAppointment: function (id) {
         $.ajax({
-            url: '/api/appointment/delete-appointment?appointmentId='+id,
-            type: 'PUT',
+            url: '/api/appointment/delete-appointment?appointmentId=' + id,
+            type: 'DELETE',
             success: function (response) {
                 if (response.Success == true) {
-                    alert("Xóa thành công.");
+                    toastr["success"]("Hủy lịch thành công.");
                     Controller.loadData(true);
                 }
                 else {
-                    alert(response.Message);
+                    toastr["error"](response.Message);
                 }
             },
             error: function (err) {
-                console.log(err);
+                toastr["error"](err);
             }
         });
     },
@@ -78,39 +103,35 @@ var Controller = {
     },
     loadData: function (changePageSize) {
         $.ajax({
-            url: '/api/appointment/get-appointments-by-patient-id?patientId='+CONFIG.PatientId,
+            url: '/api/appointment/get-appointments-by-patient-id?patientId=' + CONFIG.PatientId,
             type: 'GET',
             dataType: 'json',
             //data: { page: CONFIG.pageIndex, pageSize: CONFIG.pageSize, suppliesCode: $('#txtSearch').val() },
             success: function (data) {
+                console.log(data);
                 var html = '';
                 var template = $('#data-template').html();
                 $.each(data, function (index, item) {
-                    var gettingDates = [];
+                    var totalPrice = 0;
+                    var labTests = [];
                     for (var i = 0; i < item.SampleGettingDtos.length; i++) {
-                        var date = item.SampleGettingDtos[i].GettingDate;
-                        date = new Date(date);
-                        var fmDate = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
-                        if (gettingDates.indexOf(fmDate) == -1) {
-                            gettingDates.push(fmDate);
+                        var sampleGetting = item.SampleGettingDtos[i];
+                        for (var j = 0; j < sampleGetting.LabTests.length; j++) {
+                            var labTest = sampleGetting.LabTests[j];
+                            labTest.sPrice = labTest.Price.toLocaleString("VN");
+                            labTests.push(labTest);
+                            totalPrice += parseInt(labTest.Price);
                         }
-                    }
-                    var vieStatus = "";
-                    if (item.Status == "NEW") {
-                        vieStatus = "Mới tạo";
-                    } else {
-                        vieStatus = "Hoàn tất";
                     }
                     html += Mustache.render(template, {
                         Index: (index + 1),
                         AppointmentId: item.AppointmentId,
                         AppointmentCode: item.AppointmentCode,
-                        DoctorName: item.DoctorName,
-                        TestPurpose: item.TestPurpose,
-                        GettingDates: gettingDates,
-                        Conclusion: item.Conclusion,
-                        Status: vieStatus,
+                        SampleGettings: item.SampleGettingDtos,
+                        LabTests: labTests,
+                        TotalPrice: totalPrice.toLocaleString("VN"),
                         IsNew: item.Status == "NEW",
+                        IsProcess: item.Status != "NEW" && item.Status != "DONE",
                         IsDone: item.Status == "DONE"
                     });
                 });
@@ -119,7 +140,7 @@ var Controller = {
                 /*Controller.paging(response.total, function () {
                     Controller.loadData();
                 }, changePageSize);*/
-                Controller.registerEvent(); 
+                Controller.registerEvent();
             }
         })
     },

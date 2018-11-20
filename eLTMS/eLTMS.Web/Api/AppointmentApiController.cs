@@ -59,12 +59,29 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
             // call to AppointmentService
-            var success = this._appointmentService.Create(appoinDto);
-            var obj = new
+            var success = true;
+            Object obj = new
             {
-                Success = success,
-                Message = success ? "Tạo mới thành công!" : "Có lỗi xảy ra. Xin vui lòng thử lại"
+                Success = true,
+                Message = "Đặt lịch thành công."
             };
+            try
+            {
+                this._appointmentService.Create(appoinDto);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                obj = new
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    InnerExceptionMessage = ex.InnerException.Message
+                };
+            }
+
+            // push noti
             if (success)
             {
                 var tokens = _appointmentService.GetAllTokens();
@@ -91,7 +108,7 @@ namespace eLTMS.Web.Api
             var response = Request.CreateResponse(HttpStatusCode.OK, obj);
             return response;
         }
-        
+
         [HttpGet]
         [Route("api/appointment/get-appointments-by-patient-id")]
         public HttpResponseMessage GetAppointmentsByPatientId(int patientId) // DucBM
@@ -128,13 +145,29 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/update-appointment")]
         public HttpResponseMessage UpdateAppointment(AppointmentDto appointmentDto)
         {
-            var success = _appointmentService.UpdateAppointment
-                (appointmentDto.AppointmentId, appointmentDto.SampleGettingDtos);
-            var obj = new
+            var success = true;
+            Object obj = new
             {
-                Success = success,
-                Message = success ? "Cập nhật thành công!" : "Xin vui lòng thử lại"
+                Success = true,
+                Message = "Đổi lịch thành công."
             };
+            try
+            {
+                this._appointmentService.UpdateAppointment(appointmentDto.AppointmentId, appointmentDto.SampleGettingDtos);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                obj = new
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    InnerExceptionMessage = ex.InnerException.Message
+                };
+            }
+
+            // push noti
             if (success)
             {
                 var tokens = _appointmentService.GetAllTokens();
@@ -166,12 +199,29 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/delete-appointment")]
         public HttpResponseMessage DeleteAppointment(int appointmentId)
         {
-            var success = _appointmentService.DeleteAppointment(appointmentId);
-            var obj = new
+            var success = true;
+            Object obj = new
             {
-                Success = success,
-                Message = success ? "Hủy cuộc hẹn thành công!" : "Xin vui lòng thử lại"
+                Success = true,
+                Message = "Hủy lịch thành công."
             };
+            try
+            {
+                _appointmentService.DeleteAppointment(appointmentId);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                obj = new
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace,
+                    InnerExceptionMessage = ex.InnerException.Message
+                };
+            }
+
+            // send noti
             if (success)
             {
                 var tokens = _appointmentService.GetAllTokens();

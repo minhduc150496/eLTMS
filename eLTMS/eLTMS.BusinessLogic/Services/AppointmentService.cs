@@ -74,44 +74,37 @@ namespace eLTMS.BusinessLogic.Services
         public bool Create(AppointmentDto appointmentDto)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            try
+            var appointment = new Appointment();
+            // Convert AppointmentDto to Appointment
+            var now = DateTime.Now;
+            var sDate = now.ToString("yyyy-MM-dd");
+            var count = appointmentRepo.CountByDate(sDate);
+            var code = sDate + "-" + count;
+            appointment.AppointmentCode = code;
+            appointment.Status = "NEW";
+            appointment.PatientId = appointmentDto.PatientId;
+
+            appointment.SampleGettings = new List<SampleGetting>();
+
+            foreach (var sgDto in appointmentDto.SampleGettingDtos)
             {
-                var appointment = new Appointment();
-                // Convert AppointmentDto to Appointment
-                var now = DateTime.Now;
-                var sDate = now.ToString("yyyy-MM-dd");
-                var count = appointmentRepo.CountByDate(sDate);
-                var code = sDate + "-" + count;
-                appointment.AppointmentCode = code;
-                appointment.Status = "NEW";
-                appointment.PatientId = appointmentDto.PatientId;
-
-                appointment.SampleGettings = new List<SampleGetting>();
-
-                foreach(var sgDto in appointmentDto.SampleGettingDtos)
+                var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                sg.TableId = null;
+                sg.LabTestings = new List<LabTesting>();
+                foreach (var id in sgDto.LabTestIds)
                 {
-                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                    sg.TableId = null;
-                    sg.LabTestings = new List<LabTesting>();
-                    foreach (var id in sgDto.LabTestIds)
-                    {
-                        var labTesting = new LabTesting();
-                        labTesting.LabTestId = id;
-                        labTesting.SampleGettingId = sg.SampleGettingId;
-                        labTesting.Status = "NEW";
-                        sg.LabTestings.Add(labTesting);
-                    }
-                    appointment.SampleGettings.Add(sg);
+                    var labTesting = new LabTesting();
+                    labTesting.LabTestId = id;
+                    labTesting.SampleGettingId = sg.SampleGettingId;
+                    labTesting.Status = "NEW";
+                    sg.LabTestings.Add(labTesting);
                 }
-                // Create
-                appointmentRepo.Create(appointment);
-                var result = this.UnitOfWork.SaveChanges();
-                if (result.Any())
-                {
-                    return false;
-                }
+                appointment.SampleGettings.Add(sg);
             }
-            catch (Exception ex)
+            // Create
+            appointmentRepo.Create(appointment);
+            var result = this.UnitOfWork.SaveChanges();
+            if (result.Any())
             {
                 return false;
             }
@@ -156,7 +149,7 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetResultDoneByPatientId(patientId);
             return apps;
         }
-        public  List<Appointment> GetResultByAppCode (string appCode)
+        public List<Appointment> GetResultByAppCode(string appCode)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
@@ -167,55 +160,49 @@ namespace eLTMS.BusinessLogic.Services
         // Author: DucBM
         public bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
-            try
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            // get existing appointment by AppointmentCode
+
+            var appointment = appRepo.GetAppointmentByIdInclude(appointmentId);
+            // delete old records
+            // TEMPORARY !! -> too waist memory !!
+            foreach (var sg in appointment.SampleGettings)
             {
-                var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-                // get existing appointment by AppointmentCode
-
-                var appointment = appRepo.GetAppointmentByIdInclude(appointmentId);
-                // delete old records
-                // TEMPORARY !! -> too waist memory !!
-                foreach (var sg in appointment.SampleGettings)
+                sg.IsDeleted = true;
+                foreach (var lt in sg.LabTestings)
                 {
-                    sg.IsDeleted = true;
-                    foreach(var lt in sg.LabTestings)
-                    {
-                        lt.IsDeleted = true;
-                    }
+                    lt.IsDeleted = true;
                 }
-
-                // modify SampleGettings property
-                appointment.SampleGettings = new List<SampleGetting>();
-                foreach(var sgDto in sampleGettingDtos)
-                {
-                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                    sg.SampleGettingCode = ""; // Need a Formula for this Code !!
-                    sg.LabTestings = new List<LabTesting>();
-                    sg.Status = "NEW";
-                    sg.TableId = 1;
-                    sg.IsDeleted = false;
-                    foreach (var id in sgDto.LabTestIds)
-                    {
-                        var lt = new LabTesting();
-                        lt.LabTestId = id;
-                        sg.LabTestings.Add(lt);
-                    }
-                    appointment.SampleGettings.Add(sg);
-                }
-                
-                // update entity
-                appRepo.Update(appointment);
-                // save to DB
-                this.UnitOfWork.SaveChanges();
-
-            } catch(Exception ex)
-            {
-                return false; 
             }
+
+            // modify SampleGettings property
+            appointment.SampleGettings = new List<SampleGetting>();
+            foreach (var sgDto in sampleGettingDtos)
+            {
+                var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                sg.SampleGettingCode = ""; // Need a Formula for this Code !!
+                sg.LabTestings = new List<LabTesting>();
+                sg.Status = "NEW";
+                sg.TableId = 1;
+                sg.IsDeleted = false;
+                foreach (var id in sgDto.LabTestIds)
+                {
+                    var lt = new LabTesting();
+                    lt.LabTestId = id;
+                    sg.LabTestings.Add(lt);
+                }
+                appointment.SampleGettings.Add(sg);
+            }
+
+            // update entity
+            appRepo.Update(appointment);
+            // save to DB
+            this.UnitOfWork.SaveChanges();
+
             return true;
         }
 
-        public bool Update(string code,string con)
+        public bool Update(string code, string con)
         {
             try
             {
@@ -240,26 +227,19 @@ namespace eLTMS.BusinessLogic.Services
         // Author: DucBM
         public bool DeleteAppointment(int appointmentId)
         {
-            try
-            {
-                var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-                // get existing appointment by AppointmentCode
-                var appointment = appRepo.GetAppointmentById(appointmentId);
-                if (appointment==null)
-                {
-                    return false;
-                }
-                // assign IsDeleted = true
-                appointment.IsDeleted = true;
-                // update entity
-                appRepo.Update(appointment);
-                // save to DB
-                this.UnitOfWork.SaveChanges();
-            }
-            catch (Exception ex)
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            // get existing appointment by AppointmentCode
+            var appointment = appRepo.GetAppointmentById(appointmentId);
+            if (appointment == null)
             {
                 return false;
             }
+            // assign IsDeleted = true
+            appointment.IsDeleted = true;
+            // update entity
+            appRepo.Update(appointment);
+            // save to DB
+            this.UnitOfWork.SaveChanges();
             return true;
         }
 

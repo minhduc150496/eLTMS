@@ -90,14 +90,19 @@
                         <option value="3">Tế bào học</option>
                         <option value="4">Phân</option>
                         <option value="5">Dịch</option>
-                    </select><table id="example2" class="table table-bordered table-hover">
+                    </select>
+                    Ngày:
+                    <input type="date" class="Date" id="select-date" />
+                    <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Appointment Code</th>
+                                <th>STT</th>
                                 <th>Họ & tên</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Thông tin xét nghiệm</th>
+                                <th>Bàn</th>
+                                <th>Ngày</th>
+                                <th>Giờ xét nghiệm</th>
                                 <th>Đã thanh toán</th>
 
                             </tr>
@@ -164,7 +169,7 @@
                     </div>
                 </form>
                 <form class="form-horizontal" action="/action_page.php">
-                    <div class="form-group">
+                    <div class="form-group" id="mauCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Máu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -297,7 +302,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="nuocTieuCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Nước tiểu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -317,7 +322,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="teBaoHocCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Tế bào học</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -336,7 +341,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="phanCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Phân</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -355,7 +360,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dichCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Dịch</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -413,24 +418,63 @@
 
 
 
-
-
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{AppCode}}</td>
+        <td>{{OrderNumber}}</td>
         <td>{{FullName}}</td>
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
+        <td>{{Table}}</td>
+        <td>{{Date}}</td>
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">
-                <input id="{{SampleGettingId}}" onchange="homeController.checkIsPaid({{SampleGettingId}})" onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})" type="checkbox">
+                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} @*onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})"*@ onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
                 <span class="slider round"></span>
             </label>
 
         </td>
 
     </tr>
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD4vUTkPWkpHoPRph_C66gJLrYwjG8UAcs",
+    authDomain: "deleteappointment.firebaseapp.com",
+    databaseURL: "https://deleteappointment.firebaseio.com",
+    projectId: "deleteappointment",
+    storageBucket: "deleteappointment.appspot.com",
+    messagingSenderId: "406518127356"
+  };
+  firebase.initializeApp(config);
+
+    $( document ).ready(function() {
+        //auto delete
+        var autoDeleteMau = setInterval(function(){
+            var date = new Date();
+            console.log(date.getMinutes()+'-'+date.getSeconds());
+            if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
+                || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
+                $.ajax({
+                    url: '/receptionist/CheckAndDelete',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() }, 
+                    success: function (response) {
+                        if(response.success >0){
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            //clearInterval(getTimeRight);
+            }
+        }, 1000);
+    });
 </script>
 
 

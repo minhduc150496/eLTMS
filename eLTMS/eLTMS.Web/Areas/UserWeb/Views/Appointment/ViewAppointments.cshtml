@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Danh sách cuộc hẹn";
 }
 @section styles {
@@ -17,23 +17,21 @@
 </div>
 <!-- breadcroumb Area End-->
 <!-- appoinment Page Start-->
-<div class="view_appointments_area p100">
+<div class="view_appointments_area p50">
     <div class="container">
         <div class="content-box">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Mã cuộc hẹn</th>
-                        <th>Mục đích</th>
-                        <th>Bác sĩ</th>
-                        <th>Kết luận</th>
+                        <th>Thời gian lấy mẫu</th>
+                        <th>Các loại xét nghiệm</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
-                <tbody id="tblData">
-                </tbody>
+                <tbody id="tblData"></tbody>
             </table>
         </div>
     </div>
@@ -43,17 +41,49 @@
     <tr>
         <td>{{Index}}</td>
         <td>{{AppointmentCode}}</td>
-        <td>{{TestPurpose}}</td>
-        <td>{{DoctorName}}</td>
-        <td>{{Conclusion}}</td>
-        <td>{{Status}}</td>
+        <td>
+            <ul>
+                {{#SampleGettings}}
+                <li>
+                    <span class="sample-name">{{SampleName}}:</span>
+                    ngày
+                    <span class="sg-date">{{GettingDate}}</span>
+                    lúc
+                    <span class="sg-time">{{FmStartTime}} - {{FmFinishTime}}</span>
+                </li>
+                {{/SampleGettings}}
+            </ul>
+        </td>
+        <td>
+            <ul>
+                {{#LabTests}}
+                <li>
+                    {{LabTestName}}:
+                    <span class="price">{{sPrice}} đ</span>
+                </li>
+                {{/LabTests}}
+            </ul>
+            <span class="title-total-price">Tổng chi phí:</span>
+            <span class="price">{{TotalPrice}} đ</span>
+        </td>
         <td>
             {{#IsNew}}
-            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-info btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
-            <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash"></i></button>
+            <spane class="stt-tag stt-new">mới tạo</spane>
             {{/IsNew}}
             {{#IsDone}}
-            <a href="/UserWeb/Appointment/Result?appointmentId={{AppointmentId}}" class="btn btn-success btn-result" data-id="{{AppointmentId}}">
+            <spane class="stt-tag stt-done">hoàn tất</spane>
+            {{/IsDone}}
+            {{#IsProcess}}
+            <spane class="stt-tag stt-process">đang xử lí</spane>
+            {{/IsProcess}}
+        </td>
+        <td>
+            {{#IsNew}}
+            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
+            <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash-alt"></i></button>
+            {{/IsNew}}
+            {{#IsDone}}
+            <a href="/UserWeb/Appointment/Result?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-success btn-result" data-id="{{AppointmentId}}">
                 <i class="fa fa-eye"></i>
             </a>
             {{/IsDone}}
@@ -62,5 +92,5 @@
 </script>
 
 @section scripts{
-    <script src="~/Areas/UserWeb/Scripts/Appointment/ViewAppointments.js"></script>    
+    <script src="~/Areas/UserWeb/Scripts/Appointment/ViewAppointments.js"></script>
 }

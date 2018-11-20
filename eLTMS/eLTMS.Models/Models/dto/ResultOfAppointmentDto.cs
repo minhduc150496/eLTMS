@@ -29,8 +29,8 @@ namespace eLTMS.Models.Models.dto
 
         public DateTime ReturnTime { get; set; }
 
-        public List<ResultOfSampleGettingDto> SampleGettings { get; set; }
-
         public string Conclusion { get; set; } // Conclusion (length: 500)
+
+        public List<ResultOfSampleGettingDto> SampleGettings { get; set; }
     }
 }

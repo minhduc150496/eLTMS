@@ -109,7 +109,7 @@
             {{#LabTests}}
             <div class="col-md-3">
                 <div class="pretty p-icon p-smooth p-bigger">
-                    <input type="checkbox" data-labtest-index="{{Index}}" 
+                    <input type="checkbox" data-labtest-index="{{Index}}" data-labtest-id="{{LabTestId}}" 
                            {{#IsSelected}}checked{{/IsSelected}} />
                     <div class="state p-danger">
                         <i class="icon fa fa-check"></i>
@@ -138,7 +138,7 @@
         <tbody>
             {{#Samples}}
             {{#IsSelected}}
-            <tr data-sample-index="{{Index}}">
+            <tr data-sample-index="{{Index}}" data-sample-id="{{SampleId}}">
                 <td></td>
                 <td>{{SampleName}}</td>
                 <td>
@@ -160,7 +160,7 @@
                     </ul>
                 </td>
                 <td>
-                    <input type="date" value="2018-11-08" min="2018-11-08" max="2018-11-14" />
+                    <input type="date" value="{{GettingDate}}" min="2018-11-20" max="2018-11-30" />
                 </td>
                 <td>
                     <select style="overflow-y: scroll">

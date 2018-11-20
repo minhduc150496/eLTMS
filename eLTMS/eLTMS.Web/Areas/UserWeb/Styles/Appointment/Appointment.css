@@ -183,6 +183,7 @@
 /* View Appointments */
 .view_appointments_area .content-box {
     margin: 0 auto;
+    color: black;
 }
 
 .view_appointments_area table th {
@@ -195,22 +196,83 @@
     border-color: black;
 }
 
+.view_appointments_area .btn-edit {
+    background: #0a408a;
+}
+
+.view_appointments_area .btn-delete {
+    background: #da251c;
+}
+
+.view_appointments_area .btn-success {
+    background: #00923f;
+}
+
+.view_appointments_area table ul {
+    list-style-type: circle;
+    padding-left: 20px;
+}
+
+.view_appointments_area table .sg-date,
+.view_appointments_area table .sg-time {
+    color: red;
+    font-weight: bold;
+}
+
+.view_appointments_area table .stt-tag {
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.view_appointments_area table .stt-new {
+    background: green;
+    color: white;
+}
+
+.view_appointments_area table .stt-done {
+    background: orange;
+    color: white;
+}
+
+.view_appointments_area table .stt-process {
+    background: gray;
+    color: white;
+}
+
+.view_appointments_area table .price {
+    color: blue;
+    font-weight: bold;
+}
+
+.view_appointments_area table .title-total-price {
+    font-weight: bold;
+}
+
+.view_appointments_area table .sample-name {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 
 /* Appointment Result */
 .appointment_result_area {
     /*background: lightgray;*/
 }
-.appointment_result_area .content-box {
-    max-width: 700px;
-    margin: 0 auto;
-    background: white;
-    border: 1px solid gray;
-    padding: 25px;
-    color: black;
-}
+
+    .appointment_result_area .content-box {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        border: 1px solid gray;
+        padding: 25px;
+        color: black;
+    }
+
     .appointment_result_area table td {
         border: none;
     }
+
     .appointment_result_area .result-title {
         text-transform: uppercase;
         color: #0a408a;
@@ -218,6 +280,7 @@
         font-weight: bolder;
         text-align: center;
     }
+
     .appointment_result_area table.table-result {
         border: none;
     }
@@ -261,10 +324,10 @@
                 text-align: left;
             }
 
-.appointment_result_area .return-time {
-    border-top: 2px solid black;
-    font-weight: bold;
-    text-align: right;
-    max-width: 150px;
-    margin: 0 0 0 auto;
-}
+    .appointment_result_area .return-time {
+        border-top: 2px solid black;
+        font-weight: bold;
+        text-align: right;
+        max-width: 150px;
+        margin: 0 0 0 auto;
+    }

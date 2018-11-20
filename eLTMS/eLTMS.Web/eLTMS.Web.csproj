@@ -206,7 +206,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\UserWeb\Controllers\AppointmentController.cs" />
-    <Compile Include="Areas\UserWeb\Controllers\HomeController.cs" />
+    <Compile Include="Areas\UserWeb\Controllers\HomePageController.cs" />
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
@@ -329,6 +329,7 @@
     <Content Include="Areas\UserWeb\Assets\css\slick.css" />
     <Content Include="Areas\UserWeb\Assets\css\slicknav.min.css" />
     <Content Include="Areas\UserWeb\Assets\css\style.css" />
+    <Content Include="Areas\UserWeb\Images\400dpiLogo.jpg" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\pretty-checkbox.css" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\pretty-checkbox.min.css" />
     <Content Include="Areas\UserWeb\Assets\img\about1.jpg" />
@@ -553,6 +554,7 @@
     <Content Include="Areas\UserWeb\Images\nurse.jpg" />
     <Content Include="Areas\UserWeb\Images\result-search.jpg" />
     <Content Include="Areas\UserWeb\Images\our-team.png" />
+    <Content Include="Areas\UserWeb\Images\ScreenShot_20181119121635.png" />
     <Content Include="Areas\UserWeb\Images\tai-mui-hong.jpg" />
     <Content Include="Areas\UserWeb\Images\tu-du.png" />
     <Content Include="Areas\UserWeb\Images\y-ta.jpg" />
@@ -563,17 +565,18 @@
     <Content Include="Areas\UserWeb\Styles\Appointment\Appointment.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Index.css" />
     <Content Include="Areas\UserWeb\Styles\Home\Layout.css" />
-    <Content Include="Areas\UserWeb\Views\Home\About.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Home\Contact.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Home\Gallery.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Home\FAQ.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\About.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\Contact.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\Gallery.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\FAQ.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\Create.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\ViewAppointments.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\Result.cshtml" />
     <Content Include="Areas\UserWeb\Assets\plugins\pretty-checkbox\maps\pretty-checkbox.css.map" />
     <Content Include="Areas\UserWeb\Views\Appointment\Edit.cshtml" />
     <Content Include="Areas\UserWeb\Views\Appointment\_AppointmentForm.cshtml" />
-    <None Include="Areas\UserWeb\Views\Home\Index.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Appointment\Suggest.cshtml" />
+    <None Include="Areas\UserWeb\Views\HomePage\Index.cshtml" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\img\bootstrap-colorpicker\alpha-horizontal.png" />
@@ -6913,6 +6916,7 @@
     <Content Include="Assets\pages\UI\sliders.html" />
     <Content Include="Assets\pages\UI\timeline.html" />
     <Content Include="Assets\pages\widgets.html" />
+    <Content Include="Areas\UserWeb\Assets\plugins\bootbox.min.js" />
     <Content Include="Assets\plugins\bootstrap-slider\bootstrap-slider.js" />
     <Content Include="Assets\plugins\bootstrap-slider\slider.css" />
     <Content Include="Assets\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
@@ -7695,8 +7699,8 @@
     <Content Include="Areas\UserWeb\Assets\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Areas\UserWeb\Assets\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
     <Content Include="Areas\UserWeb\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Home\Service.cshtml" />
-    <Content Include="Areas\UserWeb\Views\Home\ServiceDetails.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\Service.cshtml" />
+    <Content Include="Areas\UserWeb\Views\HomePage\ServiceDetails.cshtml" />
     <EntityDeploy Include="DbConnection\eLTMS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>eLTMS.Designer.cs</LastGenOutput>
