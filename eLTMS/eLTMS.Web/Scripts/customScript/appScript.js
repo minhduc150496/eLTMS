@@ -5,6 +5,8 @@
 var homeController = {
     init: function () {
         //homeController.loadData();
+        var dateNow = homeController.formatDate(new Date());
+        document.getElementById("select-date").value = dateNow;
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
@@ -14,11 +16,27 @@ var homeController = {
     loadIsPaid: function (IsPaid, SampleGettingId) {
         var a = 1;
     },
+    formatDate: function (date) {
+        var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    },
     registerEvent: function () {
 
         $(".Sample").change(function () {
             homeController.loadDataBySample();
         });
+        
+        $(".Date").change(function () {
+            homeController.loadDataBySample();
+        });
+        
 
         $('#btnSave').off('click').on('click', function () {
             var name = $('#txtName').val();
@@ -78,7 +96,7 @@ var homeController = {
                 dataType: 'json',
                 data: item,
                 success: function (res) {
-                    if (!res.sucess) {
+                    if (!res.success) {
                         if (res.validation && res.validation.Errors) {
                             toastr.error(res.validation.Errors[0].ErrorMessage);
                         }
@@ -103,8 +121,15 @@ var homeController = {
             homeController.resetForm();
             $('#myModal').modal('show');
             var selectedSample = $(".Sample").children("option:selected").val();
-            if (selectedSample == 1 || selectedSample == 2) {
+            if (selectedSample == 1) {
                 $('#mauCheckGroup').show();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 2) {
+                $('#mauCheckGroup').hide();
                 $('#nuocTieuCheckGroup').show();
                 $('#teBaoHocCheckGroup').hide();
                 $('#phanCheckGroup').hide();
@@ -157,28 +182,7 @@ var homeController = {
         });
 
     },
-    //deleteSupply: function (id) {
-    //    $.ajax({
-    //        url: '/WareHouse/Delete',
-    //        data: {
-    //            supplyId: id
-    //        },
-    //        type: 'POST',
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            if (response.success == true) {
-    //                toastr.success("Xóa thành công.");
-    //                homeController.loadData(true);
-    //            }
-    //            else {
-    //                toastr.error("Xóa không thành công.");
-    //            }
-    //        },
-    //        error: function (err) {
-    //            console.log(err);
-    //        }
-    //    });
-    //},
+    
     loadDetail: function (id) {
         $.ajax({
             url: '/WareHouse/SupplyDetail',
@@ -284,11 +288,12 @@ var homeController = {
 
     loadDataBySample: function (changePageSize) {
         var selectedSample = $(".Sample").children("option:selected").val();
+        var selectDate = $(".Date").val();
         $.ajax({
             url: '/receptionist/GetAppBySample',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate  },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -301,9 +306,13 @@ var homeController = {
                             Phone: item.Phone,
                             Address: item.Address,
                             StartTime: item.StartTime,
+                            OrderNumber: item.OrderNumber,
+                            Date: item.Date,
+                            Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
                             IsPaid: item.IsPaid,
-                            Checked: (item.IsPaid == true) ?  "checked" : ""
+                            ReadOnly: (item.IsPaid === true) ? "return false;" : "",
+                            Checked: (item.IsPaid === true) ?  "checked" : ""
                         });
 
                     });
@@ -324,10 +333,11 @@ var homeController = {
             dataType: 'json',
             data: { sampleGettingId: SampleGettingId },
             success: function (response) {
-                if (response.success) {
-                    homeController.registerEvent();
+                if (response.success === true) {
+                    toastr.success('Đổi trạng thái thành công');
+                    homeController.loadDataBySample();
                 }
-                homeController.loadDataBySample();
+                
             }
         })
     }

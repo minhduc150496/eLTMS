@@ -90,14 +90,19 @@
                         <option value="3">Tế bào học</option>
                         <option value="4">Phân</option>
                         <option value="5">Dịch</option>
-                    </select><table id="example2" class="table table-bordered table-hover">
+                    </select>
+                    Ngày:
+                    <input type="date" class="Date" id="select-date" />
+                    <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Appointment Code</th>
+                                <th>STT</th>
                                 <th>Họ & tên</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Thông tin xét nghiệm</th>
+                                <th>Bàn</th>
+                                <th>Ngày</th>
+                                <th>Giờ xét nghiệm</th>
                                 <th>Đã thanh toán</th>
 
                             </tr>
@@ -415,14 +420,16 @@
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{AppCode}}</td>
+        <td>{{OrderNumber}}</td>
         <td>{{FullName}}</td>
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
+        <td>{{Table}}</td>
+        <td>{{Date}}</td>
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">
-                <input id="{{SampleGettingId}}" {{Checked}} @*onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})"*@ onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
+                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} @*onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})"*@ onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
                 <span class="slider round"></span>
             </label>
 
@@ -458,8 +465,10 @@
                     dataType: 'json',
                     data: { dateTime: date.toISOString() }, 
                     success: function (response) {
-                        alert('Đã xóa ' + response.success + ' cuộc hẹn');
-                        homeController.loadDataBySample();
+                        if(response.success >0){
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn');
+                            homeController.loadDataBySample();
+                        }
                     }
                 });
             //clearInterval(getTimeRight);

@@ -8,6 +8,8 @@ namespace eLTMS.Models.Models.dto
 {
     public class AppointmentGetBySampleDto
     {
+        public int? OrderNumber { get; set; }
+
         public string AppointmentCode { get; set; }
 
         public string SampleName { get; set; }
@@ -17,6 +19,10 @@ namespace eLTMS.Models.Models.dto
         public string Phone { get; set; }
 
         public string Address { get; set; }
+
+        public string Table { get; set; }
+
+        public string Date { get; set; }
 
         public string StartTime { get; set; }
 
