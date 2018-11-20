@@ -15,7 +15,7 @@ var homeController = {
         var a = 1;
     },
     registerEvent: function () {
-        
+
         $(".Sample").change(function () {
             homeController.loadDataBySample();
         });
@@ -78,7 +78,7 @@ var homeController = {
                 dataType: 'json',
                 data: item,
                 success: function (res) {
-                    if (!res.sucess) {
+                    if (!res.success) {
                         if (res.validation && res.validation.Errors) {
                             toastr.error(res.validation.Errors[0].ErrorMessage);
                         }
@@ -102,6 +102,42 @@ var homeController = {
             $('#lblPopupTitle').text('Thêm mới vật tư');
             homeController.resetForm();
             $('#myModal').modal('show');
+            var selectedSample = $(".Sample").children("option:selected").val();
+            if (selectedSample == 1) {
+                $('#mauCheckGroup').show();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 2) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').show();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 3) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').show();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 4) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').show();
+                $('#dichCheckGroup').hide();
+            }
+            else if (selectedSample == 5) {
+                $('#mauCheckGroup').hide();
+                $('#nuocTieuCheckGroup').hide();
+                $('#teBaoHocCheckGroup').hide();
+                $('#phanCheckGroup').hide();
+                $('#dichCheckGroup').show();
+            }
         });
 
 
@@ -128,28 +164,7 @@ var homeController = {
         });
 
     },
-    //deleteSupply: function (id) {
-    //    $.ajax({
-    //        url: '/WareHouse/Delete',
-    //        data: {
-    //            supplyId: id
-    //        },
-    //        type: 'POST',
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            if (response.success == true) {
-    //                toastr.success("Xóa thành công.");
-    //                homeController.loadData(true);
-    //            }
-    //            else {
-    //                toastr.error("Xóa không thành công.");
-    //            }
-    //        },
-    //        error: function (err) {
-    //            console.log(err);
-    //        }
-    //    });
-    //},
+    
     loadDetail: function (id) {
         $.ajax({
             url: '/WareHouse/SupplyDetail',
@@ -195,7 +210,7 @@ var homeController = {
             url: '/receptionist/GetAllAppointment',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },             
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -272,8 +287,12 @@ var homeController = {
                             Phone: item.Phone,
                             Address: item.Address,
                             StartTime: item.StartTime,
+                            //OrderNumber: item.OrderNumber,
+                            //Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
-                            IsPaid: item.IsPaid
+                            IsPaid: item.IsPaid,
+                            ReadOnly: (item.IsPaid === true) ? "return false;" : "",
+                            Checked: (item.IsPaid === true) ?  "checked" : ""
                         });
 
                     });
@@ -294,10 +313,11 @@ var homeController = {
             dataType: 'json',
             data: { sampleGettingId: SampleGettingId },
             success: function (response) {
-                if (response.success) {
-                    homeController.registerEvent();
+                if (response.success === true) {
+                    toastr.success('Đổi trạng thái thành công');
+                    homeController.loadDataBySample();
                 }
-                homeController.loadDataBySample();
+                
             }
         })
     }

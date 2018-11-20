@@ -57,10 +57,12 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult GetAllAppointment2()
         {
             return null;
         }
+
         [HttpGet]
         public JsonResult GetAppBySample(int sampleId, int page=1, int pageSize=20)
         {
@@ -83,7 +85,16 @@ namespace eLTMS.Web.Controllers
             var result = _receptionistService.Add(data);
             return Json(new
             {
-                sucess = result
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult CheckAndDelete(DateTime dateTime)
+       {
+            var result = _receptionistService.CheckAndDeleteMauAndNuocTieu(dateTime);
+            return Json(new
+            {
+                success = result
             });
         }
         [HttpPost]
@@ -92,8 +103,10 @@ namespace eLTMS.Web.Controllers
             var result = _receptionistService.ChangeIsPaid(sampleGettingId);
             return Json(new
             {
-                sucess = result
+                success = result
             });
         }
+        
+        
     }
 }

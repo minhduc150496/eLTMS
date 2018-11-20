@@ -442,6 +442,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Getting date")]
         public System.DateTime? GettingDate { get; set; } // GettingDate
 
+        [Column(@"OrderNumber", Order = 11, TypeName = "int")]
+        [Display(Name = "Order number")]
+        public int? OrderNumber { get; set; } // OrderNumber
+
         // Reverse navigation
 
         /// <summary>
@@ -1791,6 +1795,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.TableId).IsOptional();
             Property(x => x.SlotId).IsOptional();
             Property(x => x.GettingDate).IsOptional();
+            Property(x => x.OrderNumber).IsOptional();
 
         }
     }

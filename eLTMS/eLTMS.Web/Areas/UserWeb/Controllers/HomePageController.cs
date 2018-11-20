@@ -6,45 +6,45 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Areas.UserWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomePageController : Controller
     {
-        // GET: /Home/Index
+        // GET: /UserWeb/Index
         public ActionResult Index()
         {
             return View("Index", "_Layout");
         }
 
-        // GET: /Home/About
+        // GET: /UserWeb/About
         public ActionResult About()
         {
             return View("About", "_Layout");
         }
 
-        // GET: /Home/Contact
+        // GET: /UserWeb/Contact
         public ActionResult Contact()
         {
             return View("Contact", "_Layout");
         }
 
-        // GET: /Home/Gallery
+        // GET: /UserWeb/Gallery
         public ActionResult Gallery()
         {
             return View("Gallery", "_Layout");
         }
 
-        // GET: /Home/FAQ
+        // GET: /UserWeb/FAQ
         public ActionResult FAQ()
         {
             return View("FAQ", "_Layout");
         }
 
-        // GET: /Home/Service
+        // GET: /UserWeb/Service
         public ActionResult Service()
         {
             return View("Service", "_Layout");
         }
 
-        // GET: /Home/ServiceDetails
+        // GET: /UserWeb/ServiceDetails
         public ActionResult ServiceDetails()
         {
             return View("ServiceDetails", "_Layout");
