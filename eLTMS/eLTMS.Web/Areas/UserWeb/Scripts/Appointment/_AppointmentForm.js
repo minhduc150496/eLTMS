@@ -167,9 +167,13 @@ var Controller = {
         }
         $("#step-1-form [type='checkbox']").change(handleCheckboxChanged);
 
-        if (AppointDto != undefined && AppointDto != null) {
+        if (flagInitForEdit) {
+            flagInitForEdit = false;
             CONFIG.IS_UPDATE = true;
+            console.log(AppointDto);
             Model.AppointmentDto = AppointDto;
+            //Model.AppointmentDto.AppointmentId = AppointDto.AppointmentId;
+            console.log(Model.AppointmentDto);
             for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
                 var sample = AppointDto.SampleGettingDtos[i];
                 // set getting date for Model.sampleDtos
@@ -192,7 +196,6 @@ var Controller = {
                     Model.sampleDtos[sampleIndex].IsSelected = Model.sampleDtos[sampleIndex].nChecked > 0;
                 }
             }
-            AppointDto = null;
         }
 
         for (var i = 0; i < Model.sampleDtos.length; i++) {

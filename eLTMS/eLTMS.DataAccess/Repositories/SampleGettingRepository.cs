@@ -16,6 +16,7 @@ namespace eLTMS.DataAccess.Repositories
         List<SampleGetting> GetAllIncludeApp();
         List<SampleGetting> GetAll2();
         List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId); // DucBM
+        SampleGetting GetByCodeForNurse(string code); // DucBM
     }
     public class SampleGettingRepository : RepositoryBase<SampleGetting>, ISampleGettingRepository
     {
@@ -49,6 +50,17 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(x => x.Slot)
                 .Include(x => x.Table)
                 .ToList();
+            return result;
+        }
+
+        // DucBM
+        public SampleGetting GetByCodeForNurse(string code) // Stt: WAITING - chờ lấy mẫu
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingCode.Equals(code))
+                .Include(x => x.Appointment.Patient)
+                .Include(x => x.Sample)
+                .FirstOrDefault();
             return result;
         }
     }

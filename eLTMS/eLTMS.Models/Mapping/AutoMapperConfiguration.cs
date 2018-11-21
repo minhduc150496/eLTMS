@@ -101,6 +101,10 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.LabTestIds, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTestId)))
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTest)));
 
+                cfg.CreateMap<SampleGetting, SampleGettingForNurseDto>()
+                .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName));
+
                 cfg.CreateMap<SampleGetting, SampleGettingForReceptionistDto>()
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.Appointment.AppointmentCode))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName))
@@ -162,6 +166,7 @@ namespace eLTMS.Models.Mapping
 
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
+                .ForMember(dst => dst.AppointmentId, src => src.MapFrom(x => x.AppointmentId))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
                 .ForMember(dst => dst.DateResult, src => src.MapFrom(x => ((x.ReturnTime != null)) ? x.ReturnTime.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
