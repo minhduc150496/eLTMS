@@ -29,11 +29,37 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         {
             return View("Create", "_Layout");
         }
-        
+
         // GET: UserWeb/Appointment/ViewAppointments
-        public ActionResult ViewAppointments() 
+        public ActionResult ViewAppointments()
         {
             return View("ViewAppointments", "_Layout");
+        }
+        [HttpGet]
+        public JsonResult GetAppointmentsByPatientId(int patientId, int page = 1, int pageSize = 20,
+            bool sttNew = true, bool sttProcess = true, bool sttDone = true)
+        {
+            var queryResult = _appointmentService.GetAppointmentsByPatientId(patientId);
+            var totalRows = queryResult.Count();
+            if (sttNew == false)
+            {
+                queryResult = queryResult.Where(x => !(x.Status == "NEW")).ToList();
+            }
+            if (sttProcess == false)
+            {
+                queryResult = queryResult.Where(x => !(x.Status != "NEW" && x.Status != "DONE")).ToList();
+            }
+            if (sttDone == false)
+            {
+                queryResult = queryResult.Where(x => !(x.Status == "DONE")).ToList();
+            }
+            var result = queryResult.Skip((page - 1) * pageSize).Take(pageSize);
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: UserWeb/Appointment/Edit/{apId}
