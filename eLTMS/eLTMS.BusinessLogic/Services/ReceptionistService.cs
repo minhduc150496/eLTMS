@@ -16,8 +16,10 @@ namespace eLTMS.BusinessLogic.Services
         bool ChangeIsPaid(int sampleGettingId);
         List<Appointment> GetAllAppointment();
         List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId);
-        int CheckAndDeleteMauAndNuocTieu(DateTime dateTime);
-        int CheckAndDeleteTeBaoAndDich(DateTime dateTime);
+        int CheckAndDeleteBlood(DateTime dateTime);
+        int CheckAndDeleteUrine(DateTime dateTime);
+        int CheckAndDeleteCell(DateTime dateTime);
+        int CheckAndDeleteMucus(DateTime dateTime);
         int CheckAndDeletePhan(DateTime dateTime);
         //DUCBM
         List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId);
@@ -67,9 +69,18 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+                var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+
                 var sampleGetting = sgRepo.GetFirst(p => p.SampleGettingId == sampleGettingId);
+
                 sampleGetting.IsPaid = true;
+                sampleGetting.Status = "WAITING";
                 sgRepo.Update(sampleGetting);
+
+                var app = appRepo.GetById(sampleGetting.AppointmentId);
+                app.Status = "RECEPTDONE";
+                appRepo.Update(app);
+
                 UnitOfWork.SaveChanges();
                 return true;
             }
@@ -364,7 +375,7 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-        public int CheckAndDeleteMauAndNuocTieu(DateTime dateTime)
+        public int CheckAndDeleteBlood(DateTime dateTime)
         {
             var dateNow = dateTime.Date;
             //lay so giay trong slot
@@ -384,7 +395,128 @@ namespace eLTMS.BusinessLogic.Services
                 var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var apps = appRepo.GetAll().ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
-                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid == false && (p.SampleId == 1 || p.SampleId == 2)).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 1)).ToList();
+                var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
+                {
+                    app = p,
+                    pa = c
+                }).ToList();
+                var sgSlots = sgs.Join(slots, p => p.SlotId, c => c.SlotId, (p, c) => new
+                {
+                    sg = p,
+                    slot = c
+                }).ToList();
+                var result = sgSlots.Join(appPas, p => p.sg.AppointmentId,
+                c => c.app.AppointmentId, (p, c) => new
+                {
+                    sgId = p.sg.SampleGettingId
+                }).ToList();
+                //count de đếm số cuộc hẹn được xóa
+                var count = 0;
+                if (result.Count > 0)
+                {
+
+                    foreach (var item in result)
+                    {
+                        //lay sg ra dua vao id
+                        var sg = sgRepo.GetById(item.sgId);
+                        //doi thuoc tinh isdelete
+                        sg.IsDeleted = true;
+                        count++;
+                    }
+                    //save xuong db
+                    UnitOfWork.SaveChanges();
+                }
+                return count;
+
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
+        public int CheckAndDeleteUrine(DateTime dateTime)
+        {
+            var dateNow = dateTime.Date;
+            //lay so giay trong slot
+            var hours = dateTime.Hour;
+            var minutes = dateTime.Minute;
+            var seconds = dateTime.Second;
+            var time = hours * 3600 + minutes * 60 + seconds /*- 3 * 60*/;
+
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+
+            try
+            {
+                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
+                var apps = appRepo.GetAll().ToList();
+                var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 2)).ToList();
+                var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
+                {
+                    app = p,
+                    pa = c
+                }).ToList();
+                var sgSlots = sgs.Join(slots, p => p.SlotId, c => c.SlotId, (p, c) => new
+                {
+                    sg = p,
+                    slot = c
+                }).ToList();
+                var result = sgSlots.Join(appPas, p => p.sg.AppointmentId,
+                c => c.app.AppointmentId, (p, c) => new
+                {
+                    sgId = p.sg.SampleGettingId
+                }).ToList();
+                //count de đếm số cuộc hẹn được xóa
+                var count = 0;
+                if (result.Count > 0)
+                {
+
+                    foreach (var item in result)
+                    {
+                        //lay sg ra dua vao id
+                        var sg = sgRepo.GetById(item.sgId);
+                        //doi thuoc tinh isdelete
+                        sg.IsDeleted = true;
+                        count++;
+                    }
+                    //save xuong db
+                    UnitOfWork.SaveChanges();
+                }
+                return count;
+
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
+        public int CheckAndDeleteCell(DateTime dateTime)
+        {
+            var dateNow = dateTime.Date;
+            var hours = dateTime.Hour;
+            var minutes = dateTime.Minute;
+            var seconds = dateTime.Second;
+            var time = hours * 3600 + minutes * 60 + seconds;
+
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+
+            try
+            {
+                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
+                var apps = appRepo.GetAll().ToList();
+                var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 3)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
                 {
                     app = p,
@@ -419,9 +551,10 @@ namespace eLTMS.BusinessLogic.Services
             {
                 return 0;
             }
+
         }
 
-        public int CheckAndDeleteTeBaoAndDich(DateTime dateTime)
+        public int CheckAndDeleteMucus(DateTime dateTime)
         {
             var dateNow = dateTime.Date;
             var hours = dateTime.Hour;
@@ -440,7 +573,7 @@ namespace eLTMS.BusinessLogic.Services
                 var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var apps = appRepo.GetAll().ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
-                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid == false && (p.SampleId == 3 || p.SampleId == 5)).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 5)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
                 {
                     app = p,
@@ -497,7 +630,7 @@ namespace eLTMS.BusinessLogic.Services
                 var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var apps = appRepo.GetAll().ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
-                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid == false && (p.SampleId == 4)).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 4)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
                 {
                     app = p,
