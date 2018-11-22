@@ -188,12 +188,12 @@
 
 .view_appointments_area table th {
     padding: 5px 10px;
-    border-color: black;
+    border-color: lightgray;
 }
 
 .view_appointments_area table td {
     padding: 10px;
-    border-color: black;
+    border-color: lightgray;
 }
 
 .view_appointments_area .btn-edit {

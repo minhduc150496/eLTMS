@@ -25,6 +25,7 @@
     <script>
         var json = '@(Html.Raw(Json.Encode(appDto)))';
         AppointDto = JSON.parse(json);
+        flagInitForEdit = true;
     </script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/_AppointmentForm.js"></script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/Edit.js"></script>

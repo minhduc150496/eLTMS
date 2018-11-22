@@ -27,7 +27,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<LabTest> GetAllLabTest(string code)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.LabTestCode.Contains(code) || x.LabTestName.Contains(code) && x.IsDeleted == false)
+                .Where(x => (x.LabTestCode.Contains(code) || x.LabTestName.Contains(code)) && x.IsDeleted == false)
                 .Include(x => x.Sample)
                 .ToList();
             return result;
