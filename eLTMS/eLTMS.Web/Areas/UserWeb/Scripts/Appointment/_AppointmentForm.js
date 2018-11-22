@@ -36,6 +36,7 @@ var Model = {
     sampleDtos: {},
     bookings: [],
     slotDtos: {},
+    appointmentId: -1,
     appointmentDto: {
         PatientId: CONFIG.PATIENT_ID,
         SampleGettingDtos: []
@@ -136,8 +137,11 @@ var Controller = {
                 }
             }
             // ajax for create new appointment
+            if (CONFIG.IS_UPDATE) {
+                Model.appointmentDto.AppointmentId = Model.AppointmentId;
+                console.log(Model.appointmentDto);
+            }
             var jsonData = JSON.stringify(Model.appointmentDto);
-            console.log(Model.appointmentDto);
             Controller.sendToServer(jsonData);
         }); // end event handler
 
@@ -170,8 +174,10 @@ var Controller = {
         if (flagInitForEdit) {
             flagInitForEdit = false;
             CONFIG.IS_UPDATE = true;
-            console.log(AppointDto);
-            Model.AppointmentDto = AppointDto;
+            //console.log(AppointDto);
+            Model.AppointmentId = AppointDto.AppointmentId;
+            Model.AppointmentDto = Object.create(AppointDto);
+            console.log(Model.AppointmentId)
             //Model.AppointmentDto.AppointmentId = AppointDto.AppointmentId;
             console.log(Model.AppointmentDto);
             for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
@@ -319,6 +325,7 @@ var Controller = {
             sURL = "/api/appointment/update-appointment";
         }
         // call AJAX to create a new Appointment
+        console.log("json:",jsonData)
         $.ajax({
             method: sMethod,
             contentType: "application/json",
@@ -365,3 +372,8 @@ var Controller = {
     }, // end Action
 }
 Controller.init();
+
+
+function initSlotSelect() {
+
+}
