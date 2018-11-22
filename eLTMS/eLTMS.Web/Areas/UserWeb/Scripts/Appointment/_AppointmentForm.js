@@ -31,6 +31,13 @@ var Utils = {
     } // end function
 };
 
+map = new Map();
+map.set(1, 5685);
+map.set(2, 5686);
+map.set(3, 6077);
+map.set(4, 5710);
+map.set(5, 5732);
+
 var Model = {
     firebaseDB: {},
     sampleDtos: {},
@@ -174,11 +181,10 @@ var Controller = {
         if (flagInitForEdit) {
             flagInitForEdit = false;
             CONFIG.IS_UPDATE = true;
-            //console.log(AppointDto);
+            console.log('AppointDto:',AppointDto);
             Model.AppointmentId = AppointDto.AppointmentId;
-            Model.AppointmentDto = Object.create(AppointDto);
+            Model.AppointmentDto = JSON.parse(JSON.stringify(AppointDto));
             console.log(Model.AppointmentId)
-            //Model.AppointmentDto.AppointmentId = AppointDto.AppointmentId;
             console.log(Model.AppointmentDto);
             for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
                 var sample = AppointDto.SampleGettingDtos[i];
@@ -226,13 +232,22 @@ var Controller = {
         htmlStep1 = Mustache.render(template, data);
         $("#step-2-form").html(htmlStep1);
 
-        if (CONFIG.IS_UPDATE) {
-            $(Model.appointmentDto.SampleGettingDtos).each(function (index, el) {
-                var $option = $("[data-sample-id='" + el.SampleId + "'] select [value='" + el.SlotId + "']");
-                console.log($option);
-                $option.prop('selected', true);
-            });
+        // set default
+        for (var i = 1; i < 6; i++) {
+            var slotId = map.get(i);
+            var $option = $("[data-sample-id='" + i + "'] select [value='" + slotId + "']");
+            console.log($option);
+            $option.prop('selected', true);
         }
+        if (CONFIG.IS_UPDATE) {
+            if (Model.appointmentDto.SampleGettingDtos!=null && Model.appointmentDto.SampleGettingDtos.length > 0) {
+                $(Model.appointmentDto.SampleGettingDtos).each(function (index, el) {
+                    var $option = $("[data-sample-id='" + el.SampleId + "'] select [value='" + el.SlotId + "']");
+                    console.log($option);
+                    $option.prop('selected', true);
+                });
+            }
+        } 
 
         $("#step-2-form table tbody tr:not(:last-child()) td:first-child()").each(function (index, el) {
             $(this).html(index + 1);
@@ -373,7 +388,3 @@ var Controller = {
 }
 Controller.init();
 
-
-function initSlotSelect() {
-
-}
