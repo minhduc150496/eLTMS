@@ -231,7 +231,6 @@ namespace eLTMS.BusinessLogic.Services
             //}
             return apps;
         }
-
         //ten ten
         public class TableAndSlotId
         {

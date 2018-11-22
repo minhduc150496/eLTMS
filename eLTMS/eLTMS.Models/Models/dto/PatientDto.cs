@@ -18,5 +18,6 @@ namespace eLTMS.Models.Models.dto
         public string CompanyAddress { get; set; } // CompanyAddress (length: 200)
         public bool? IsDeleted { get; set; } // IsDeleted
         public string Avatar { get; set; } // Avatar URL
+        public string AppCode { get; set; } // PatientCode (length: 20)
     }
 }

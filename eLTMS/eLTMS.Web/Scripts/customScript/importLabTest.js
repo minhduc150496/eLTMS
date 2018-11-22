@@ -355,7 +355,7 @@ var homeController = {
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
                 dataType: 'json',
-                data: { code: code, con: con },
+                
                 success: function (res) {
                     if (!res.sucess) {
                         if (res.validation && res.validation.Errors) {

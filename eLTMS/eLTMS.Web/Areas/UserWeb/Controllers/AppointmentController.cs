@@ -54,5 +54,10 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             return View("Result", "_Layout");
         }
 
+        public ActionResult Suggest()
+        {
+            return View("Suggest", "_Layout");
+        }
+
     }
 }

@@ -91,6 +91,26 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult UpdateResult(string code, string con)
+        {
+            var result = _appointmentService.Update(code, con);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpGet]
+        public JsonResult GetPatientByCode(string code)
+        {
+            var result = _appointmentService.GetSingleByCode(code);
+            var patient = Mapper.Map<Appointment, AppointmentDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = patient
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult DeletePatient(int patientId)
         {
             var result = _patientService.Delete(patientId);

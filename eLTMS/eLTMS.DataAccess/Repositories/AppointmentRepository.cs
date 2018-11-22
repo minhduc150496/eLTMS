@@ -20,7 +20,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetResultDoneByPatientId(int patientId);
         Appointment GetResultDoneByAppointmentId(int patientId); // DucBM
-        List<Appointment> GetAllApp();
+        List<Appointment> GetAllApp(); 
         Appointment GetAppById(int appId);
         Appointment GetAppointmentByCode(string code);
         Appointment GetAppointmentById(int id);
@@ -110,7 +110,6 @@ namespace eLTMS.DataAccess.Repositories
                 .Where(x => x.AppointmentId == apId) // lack of status doctor done
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
-
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
 
@@ -160,7 +159,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.IsDeleted != true && x.AppointmentCode.Equals(code))
-
+                .Include(x => x.Patient)
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings))
 
                 .Include(x => x.SampleGettings)

@@ -15,6 +15,27 @@ var homeController = {
             homeController.loadDataResult(patientId);
 
         });
+        $('#btnSaveResult').off('click').on('click', function () {
+            var code = $('#txtAppCode').val();
+            var con = $('#txtResult').val(); 
+            $.ajax({
+                url: '/LabTest/UpdateResult',
+                type: 'Post',
+                dataType: 'json',
+                data: { code: code, con: con },
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Nhận xét không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Nhận xét thành công.");
+                        homeController.loadDataLabTestingResult();
+                    }
+                }
+            })
+        });
         $('#btnSave').off('click').on('click', function () {
             var code = $('#txtCode').val();
             var accountId = parseInt($('#txtAccountId').val());
@@ -39,7 +60,6 @@ var homeController = {
                 IsDeleted: isDeleted,
                 AvatarUrl: $('#avatar').attr('src')
             }
-            console.log(patient);
             if (patient.PatientId == 0) {
                 $.ajax({
                     url: '/Patient/AddPatient',
@@ -83,21 +103,38 @@ var homeController = {
             }
           
         })
+        $('.btn-printResult').off('click').on('click', function () {
+            var code = $(this).data('id');
+            $('#txtResultCode').val(code)
+            $('#hiddenForm').submit();
+
+        });
         $('#btnAddNew').off('click').on('click', function () {
             $('#lblPopupTitle').text('Thêm mới bệnh nhân');
             homeController.resetForm();
             $('#myModal').modal('show');
         });   
         $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật thông tin bệnh nhân');
+            $('#lblPopupTitle').text('Cập nhật thông tin bệnh nhân');    
             $('#myModal').modal('show');
             var id = $(this).data('id');
             homeController.loadDetail(id);
+        });
+        $('.btn-editResult').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Cập nhật thông tin xét nghiệm');
+            $('#myModalHistory').modal('hide');
+            $('#myModal1').modal('show');
+            var id = $(this).data('id');
+            homeController.loadDataResult(id);
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deletePatient(id);
             
+        });
+        $("#txtSearchCode").off('change').on("change", function () {
+            homeController.loadDataResultCode($('#txtSearchCode').val());
+            //homeController.loadData(true);
         });
         $("#txtSearch").off('change').on("change", function () {
             homeController.loadData(true);
@@ -120,9 +157,6 @@ var homeController = {
                     toastr.error("Xóa không thành công.");
                 }
             },
-            error: function (err) {
-                console.log(err);
-            }
         });
     },
     loadDetail: function (id) {
@@ -151,9 +185,6 @@ var homeController = {
                     bootbox.alert(response.message);
                 }
             },
-            error: function (err) {
-                console.log(err);
-            }
         });
     },
     resetForm: function () {
@@ -180,10 +211,11 @@ var homeController = {
                     var html = '';
                     var template = $('#dataLabTestingResult-template').html();
                     $.each(data, function (i, item) {
-                        
+                        $('#txtResult').val(item.Conclusion);
+                        $('#txtAppCode').val(item.AppointmentCode);
                         html += Mustache.render(template, {
                             LabTestingId: item.LabTestingId,
-                            Name: item.Date,
+                            Name: item.DateResult,
                             Status: item.Status,
                             Getting: item.AppointmentCode,
                             Group: item.Conclusion,
@@ -196,6 +228,19 @@ var homeController = {
                     }, changePageSize);
                     homeController.registerEvent();
                 }
+            }
+        })
+    },
+    loadDataResultCode: function (id) {
+        $.ajax({
+            url: '/Patient/GetPatientByCode',
+            type: 'GET',
+            dataType: 'json',
+            data: { code: id},
+            success: function (response) {
+                var data = response.data;
+                $('#txtSearch').val(data.PatientName); homeController.loadData(true);
+            
             }
         })
     },
@@ -220,10 +265,9 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadData();
+                       // homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }

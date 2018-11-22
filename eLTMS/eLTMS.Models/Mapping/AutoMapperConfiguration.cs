@@ -163,10 +163,11 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Appointment, AppointmentDto>()
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.DateResult, src => src.MapFrom(x => x.ReturnTime.Value.ToString("dd-MM-yyyy")))
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => (x.Employee != null) ? x.Employee.FullName : ""))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
-                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Patient.FullName));
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.FullName : ""));
 
 
                 cfg.CreateMap<AppointmentDto, Appointment>()

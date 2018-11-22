@@ -22,6 +22,10 @@
 @(Html.Partial("_AppointmentForm"))
 
 @section scripts{
+    <script>
+        var json = '@(Html.Raw(Json.Encode(appDto)))';
+        AppointDto = JSON.parse(json);
+    </script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/_AppointmentForm.js"></script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/Edit.js"></script>
 }

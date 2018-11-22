@@ -335,6 +335,9 @@
             };
             var html = Mustache.render(template, data);
             $("#menu-noti").prepend(html);
+
+            // Toastr
+            toastr["success"](payload.data.message);
         }
         messaging.onMessage(loadMessage);
 
