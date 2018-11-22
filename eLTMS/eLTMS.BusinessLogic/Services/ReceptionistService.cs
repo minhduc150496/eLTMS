@@ -385,7 +385,7 @@ namespace eLTMS.BusinessLogic.Services
                 var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var apps = appRepo.GetAll().ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
-                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid == false && (p.SampleId == 1 || p.SampleId == 2)).ToList();
+                var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 1 || p.SampleId == 2)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
                 {
                     app = p,
