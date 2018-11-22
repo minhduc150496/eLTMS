@@ -88,15 +88,55 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
         [HttpPost]
-        public JsonResult CheckAndDelete(DateTime dateTime)
+        public JsonResult CheckAndDeleteBlood(DateTime dateTime)
        {
-            var result = _receptionistService.CheckAndDeleteMauAndNuocTieu(dateTime);
+            var result = _receptionistService.CheckAndDeleteBlood(dateTime);
             return Json(new
             {
                 success = result
             });
         }
+
+        [HttpPost]
+        public JsonResult CheckNDeleteUrine(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteUrine(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
+        [HttpPost]
+        public JsonResult CheckNDeleteCell(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteCell(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult CheckNDeleteMucus(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteMucus(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult CheckNDeletePhan(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeletePhan(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
         [HttpPost]
         public JsonResult IsPaid(int sampleGettingId)
         {

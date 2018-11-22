@@ -453,14 +453,13 @@
   firebase.initializeApp(config);
 
     $( document ).ready(function() {
-        //auto delete
-        var autoDeleteMau = setInterval(function(){
+        var autoDeleteBlood = setInterval(function(){
             var date = new Date();
             console.log(date.getMinutes()+'-'+date.getSeconds());
-            if((date.getMinutes()==3 || date.getMinutes()==13 || date.getMinutes()==23 || date.getMinutes()==33
-                || date.getMinutes()==43 || date.getMinutes()==53) && date.getSeconds()==0) {
+            if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
+                || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
                 $.ajax({
-                    url: '/receptionist/CheckAndDelete',
+                    url: '/receptionist/CheckAndDeleteBlood',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() }, 
@@ -472,6 +471,26 @@
                     }
                 });
             //clearInterval(getTimeRight);
+            }
+        }, 1000);
+        var autoDeleteUrine = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
+                || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/receptionist/CheckNDeleteUrine',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+                //clearInterval(getTimeRight);
             }
         }, 1000);
     });
