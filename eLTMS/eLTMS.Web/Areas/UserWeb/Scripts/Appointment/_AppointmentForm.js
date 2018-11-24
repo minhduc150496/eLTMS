@@ -94,6 +94,16 @@ var Controller = {
             });
         });
 
+        // load slot options of a Sample when change it's getting date
+        $("#step-2-form input[type='date']").off("change").on("change", function () {
+            var sampleId = $(this).closest('[data-sample-id]').data('sample-id');
+            var sampleGroupId = Mode.sampleDtos.find(function (item) {
+                return item.SampleId == sampleId;
+            }).SampleGroupId;
+            var gettingDate = $(this).val();
+            Controller.loadSlotOptions(sampleId, sampleGroupId, gettingDate);
+        })
+
         // fixing...
         $("#btn-submit").click(function () {
             // VALIDATION: required fill all fields
@@ -178,10 +188,10 @@ var Controller = {
         }
         $("#step-1-form [type='checkbox']").change(handleCheckboxChanged);
 
-        if (flagInitForEdit) {
+        if (typeof flagInitForEdit !== 'undefined' && flagInitForEdit == true) {
             flagInitForEdit = false;
             CONFIG.IS_UPDATE = true;
-            console.log('AppointDto:',AppointDto);
+            console.log('AppointDto:', AppointDto);
             Model.AppointmentId = AppointDto.AppointmentId;
             Model.AppointmentDto = JSON.parse(JSON.stringify(AppointDto));
             console.log(Model.AppointmentId)
@@ -224,30 +234,43 @@ var Controller = {
 
         var data = { Samples: Model.sampleDtos };
         var template = $("#step-2-template").html();
-        var htmlStep1 = Mustache.render(template, data);
-        $("#step-2-form").html(htmlStep1);
+        var htmlStep2 = Mustache.render(template, data);
+        $("#step-2-form").html(htmlStep2);
 
         data = { Samples: Model.sampleDtos };
         template = $("#step-2-template").html();
-        htmlStep1 = Mustache.render(template, data);
-        $("#step-2-form").html(htmlStep1);
+        htmlStep2 = Mustache.render(template, data);
+        $("#step-2-form").html(htmlStep2);
+
+        // load slot options
+        for (var i = 0; i < Model.sampleDtos.length; i++) {
+            var sampleDto = Model.sampleDtos[i];
+            if (sampleDto.IsSelected) {
+                var sampleId = sampleDto.SampleId;
+                var sampleGroupId = sampleDto.SampleGroupId;
+                var gettingDate = $("#step-2-form [data-sample-id='" + sampleId + "'] [type='date']").val();
+                Controller.loadSlotOptions(sampleId, sampleGroupId, gettingDate);
+            }
+        }
 
         // set default
+        /*
         for (var i = 1; i < 6; i++) {
             var slotId = map.get(i);
             var $option = $("[data-sample-id='" + i + "'] select [value='" + slotId + "']");
             console.log($option);
             $option.prop('selected', true);
-        }
+        }/**/
+
         if (CONFIG.IS_UPDATE) {
-            if (Model.appointmentDto.SampleGettingDtos!=null && Model.appointmentDto.SampleGettingDtos.length > 0) {
+            if (Model.appointmentDto.SampleGettingDtos != null && Model.appointmentDto.SampleGettingDtos.length > 0) {
                 $(Model.appointmentDto.SampleGettingDtos).each(function (index, el) {
                     var $option = $("[data-sample-id='" + el.SampleId + "'] select [value='" + el.SlotId + "']");
                     console.log($option);
                     $option.prop('selected', true);
                 });
             }
-        } 
+        }
 
         $("#step-2-form table tbody tr:not(:last-child()) td:first-child()").each(function (index, el) {
             $(this).html(index + 1);
@@ -268,6 +291,33 @@ var Controller = {
         $("#total-price").html(sTotalPrice);
 
     }, // end Action
+    loadSlotOptions: function (sampleId, sampleGroupId, gettingDate) {
+        console.log('gettingDate', gettingDate);
+        console.log('sampleGroupId', sampleGroupId);
+        $.ajax({
+            method: "GET",
+            contentType: "application/json",
+            url: "/api/slot/get-slot-options",
+            data: {
+                sampleGroupId: sampleGroupId,
+                gettingDate: gettingDate
+            },
+            async: true,
+            success: function (data) {
+                // render
+                for (var i = 0; i < data.length; i++) {
+                    data[i].IsUnavailable = data[i].IsAvailable == false;
+                    data[i].FmStartTime = Utils.formatTimeShort(data[i].StartTime);
+                    data[i].FmFinishTime = Utils.formatTimeShort(data[i].FinishTime);
+                }
+                data = { SlotOptions: data };
+                //console.log(data);
+                var template = $("#options-template").html();
+                var html = Mustache.render(template, data);
+                $("#step-2-form [data-sample-id='" + sampleId + "'] select").html(html);
+            }
+        });
+    },
     suggestSlots: function () {
 
         Model.comingDate = $("#coming-date").val();
@@ -340,7 +390,7 @@ var Controller = {
             sURL = "/api/appointment/update-appointment";
         }
         // call AJAX to create a new Appointment
-        console.log("json:",jsonData)
+        console.log("json:", jsonData)
         $.ajax({
             method: sMethod,
             contentType: "application/json",

@@ -93,10 +93,6 @@
     height: 29px;
 }
 
-.create_appointment_area option[disabled] {
-    display: none;
-}
-
 .create_appointment_area .step-box-2 {
     margin-left: auto;
     margin-right: auto;

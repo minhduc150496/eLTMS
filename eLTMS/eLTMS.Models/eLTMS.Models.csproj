@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\SlotOptionDto.cs" />
     <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
     <Compile Include="Models\dto\AppointmentAddDto.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Models\dto\PatientDto.cs" />
     <Compile Include="Models\dto\SampleGettingForNurseDto.cs" />
     <Compile Include="Models\dto\SampleGettingForReceptionistDto.cs" />
+    <Compile Include="Models\dto\SlotUsageDto.cs" />
     <Compile Include="Models\dto\TokenDto.cs" />
     <Compile Include="Models\dto\SlotDto.cs" />
     <Compile Include="Models\FileUploadModel.cs" />
@@ -93,13 +95,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
-      <Project>{81E344AD-370A-4AA6-98F5-8151677D2533}</Project>
-      <Name>eLTMS.DataAccess</Name>
-    </ProjectReference>
+    <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Utils\" />
+    <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
+      <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>
+      <Name>eLTMS.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
