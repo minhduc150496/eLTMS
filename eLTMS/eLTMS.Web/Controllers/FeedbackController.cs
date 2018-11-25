@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models;
+using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
+using eLTMS.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,7 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Controllers
 {
-    public class FeedbackController : Controller
+    public class FeedbackController : BaseController
     {
         //Nguyen Huu Lam
         // GET: Feedback
@@ -26,7 +29,11 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Feedbacks()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager))
+            {
+                return View("Feedbacks");
+            }
+            return RedirectToAction("Login", "Account", new { returnUrl = "/Feedback/Feedbacks" });
         }
         //Tạo page cho View Feedback-lay tat ca feedback show tren bang
         [HttpGet]

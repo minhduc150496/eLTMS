@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface IAccountService
     {
         Account checkLogin(string phoneNumber, string password);
+        Account GetById(int accountId);
     }
     public class AccountService : IAccountService
     {
@@ -34,5 +35,11 @@ namespace eLTMS.BusinessLogic.Services
             return null;
         }
 
+        public Account GetById(int accountId)
+        {
+            var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
+            Account account = repo.GetById(accountId);
+            return account;
+        }
     }
 }

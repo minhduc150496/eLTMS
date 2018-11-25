@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConstantManager.cs" />
+    <Compile Include="Enums\RoleEnum.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Models\dto\SlotOptionDto.cs" />
     <Compile Include="Models\dto\AccountDto.cs" />
