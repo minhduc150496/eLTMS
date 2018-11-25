@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Controllers
 {
-    public class LabTestController : Controller
+    public class LabTestController : BaseController
     {
         //private readonly IExportPaperService _exportPaperService;
         private readonly ISampleService _sampleService;
@@ -32,26 +33,45 @@ namespace eLTMS.Web.Controllers
             this._sampleGroupService = sampleGroupService;
             this._hospitalSuggestionService = hospitalSuggestionService;
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        
         public ActionResult LabTests()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
+
         public ActionResult LabTesting()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
+
         public ActionResult LabTestingResult()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
+
         public ActionResult LabTestingDone()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
         
         [HttpGet]

@@ -24,6 +24,12 @@ namespace eLTMS.Web.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            Session.Remove(ConstantManager.SESSION_ACCOUNT);
+            return RedirectToAction("Login");
+        }
+
         [HttpPost]
         public ActionResult CheckLogin(FormCollection fc)
         {
@@ -35,8 +41,8 @@ namespace eLTMS.Web.Controllers
             var errorMessage = "";
             if (account != null)
             {
-                Session[ConstantManager.SESSION_ACCOUNT] = account.RoleId;
-                if (returnUrl != null)
+                Session[ConstantManager.SESSION_ACCOUNT] = account;
+                if (returnUrl != null && returnUrl != "")
                 {
                     return Redirect(returnUrl);
                 } else
@@ -48,8 +54,10 @@ namespace eLTMS.Web.Controllers
                             return Redirect("/Receptionist");
                         case (int)RoleEnum.WarehouseKeeper:
                             return Redirect("/Warehouse/Supplies");
+                        case (int)RoleEnum.LabTechnician:
+                            return Redirect("/LabTest/LabTests");
                         case (int)RoleEnum.Doctor:
-                            return Redirect("/LabTest/LabTestingResult");
+                            return Redirect("/LabTest/LabTestingDone");
                         case (int)RoleEnum.Manager:
                             return Redirect("/Receptionist");
                         case (int)RoleEnum.Nurse:

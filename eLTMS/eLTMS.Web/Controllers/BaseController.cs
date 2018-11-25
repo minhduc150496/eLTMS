@@ -1,4 +1,5 @@
 ﻿using eLTMS.BusinessLogic.Services;
+using eLTMS.DataAccess.Models;
 using eLTMS.Models;
 using eLTMS.Models.Enums;
 using System;
@@ -21,9 +22,10 @@ namespace eLTMS.Web.Controllers
             {
                 return false;
             }
-            var roleId = Session[ConstantManager.SESSION_ACCOUNT];
-            if (roleId != null)
+            var account = Session[ConstantManager.SESSION_ACCOUNT];
+            if (account != null)
             {
+                var roleId = ((Account)account).RoleId;
                 if (args.Contains((int)roleId))
                 {
                     return true;

@@ -27,7 +27,7 @@ namespace eLTMS.BusinessLogic.Services
         public Account checkLogin(string phoneNumber, string password)
         {
             var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
-            Account account = repo.GetByPhoneNumber(phoneNumber);
+            Account account = repo.GetByPhoneNumberIncludeRoleEmployeePatient(phoneNumber);
             if (account!=null && account.Password.Trim().Equals(password.Trim()))
             {
                 return account;

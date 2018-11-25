@@ -211,7 +211,6 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
-    <Compile Include="Controllers\AuthorizableController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -6888,6 +6887,8 @@
     <Content Include="Assets\documentation\docs.js" />
     <Content Include="Assets\documentation\index.html" />
     <Content Include="Assets\documentation\style.css" />
+    <Content Include="Assets\Image\default-avatar-female.jpg" />
+    <Content Include="Assets\Image\default-avatar-male.png" />
     <Content Include="Assets\pages\calendar.html" />
     <Content Include="Assets\pages\charts\chartjs.html" />
     <Content Include="Assets\pages\charts\flot.html" />
@@ -7761,7 +7762,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
-    <Folder Include="Assets\Image\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\TestingApi\" />

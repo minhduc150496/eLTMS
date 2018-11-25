@@ -23,17 +23,15 @@ namespace eLTMS.Web.Controllers
         {
             this._feedbackService = feedbackService;
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
+
         public ActionResult Feedbacks()
         {
             if (base.ValidRole((int)RoleEnum.Manager))
             {
                 return View("Feedbacks");
             }
-            return RedirectToAction("Login", "Account", new { returnUrl = "/Feedback/Feedbacks" });
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
         //Tạo page cho View Feedback-lay tat ca feedback show tren bang
         [HttpGet]

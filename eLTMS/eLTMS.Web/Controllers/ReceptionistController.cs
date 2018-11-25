@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Controllers
 {
-    public class ReceptionistController : Controller
+    public class ReceptionistController : BaseController
     {
         private readonly IReceptionistService _receptionistService;
 
@@ -21,15 +22,14 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
-
-        // DucBM
-        public ActionResult SampleGettings()
-        {
-            return View("SampleGettings");
-        }
-
+        
         [HttpGet]
         public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
         {
