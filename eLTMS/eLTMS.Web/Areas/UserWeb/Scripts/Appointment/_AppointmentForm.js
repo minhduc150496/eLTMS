@@ -94,16 +94,6 @@ var Controller = {
             });
         });
 
-        // load slot options of a Sample when change it's getting date
-        $("#step-2-form input[type='date']").off("change").on("change", function () {
-            var sampleId = $(this).closest('[data-sample-id]').data('sample-id');
-            var sampleGroupId = Mode.sampleDtos.find(function (item) {
-                return item.SampleId == sampleId;
-            }).SampleGroupId;
-            var gettingDate = $(this).val();
-            Controller.loadSlotOptions(sampleId, sampleGroupId, gettingDate);
-        })
-
         // fixing...
         $("#btn-submit").click(function () {
             // VALIDATION: required fill all fields
@@ -241,6 +231,19 @@ var Controller = {
         template = $("#step-2-template").html();
         htmlStep2 = Mustache.render(template, data);
         $("#step-2-form").html(htmlStep2);
+
+
+        // load slot options of a Sample when change it's getting date
+        $("#step-2-form input[type='date']").off("change").on("change", function () {
+            console.log("on change");
+            var sampleId = $(this).closest('[data-sample-id]').data('sample-id');
+            var sampleGroupId = Model.sampleDtos.find(function (item) {
+                return item.SampleId == sampleId;
+            }).SampleGroupId;
+            var gettingDate = $(this).val();
+            Controller.loadSlotOptions(sampleId, sampleGroupId, gettingDate);
+        })
+
 
         // load slot options
         for (var i = 0; i < Model.sampleDtos.length; i++) {
