@@ -1,6 +1,7 @@
 ﻿using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
+using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Slot> GetAvailableSlots();
         bool CreateNewSlotsForAMonth(int year, int month);
         List<Slot> GetAllSlots();
+        List<SlotOptionDto> GetSlotOptions(string gettingDate, int sampleGroupId);
     }
     public class SlotService : ISlotService
     {
@@ -96,6 +98,25 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             var slots = slotRepo.GetAllSlot();
             return slots;
+        }
+
+        public List<SlotOptionDto> GetSlotOptions(string gettingDate, int sampleGroupId)
+        {
+            var slotRepo = this.RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
+            var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(UnitOfWork);
+            var slotUsages = slotRepo.GetSlotUsage(gettingDate, sampleGroupId);
+            var nTables = tableRepo.GetTableCountBySampleGroupId(sampleGroupId);
+            var slotOptions = new List<SlotOptionDto>();
+            foreach (var slotUsage in slotUsages)
+            {
+                var slotOpt = new SlotOptionDto();
+                slotOpt.SlotId = slotUsage.SlotId;
+                slotOpt.StartTime = slotUsage.StartTime;
+                slotOpt.FinishTime = slotUsage.FinishTime;
+                slotOpt.IsAvailable = slotUsage.NBooked == null || slotUsage.NBooked < nTables;
+                slotOptions.Add(slotOpt);
+            }
+            return slotOptions;
         }
     }
 }

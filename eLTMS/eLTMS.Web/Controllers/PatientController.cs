@@ -8,10 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Controllers
 {
-    public class PatientController : Controller
+    public class PatientController : BaseController
     {
         // GET: Patient
         private readonly IPatientService _patientService;
@@ -29,7 +30,12 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Patients()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
         public ActionResult Appointment()
         {

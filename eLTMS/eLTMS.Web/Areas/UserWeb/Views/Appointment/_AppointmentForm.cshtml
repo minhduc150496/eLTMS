@@ -160,14 +160,10 @@
                     </ul>
                 </td>
                 <td>
-                    <input type="date" value="2018-11-23" value="{{GettingDate}}" min="2018-11-22" max="2018-11-30" />
+                    <input type="date" value="2018-12-01" min="2018-11-22" max="2018-12-30" />
                 </td>
                 <td>
                     <select style="overflow-y: scroll">
-                        <option value="">-- Vui lòng chọn một ca --</option>
-                        {{#SlotDtos}}
-                        <option value="{{SlotId}}">{{FmStartTime}} - {{FmFinishTime}}</option>
-                        {{/SlotDtos}}
                     </select>
                 </td>
             </tr>
@@ -183,4 +179,17 @@
             </tr>
         </tbody>
     </table>
+</script>
+
+
+<script id="options-template" type="x-tmpl-mustache">
+    <option value="">-- Vui lòng chọn một ca --</option>
+    {{#SlotOptions}}
+    <option value="{{SlotId}}" {{#IsUnavailable}} disabled {{/IsUnavailable}}>
+        {{FmStartTime}}-{{FmFinishTime}}
+        {{#IsUnavailable}}
+        (hết chỗ)
+        {{/IsUnavailable}}
+    </option>
+    {{/SlotOptions}}
 </script>

@@ -536,8 +536,40 @@ namespace eLTMS.DataAccess.Models
         public Sample()
         {
             IsDeleted = false;
-            LabTests = new System.Collections.Generic.List<LabTest>();
             SampleGettings = new System.Collections.Generic.List<SampleGetting>();
+            LabTests = new System.Collections.Generic.List<LabTest>();
+        }
+    }
+
+    // Role
+    [Table("Role", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class Role
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"RoleID", Order = 1, TypeName = "int")]
+        [Index(@"PK_Role", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Role ID")]
+        public int RoleId { get; set; } // RoleID (Primary key)
+
+        [Column(@"RoleName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "Role name")]
+        public string RoleName { get; set; } // RoleName (length: 20)
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child Accounts where [Account].[RoleID] point to this entity (FK_Account_Role)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<Account> Accounts { get; set; } // Account.FK_Account_Role
+
+        public Role()
+        {
+            Accounts = new System.Collections.Generic.List<Account>();
         }
     }
 
@@ -1390,44 +1422,48 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Role")]
         public string Role { get; set; } // Role (length: 20)
 
-        [Column(@"Email", Order = 3, TypeName = "nvarchar")]
+        [Column(@"RoleID", Order = 3, TypeName = "int")]
+        [Display(Name = "Role ID")]
+        public int? RoleId { get; set; } // RoleID
+
+        [Column(@"Email", Order = 4, TypeName = "nvarchar")]
         [MaxLength(255)]
         [StringLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } // Email (length: 255)
 
-        [Column(@"Password", Order = 4, TypeName = "nvarchar")]
+        [Column(@"Password", Order = 5, TypeName = "nvarchar")]
         [MaxLength(128)]
         [StringLength(128)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } // Password (length: 128)
 
-        [Column(@"PhoneNumber", Order = 5, TypeName = "nvarchar")]
+        [Column(@"PhoneNumber", Order = 6, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
 
-        [Column(@"AvatarURL", Order = 6, TypeName = "nvarchar")]
+        [Column(@"AvatarURL", Order = 7, TypeName = "nvarchar")]
         [MaxLength(500)]
         [StringLength(500)]
         [Display(Name = "Avatar url")]
         public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
-        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 8, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"IdentityCardNumber", Order = 8, TypeName = "nvarchar")]
+        [Column(@"IdentityCardNumber", Order = 9, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
 
-        [Column(@"FullName", Order = 9, TypeName = "nvarchar")]
+        [Column(@"FullName", Order = 10, TypeName = "nvarchar")]
         [MaxLength(50)]
         [StringLength(50)]
         [Display(Name = "Full name")]
@@ -1444,11 +1480,18 @@ namespace eLTMS.DataAccess.Models
         /// </summary>
         public virtual System.Collections.Generic.ICollection<PatientAccount> PatientAccounts { get; set; } // PatientAccount.FK_PatientAccount_Account
 
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Role pointed by [Account].([RoleId]) (FK_Account_Role)
+        /// </summary>
+        [ForeignKey("RoleId")] public virtual Role Role_RoleId { get; set; } // FK_Account_Role
+
         public Account()
         {
             IsDeleted = false;
-            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Employees = new System.Collections.Generic.List<Employee>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
         }
     }
 
@@ -1468,6 +1511,7 @@ namespace eLTMS.DataAccess.Models
         public AccountConfiguration(string schema)
         {
             Property(x => x.Role).IsOptional();
+            Property(x => x.RoleId).IsOptional();
             Property(x => x.Email).IsOptional();
             Property(x => x.Password).IsOptional();
             Property(x => x.PhoneNumber).IsOptional();
@@ -1475,6 +1519,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
             Property(x => x.FullName).IsOptional();
+
         }
     }
 
@@ -1756,6 +1801,21 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // Role
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class RoleConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Role>
+    {
+        public RoleConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public RoleConfiguration(string schema)
+        {
+            Property(x => x.RoleName).IsOptional();
+        }
+    }
+
     // Sample
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class SampleConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Sample>
@@ -1938,6 +1998,15 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class GetSlotUsageReturnModel
+    {
+        public System.Int32? SlotId { get; set; }
+        public System.Int32? StartTime { get; set; }
+        public System.Int32? FinishTime { get; set; }
+        public System.Int32? NBooked { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]

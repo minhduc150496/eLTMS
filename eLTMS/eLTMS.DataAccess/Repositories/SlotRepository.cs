@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace eLTMS.DataAccess.Repositories
 {
@@ -17,6 +18,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Slot> GetAvailableSlots();
         List<Slot> GetAllSlot();
         List<Slot> GetBySampleGroupId(int sampleGroupId);
+        List<SlotUsage> GetSlotUsage(string gettingDate, int sampleGroupId);
     }
     public class SlotRepository : RepositoryBase<Slot>, ISlotRepository
     {
@@ -64,6 +66,16 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Where(x => x.SampleGroupId == sampleGroupId)
+                .ToList();
+            return result;
+        }
+
+        public List<SlotUsage> GetSlotUsage(string gettingDate, int sampleGroupId)
+        {
+            var result = UnitOfWork.Context.Database.SqlQuery<SlotUsage>
+                ("EXEC [dbo].[GetSlotUsage] @GettingDate, @SampleGroupID", 
+                new SqlParameter("@GettingDate", gettingDate),
+                new SqlParameter("@SampleGroupID", sampleGroupId))
                 .ToList();
             return result;
         }

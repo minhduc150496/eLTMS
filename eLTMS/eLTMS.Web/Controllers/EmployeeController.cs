@@ -8,10 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseController
     {
         //Nguyen Huu Lam
         // GET: Employee
@@ -22,14 +23,15 @@ namespace eLTMS.Web.Controllers
         {
             this._employeeService = employeeService;
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         public ActionResult Employees()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
         //Tạo page cho View Employee-lay tat ca employee show tren bang
         [HttpGet]

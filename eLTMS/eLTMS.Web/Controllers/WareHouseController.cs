@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
 using GemBox.Spreadsheet;
 using System;
@@ -14,7 +15,7 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Controllers
 {
-    public class WareHouseController : Controller
+    public class WareHouseController : BaseController
     {
         // GET: WareHouse
         private readonly ISupplyService _supplyService;
@@ -34,55 +35,76 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult Supplies()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.WarehouseKeeper))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
       
         public ActionResult Inventory()
         {
-            var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
-            if (supplier != null)
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.WarehouseKeeper))
             {
-                ViewBag.PKK = "PKK" + (supplier.ExportPaperId + 1);
+                var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
+                if (supplier != null)
+                {
+                    ViewBag.PKK = "PKK" + (supplier.ExportPaperId + 1);
+                }
+                else
+                {
+                    ViewBag.PKK = "PKK1";
+                }
+                return View();
             }
-            else
-            {
-                ViewBag.PKK = "PKK1";
-            }
-            return View();
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });            
         }
 
         public ActionResult ImportSupplies()
         {
-            var supplier = _importPaperService.GetAllImportPapers("").LastOrDefault();
-            if (supplier != null)
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.WarehouseKeeper))
             {
-                ViewBag.PNK = "PNK" + (supplier.ImportPaperId + 1);
+                var supplier = _importPaperService.GetAllImportPapers("").LastOrDefault();
+                if (supplier != null)
+                {
+                    ViewBag.PNK = "PNK" + (supplier.ImportPaperId + 1);
+                }
+                else
+                {
+                    ViewBag.PNK = "PNK1";
+                }
+                return View();
             }
-            else
-            {
-                ViewBag.PNK = "PNK1";
-            }
-            return View();
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });            
         }
 
         public ActionResult ExportSupplies()
         {
-            var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
-            if (supplier != null)
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.WarehouseKeeper))
             {
-                ViewBag.PXK = "PXK" + (supplier.ExportPaperId + 1);
+                var supplier = _exportPaperService.GetAllExportPapers("").LastOrDefault();
+                if (supplier != null)
+                {
+                    ViewBag.PXK = "PXK" + (supplier.ExportPaperId + 1);
+                }
+                else
+                {
+                    ViewBag.PXK = "PXK1";
+                }
+                return View();
             }
-            else
-            {
-                ViewBag.PXK = "PXK1";
-            }
-            return View();
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });            
         }
 
         public ActionResult Test()
         {
             return View();
         }
+
         [HttpGet]
         public JsonResult GetAllSupplies(string suppliesCode = "",int page = 1,int pageSize = 20)
         {
