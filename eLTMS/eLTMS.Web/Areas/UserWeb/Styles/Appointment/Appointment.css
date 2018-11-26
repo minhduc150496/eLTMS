@@ -182,6 +182,10 @@
     color: black;
 }
 
+.view_appointments_area table {
+    margin-top: 15px;
+}
+
 .view_appointments_area table th {
     padding: 5px 10px;
     border-color: lightgray;

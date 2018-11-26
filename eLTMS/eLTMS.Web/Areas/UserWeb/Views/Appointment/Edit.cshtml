@@ -1,6 +1,10 @@
 ﻿@{ 
     ViewBag.Title = "Chỉnh sửa lịch hẹn";
     var appDto = ViewBag.appDto;
+    var now = DateTime.Now;
+    var today = now.ToString("yyyy-MM-dd");
+    var tomorrow = now.AddDays(1).ToString("yyyy-MM-dd");
+    var maxDate = now.AddDays(7).ToString("yyyy-MM-dd");
 }
 
 @section styles {
@@ -26,6 +30,9 @@
         var json = '@(Html.Raw(Json.Encode(appDto)))';
         AppointDto = JSON.parse(json);
         flagInitForEdit = true;
+        Today = '@today';
+        Tomorrow = '@tomorrow';
+        MaxGettingDate = '@maxDate';
     </script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/_AppointmentForm.js"></script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/Edit.js"></script>
