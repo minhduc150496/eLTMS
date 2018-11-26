@@ -215,12 +215,12 @@ var homeController = {
 
     },
     resetForm: function () {
-        $('#txtSupplyId').val('0');
-        $('#txtCode').val('');
-        $('#txtName').val('')
-        $('#ddlSupplyType').val('').change();
-        $('#ddlSupplyUnit').val('').change();
-        $('#txtNote').val('')
+        $('#txtDateOfBirth').val('');
+        $('#txtName').val('');
+        $('#txtCMND').val('');
+        $('#txtPhone').val('');
+        $('#txtAddress').val('');
+        $('#txtNote').val('');
     },
     loadData: function (changePageSize) {
         var selectedSample = $(this).children("option:selected").val();
