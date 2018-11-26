@@ -256,6 +256,9 @@ namespace eLTMS.Models.Mapping
                .ForMember(dst => dst.ReceivedDateTime, src => src.MapFrom(x => x.ReceivedDateTime.HasValue ? (x.ReceivedDateTime.Value).ToString("dd-MM-yyyy") : ""))
                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+
+                cfg.CreateMap<FeedbackDto, Feedback>();
+
             });
 
         }

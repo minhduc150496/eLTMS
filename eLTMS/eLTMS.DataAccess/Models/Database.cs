@@ -1090,6 +1090,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Status")]
         public string Status { get; set; } // Status (length: 100)
 
+        [Column(@"StarRating", Order = 8, TypeName = "int")]
+        [Display(Name = "Star rating")]
+        public int? StarRating { get; set; } // StarRating
+
         // Foreign keys
 
         /// <summary>
@@ -1633,6 +1637,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.ReceivedDateTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.Status).IsOptional();
+            Property(x => x.StarRating).IsOptional();
 
         }
     }

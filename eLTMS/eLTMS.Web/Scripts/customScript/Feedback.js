@@ -138,7 +138,7 @@ var homeController = {
                     $('#txtPatientName').val(data.PatientName);
                     $('#txtEmployeeName').val(data.EmployeeName);
                     $('#txtContext').val(data.Content);
-                    $('#txtDay').val(data.ReceivedDateTime);                
+                    $('#txtDay').val(data.ReceivedDateTime);         
                 }
                 else {
                     bootbox.alert(response.message);

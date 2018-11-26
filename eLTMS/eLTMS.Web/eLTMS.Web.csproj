@@ -198,6 +198,7 @@
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
+    <Compile Include="Api\FeedbackApiController.cs" />
     <Compile Include="Api\TokenApiController.cs" />
     <Compile Include="Api\SlotApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />

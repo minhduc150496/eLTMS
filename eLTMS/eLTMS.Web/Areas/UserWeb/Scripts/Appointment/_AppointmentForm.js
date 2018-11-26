@@ -184,7 +184,7 @@ var Controller = {
             console.log('AppointDto:', AppointDto);
             Model.AppointmentId = AppointDto.AppointmentId;
             Model.AppointmentDto = JSON.parse(JSON.stringify(AppointDto));
-            console.log(Model.AppointmentId)
+            console.log(Model.AppointmentId);
             console.log(Model.AppointmentDto);
             for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
                 var sample = AppointDto.SampleGettingDtos[i];
