@@ -350,26 +350,26 @@ namespace eLTMS.BusinessLogic.Services
                 spSg = p,
                 slot = c
             });
-            //var spSgSlotTable= spSgSlots.Join(tables, p => p.spSg.sg.TableId, c => c.TableId, (p, c) => new
-            //{
-            //    spSgSlot = p,
-            //    table = c
-            //});
+            var spSgSlotTable = spSgSlots.Join(tables, p => p.spSg.sg.TableId, c => c.TableId, (p, c) => new
+            {
+                spSgSlot = p,
+                table = c
+            });
             var count = 1;
-            var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
+            var result = spSgSlotTable.Join(appPas, p => p.spSgSlot.spSg.sg.AppointmentId,
                 c => c.app.AppointmentId, (p, c) => new AppointmentGetBySampleDto
                 {
-                    StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
-                    SampleName = p.spSg.sp.SampleName,
+                    StartTime = TimeSpan.FromSeconds(p.spSgSlot.slot.StartTime.Value).ToString(@"hh\:mm"),
+                    SampleName = p.spSgSlot.spSg.sp.SampleName,
                     AppointmentCode = c.app.AppointmentCode,
                     OrderNumber = count++,
                     Phone = c.pa.PhoneNumber,
                     Address = c.pa.HomeAddress,
                     PatientName = c.pa.FullName,
-                    Date = p.spSg.sg.GettingDate.Value.ToShortDateString(),
-                    //Table = p.table.TableName,
-                    SampleGettingId = p.spSg.sg.SampleGettingId,
-                    IsPaid = p.spSg.sg.IsPaid
+                    Date = p.spSgSlot.spSg.sg.GettingDate.Value.ToShortDateString(),
+                    Table = p.table.TableName,
+                    SampleGettingId = p.spSgSlot.spSg.sg.SampleGettingId,
+                    IsPaid = p.spSgSlot.spSg.sg.IsPaid
 
                 }).ToList();
             return result;
