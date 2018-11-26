@@ -84,7 +84,7 @@ namespace eLTMS.Web.Api
             // push noti
             if (success)
             {
-                var tokens = _appointmentService.GetAllTokens();
+                var tokens = _appointmentService.GetAllTokens();// lấy tất cả device token
                 foreach (var token in tokens)
                 {
                     var data = new
@@ -97,7 +97,7 @@ namespace eLTMS.Web.Api
                     };
                     try
                     {
-                        SendNotificationUtils.SendNotification(data);
+                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
                     }
                     catch (Exception ex)
                     {
