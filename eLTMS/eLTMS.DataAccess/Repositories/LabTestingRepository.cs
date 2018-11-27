@@ -16,6 +16,7 @@ namespace eLTMS.DataAccess.Repositories
         List<LabTesting> GetAllResult();
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllLabTestings();
+        List<LabTesting> GetAllLabTestingDate(string date);
         LabTesting GetLabTestingById(int id);
         List<LabTesting> GetLabTestingByListId(List<int> ids);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
@@ -37,6 +38,18 @@ namespace eLTMS.DataAccess.Repositories
 
             var result = DbSet.AsQueryable()
              .Where(x => x.Status.Contains("Waiting"))
+             .Include(x => x.LabTest)
+             .Include(x => x.SampleGetting.Appointment)
+             .Include(x => x.SampleGetting.Sample)
+             .ToList();
+            return result;
+
+        }
+        public List<LabTesting> GetAllLabTestingDate(string date)
+        {
+
+            var result = DbSet.AsQueryable()
+             .Where(x => x.Status.Contains("Waiting")&&x.SampleGetting.Appointment.AppointmentCode.Contains(date))
              .Include(x => x.LabTest)
              .Include(x => x.SampleGetting.Appointment)
              .Include(x => x.SampleGetting.Sample)
