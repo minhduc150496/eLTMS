@@ -93,10 +93,6 @@
     height: 29px;
 }
 
-.create_appointment_area option[disabled] {
-    display: none;
-}
-
 .create_appointment_area .step-box-2 {
     margin-left: auto;
     margin-right: auto;
@@ -186,14 +182,18 @@
     color: black;
 }
 
+.view_appointments_area table {
+    margin-top: 15px;
+}
+
 .view_appointments_area table th {
     padding: 5px 10px;
-    border-color: black;
+    border-color: lightgray;
 }
 
 .view_appointments_area table td {
     padding: 10px;
-    border-color: black;
+    border-color: lightgray;
 }
 
 .view_appointments_area .btn-edit {

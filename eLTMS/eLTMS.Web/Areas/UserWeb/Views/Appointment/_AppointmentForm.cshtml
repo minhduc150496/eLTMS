@@ -52,7 +52,7 @@
             </div>
             <div class="modal-footer">
                 <div class="button-box">
-                    <button type="button" class="btn btn-success"data-dismiss="modal">Đồng ý</button>
+                    <a href="/UserWeb/Appointment/ViewAppointments" class="btn btn-success"data-dismiss="modal">Đồng ý</a>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@
 </script>
 
 <script id="step-2-template" type="x-tmpl-mustache">
-    <table>
+    <table id="table-step2">
         <thead>
             <tr>
                 <th>#</th>
@@ -160,14 +160,10 @@
                     </ul>
                 </td>
                 <td>
-                    <input type="date" value="{{GettingDate}}" min="2018-11-20" max="2018-11-30" />
+                    <input type="date" value="2018-12-01" min="2018-11-22" max="2018-12-30" />
                 </td>
                 <td>
                     <select style="overflow-y: scroll">
-                        <option value="">-- Vui lòng chọn một ca --</option>
-                        {{#SlotDtos}}
-                        <option value="{{SlotId}}">{{FmStartTime}} - {{FmFinishTime}}</option>
-                        {{/SlotDtos}}
                     </select>
                 </td>
             </tr>
@@ -183,4 +179,17 @@
             </tr>
         </tbody>
     </table>
+</script>
+
+
+<script id="options-template" type="x-tmpl-mustache">
+    <option value="">-- Vui lòng chọn một ca --</option>
+    {{#SlotOptions}}
+    <option value="{{SlotId}}" data-start-time="{{StartTime}}" {{#IsUnavailable}} disabled {{/IsUnavailable}}>
+        {{FmStartTime}}-{{FmFinishTime}}
+        {{#IsUnavailable}}
+        (hết chỗ)
+        {{/IsUnavailable}}
+    </option>
+    {{/SlotOptions}}
 </script>

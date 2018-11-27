@@ -20,10 +20,39 @@
 <div class="view_appointments_area p50">
     <div class="container">
         <div class="content-box">
+
+            <div class="text-right">
+                <b>Trạng thái:</b>
+
+                <div class="pretty p-icon p-smooth p-bigger">
+                    <input type="checkbox" id="chkNew" />
+                    <div class="state p-danger">
+                        <i class="icon fa fa-check"></i>
+                        <label>mới tạo</label>
+                    </div>
+                </div>
+                <div class="pretty p-icon p-smooth p-bigger">
+                    <input type="checkbox" id="chkProcess" />
+                    <div class="state p-danger">
+                        <i class="icon fa fa-check"></i>
+                        <label>đang xử lí</label>
+                    </div>
+                </div>
+                <div class="pretty p-icon p-smooth p-bigger">
+                    <input type="checkbox" id="chkDone" />
+                    <div class="state p-danger">
+                        <i class="icon fa fa-check"></i>
+                        <label>hoàn tất</label>
+                    </div>
+                </div>
+            </div>
+
+            @*<div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            </div>*@
+
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Mã cuộc hẹn</th>
                         <th>Thời gian lấy mẫu</th>
                         <th>Các loại xét nghiệm</th>
@@ -33,13 +62,16 @@
                 </thead>
                 <tbody id="tblData"></tbody>
             </table>
+
+            <div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            </div>
+
         </div>
     </div>
 </div>
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{Index}}</td>
         <td>{{AppointmentCode}}</td>
         <td>
             <ul>

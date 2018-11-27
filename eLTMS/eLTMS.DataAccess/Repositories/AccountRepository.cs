@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace eLTMS.DataAccess.Repositories
 {
-    public interface IAccountRepository: IRepository<Account>
+    public interface IAccountRepository : IRepository<Account>
     {
         Account GetByPhoneNumber(string phoneNumber);
+        Account GetByPhoneNumberIncludeRoleEmployeePatient(string phoneNumber);
     }
     public class AccountRepository : RepositoryBase<Account>, IAccountRepository
     {
@@ -19,7 +20,18 @@ namespace eLTMS.DataAccess.Repositories
         {
             var account = DbSet.AsQueryable()
                 .Where(x => x.PhoneNumber.Trim().Equals(phoneNumber.Trim()))
-                //.Include(x => x.Patients)
+                .ToList()
+                .FirstOrDefault();
+            return account;
+        }
+
+        public Account GetByPhoneNumberIncludeRoleEmployeePatient(string phoneNumber)
+        {
+            var account = DbSet.AsQueryable()
+                .Where(x => x.PhoneNumber.Trim().Equals(phoneNumber.Trim()))
+                .Include(x => x.Role_RoleId)
+                .Include(x => x.Employees)
+                .Include(x => x.PatientAccounts.Select(y => y.Patient))
                 .ToList()
                 .FirstOrDefault();
             return account;

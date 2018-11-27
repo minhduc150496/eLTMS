@@ -20,13 +20,7 @@ var Controller = {
             "timeOut": 5000,
             "extendedTimeOut": 1000
         }
-
-        $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
-            $('#myModal').modal('show');
-            var id = $(this).data('id');
-            Controller.loadDetail(id);
-        });
+        
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
             bootbox.confirm({
@@ -46,6 +40,17 @@ var Controller = {
                 }
             });
         });
+
+        $("#chkNew").off('change').on("change", function () {
+            Controller.loadData(true);
+        })
+        $("#chkProcess").off('change').on("change", function () {
+            Controller.loadData(true);
+        })
+        $("#chkDone").off('change').on("change", function () {
+            Controller.loadData(true);
+        })
+
     },
     deleteAppointment: function (id) {
         $.ajax({
@@ -102,45 +107,61 @@ var Controller = {
         $('#txtNote').val('')
     },
     loadData: function (changePageSize) {
+        var sttNew = $("#chkNew").prop("checked");
+        var sttProcess = $("#chkProcess").prop("checked");
+        var sttDone = $("#chkDone").prop("checked");
+        if (sttNew == false && sttProcess == false && sttDone == false) {
+            sttNew = sttProcess = sttDone = true;
+        }
         $.ajax({
-            url: '/api/appointment/get-appointments-by-patient-id?patientId=' + CONFIG.PatientId,
+            //url: '/api/appointment/get-appointments-by-patient-id?patientId=' + CONFIG.PatientId,
+            url: '/UserWeb/Appointment/GetAppointmentsByPatientId',
             type: 'GET',
             dataType: 'json',
-            //data: { page: CONFIG.pageIndex, pageSize: CONFIG.pageSize, suppliesCode: $('#txtSearch').val() },
-            success: function (data) {
-                console.log(data);
-                var html = '';
-                var template = $('#data-template').html();
-                $.each(data, function (index, item) {
-                    var totalPrice = 0;
-                    var labTests = [];
-                    for (var i = 0; i < item.SampleGettingDtos.length; i++) {
-                        var sampleGetting = item.SampleGettingDtos[i];
-                        for (var j = 0; j < sampleGetting.LabTests.length; j++) {
-                            var labTest = sampleGetting.LabTests[j];
-                            labTest.sPrice = labTest.Price.toLocaleString("VN");
-                            labTests.push(labTest);
-                            totalPrice += parseInt(labTest.Price);
+            data: {
+                patientId: CONFIG.PatientId,
+                page: CONFIG.pageIndex,
+                pageSize: CONFIG.pageSize,
+                sttNew: sttNew,
+                sttProcess: sttProcess,
+                sttDone: sttDone,
+            },
+            success: function (response) {
+                //console.log(data);
+                if (response.success) {
+                    var html = '';
+                    var template = $('#data-template').html();
+                    $.each(response.data, function (index, item) {
+                        var totalPrice = 0;
+                        var labTests = [];
+                        for (var i = 0; i < item.SampleGettingDtos.length; i++) {
+                            var sampleGetting = item.SampleGettingDtos[i];
+                            for (var j = 0; j < sampleGetting.LabTests.length; j++) {
+                                var labTest = sampleGetting.LabTests[j];
+                                labTest.sPrice = labTest.Price.toLocaleString("VN");
+                                labTests.push(labTest);
+                                totalPrice += parseInt(labTest.Price);
+                            }
                         }
-                    }
-                    html += Mustache.render(template, {
-                        Index: (index + 1),
-                        AppointmentId: item.AppointmentId,
-                        AppointmentCode: item.AppointmentCode,
-                        SampleGettings: item.SampleGettingDtos,
-                        LabTests: labTests,
-                        TotalPrice: totalPrice.toLocaleString("VN"),
-                        IsNew: item.Status == "NEW",
-                        IsProcess: item.Status != "NEW" && item.Status != "DONE",
-                        IsDone: item.Status == "DONE"
+                        html += Mustache.render(template, {
+                            Index: (index + 1),
+                            AppointmentId: item.AppointmentId,
+                            AppointmentCode: item.AppointmentCode,
+                            SampleGettings: item.SampleGettingDtos,
+                            LabTests: labTests,
+                            TotalPrice: totalPrice.toLocaleString("VN"),
+                            IsNew: item.Status == "NEW",
+                            IsProcess: item.Status != "NEW" && item.Status != "DOCTORDONE",
+                            IsDone: item.Status == "DOCTORDONE"
+                        });
                     });
-                });
-                //console.log(html);
-                $('#tblData').html(html);
-                /*Controller.paging(response.total, function () {
-                    Controller.loadData();
-                }, changePageSize);*/
-                Controller.registerEvent();
+                    //console.log(html);
+                    $('#tblData').html(html);
+                    Controller.paging(response.total, function () {
+                        Controller.loadData();
+                    }, changePageSize);
+                    Controller.registerEvent();
+                }
             }
         })
     },
@@ -148,13 +169,13 @@ var Controller = {
         var totalPage = Math.ceil(totalRow / CONFIG.pageSize);
 
         //Unbind pagination if it existed or click change pagesize
-        if ($('#pagination a').length === 0 || changePageSize === true) {
-            $('#pagination').empty();
-            $('#pagination').removeData("twbs-pagination");
-            $('#pagination').unbind("page");
+        if ($('.div-pagination a').length === 0 || changePageSize === true) {
+            $('.div-pagination').empty();
+            $('.div-pagination').removeData("twbs-pagination");
+            $('.div-pagination').unbind("page");
         }
 
-        $('#pagination').twbsPagination({
+        $('.div-pagination').twbsPagination({
             totalPages: totalPage,
             first: "Đầu",
             next: "Tiếp",

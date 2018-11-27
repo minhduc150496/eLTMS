@@ -1,6 +1,6 @@
 ﻿@using eLTMS.Models.Models.dto
 @{
-    ViewBag.Title = "Đặt lịch xét nghiệm";
+    ViewBag.Title = "Kết quả xét nghiệm";
     ResultOfAppointmentDto resultDto = ViewBag.ResultDto;
 }
 
@@ -24,12 +24,6 @@
 <div class="appointment_result_area p50">
     <div class="container">
         <div class="content-box">
-            <table class="table">
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
             <h2 class="result-title">
                 Phiếu kết quả xét nghiệm
             </h2>
@@ -94,5 +88,31 @@
                 Ngày: @(resultDto.ReturnTime.ToString("dd-MM-yyyy"))
             </div>
         </div>
+
+        <div class="text-center" style="margin-top: 15px;">
+            <a href="/UserWeb/Appointment/Suggest" target="_blank">
+                <i class="fa fa-link"></i>
+                Gợi ý các bệnh viện có khoa chuyên ngành
+            </a>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-link text text-danger" id="btn-print-pdf">
+                <img src="~/Areas/UserWeb/Images/pdf-icon.png" width="60" />Tải tập tin PDF
+            </button>
+        </div>
     </div>
 </div>
+
+<form action="/LabTest/ExportOrderDetailToPdf" style="display:none" id="hiddenForm" method="post"> 
+    <input type="text" class="form-control" id="txtResultCode" name="code" value="@(resultDto.AppointmentCode)">
+</form>
+
+@section scripts{
+    <script>
+        $("#btn-print-pdf").click(function () {
+            console.log("click");
+            $("#hiddenForm").submit();
+        })
+    </script>
+}

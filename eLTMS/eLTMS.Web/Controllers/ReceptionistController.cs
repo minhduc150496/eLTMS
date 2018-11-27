@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Controllers
 {
-    public class ReceptionistController : Controller
+    public class ReceptionistController : BaseController
     {
         private readonly IReceptionistService _receptionistService;
 
@@ -21,15 +22,14 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
-
-        // DucBM
-        public ActionResult SampleGettings()
-        {
-            return View("SampleGettings");
-        }
-
+        
         [HttpGet]
         public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
         {
@@ -88,15 +88,55 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
+
         [HttpPost]
-        public JsonResult CheckAndDelete(DateTime dateTime)
+        public JsonResult CheckAndDeleteBlood(DateTime dateTime)
        {
-            var result = _receptionistService.CheckAndDeleteMauAndNuocTieu(dateTime);
+            var result = _receptionistService.CheckAndDeleteBlood(dateTime);
             return Json(new
             {
                 success = result
             });
         }
+
+        [HttpPost]
+        public JsonResult CheckNDeleteUrine(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteUrine(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
+        [HttpPost]
+        public JsonResult CheckNDeleteCell(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteCell(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult CheckNDeleteMucus(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeleteMucus(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult CheckNDeletePhan(DateTime dateTime)
+        {
+            var result = _receptionistService.CheckAndDeletePhan(dateTime);
+            return Json(new
+            {
+                success = result
+            });
+        }
+
         [HttpPost]
         public JsonResult IsPaid(int sampleGettingId)
         {

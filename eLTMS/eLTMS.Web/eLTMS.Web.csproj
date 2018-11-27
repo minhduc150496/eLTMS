@@ -198,6 +198,7 @@
     <Compile Include="Api\LabTestingApiController.cs" />
     <Compile Include="Api\SampleApiController.cs" />
     <Compile Include="Api\SampleGettingApiController.cs" />
+    <Compile Include="Api\FeedbackApiController.cs" />
     <Compile Include="Api\TokenApiController.cs" />
     <Compile Include="Api\SlotApiController.cs" />
     <Compile Include="App_Start\Bootstrapper.cs" />
@@ -208,6 +209,8 @@
     <Compile Include="Areas\UserWeb\Controllers\AppointmentController.cs" />
     <Compile Include="Areas\UserWeb\Controllers\HomePageController.cs" />
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -311,6 +314,7 @@
     </Compile>
     <Compile Include="Ioc\AutofacWebapiConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\AccountUtils.cs" />
     <Compile Include="Utils\SendNotificationUtils.cs" />
     <Compile Include="Validator\EmployeeValidator.cs" />
   </ItemGroup>
@@ -542,6 +546,8 @@
     <Content Include="Areas\UserWeb\Assets\plugins\DataTables\datatables.min.js" />
     <Content Include="Areas\UserWeb\Images\app-demo.jpg" />
     <Content Include="Areas\UserWeb\Images\Benh_vien_108.jpg" />
+    <Content Include="Areas\UserWeb\Images\pdf-icon-round.png" />
+    <Content Include="Areas\UserWeb\Images\pdf-icon.png" />
     <Content Include="Areas\UserWeb\Images\sample-getting.jpg" />
     <Content Include="Areas\UserWeb\Images\cho-ray.jpg" />
     <Content Include="Areas\UserWeb\Images\color-dots-loader.gif" />
@@ -6882,6 +6888,8 @@
     <Content Include="Assets\documentation\docs.js" />
     <Content Include="Assets\documentation\index.html" />
     <Content Include="Assets\documentation\style.css" />
+    <Content Include="Assets\Image\default-avatar-female.jpg" />
+    <Content Include="Assets\Image\default-avatar-male.png" />
     <Content Include="Assets\pages\calendar.html" />
     <Content Include="Assets\pages\charts\chartjs.html" />
     <Content Include="Assets\pages\charts\flot.html" />
@@ -7750,13 +7758,12 @@
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
     <Content Include="Views\LabTest\LabTestingDone.cshtml" />
     <Content Include="Views\Receptionist\SampleGettings.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
-    <Folder Include="Assets\Image\" />
     <Folder Include="UploadedFiles\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>

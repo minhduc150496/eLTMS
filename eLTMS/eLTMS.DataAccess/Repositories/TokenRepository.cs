@@ -20,12 +20,12 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<Token> GetAll()
         {
-            List<Token> result = DbSet.AsQueryable().Where(x=>x.IsDeleted==false).ToList();
+            List<Token> result = DbSet.AsQueryable().Where(x => x.IsDeleted == false).ToList();
             return result;
         }
         public Token GetByTokenString(string tokenString)
         {
-            Token result = DbSet.AsQueryable().Where(x => x.TokenString == tokenString).FirstOrDefault();
+            Token result = DbSet.AsQueryable().Where(x => x.TokenString == tokenString && x.IsDeleted == false).FirstOrDefault();
             return result;
         }
     }

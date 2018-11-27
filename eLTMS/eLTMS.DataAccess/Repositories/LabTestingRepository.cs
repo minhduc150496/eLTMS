@@ -20,12 +20,7 @@ namespace eLTMS.DataAccess.Repositories
         LabTesting GetLabTestingById(int id);
         List<LabTesting> GetLabTestingByListId(List<int> ids);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
-
-
-      
-
-
-
+        List<LabTesting> GetAllBySampleGettingId(int sampleGettingId);
     }
     public class LabTestingRepository : RepositoryBase<LabTesting>, ILabTestingRepository
     {
@@ -108,6 +103,14 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.Where(s => ids.Contains(s.LabTestingId)).ToList();
 
+            return result;
+        }
+
+        public List<LabTesting> GetAllBySampleGettingId(int sampleGettingId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.SampleGettingId == sampleGettingId && x.IsDeleted == false)
+                .ToList();
             return result;
         }
     }

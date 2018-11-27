@@ -1,6 +1,22 @@
-﻿@{
+﻿@using eLTMS.Models
+@using eLTMS.DataAccess.Models
+@using eLTMS.Models.Enums
+@{
     var actionName = ViewContext.RouteData.GetRequiredString("action");
     var controllerName = ViewContext.RouteData.GetRequiredString("controller");
+    var account = (Account)Session[ConstantManager.SESSION_ACCOUNT];
+    var fullName = (account != null) ? account.FullName : "";
+    var avatarUrl = (account != null && account.AvatarUrl != null) ? account.AvatarUrl : "/Assets/Image/default-avatar-male.png";
+    if (account != null)
+    {
+        var emp = account.Employees.FirstOrDefault();
+        if (emp != null && emp.Gender.ToUpper().Equals("FEMALE"))
+        {
+            avatarUrl = "/Assets/Image/default-avatar-female.png";
+        }
+    }
+    var roleName = (account != null) ? account.Role_RoleId.RoleName : "";
+    var roleId = (account != null) ? account.RoleId : -1;
 }
 <!DOCTYPE html>
 <html>
@@ -86,25 +102,25 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="/Areas/UserWeb/Images/logo.JPG" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Trần Tuấn Dũng</span>
+                                <img src="@(avatarUrl)" class="user-image" alt="User Image">
+                                <span class="hidden-xs">@(fullName)</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="/Areas/UserWeb/Images/logo.JPG" class="img-circle" alt="User Image">
+                                    <img src="@(avatarUrl)" class="img-circle" alt="User Image">
                                     <p>
-                                        Trần Tuấn Dũng - Web Developer
-                                        <small>Member since Oct. 2018</small>
+                                        @(fullName)
+                                        <small>@(roleName)</small>
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="#" class="btn btn-default btn-flat">Hồ sơ</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="@Url.Action("Logout", "Account")" class="btn btn-default btn-flat">Đăng xuất</a>
                                     </div>
                                 </li>
                             </ul>
@@ -124,89 +140,120 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!--<li class="header">MAIN NAVIGATION</li>-->
 
-                    <li @(controllerName == "Receptionist" ? "class=active" : "")>
-                        <a href="@Url.Action("","Receptionist")">
-                            <i class="fa fa-calendar"></i>
-                            <span>Quản lý cuộc hẹn</span>
-                        </a>
-                    </li>
-                    <li class="treeview @(controllerName=="WareHouse"?"menu-open":"")">
-                        <a href="#">
-                            <i class="fa fa-industry"></i>
-                            <span>Quản lý kho và vật tư</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu" @(controllerName == "WareHouse" ? "style=display:block" : "")>
-                            <li @(actionName == "Supplies" ? "class=active" : "")>
-                                <a href="@Url.Action("Supplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý vật tư</span></a>
-                            </li>
-                            <li @(actionName == "ImportSupplies" ? "class=active" : "")>
-                                <a href="@Url.Action("ImportSupplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý nhập kho</span></a>
-                            </li>
-                            <li @(actionName == "ExportSupplies" ? "class=active" : "")>
-                                <a href="@Url.Action("ExportSupplies","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý xuất kho</span></a>
-                            </li>
-                            <li @(actionName == "Inventory" ? "class=active" : "")>
-                                <a href="@Url.Action("Inventory","WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý kiểm kho</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview @(controllerName=="LabTest"?"menu-open":"")">
-                        <a href="#">
-                            <i class="fa fa-object-ungroup"></i>
-                            <span>Quản lý Xét nghiệm</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu" @(controllerName == "LabTest" ? "style=display:block" : "")>
-                            <li @(actionName == "Inventory" ? "class=active" : "")>
-                                <a href="@Url.Action("LabTests","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý loại xét nghiệm</span></a>
-                            </li>
-                            <li @(actionName == "LabTesting" ? "class=active" : "")>
-                                <a href="@Url.Action("LabTesting","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các kết quả xét nghiệm</span></a>
-                            </li>
-                            <li @(actionName == "LabTestingResult" ? "class=active" : "")>
-                                <a href="@Url.Action("LabTestingResult","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a>
-                            </li>
-                            <li @(actionName == "LabTestingDone" ? "class=active" : "")>
-                                <a href="@Url.Action("LabTestingDone","LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview @("Patient,Employee".Contains(controllerName)?"menu-open":"")">
-                        <a href="#">
-                            <i class="fa fa-child"></i>
-                            <span>Quản lý Con Người</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu" @("Patient,Employee".Contains(controllerName) ? "style=display:block" : "")>
-                            <li @(actionName == "Patients" ? "class=active" : "")>
-                                <a href="@Url.Action("Patients","Patient")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Bệnh nhân</span></a>
-                            </li>
-                            <li @(actionName == "Employees" ? "class=active" : "")>
-                                <a href="@Url.Action("Employees","Employee")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Nhân viên</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li @(controllerName == "Feedback" ? "class=active" : "")>
-                        <a href="@Url.Action("Feedbacks","Feedback")">
-                            <i class="fa fa-newspaper-o"></i>
-                            <span>Quản lý Feedback</span>
-                        </a>
-                    </li>
-
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Receptionist)
+                    {
+                        <li @(controllerName == "Receptionist" ? "class=active" : "")>
+                            <a href="@Url.Action("", "Receptionist")">
+                                <i class="fa fa-calendar"></i>
+                                <span>Quản lý cuộc hẹn</span>
+                            </a>
+                        </li>
+                    }
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.WarehouseKeeper)
+                    {
+                        <li class="treeview @(controllerName == "WareHouse" ? "menu-open" : "")">
+                            <a href="#">
+                                <i class="fa fa-industry"></i>
+                                <span>Quản lý kho và vật tư</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" @(controllerName == "WareHouse" ? "style=display:block" : "")>
+                                <li @(actionName == "Supplies" ? "class=active" : "")>
+                                    <a href="@Url.Action("Supplies", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý vật tư</span></a>
+                                </li>
+                                <li @(actionName == "ImportSupplies" ? "class=active" : "")>
+                                    <a href="@Url.Action("ImportSupplies", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý nhập kho</span></a>
+                                </li>
+                                <li @(actionName == "ExportSupplies" ? "class=active" : "")>
+                                    <a href="@Url.Action("ExportSupplies", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý xuất kho</span></a>
+                                </li>
+                                <li @(actionName == "Inventory" ? "class=active" : "")>
+                                    <a href="@Url.Action("Inventory", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý kiểm kho</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor)
+                    {
+                        <li class="treeview @(controllerName == "LabTest" ? "menu-open" : "")">
+                            <a href="#">
+                                <i class="fa fa-object-ungroup"></i>
+                                <span>Quản lý Xét nghiệm</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" @(controllerName == "LabTest" ? "style=display:block" : "")>
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                                {
+                                    <li @(actionName == "LabTests" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTests", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý loại xét nghiệm</span></a>
+                                    </li>
+                                }
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                                {
+                                    <li @(actionName == "LabTesting" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các kết quả xét nghiệm</span></a>
+                                    </li>
+                                }
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                                {
+                                    <li @(actionName == "LabTestingResult" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a>
+                                    </li>
+                                }
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor)
+                                {
+                                    <li @(actionName == "LabTestingDone" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTestingDone", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Receptionist)
+                    {
+                        <li class="treeview @("Patient,Employee".Contains(controllerName) ? "menu-open" : "")">
+                            <a href="#">
+                                <i class="fa fa-child"></i>
+                                <span>Quản lý Con Người</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" @("Patient,Employee".Contains(controllerName) ? "style=display:block" : "")>
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Receptionist)
+                                {
+                                    <li @(actionName == "Patients" ? "class=active" : "")>
+                                        <a href="@Url.Action("Patients", "Patient")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Bệnh nhân</span></a>
+                                    </li>
+                                }
+                                @if (roleId == (int)RoleEnum.Manager)
+                                {
+                                    <li @(actionName == "Employees" ? "class=active" : "")>
+                                        <a href="@Url.Action("Employees", "Employee")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Nhân viên</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    @if (roleId == (int)RoleEnum.Manager)
+                    {
+                        <li @(controllerName == "Feedback" ? "class=active" : "")>
+                            <a href="@Url.Action("Feedbacks", "Feedback")">
+                                <i class="fa fa-newspaper-o"></i>
+                                <span>Quản lý Feedback</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
-                <!-- /.sidebar -->
-                <!-- /.sidebar -->
+            </section>
+            <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-
             @RenderBody()
         </div>
         <!-- /.content-wrapper -->
@@ -214,8 +261,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> 2.4.0
             </div>
-            <strong>Copyright &copy; 2018 <a href="https://adminlte.io">eLTMS Team</a>.</strong> All rights
-            reserved.
+            <strong>Copyright &copy; 2018 <a href="#">eLTMS Team</a>.</strong> All rights reserved.
         </footer>
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
@@ -338,6 +384,10 @@
 
             // Toastr
             toastr["success"](payload.data.message);
+          
+            //Reload table
+            homeController.loadDataBySample();
+        
         }
         messaging.onMessage(loadMessage);
 
