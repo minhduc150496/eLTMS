@@ -151,8 +151,8 @@ var Controller = {
                             LabTests: labTests,
                             TotalPrice: totalPrice.toLocaleString("VN"),
                             IsNew: item.Status == "NEW",
-                            IsProcess: item.Status != "NEW" && item.Status != "DONE",
-                            IsDone: item.Status == "DONE"
+                            IsProcess: item.Status != "NEW" && item.Status != "DOCTORDONE",
+                            IsDone: item.Status == "DOCTORDONE"
                         });
                     });
                     //console.log(html);
