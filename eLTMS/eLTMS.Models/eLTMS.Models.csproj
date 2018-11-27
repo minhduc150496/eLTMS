@@ -96,9 +96,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
       <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>

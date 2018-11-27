@@ -111,6 +111,7 @@ var Controller = {
 
 
             // create SampleGettingDtos and assign to Model
+            Model.appointmentDto.SampleGettingDtos = [];
             for (var i = 0; i < Model.sampleDtos.length; i++) {
                 var sampleDto = Model.sampleDtos[i];
                 if (sampleDto.IsSelected) {
