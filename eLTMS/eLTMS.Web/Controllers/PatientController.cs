@@ -12,7 +12,7 @@ using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Controllers
 {
-    public class PatientController : Controller
+   // public class PatientController : Controller
     public class PatientController : BaseController
     {
         // GET: Patient
