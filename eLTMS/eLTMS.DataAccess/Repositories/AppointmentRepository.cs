@@ -14,8 +14,6 @@ namespace eLTMS.DataAccess.Repositories
     public interface IAppointmentRepository : IRepository<Appointment>
     {
         List<Appointment> GetAppointmentsByPatientId(int patientId); // DucBM
-        List<Appointment> GetNewAppByPatientId(int patientId);
-        List<Appointment> GetOldAppByPatientId(int patientId);
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetResultDoneByPatientId(int patientId);
@@ -27,6 +25,7 @@ namespace eLTMS.DataAccess.Repositories
         Appointment GetAppointmentByIdInclude(int id);
         List<Appointment> GetResultByAppCode(string appCode);
         int? CountByDate(string sDate);
+        List<Table> GetAvailableTables(int sampleGroupId, int slotId, DateTime gettingDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
@@ -58,33 +57,6 @@ namespace eLTMS.DataAccess.Repositories
                .Include(x => x.Patient)
                .Include(x => x.SampleGettings.Select(y => y.Sample))
                .FirstOrDefault(p => p.AppointmentId == appId);
-            return result;
-        }
-        public List<Appointment> GetNewAppByPatientId(int patientId)
-        {
-            var appointment = DbSet.AsQueryable()
-                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
-                .Include(x => x.Patient)
-                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
-                .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .OrderByDescending(x => x.AppointmentId)
-                .FirstOrDefault();
-            if (appointment==null)
-            {
-                return null;
-            }
-            var result = new List<Appointment>();
-            result.Add(appointment);
-            return result;
-        }
-
-        public List<Appointment> GetOldAppByPatientId(int patientId)
-        {
-            var result = DbSet.AsQueryable()
-                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("DONE") && x.PatientId == patientId)
-                .Include(x => x.Patient)
-                .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .ToList();
             return result;
         }
 
@@ -207,6 +179,9 @@ namespace eLTMS.DataAccess.Repositories
             return result;
         }
 
-       
+        public List<Table> GetAvailableTables(int sampleGroupId, int slotId, DateTime gettingDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
