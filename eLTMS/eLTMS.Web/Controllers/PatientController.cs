@@ -30,19 +30,18 @@ namespace eLTMS.Web.Controllers
             return View();
         }
         public ActionResult Patients()
-        {
-            var patient= _patientService.GetAllPatients("").LastOrDefault();
-            if (patient != null)
-            {
-                ViewBag.BN = "BN" + (patient.PatientId + 1);
-            }
-            else
-            {
-                ViewBag.BN = "BN1";
-            }
-            return View();
+        {   
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
             {
+                var patient = _patientService.GetAllPatients("").LastOrDefault();
+                if (patient != null)
+                {
+                    ViewBag.BN = "BN" + (patient.PatientId + 1);
+                }
+                else
+                {
+                    ViewBag.BN = "BN1";
+                }
                 return View();
             }
             var returnUrl = Request.Url.AbsoluteUri;
