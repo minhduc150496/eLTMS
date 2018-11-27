@@ -157,6 +157,17 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult GetAllLabTestingDate(string date)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingDate(date);
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult GetAllLabTests(string code = "", int page = 1, int pageSize = 20)
         {
             var queryResult = _labTestService.GetAllLabTests(code);

@@ -327,22 +327,5 @@ namespace eLTMS.Web.Controllers
                 return stream.ToArray();
             }
         }
-
-        private static SaveOptions GetSaveOptions(string format)
-        {
-            switch (format.ToUpperInvariant())
-            {
-                case "XLSX":
-                    return SaveOptions.XlsxDefault;
-                case "XLS":
-                    return SaveOptions.XlsDefault;
-                case "ODS":
-                    return SaveOptions.OdsDefault;
-                case "CSV":
-                    return SaveOptions.CsvDefault;
-                default:
-                    throw new NotSupportedException("Format '" + format + "' is not supported.");
-            }
-        }
     }
 }

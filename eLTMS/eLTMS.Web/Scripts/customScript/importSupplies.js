@@ -103,10 +103,7 @@ var homeController = {
 
         $("#input").off('change').on("change", function () {
             var excelFile,
-                fileReader = new FileReader();
-
-            $("#result").hide();
-
+            fileReader = new FileReader();
             fileReader.onload = function (e) {
                 var buffer = new Uint8Array(fileReader.result);
                 $('.data-row').remove();

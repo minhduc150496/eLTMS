@@ -11,7 +11,7 @@
 </style>
 <section class="content-header">
     <h1>
-        Quản Lý Kết Qủa Xét Nghiệm
+        XỬ LÝ MẪU
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -29,7 +29,7 @@
             </div>*@
         <!-- /.box-header -->
         <div class="box-body">
-            <button class="btn btn-success" id="btnViewLabTesting"> Lab Testing</button>
+            <button class="btn btn-success" id="btnViewLabTesting">Tiến hành</button>
             <button class="btn btn-success" id="btnSaveLabTestingIndex" style="display:none"> Lưu </button>
             <input style="display:none" type="file" id="input" class="btn btn-info" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
 
@@ -75,8 +75,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Thêm Mới Loại Xét Nghiệm</h4>
+                <h4 class="modal-title" id="lblPopupTitle">Bỏ mẫu vào máy</h4>
             </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="date" id="txtSearchDate" placeholder="Ngày xét nghiệm" />
+            <button class="btn btn-success" id="btnSearchDate">Chọn</button>
             <button class="btn btn-primary" id="btnSaveLabTesting">Lưu</button>
             <div class="modal-body">
                 <table style="width:100%" class="table table-bordered">
@@ -111,7 +114,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="lblPopupTitle">Danh sách các yêu cầu xét nghiệm</h4>
+                <h4 class="modal-title" id="lblPopupTitle">Danh sách mẫu xét nghiệm</h4>
             </div>
             <br />
             <button class="btn btn-success" id="btnAddNewLabTesting">Xử lý</button>

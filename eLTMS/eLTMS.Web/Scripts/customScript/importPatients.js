@@ -189,7 +189,6 @@ var homeController = {
     },
     resetForm: function () {
         $('#txtPatientId').val('0');
-        $('#txtCode').val('');
         $('#txtAccountId').val('');
         $('#txtName').val('');
         $('#txtDate').val('');
@@ -267,7 +266,7 @@ var homeController = {
                     });
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                       // homeController.loadData();
+                        homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
