@@ -446,6 +446,16 @@ var Controller = {
                 var checkResult = function (data) {
                     $("#processing-modal").modal('hide');
                     if (data.Success == true) {
+                        //$.ajax({
+                        //    method: "GET",
+                        //    contentType: "application/json",
+                        //    url: "/api/notification/send",
+                        //    dataType: "JSON",
+                        //    async: true,
+                        //    data: {
+                        //        message: "Có thêm cuộc hẹn mới."
+                        //    }
+                        //});
                         showModalWithMessage($("#success-modal"), data.Message);
                     } else {
                         showModalWithMessage($("#fail-modal"), data.Message);

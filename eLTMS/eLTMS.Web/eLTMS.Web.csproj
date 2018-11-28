@@ -193,6 +193,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\NotificationApiController.cs" />
     <Compile Include="Api\AppointmentApiController.cs" />
     <Compile Include="Api\AccountApiController.cs" />
     <Compile Include="Api\LabTestingApiController.cs" />

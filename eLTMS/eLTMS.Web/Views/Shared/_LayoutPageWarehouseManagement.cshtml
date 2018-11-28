@@ -55,13 +55,15 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <link href="~/Styles/_AdminLayout.css" rel="stylesheet" />
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -195,19 +197,19 @@
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTesting" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các kết quả xét nghiệm</span></a>
+                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý xét nghiệm</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTestingResult" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a>
+                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Ghi kết luận</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor)
                                 {
                                     <li @(actionName == "LabTestingDone" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTestingDone", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả</span></a>
+                                        <a href="@Url.Action("LabTestingDone", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a>
                                     </li>
                                 }
                             </ul>
@@ -366,7 +368,6 @@
             });
 
         var loadMessage = function (payload) {
-            debugger;
             console.log("Message received. ", payload);
             var nNoti = $("#number-of-noti").html();
             nNoti = parseInt(nNoti) + 1;
@@ -386,10 +387,10 @@
 
             // Toastr
             toastr["success"](payload.data.message);
-          
+
             //Reload table
             homeController.loadDataBySample();
-        
+
         }
         messaging.onMessage(loadMessage);
 
