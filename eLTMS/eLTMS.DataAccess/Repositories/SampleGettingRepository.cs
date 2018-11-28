@@ -17,6 +17,7 @@ namespace eLTMS.DataAccess.Repositories
         List<SampleGetting> GetAll2();
         List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId); // DucBM
         SampleGetting GetByCodeForNurse(string code); // DucBM
+        SampleGetting GetFirst(int sampleId, string gettingDate, int patientId);
     }
     public class SampleGettingRepository : RepositoryBase<SampleGetting>, ISampleGettingRepository
     {
@@ -61,6 +62,18 @@ namespace eLTMS.DataAccess.Repositories
                 .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingId.Equals(id))
                 .Include(x => x.Appointment.Patient)
                 .Include(x => x.Sample)
+                .FirstOrDefault();
+            return result;
+        }
+
+        public SampleGetting GetFirst(int sampleId, string gettingDate, int patientId)
+        {
+            DateTime dt = DateTime.Parse(gettingDate);
+            var result = DbSet.AsQueryable()
+                .Include(x => x.Appointment)
+                .Where(x => x.SampleId == sampleId 
+                    && x.Appointment.PatientId == patientId 
+                    && DbFunctions.TruncateTime(x.GettingDate)==DbFunctions.TruncateTime(dt))
                 .FirstOrDefault();
             return result;
         }

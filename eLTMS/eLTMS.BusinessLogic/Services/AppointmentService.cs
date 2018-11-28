@@ -47,7 +47,7 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-      
+
         public Appointment GetSingleById(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -60,7 +60,7 @@ namespace eLTMS.BusinessLogic.Services
             var result = appRepo.GetAppointmentByCode(code);
             return result;
         }
-      
+
         public Appointment GetResultDoneByAppointmentId(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -68,11 +68,14 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-      
+
         public ResponseObjectDto Create(AppointmentDto appointmentDto)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
             var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+
             var responseObject = new ResponseObjectDto();
             responseObject.Success = true;
             responseObject.Message = "Đặt lịch thành công";
@@ -82,8 +85,15 @@ namespace eLTMS.BusinessLogic.Services
             var now = DateTime.Now;
             var sDate = now.ToString("yyyy-MM-dd");
 
-            var count = appointmentRepo.CountByDate(sDate);
-            var code = sDate + "-" + count;
+            // Generate code
+            var lastcode = appointmentRepo.GetLastCode(sDate);
+            var count = 0;
+            if (lastcode != null)
+            {
+                count = int.Parse(lastcode.Substring("yyyy-MM-dd-".Length));
+            }
+            var code = sDate + "-" + (count + 1);
+
             appointment.AppointmentCode = code;
             appointment.Status = "NEW";
             appointment.PatientId = appointmentDto.PatientId;
@@ -93,15 +103,25 @@ namespace eLTMS.BusinessLogic.Services
             var sampleGettingDtos = appointmentDto.SampleGettingDtos;
             foreach (var sgDto in appointmentDto.SampleGettingDtos)
             {
+                var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, appointmentDto.PatientId);
+                if (duplicatedSG != null)
+                {
+                    var sampleName = sampleRepo.GetById(sgDto.SampleId).SampleName;
+                    var date = DateTime.Parse(sgDto.GettingDate).ToString("dd-MM-yyyy");
+                    responseObject.Success = false;
+                    responseObject.Message = string.Format("Bạn đã từng đăng ký lấy mẫu {0} vào ngày {1}.\n Bạn không thể lấy mẫu {0} 2 lần 1 ngày.", sampleName, date);
+                    return responseObject;
+                }
+
                 var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
                 var avaiTable = tableRepo.GetFirstAvailableTable((int)sg.SlotId, (DateTime)sg.GettingDate);
-                if (avaiTable==null)
+                if (avaiTable == null)
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có ca xét nghiệm đã hết chỗ";
-                    break;
-                } 
-                sg.TableId = avaiTable.TableId; 
+                    return responseObject;
+                }
+                sg.TableId = avaiTable.TableId;
                 sg.Status = "NEW";
                 sg.LabTestings = new List<LabTesting>();
                 foreach (var id in sgDto.LabTestIds)
@@ -111,10 +131,6 @@ namespace eLTMS.BusinessLogic.Services
                     labTesting.SampleGettingId = sg.SampleGettingId;
                     labTesting.Status = "NEW";
                     sg.LabTestings.Add(labTesting);
-                }
-                if (responseObject.Success==false)
-                {
-                    break;
                 }
                 appointment.SampleGettings.Add(sg);
             }
@@ -128,7 +144,8 @@ namespace eLTMS.BusinessLogic.Services
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
@@ -136,7 +153,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-      
+
         public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -166,7 +183,7 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetResultByAppCode(appCode);
             return apps;
         }
-        
+
         // Author: DucBM
         public ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
@@ -217,7 +234,8 @@ namespace eLTMS.BusinessLogic.Services
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
@@ -247,7 +265,7 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-        
+
         // Author: DucBM
         public ResponseObjectDto DeleteAppointment(int appointmentId)
         {
@@ -277,7 +295,8 @@ namespace eLTMS.BusinessLogic.Services
                         responseObject.Success = false;
                         responseObject.Message = "Có lỗi xảy ra";
                     }
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
@@ -286,7 +305,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-      
+
         public List<Token> GetAllTokens()
         {
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);

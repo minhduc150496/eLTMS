@@ -24,7 +24,8 @@ namespace eLTMS.DataAccess.Repositories
         Appointment GetAppointmentById(int id);
         Appointment GetAppointmentByIdInclude(int id);
         List<Appointment> GetResultByAppCode(string appCode);
-        int? CountByDate(string sDate);        
+        int? CountByDate(string sDate);
+        string GetLastCode(string sDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
@@ -173,6 +174,21 @@ namespace eLTMS.DataAccess.Repositories
             //var dateLength = "yyyy-MM-dd".Length;
             var result = DbSet.AsQueryable()
                 .Count(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate));
+            return result;
+        }
+
+        public string GetLastCode(string sDate)
+        {
+            if (sDate == null)
+            {
+                return null;
+            }
+            sDate = sDate.Trim();
+            var result = DbSet.AsQueryable()
+                .Where(x => x.AppointmentCode.Contains(sDate))
+                .ToList()
+                .LastOrDefault()
+                .AppointmentCode;
             return result;
         }
     }
