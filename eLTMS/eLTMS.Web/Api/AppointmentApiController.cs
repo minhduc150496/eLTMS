@@ -83,7 +83,7 @@ namespace eLTMS.Web.Api
             // push noti
             if (result.Success)
             {
-                var tokens = _appointmentService.GetAllTokens();
+                var tokens =  _appointmentService.GetAllTokens();
                 foreach (var token in tokens)
                 {
                     var data = new
