@@ -15,6 +15,10 @@ var homeController = {
             homeController.loadDataResult(patientId);
 
         });
+        $('#btnClose').off('click').on('click', function () {
+
+            $('#txtCode').val('');
+        });
         $('#btnSaveResult').off('click').on('click', function () {
             var code = $('#txtAppCode').val();
             var con = $('#txtResult').val(); 
@@ -98,7 +102,8 @@ var homeController = {
                         }
                         else {
                             toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide');                            
+                            location.reload();
                             homeController.loadData();
                         }
                     }
