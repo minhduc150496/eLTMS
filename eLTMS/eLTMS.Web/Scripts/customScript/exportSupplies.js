@@ -217,6 +217,12 @@ var homeController = {
                                 item.SuppliesId = homeconfig.allSupply[i].SuppliesId;
                                 item.Unit = homeconfig.allSupply[i].Unit;
                                 item.SuppliesName = homeconfig.allSupply[i].SuppliesName;
+                                var valid = true;
+                                if (homeconfig.allSupply[i].Quantity < item.Quantity) {
+                                    item.Quantity = 0;
+                                    item.Note = "Số lượng kho chỉ còn " + homeconfig.allSupply[i].Quantity;
+                                    valid = false;
+                                } 
                                 break;
                             }
                         }
@@ -227,6 +233,10 @@ var homeController = {
                         $(newRow).find('.txtNote').val(item.Note);
                         $(newRow).find('.colName').text(item.SuppliesName);
                         $(newRow).find('.colUnit').text(item.Unit);
+                        if (valid == false) {                           
+                            $(newRow).addClass('alertQuanity');
+                        }
+                        $(newRow).css('background-color', 'red');
                         $(newRow).insertAfter('#template-row');
 
                         
@@ -244,8 +254,8 @@ var homeController = {
                     homeController.registerEventForChangeDropDown();
                     homeconfig.ImportExcel = false;
                 }, function (error) {
-                    $("#result").text("The excel file is corrupted.");
-                    $("#result").show(1000);
+                    //$("#result").text("The excel file is corrupted.");
+                    //$("#result").show(1000);
                 });
             }
 
@@ -254,8 +264,7 @@ var homeController = {
                 if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
                     fileReader.readAsArrayBuffer(excelFile);
                 } else {
-                    $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
-                    $("#result").show(1000);
+                    toastr.error("Nhập file excel"); 
                 }
             }
 
@@ -365,7 +374,7 @@ var homeController = {
                 if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
                     fileReader.readAsArrayBuffer(excelFile);
                 } else {
-                    $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
+                    toastr.error("Nhập file excel");
                     $("#result").show(1000);
                 }
             }

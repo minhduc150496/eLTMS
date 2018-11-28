@@ -178,7 +178,7 @@ namespace eLTMS.Web.Controllers
         {
             var queryResult = _supplyService.GetAllSupplies(string.Empty);
 
-            var result = queryResult.Select(x => new { x.SuppliesId, x.SuppliesName, x.SuppliesCode , x.Unit}).ToList();
+            var result = queryResult.Select(x => new { x.SuppliesId, x.SuppliesName, x.SuppliesCode , x.Unit, x.Quantity}).ToList();
             return Json(new
             {
                 success = true,

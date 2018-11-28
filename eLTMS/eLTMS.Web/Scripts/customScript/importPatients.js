@@ -266,11 +266,7 @@ var homeController = {
                     });
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-<<<<<<< HEAD
                        homeController.loadData();
-=======
-                        homeController.loadData();
->>>>>>> 60ce6890c4bc8b54933192c7cde2c58087387053
                     }, changePageSize);
                     homeController.registerEvent();
                 }
