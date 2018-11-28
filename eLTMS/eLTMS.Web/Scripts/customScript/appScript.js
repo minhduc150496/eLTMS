@@ -226,45 +226,7 @@ var homeController = {
         //$('#txtAddress').val('');
         //$('#txtNote').val('');
     },
-    loadData: function (changePageSize) {
-        var selectedSample = $(this).children("option:selected").val();
-        $.ajax({
-            url: '/receptionist/GetAllAppointment',
-            type: 'GET',
-            dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },             
-            success: function (response) {
-                if (response.success) {
-                    var data = response.data;
-                    var html = '';
-                    var template = $('#data-template').html();
-                    $.each(data, function (i, item) {
-                        var sample = "";
-                        $.each(item.SampleGettingDtos, function (e, etem) {
-                            sample = sample + etem.SampleName + ": " + etem.StartTime + " ";
-                        });
-                        html += Mustache.render(template, {
-                            AppCode: item.AppointmentCode,
-                            FullName: item.PatientName,
-                            Phone: item.Phone,
-                            Address: item.Address,
-                            SampleName: sample /*+ item.SampleGettingDtos.StartTime +"/n"*/,
-                            //StartTime: item.Unit,
-                            //Note: item.Note,
-
-                        });
-
-                    });
-                    console.log(html);
-                    $('#tblData').html(html);
-                    homeController.paging(response.total, function () {
-                        homeController.loadData();
-                    }, changePageSize);
-                    homeController.registerEvent();
-                }
-            }
-        })
-    },
+    
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -291,13 +253,14 @@ var homeController = {
 
 
     loadDataBySample: function (changePageSize) {
-        var selectedSample = $(".Sample").children("option:selected").val();
-        var selectDate = $(".Date").val();
+        var selectedSample = $("#select-sample").children("option:selected").val();
+        var selectDate = $("#select-date").val();
+        var searchData = $("#txtSearch").val();
         $.ajax({
             url: '/receptionist/GetAppBySample',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate  },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate, search: searchData },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;

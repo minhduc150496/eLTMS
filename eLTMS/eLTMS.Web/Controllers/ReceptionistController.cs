@@ -60,10 +60,10 @@ namespace eLTMS.Web.Controllers
 
 
         [HttpGet]
-        public JsonResult GetAppBySample(DateTime date, int sampleId, int page=1, int pageSize=20)
+        public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)
         {
             //var queryResult = _receptionistService.GetAppBySample(sampleId);
-            var result = _receptionistService.GetAllBySample(date, sampleId);
+            var result = _receptionistService.GetAllBySample(search, date, sampleId);
             var totalRows = result.Count();
             //var totalRows = queryResult.Count();
             //var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));

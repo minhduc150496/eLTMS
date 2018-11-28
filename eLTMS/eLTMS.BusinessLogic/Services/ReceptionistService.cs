@@ -15,7 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         bool Add(AppointmentAddDto data);
         bool ChangeIsPaid(int sampleGettingId);
         //List<Appointment> GetAllAppointment();
-        List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId);
+        List<AppointmentGetBySampleDto> GetAllBySample(string search, DateTime date, int sampleId);
         int CheckAndDeleteBlood(DateTime dateTime);
         int CheckAndDeleteUrine(DateTime dateTime);
         int CheckAndDeleteCell(DateTime dateTime);
@@ -313,7 +313,7 @@ namespace eLTMS.BusinessLogic.Services
             return null;
         }
 
-        public List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId)
+        public List<AppointmentGetBySampleDto> GetAllBySample(string search, DateTime date, int sampleId)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -343,11 +343,6 @@ namespace eLTMS.BusinessLogic.Services
                 spSg = p,
                 slot = c
             });
-            //var spSgSlotTable = spSgSlots.Join(tables, p => p.spSg.sg.TableId, c => c.TableId, (p, c) => new
-            //{
-            //    spSgSlot = p,
-            //    table = c
-            //});
             var count = 1;
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
             //var result = spSgSlotTable.Join(appPas, p => p.spSgSlot.spSg.sg.AppointmentId,
@@ -366,6 +361,13 @@ namespace eLTMS.BusinessLogic.Services
                     IsPaid = p.spSg.sg.IsPaid
 
                 }).ToList();
+            result = result.Where(p => p.StartTime.ToString().Contains(search)
+            || p.SampleGettingId.ToString().Contains(search)
+            || p.Phone.ToString().Contains(search)
+            || p.PatientName.ToString().Contains(search)
+            || p.Phone.ToString().Contains(search)
+            )
+                .ToList();
             return result;
         }
 

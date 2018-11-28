@@ -66,6 +66,10 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
             var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
+            if (sampleId == 1)
+            {
+                sgs = sgRepo.GetAll().Where(p => (p.SampleId == 1 || p.SampleId==2) && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
+            }
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
 
