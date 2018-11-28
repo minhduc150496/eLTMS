@@ -170,7 +170,7 @@
                                     <a href="@Url.Action("ExportSupplies", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý xuất kho</span></a>
                                 </li>
                                 <li @(actionName == "Inventory" ? "class=active" : "")>
-                                    <a href="@Url.Action("Inventory", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Quản lý kiểm kho</span></a>
+                                    <a href="@Url.Action("Inventory", "WareHouse")"><i class="fa fa-hand-o-right"></i> <span>Kiểm kho</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -195,13 +195,13 @@
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTesting" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý các kết quả xét nghiệm</span></a>
+                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu xét nghiệm</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTestingResult" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả xét nghiệm</span></a>
+                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Bác sĩ nhận xét</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor)
@@ -334,7 +334,7 @@
 
         const messaging = firebase.messaging();
         messaging
-            .requestPermission()
+            .requestPermission() //Firebase
             .then(function () {
                 console.log("Notification permission granted.");
 
@@ -387,7 +387,7 @@
             // Toastr
             toastr["success"](payload.data.message);
           
-            //Reload table
+            //Reload table ajax
             homeController.loadDataBySample();
         
         }

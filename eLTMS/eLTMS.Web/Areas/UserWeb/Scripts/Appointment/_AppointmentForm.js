@@ -58,6 +58,16 @@ var Controller = {
                 keyboard: false,
                 show: false,
             });
+            $("#fail-modal").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: false,
+            });
+            $("#processing-modal").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: false,
+            });
         });
 
         $("#btn-next").click(function () {
@@ -89,6 +99,8 @@ var Controller = {
 
         // fixing...
         $("#btn-submit").click(function () {
+            //$("#btn-submit").attr('disabled', true);
+
             // VALIDATION: required fill all fields
             var hasEmptyField = false;
             $("#step-2 [type='date']").each(function (index, element) {
@@ -443,6 +455,7 @@ var Controller = {
             async: true,
             data: jsonData,
             success: function (data) {
+                //$("#btn-submit").attr('disabled', false);
                 var checkResult = function (data) {
                     $("#processing-modal").modal('hide');
                     if (data.Success == true) {
@@ -464,6 +477,7 @@ var Controller = {
             fail: function (data) {
                 //console.log("response: ");
                 //console.log(data);
+                //$("#btn-submit").attr('disabled', false);
                 if (openingProcessingModal) {
                     $("#processing-modal").on("shown.bs.modal", function (e) {
                         e.stopPropagation();
