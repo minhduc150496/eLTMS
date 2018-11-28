@@ -102,6 +102,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTest)));
 
                 cfg.CreateMap<SampleGetting, SampleGettingForNurseDto>()
+                .ForMember(dst => dst.SampleGettingCode, src => src.MapFrom(x => x.SampleGettingId.ToString()))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName));
 

@@ -24,8 +24,7 @@ namespace eLTMS.DataAccess.Repositories
         Appointment GetAppointmentById(int id);
         Appointment GetAppointmentByIdInclude(int id);
         List<Appointment> GetResultByAppCode(string appCode);
-        int? CountByDate(string sDate);
-        List<Table> GetAvailableTables(int sampleGroupId, int slotId, DateTime gettingDate);
+        int? CountByDate(string sDate);        
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
@@ -172,16 +171,9 @@ namespace eLTMS.DataAccess.Repositories
             }
             sDate = sDate.Trim();
             //var dateLength = "yyyy-MM-dd".Length;
-            var result = DbSet.AsQueryable().
-                //Where(x => x.IsDeleted==false && x.AppointmentCode.Take(dateLength).Equals(sDate))
-                Where(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate))
-                .Count();
+            var result = DbSet.AsQueryable()
+                .Count(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate));
             return result;
-        }
-
-        public List<Table> GetAvailableTables(int sampleGroupId, int slotId, DateTime gettingDate)
-        {
-            throw new NotImplementedException();
         }
     }
 }

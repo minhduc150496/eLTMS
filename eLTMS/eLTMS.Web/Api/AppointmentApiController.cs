@@ -16,6 +16,7 @@ using System.Web.Script.Serialization;
 using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
 using eLTMS.Web.Utils;
+using eLTMS.Models;
 
 namespace eLTMS.Web.Api
 {
@@ -59,30 +60,10 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
             // call to AppointmentService
-            var success = true;
-            Object obj = new
-            {
-                Success = true,
-                Message = "Đặt lịch thành công."
-            };
-            try
-            {
-                this._appointmentService.Create(appoinDto);
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                obj = new
-                {
-                    Success = false,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                    InnerExceptionMessage = ex.InnerException.Message
-                };
-            }
+            var result = _appointmentService.Create(appoinDto);
 
             // push noti
-            if (success)
+            if (result.Success)
             {
                 var tokens = _appointmentService.GetAllTokens();// lấy tất cả device token
                 foreach (var token in tokens)
@@ -105,7 +86,7 @@ namespace eLTMS.Web.Api
                     }
                 }
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }
 
