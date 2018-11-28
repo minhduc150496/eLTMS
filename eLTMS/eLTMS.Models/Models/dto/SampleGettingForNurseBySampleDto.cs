@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eLTMS.Models.Models.dto
 {
-    public class SampleGettingForNurseBySample
+    public class SampleGettingForNurseBySampleDto
     {
         public int SampleGettingId { get; set; }
 

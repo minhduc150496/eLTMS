@@ -14,7 +14,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         bool Add(AppointmentAddDto data);
         bool ChangeIsPaid(int sampleGettingId);
-        List<Appointment> GetAllAppointment();
+        //List<Appointment> GetAllAppointment();
         List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId);
         int CheckAndDeleteBlood(DateTime dateTime);
         int CheckAndDeleteUrine(DateTime dateTime);
@@ -102,19 +102,6 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             try
             {
-                //tao account
-                //accRepo.Create(new Account
-                //{
-                //    PhoneNumber = data.Phone,
-
-                //    //passWord default: qwe123
-                //    Password = "qwe123",
-                //    IsDeleted = false
-                //});
-                //UnitOfWork.SaveChanges();
-
-                //tao benh nhan
-                //var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
                 paRepo.Create(new Patient
                 {
                     //AccountId = accId,
@@ -236,19 +223,19 @@ namespace eLTMS.BusinessLogic.Services
             return rs;
         }
 
-        //ten ten
-        public List<Appointment> GetAllAppointment()
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetAllApp();
-            //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            //foreach(var app in apps)
-            //{
-            //    app.SampleGettings= sampleGettingRepo.GetAll().Where(p=>p.Appointment.ap)
-            //}
-            return apps;
-        }
-        //ten ten
+        //public List<Appointment> GetAllAppointment()
+        //{
+        //    var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+        //    var apps = appRepo.GetAllApp();
+        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+        //    //foreach(var app in apps)
+        //    //{
+        //    //    app.SampleGettings= sampleGettingRepo.GetAll().Where(p=>p.Appointment.ap)
+        //    //}
+        //    return apps;
+        //}
+
+
         public class TableAndSlotId
         {
             public int tableId { get; set; }

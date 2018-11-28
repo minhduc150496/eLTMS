@@ -13,7 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface INurseService
     {
         bool ChangeIsGot(int sampleGettingId);
-        List<SampleGettingForNurseBySample> GetAllBySample(DateTime date, int sampleId);
+        List<SampleGettingForNurseBySampleDto> GetAllBySample(DateTime date, int sampleId);
     }
     class NurseService : INurseService
     {
@@ -54,7 +54,7 @@ namespace eLTMS.BusinessLogic.Services
 
         }
 
-        public List<SampleGettingForNurseBySample> GetAllBySample(DateTime date, int sampleId)
+        public List<SampleGettingForNurseBySampleDto> GetAllBySample(DateTime date, int sampleId)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -91,7 +91,7 @@ namespace eLTMS.BusinessLogic.Services
             });
 
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
-                c => c.app.AppointmentId, (p, c) => new SampleGettingForNurseBySample
+                c => c.app.AppointmentId, (p, c) => new SampleGettingForNurseBySampleDto
                 {
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     SampleGettingId = p.spSg.sg.SampleGettingId,

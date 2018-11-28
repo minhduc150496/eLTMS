@@ -44,24 +44,20 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )
-        {
-            var queryResult = _receptionistService.GetAllAppointment();
-            var totalRows = queryResult.Count();
-            var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-            return Json(new
-            {
-                success = true,
-                data = result,
-                total = totalRows
-            }, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpGet]
+        //public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )
+        //{
+        //    var queryResult = _receptionistService.GetAllAppointment();
+        //    var totalRows = queryResult.Count();
+        //    var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+        //    return Json(new
+        //    {
+        //        success = true,
+        //        data = result,
+        //        total = totalRows
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult GetAllAppointment2()
-        {
-            return null;
-        }
 
         [HttpGet]
         public JsonResult GetAppBySample(DateTime date, int sampleId, int page=1, int pageSize=20)
