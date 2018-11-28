@@ -178,7 +178,6 @@ var homeController = {
                         });
 
                     });
-                    console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
                         homeController.loadData();
