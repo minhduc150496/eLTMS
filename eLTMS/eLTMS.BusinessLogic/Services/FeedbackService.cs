@@ -61,13 +61,6 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var feedback = repo.GetSimpleById(feedbackdto.FeedbackId);
-                var employee = feedback.Employee;
-                var patient = feedback.Patient;
-                feedback.FeedbackId = feedbackdto.FeedbackId;
-                employee.FullName = feedbackdto.Employee.FullName;
-                patient.FullName = feedbackdto.Patient.FullName;
-                feedback.Content = feedbackdto.Content;
-                feedback.ReceivedDateTime = feedbackdto.ReceivedDateTime;
                 feedback.Status = feedbackdto.Status;
                 repo.Update(feedback);
                 var result = UnitOfWork.SaveChanges();

@@ -17,10 +17,7 @@ var homeController = {
             var status = $('#ddlStatus').val();
             var isDeleted = "False";
             var feedback = {
-                FeedbackId: feedbackId,
-                Patient: {
-                    FullName: $('#txtPatientName').val()
-                },
+                FeedbackId: feedbackId,          
                 Employee: {
                     FullName: $('#txtEmployeeName').val()
                 },
@@ -36,7 +33,7 @@ var homeController = {
                     dataType: 'json',
                     data: feedback,
                     success: function (res) {
-                        if (!res.sucess) {
+                        if (!res.sucess) { //200
                             if (res.validation && res.validation.Errors) {
                                 toastr.error(res.validation.Errors[0].ErrorMessage);
                             }
