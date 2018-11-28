@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface ILabTestingService
     {
         List<LabTesting> GetAll();
+        List<LabTesting> GetAllLabTestingDate(string date);
         List<LabTesting> GetAllLabTesting();
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllResult();
@@ -87,6 +88,12 @@ namespace eLTMS.BusinessLogic.Services
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
             var labTesting = repo.GetAllLabTestings();
+            return labTesting;
+        }
+        public List<LabTesting> GetAllLabTestingDate(string date)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingDate(date);
             return labTesting;
         }
         public List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code)

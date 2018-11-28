@@ -213,12 +213,18 @@ var homeController = {
 
     },
     resetForm: function () {
-        $('#txtDateOfBirth').val('');
-        $('#txtName').val('');
-        $('#txtCMND').val('');
-        $('#txtPhone').val('');
-        $('#txtAddress').val('');
-        $('#txtNote').val('');
+        $('#txtSupplyId').val('0');
+        $('#txtCode').val('');
+        $('#txtName').val('')
+        $('#ddlSupplyType').val('').change();
+        $('#ddlSupplyUnit').val('').change();
+        $('#txtNote').val('')
+        //$('#txtDateOfBirth').val('');
+        //$('#txtName').val('');
+        //$('#txtCMND').val('');
+        //$('#txtPhone').val('');
+        //$('#txtAddress').val('');
+        //$('#txtNote').val('');
     },
     loadData: function (changePageSize) {
         var selectedSample = $(this).children("option:selected").val();
@@ -317,7 +323,7 @@ var homeController = {
                     console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        //homeController.loadDataBySample();
+                        homeController.loadDataBySample();
                     }, changePageSize);
                     homeController.registerEvent();
                 }

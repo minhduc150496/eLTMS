@@ -47,11 +47,11 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             }
             if (sttProcess == false)
             {
-                queryResult = queryResult.Where(x => !(x.Status != "NEW" && x.Status != "DONE")).ToList();
+                queryResult = queryResult.Where(x => !(x.Status != "NEW" && x.Status != "DOCTORDONE")).ToList();
             }
             if (sttDone == false)
             {
-                queryResult = queryResult.Where(x => !(x.Status == "DONE")).ToList();
+                queryResult = queryResult.Where(x => !(x.Status == "DOCTORDONE")).ToList();
             }
             var result = queryResult.Skip((page - 1) * pageSize).Take(pageSize);
             return Json(new

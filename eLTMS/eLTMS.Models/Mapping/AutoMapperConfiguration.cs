@@ -35,7 +35,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
                 .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
-                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.Value.ToString("dd-MM-yyyy")))
+                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => (x.DateOfBirth != null) ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
 
@@ -102,6 +102,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.LabTests, src => src.MapFrom(x => x.LabTestings.Select(y => y.LabTest)));
 
                 cfg.CreateMap<SampleGetting, SampleGettingForNurseDto>()
+                .ForMember(dst => dst.SampleGettingCode, src => src.MapFrom(x => x.SampleGettingId.ToString()))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName));
 
@@ -256,6 +257,9 @@ namespace eLTMS.Models.Mapping
                .ForMember(dst => dst.ReceivedDateTime, src => src.MapFrom(x => x.ReceivedDateTime.HasValue ? (x.ReceivedDateTime.Value).ToString("dd-MM-yyyy") : ""))
                .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status));
+
+                cfg.CreateMap<FeedbackDto, Feedback>();
+
             });
 
         }

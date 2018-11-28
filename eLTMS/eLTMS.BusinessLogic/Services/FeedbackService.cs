@@ -15,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         Feedback getFeedbackId(int id);
         bool DeleteFeedback(int id);
         bool Update(Feedback feedbackdto);
+        bool Create(Feedback feedback);
     }
     public class FeedbackService: IFeedbackService
     {
@@ -60,13 +61,6 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var feedback = repo.GetSimpleById(feedbackdto.FeedbackId);
-                var employee = feedback.Employee;
-                var patient = feedback.Patient;
-                feedback.FeedbackId = feedbackdto.FeedbackId;
-                employee.FullName = feedbackdto.Employee.FullName;
-                patient.FullName = feedbackdto.Patient.FullName;
-                feedback.Content = feedbackdto.Content;
-                feedback.ReceivedDateTime = feedbackdto.ReceivedDateTime;
                 feedback.Status = feedbackdto.Status;
                 repo.Update(feedback);
                 var result = UnitOfWork.SaveChanges();
@@ -76,6 +70,14 @@ namespace eLTMS.BusinessLogic.Services
             {
                 return false;
             }
+            return true;
+        }
+
+        public bool Create(Feedback feedback)
+        {
+            var repo = RepositoryHelper.GetRepository<IFeedbackRepository>(UnitOfWork);
+            repo.Create(feedback);
+            var result = UnitOfWork.SaveChanges();
             return true;
         }
     }

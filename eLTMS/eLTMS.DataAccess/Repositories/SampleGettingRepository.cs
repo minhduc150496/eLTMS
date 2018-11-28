@@ -56,8 +56,9 @@ namespace eLTMS.DataAccess.Repositories
         // DucBM
         public SampleGetting GetByCodeForNurse(string code) // Stt: WAITING - chờ lấy mẫu
         {
+            int id = int.Parse(code); // temp
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingCode.Equals(code))
+                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingId.Equals(id))
                 .Include(x => x.Appointment.Patient)
                 .Include(x => x.Sample)
                 .FirstOrDefault();

@@ -15,13 +15,11 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IAppointmentService
     {
-        bool Create(AppointmentDto appointment);
+        ResponseObjectDto Create(AppointmentDto appointment);
         Appointment GetSingleByCode(string code);
         Appointment GetSingleById(int appointmentId); // Author: DucBM
         Appointment GetResultDoneByAppointmentId(int appointmentId); // Author: DucBM
         List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // Author: DucBM
-        List<Appointment> GetNewApp(int patientId);
-        List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
@@ -71,13 +69,19 @@ namespace eLTMS.BusinessLogic.Services
         }
 
         // Author: DucBM
-        public bool Create(AppointmentDto appointmentDto)
+        public ResponseObjectDto Create(AppointmentDto appointmentDto)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+            responseObject.Message = "Đặt lịch thành công";
+
             var appointment = new Appointment();
             // Convert AppointmentDto to Appointment
             var now = DateTime.Now;
             var sDate = now.ToString("yyyy-MM-dd");
+
             var count = appointmentRepo.CountByDate(sDate);
             var code = sDate + "-" + count;
             appointment.AppointmentCode = code;
@@ -86,10 +90,19 @@ namespace eLTMS.BusinessLogic.Services
 
             appointment.SampleGettings = new List<SampleGetting>();
 
+            var sampleGettingDtos = appointmentDto.SampleGettingDtos;
             foreach (var sgDto in appointmentDto.SampleGettingDtos)
             {
                 var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                sg.TableId = null;
+                var avaiTable = tableRepo.GetFirstAvailableTable((int)sg.SlotId, (DateTime)sg.GettingDate);
+                if (avaiTable==null)
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có ca xét nghiệm đã hết chỗ";
+                    break;
+                } 
+                sg.TableId = avaiTable.TableId; 
+                sg.Status = "NEW";
                 sg.LabTestings = new List<LabTesting>();
                 foreach (var id in sgDto.LabTestIds)
                 {
@@ -99,16 +112,28 @@ namespace eLTMS.BusinessLogic.Services
                     labTesting.Status = "NEW";
                     sg.LabTestings.Add(labTesting);
                 }
+                if (responseObject.Success==false)
+                {
+                    break;
+                }
                 appointment.SampleGettings.Add(sg);
             }
             // Create
             appointmentRepo.Create(appointment);
-            var result = this.UnitOfWork.SaveChanges();
-            if (result.Any())
+            try
             {
-                return false;
+                var result = this.UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                }
+            } catch(Exception ex)
+            {
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
             }
-            return true;
+            return responseObject;
         }
 
         // Author: DucBM
@@ -118,21 +143,6 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetAppointmentsByPatientId(patientId);
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(apps).ToList();
             return appDtos;
-        }
-
-        public List<Appointment> GetNewApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetNewAppByPatientId(patientId);
-            return apps;
-        }
-
-        public List<Appointment> GetOldApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var apps = appRepo.GetOldAppByPatientId(patientId);
-            return apps;
         }
 
         public List<Appointment> GetResult(int patientId)

@@ -264,7 +264,7 @@ var homeController = {
             $('#myModal2').modal('show');
         });
         $('#btnAddNewLabTesting').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới lab testing');
+            $('#lblPopupTitle').text('Tiến hành xử lý mẫu');
             $('#myModalLabTesting').modal('hide');
             $('#myModalLabTestingData').modal('show');
             homeController.loadDataLabTestingAdd();
@@ -355,7 +355,7 @@ var homeController = {
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
                 dataType: 'json',
-                
+                data: { code:code,con:con },
                 success: function (res) {
                     if (!res.sucess) {
                         if (res.validation && res.validation.Errors) {
@@ -501,6 +501,9 @@ var homeController = {
                 }
             }
 
+        });
+        $('#btnSearchDate').off('click').on('click', function () {
+            homeController.loadDataLabTestingAddDate();
         });
 
     },
@@ -715,6 +718,23 @@ var homeController = {
                     homeconfig.allLabTesting = data;   
                     $('.data-row-lab-testing-import').remove();
                     homeController.loadAddLabTesting();          
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+    loadDataLabTestingAddDate: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestingDate',
+            type: 'GET',
+            dataType: 'json',
+            data: { date: $('#txtSearchDate').val()},
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    homeconfig.allLabTesting = data;
+                    $('.data-row-lab-testing-import').remove();
+                    homeController.loadAddLabTesting();
                     homeController.registerEvent();
                 }
             }

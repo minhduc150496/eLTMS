@@ -151,12 +151,8 @@ var homeController = {
         });
 
         $("#input").off('change').on("change", function () {
-           // $('.data-row').remove();
-            var excelFile,
-                fileReader = new FileReader();
-
-            $("#result").hide();
-
+           var excelFile,
+           fileReader = new FileReader();
             fileReader.onload = function (e) {
                 var buffer = new Uint8Array(fileReader.result);
                 $('.data-row').remove();
@@ -216,7 +212,6 @@ var homeController = {
 
                     homeconfig.ImportExcel = true;
                     $.each(data, function (i, item) {
-                        console.log(item);
                         for (var i = 0; i < homeconfig.allSupply.length; i++) {
                             if (homeconfig.allSupply[i].SuppliesCode == item.SuppliesCode) {
                                 item.SuppliesId = homeconfig.allSupply[i].SuppliesId;
@@ -266,13 +261,9 @@ var homeController = {
 
         });
           $("#inputPKK").off('change').on("change", function () {
-            // $('.data-row').remove();
             var excelFile,
-                fileReader = new FileReader();
-
-            $("#result").hide();
-
-            fileReader.onload = function (e) {
+            fileReader = new FileReader();
+             fileReader.onload = function (e) {
                 var buffer = new Uint8Array(fileReader.result);
                 $('.data-row').remove();
                 $.ig.excel.Workbook.load(buffer, function (workbook) {

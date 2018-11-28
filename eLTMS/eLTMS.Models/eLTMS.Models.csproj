@@ -53,7 +53,7 @@
     <Compile Include="ConstantManager.cs" />
     <Compile Include="Enums\RoleEnum.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
-    <Compile Include="Models\dto\SampleGettingForNurseBySample.cs" />
+    <Compile Include="Models\dto\ResponseObjectDto.cs" />
     <Compile Include="Models\dto\SlotOptionDto.cs" />
     <Compile Include="Models\dto\AccountDto.cs" />
     <Compile Include="Models\dto\AccountLoginDto.cs" />
@@ -97,9 +97,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\eLTMS.DataAccess\eLTMS.DataAccess.csproj">
       <Project>{81e344ad-370a-4aa6-98f5-8151677d2533}</Project>
