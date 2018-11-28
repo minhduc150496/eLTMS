@@ -33,6 +33,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Gender))
                 .ForMember(dst => dst.PatientCode, src => src.MapFrom(x => x.PatientCode))
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
+                .ForMember(dst => dst.IdentityCardNumber, src => src.MapFrom(x => x.IdentityCardNumber))
                 .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
                 .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => (x.DateOfBirth != null) ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))

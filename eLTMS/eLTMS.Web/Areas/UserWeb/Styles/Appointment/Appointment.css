@@ -254,6 +254,11 @@
     text-decoration: underline;
 }
 
+.view_appointments_area .pagination {
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* Appointment Result */
 .appointment_result_area {

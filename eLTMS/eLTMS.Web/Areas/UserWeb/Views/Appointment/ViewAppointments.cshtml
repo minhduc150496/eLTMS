@@ -63,7 +63,7 @@
                 <tbody id="tblData"></tbody>
             </table>
 
-            <div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            <div id="pagination" class="div-pagination">
             </div>
 
         </div>
@@ -111,7 +111,7 @@
         </td>
         <td>
             {{#IsNew}}
-            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
+            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_self" tooltips class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
             <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash-alt"></i></button>
             {{/IsNew}}
             {{#IsDone}}

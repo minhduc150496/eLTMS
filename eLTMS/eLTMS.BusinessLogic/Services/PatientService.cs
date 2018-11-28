@@ -74,13 +74,13 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 // create Patient Code in format BN-00000001
-                int newCode = 0;
+                /*int newCode = 0;
                 var lastCode = repo.GetLastPatientCode();
                 if (lastCode != null)
                 {
-                    newCode = int.Parse(lastCode) + 1;
+                    newCode = int.Parse(lastCode.Substring(2)) + 1;
                 }
-                patient.PatientCode = newCode.ToString("D8"); // format as 8 digits
+                patient.PatientCode = newCode.ToString("D8"); // format as 8 digits/**/
 
                 repo.Create(patient);
                 UnitOfWork.SaveChanges();

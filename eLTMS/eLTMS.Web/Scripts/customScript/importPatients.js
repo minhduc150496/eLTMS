@@ -15,6 +15,10 @@ var homeController = {
             homeController.loadDataResult(patientId);
 
         });
+        $('#btnClose').off('click').on('click', function () {
+
+            $('#txtCode').val('');
+        });
         $('#btnSaveResult').off('click').on('click', function () {
             var code = $('#txtAppCode').val();
             var con = $('#txtResult').val(); 
@@ -45,6 +49,7 @@ var homeController = {
             var phone = $('#txtPhoneNumber').val();
             var homeAddress = $('#txtHomeAddress').val();
             var companyAddress = $('#txtCompanyAddress').val();
+            var cmnd = $('#txtCmnd').val();
             var date = $('#txtDate').val();
             var isDeleted = "False";
             var patient = {
@@ -57,6 +62,7 @@ var homeController = {
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
                 CompanyAddress: companyAddress,
+                IdentityCardNumber: cmnd,
                 IsDeleted: isDeleted,
                 AvatarUrl: $('#avatar').attr('src')
             }
@@ -77,6 +83,7 @@ var homeController = {
                             toastr.success("Tạo mới thành công.");
                             $('#myModal').modal('hide');
                             homeController.loadData();
+                            location.reload();
                         }
                     }
                 })
@@ -95,7 +102,8 @@ var homeController = {
                         }
                         else {
                             toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide');                            
+                            location.reload();
                             homeController.loadData();
                         }
                     }
@@ -179,6 +187,7 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtCompanyAddress').val(data.CompanyAddress);
+                    $('#txtCmnd').val(data.IdentityCardNumber);
                     $('#avatar').attr('src', data.Avatar);
                 }
                 else {
@@ -190,6 +199,7 @@ var homeController = {
     resetForm: function () {
         $('#txtPatientId').val('0');
         $('#txtAccountId').val('');
+        $('#txtCmnd').val('');
         $('#txtName').val('');
         $('#txtDate').val('');
         $('#ddlGender').val('').change();
