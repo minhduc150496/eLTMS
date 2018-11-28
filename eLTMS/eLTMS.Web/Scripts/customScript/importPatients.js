@@ -267,7 +267,7 @@ var homeController = {
                     });
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                       // homeController.loadData();
+                       homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }

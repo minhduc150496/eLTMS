@@ -78,7 +78,7 @@ var AppointmentSuggestor = {
             var A = sampleOrderWithSlots;
             // dp
             for (var i = 0; i < n; i++) {
-                dp.push([]);
+                dp.push([]); // bang 2 chieu. them 1 dong de tinh gia tri du lieu
                 trace.push([]);
                 for (var j = 0; j < A[i].length; j++) {
                     var dpItem = MAX;
