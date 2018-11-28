@@ -446,6 +446,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Order number")]
         public int? OrderNumber { get; set; } // OrderNumber
 
+        [Column(@"IsGot", Order = 12, TypeName = "bit")]
+        [Display(Name = "Is got")]
+        public bool? IsGot { get; set; } // IsGot
+
         // Reverse navigation
 
         /// <summary>
@@ -1090,6 +1094,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Status")]
         public string Status { get; set; } // Status (length: 100)
 
+        [Column(@"StarRating", Order = 8, TypeName = "int")]
+        [Display(Name = "Star rating")]
+        public int? StarRating { get; set; } // StarRating
+
         // Foreign keys
 
         /// <summary>
@@ -1490,8 +1498,8 @@ namespace eLTMS.DataAccess.Models
         public Account()
         {
             IsDeleted = false;
-            Employees = new System.Collections.Generic.List<Employee>();
             PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
+            Employees = new System.Collections.Generic.List<Employee>();
         }
     }
 
@@ -1633,6 +1641,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.ReceivedDateTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.Status).IsOptional();
+            Property(x => x.StarRating).IsOptional();
 
         }
     }
@@ -1856,6 +1865,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.SlotId).IsOptional();
             Property(x => x.GettingDate).IsOptional();
             Property(x => x.OrderNumber).IsOptional();
+            Property(x => x.IsGot).IsOptional();
 
         }
     }
@@ -1998,6 +2008,14 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class GetFistAvailableTableReturnModel
+    {
+        public System.Int32 TableID { get; set; }
+        public System.Int32? SampleGroupID { get; set; }
+        public System.String TableName { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]

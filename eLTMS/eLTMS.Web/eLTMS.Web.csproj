@@ -216,6 +216,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\NurseController.cs" />
     <Compile Include="Controllers\ReceptionistController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="DbConnection\Account.cs">
@@ -7693,6 +7694,7 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\nurseChangeSttScript.js" />
     <Content Include="Scripts\customScript\receptionistSampleGettings.js" />
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
@@ -7758,6 +7760,7 @@
     <Content Include="Views\LabTest\LabTestingDone.cshtml" />
     <Content Include="Views\Receptionist\SampleGettings.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Nurse\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -94,6 +94,7 @@ namespace eLTMS.BusinessLogic.Services
         //ten ten
         public bool Add(AppointmentAddDto data)
         {
+            var rs = false;
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var accRepo = RepositoryHelper.GetRepository<IAccountRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -154,6 +155,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
 
                 }
@@ -173,6 +175,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.TeBaoHoc == true)
@@ -189,6 +192,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.Phan == true)
@@ -205,6 +209,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.Dich == true)
@@ -221,13 +226,14 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
 
                 UnitOfWork.SaveChanges();
             }
             catch (Exception ex) { return false; }
-            return true;
+            return rs;
         }
 
         //ten ten

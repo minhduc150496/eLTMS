@@ -58,6 +58,7 @@
     <Compile Include="Services\LabTestingIndexService.cs" />
     <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\HospitalSuggestionService.cs" />
+    <Compile Include="Services\NurseService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />

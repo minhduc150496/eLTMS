@@ -97,10 +97,8 @@ var homeController = {
                 data: item,
                 success: function (res) {
                     if (!res.success) {
-                        if (res.validation && res.validation.Errors) {
-                            toastr.error(res.validation.Errors[0].ErrorMessage);
-                        }
-
+                        toastr.error("Tạo mới thất bại.");
+                        $('#myModal').modal('hide');
                     }
                     else {
                         toastr.success("Tạo mới thành công.");
@@ -117,7 +115,7 @@ var homeController = {
         });
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới vật tư');
+            $('#lblPopupTitle').text('Thêm mới cuộc hẹn');
             homeController.resetForm();
             $('#myModal').modal('show');
             var selectedSample = $(".Sample").children("option:selected").val();
