@@ -172,6 +172,7 @@ namespace eLTMS.BusinessLogic.Services
         {
             var responseObject = new ResponseObjectDto();
             responseObject.Success = true;
+            responseObject.Message = "Chỉnh sửa lịch thành công";
 
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             // get existing appointment by AppointmentCode
