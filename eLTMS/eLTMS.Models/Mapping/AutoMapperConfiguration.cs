@@ -35,7 +35,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
                 .ForMember(dst => dst.HomeAddress, src => src.MapFrom(x => x.HomeAddress))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
-                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => x.DateOfBirth.Value.ToString("dd-MM-yyyy")))
+                .ForMember(dst => dst.DateOfBirth, src => src.MapFrom(x => (x.DateOfBirth != null) ? x.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.CompanyAddress, src => src.MapFrom(x => x.CompanyAddress));
 

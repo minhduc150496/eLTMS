@@ -3,6 +3,7 @@ using eLTMS.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,19 +27,49 @@ namespace eLTMS.DataAccess.Repositories
         }
         public List<ExportPaper> GetAllExportPaper(string createDate)
         {
-          
-            var result = DbSet.AsQueryable()
-                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false && x.Status == false)
+            DateTime createDateTime;
+            if (String.IsNullOrEmpty(createDate) == false)
+            {
+                var parseDate = DateTime.TryParseExact(createDate, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out createDateTime);
+                if (parseDate == false)
+                {
+                    return new List<ExportPaper>();
+                }
+                return DbSet.AsQueryable()
+                .Where(x => DbFunctions.TruncateTime(x.CreateDate.Value) ==
+                DbFunctions.TruncateTime(createDateTime) && x.IsDeleted == false && x.Status == false)
                 .ToList();
-            return result;
+            }
+            else
+            {
+                return DbSet.AsQueryable()
+                .Where(x => x.IsDeleted == false && x.Status == false)
+                .ToList();
+            }
         }
         public List<ExportPaper> GetAllInventory(string createDate)
         {
-
-            var result = DbSet.AsQueryable()
-                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false && x.Status == true)
+            DateTime createDateTime;
+            if (String.IsNullOrEmpty(createDate) == false)
+            {
+                var parseDate = DateTime.TryParseExact(createDate, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out createDateTime);
+                if (parseDate == false)
+                {
+                    return new List<ExportPaper>();
+                }
+                return DbSet.AsQueryable()
+                .Where(x => DbFunctions.TruncateTime(x.CreateDate.Value) ==
+                DbFunctions.TruncateTime(createDateTime) && x.IsDeleted == false && x.Status == true)
                 .ToList();
-            return result;
+            }
+            else
+            {
+                return DbSet.AsQueryable()
+                .Where(x => x.IsDeleted == false && x.Status == true)
+                .ToList();
+            }
         }
         public ExportPaper GetSimpleById(int id)
         {

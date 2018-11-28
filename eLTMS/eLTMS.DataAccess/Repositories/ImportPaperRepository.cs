@@ -3,6 +3,7 @@ using eLTMS.DataAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +26,28 @@ namespace eLTMS.DataAccess.Repositories
         }
         public List<ImportPaper> GetAllImportPaper(string createDate)
         {
-            var result = DbSet.AsQueryable()
-                .Where(x => x.CreateDate.ToString().Contains(createDate) && x.IsDeleted == false)
+            DateTime createDateTime;
+            if (String.IsNullOrEmpty(createDate) == false)
+            {
+            var parseDate = DateTime.TryParseExact(createDate, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+            DateTimeStyles.None, out createDateTime);
+                if (parseDate == false)
+                {
+                    return new List<ImportPaper>();
+                }
+                return DbSet.AsQueryable()
+                .Where(x => DbFunctions.TruncateTime(x.CreateDate.Value) ==
+                DbFunctions.TruncateTime(createDateTime) && x.IsDeleted == false)
                 .ToList();
-            return result;
+            }
+            else
+            {
+                return DbSet.AsQueryable()
+                .Where(x => x.IsDeleted == false)
+                .ToList();
+            }
+            
+            
         }
         public ImportPaper GetSimpleById(int id)
         {

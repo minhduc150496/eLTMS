@@ -12,6 +12,7 @@ using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Controllers
 {
+   // public class PatientController : Controller
     public class PatientController : BaseController
     {
         // GET: Patient
@@ -29,9 +30,18 @@ namespace eLTMS.Web.Controllers
             return View();
         }
         public ActionResult Patients()
-        {
+        {   
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
             {
+                var patient = _patientService.GetAllPatients("").LastOrDefault();
+                if (patient != null)
+                {
+                    ViewBag.BN = "BN" + (patient.PatientId + 1);
+                }
+                else
+                {
+                    ViewBag.BN = "BN1";
+                }
                 return View();
             }
             var returnUrl = Request.Url.AbsoluteUri;

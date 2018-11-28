@@ -20,8 +20,6 @@ namespace eLTMS.BusinessLogic.Services
         Appointment GetSingleById(int appointmentId); // Author: DucBM
         Appointment GetResultDoneByAppointmentId(int appointmentId); // Author: DucBM
         List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // Author: DucBM
-        List<Appointment> GetNewApp(int patientId);
-        List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
@@ -89,7 +87,8 @@ namespace eLTMS.BusinessLogic.Services
             foreach (var sgDto in appointmentDto.SampleGettingDtos)
             {
                 var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                sg.TableId = null;
+                sg.TableId = null; // HARD CODE
+                sg.Status = "NEW";
                 sg.LabTestings = new List<LabTesting>();
                 foreach (var id in sgDto.LabTestIds)
                 {
@@ -118,21 +117,6 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetAppointmentsByPatientId(patientId);
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(apps).ToList();
             return appDtos;
-        }
-
-        public List<Appointment> GetNewApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetNewAppByPatientId(patientId);
-            return apps;
-        }
-
-        public List<Appointment> GetOldApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var apps = appRepo.GetOldAppByPatientId(patientId);
-            return apps;
         }
 
         public List<Appointment> GetResult(int patientId)
