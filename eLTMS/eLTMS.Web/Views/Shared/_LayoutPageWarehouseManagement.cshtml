@@ -203,7 +203,7 @@
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTestingResult" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Ghi kết luận</span></a>
+                                        <a href="@Url.Action("LabTestingResult", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Bác sĩ kết luận</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor)
