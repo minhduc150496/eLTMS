@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Appointment For Nurse";
-    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
     .switch {
@@ -73,14 +73,14 @@
                 <h4 class="modal-title" id="myModalLabel">Bạn có muốn thay đổi</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="modal-btn-si">Có</button>
-                <button type="button" class="btn btn-primary" id="modal-btn-no">Không</button>
+                <button type="button" class="btn btn-default" id="modal-btn-no">Không</button>
+                <button type="button" class="btn btn-primary" id="modal-btn-si">Có</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="alert" role="alert" id="result"></div>
+<div class="alert" role="alert" id="result" hidden></div>
 
 <section class="content-header">
     <h1>

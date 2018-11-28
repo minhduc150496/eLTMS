@@ -71,7 +71,8 @@ namespace eLTMS.DataAccess.Repositories
             DateTime dt = DateTime.Parse(gettingDate);
             var result = DbSet.AsQueryable()
                 .Include(x => x.Appointment)
-                .Where(x => x.SampleId == sampleId 
+                .Where(x => x.IsDeleted==false 
+                    && x.SampleId == sampleId 
                     && x.Appointment.PatientId == patientId 
                     && DbFunctions.TruncateTime(x.GettingDate)==DbFunctions.TruncateTime(dt))
                 .FirstOrDefault();

@@ -97,6 +97,7 @@ namespace eLTMS.BusinessLogic.Services
             appointment.AppointmentCode = code;
             appointment.Status = "NEW";
             appointment.PatientId = appointmentDto.PatientId;
+            appointment.EnterTime = now;
 
             appointment.SampleGettings = new List<SampleGetting>();
 

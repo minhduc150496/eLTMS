@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Appointment For Receptionist";
-    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
     .switch {
@@ -441,7 +441,7 @@
     $( document ).ready(function() {
         var autoDeleteBlood = setInterval(function(){
             var date = new Date();
-            console.log(date.getMinutes()+'-'+date.getSeconds());
+            // console.log(date.getMinutes()+'-'+date.getSeconds());
             if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
                 || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
                 $.ajax({

@@ -405,7 +405,7 @@ var Controller = {
                 }
             }
         }
-        if (sSampleDtos == null || 1 == 1) {
+        if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {

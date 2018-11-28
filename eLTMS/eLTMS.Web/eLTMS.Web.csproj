@@ -7778,6 +7778,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Styles\_AdminLayout.css" />
     <Content Include="template-pdf\result.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -7797,7 +7798,7 @@
     <Content Include="Views\WareHouse\ImportSupplies.cshtml" />
     <Content Include="Views\WareHouse\Index.cshtml" />
     <Content Include="Views\WareHouse\Supplies.cshtml" />
-    <Content Include="Views\Shared\_LayoutPageWarehouseManagement.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Patient\Patients.cshtml" />
     <Content Include="templates\ImportPaperTemplate.xlsx" />
     <Content Include="Views\Employee\Employees.cshtml" />

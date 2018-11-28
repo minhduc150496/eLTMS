@@ -85,7 +85,7 @@ namespace eLTMS.DataAccess.Repositories
         {
 
             var result = DbSet.AsQueryable()
-             .Where(x => x.Status.Contains("DoctorDone"))
+             .Where(x => x.Status.ToUpper().Contains("DOCTORDONE"))
              .Include(x => x.LabTest)
              .Include(x => x.SampleGetting.Appointment)
              .Include(x => x.SampleGetting.Sample)

@@ -84,17 +84,20 @@
                     }
                 </tbody>
             </table>
+            <div>
+                <b>Kết luận:</b> @(resultDto.Conclusion)
+            </div>
             <div class="return-time">
                 Ngày: @(resultDto.ReturnTime.ToString("dd-MM-yyyy"))
             </div>
         </div>
 
-        <div class="text-center" style="margin-top: 15px;">
+        @*<div class="text-center" style="margin-top: 15px;">
             <a href="/UserWeb/Appointment/Suggest" target="_blank">
                 <i class="fa fa-link"></i>
                 Gợi ý các bệnh viện có khoa chuyên ngành
             </a>
-        </div>
+        </div>*@
 
         <div class="text-center">
             <button class="btn btn-link text text-danger" id="btn-print-pdf">
