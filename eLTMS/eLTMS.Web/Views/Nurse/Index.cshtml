@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Appointment For Nurse";
+    Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(16px);
+        -ms-transform: translateX(16px);
+        transform: translateX(16px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 10px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+<section class="content-header">
+    <h1>
+        LẤY MẪU XÉT NGHIỆM
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-body">
+
+                    <br />
+                    <br />
+
+                    <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
+                    <button class="btn btn-success" id="btnSearch">Search</button>
+                    Loại xét nghiệm:
+                    <select class="Sample" id="select-sample">
+                        <option value="1">Máu & Nước tiểu</option>
+                        <option value="3">Tế bào học</option>
+                        <option value="4">Phân</option>
+                        <option value="5">Dịch</option>
+                    </select>
+                    Ngày:
+                    <input type="date" class="Date" id="select-date" />
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>SampleGetting ID</th>
+                                <th>Họ & tên</th>
+                                <th>Loại xét nghiệm</th>
+                                <th>Ngày</th>
+                                <th>Giờ xét nghiệm</th>
+                                <th>Đã lấy mẫu</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="tblData"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<!-- Modal -->
+<div style="margin-left:35%" id="pagination" class="pagination">
+</div>
+
+<script id="data-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{SgId}}</td>
+        <td>{{FullName}}</td>
+        <td>{{SampleName}}</td>
+        <td>{{Date}}</td>
+        <td>{{StartTime}}</td>
+        <td>
+            <label class="switch">
+                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} onchange="homeController.checkIsGot({{SgId}})" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+
+        </td>
+
+    </tr>
+</script>
+
+<script src="~/Scripts/customScript/nurseChangeSttScript.js"></script>
+
+

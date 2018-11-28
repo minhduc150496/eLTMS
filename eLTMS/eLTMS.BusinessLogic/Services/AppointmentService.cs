@@ -47,7 +47,7 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        // Author: DucBM
+      
         public Appointment GetSingleById(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -60,7 +60,7 @@ namespace eLTMS.BusinessLogic.Services
             var result = appRepo.GetAppointmentByCode(code);
             return result;
         }
-        // Author: DucBM
+      
         public Appointment GetResultDoneByAppointmentId(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -68,7 +68,7 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-        // Author: DucBM
+      
         public ResponseObjectDto Create(AppointmentDto appointmentDto)
         {
             var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -136,7 +136,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-        // Author: DucBM
+      
         public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -166,7 +166,7 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetResultByAppCode(appCode);
             return apps;
         }
-
+        
         // Author: DucBM
         public ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
@@ -246,7 +246,7 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-
+        
         // Author: DucBM
         public ResponseObjectDto DeleteAppointment(int appointmentId)
         {
@@ -285,7 +285,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-        // Author: DucBM
+      
         public List<Token> GetAllTokens()
         {
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);

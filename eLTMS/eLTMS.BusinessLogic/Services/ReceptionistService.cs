@@ -14,8 +14,8 @@ namespace eLTMS.BusinessLogic.Services
     {
         bool Add(AppointmentAddDto data);
         bool ChangeIsPaid(int sampleGettingId);
-        List<Appointment> GetAllAppointment();
-        List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId);
+        //List<Appointment> GetAllAppointment();
+        List<AppointmentGetBySampleDto> GetAllBySample(string search, DateTime date, int sampleId);
         int CheckAndDeleteBlood(DateTime dateTime);
         int CheckAndDeleteUrine(DateTime dateTime);
         int CheckAndDeleteCell(DateTime dateTime);
@@ -94,6 +94,7 @@ namespace eLTMS.BusinessLogic.Services
         //ten ten
         public bool Add(AppointmentAddDto data)
         {
+            var rs = false;
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var accRepo = RepositoryHelper.GetRepository<IAccountRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -101,19 +102,6 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             try
             {
-                //tao account
-                //accRepo.Create(new Account
-                //{
-                //    PhoneNumber = data.Phone,
-
-                //    //passWord default: qwe123
-                //    Password = "qwe123",
-                //    IsDeleted = false
-                //});
-                //UnitOfWork.SaveChanges();
-
-                //tao benh nhan
-                //var accId = accRepo.GetByPhoneNumber(data.Phone).AccountId;
                 paRepo.Create(new Patient
                 {
                     //AccountId = accId,
@@ -154,6 +142,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
 
                 }
@@ -173,6 +162,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.TeBaoHoc == true)
@@ -189,6 +179,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.Phan == true)
@@ -205,6 +196,7 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
                 if (data.Dich == true)
@@ -221,28 +213,29 @@ namespace eLTMS.BusinessLogic.Services
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
                         });
+                        rs = true;
                     }
                 }
 
                 UnitOfWork.SaveChanges();
             }
             catch (Exception ex) { return false; }
-            return true;
+            return rs;
         }
 
-        //ten ten
-        public List<Appointment> GetAllAppointment()
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetAllApp();
-            //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            //foreach(var app in apps)
-            //{
-            //    app.SampleGettings= sampleGettingRepo.GetAll().Where(p=>p.Appointment.ap)
-            //}
-            return apps;
-        }
-        //ten ten
+        //public List<Appointment> GetAllAppointment()
+        //{
+        //    var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+        //    var apps = appRepo.GetAllApp();
+        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+        //    //foreach(var app in apps)
+        //    //{
+        //    //    app.SampleGettings= sampleGettingRepo.GetAll().Where(p=>p.Appointment.ap)
+        //    //}
+        //    return apps;
+        //}
+
+
         public class TableAndSlotId
         {
             public int tableId { get; set; }
@@ -320,7 +313,7 @@ namespace eLTMS.BusinessLogic.Services
             return null;
         }
 
-        public List<AppointmentGetBySampleDto> GetAllBySample(DateTime date, int sampleId)
+        public List<AppointmentGetBySampleDto> GetAllBySample(string search, DateTime date, int sampleId)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -350,11 +343,6 @@ namespace eLTMS.BusinessLogic.Services
                 spSg = p,
                 slot = c
             });
-            //var spSgSlotTable = spSgSlots.Join(tables, p => p.spSg.sg.TableId, c => c.TableId, (p, c) => new
-            //{
-            //    spSgSlot = p,
-            //    table = c
-            //});
             var count = 1;
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
             //var result = spSgSlotTable.Join(appPas, p => p.spSgSlot.spSg.sg.AppointmentId,
@@ -373,6 +361,13 @@ namespace eLTMS.BusinessLogic.Services
                     IsPaid = p.spSg.sg.IsPaid
 
                 }).ToList();
+            result = result.Where(p => p.StartTime.ToString().Contains(search)
+            || p.SampleGettingId.ToString().Contains(search)
+            || p.Phone.ToString().Contains(search)
+            || p.PatientName.ToString().Contains(search)
+            || p.Phone.ToString().Contains(search)
+            )
+                .ToList();
             return result;
         }
 
