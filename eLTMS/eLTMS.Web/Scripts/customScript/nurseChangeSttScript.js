@@ -9,8 +9,33 @@ var homeController = {
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
+
     checkIsGot: function (SampleGettingId) {
-        homeController.ChangeIsGot(SampleGettingId);
+
+        var modalConfirm = function (callback) {
+
+            $("#mi-modal").modal('show');
+
+            $("#modal-btn-si").on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                homeController.ChangeIsGot(SampleGettingId);
+            }
+            else {
+                homeController.loadDataBySample();
+            }
+        });
+        
     },
 
     formatDate: function (date) {
@@ -35,60 +60,13 @@ var homeController = {
             homeController.loadDataBySample();
         });
 
-        //$('#cbIsGot').change(function () {
-        //    $('#cbIsGot').val($(this).is(':checked'));
-        //});
-
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadDataBySample(true);
         });
 
-        $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            homeController.loadData(true);
-        });
-
-
     },
     
-    //loadDetail: function (id) {
-    //    $.ajax({
-    //        url: '/WareHouse/SupplyDetail',
-    //        data: {
-    //            id: id
-    //        },
-    //        type: 'GET',
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            if (response.sucess) {
-    //                var data = response.data;
-    //                $('#txtSupplyId').val(data.SuppliesId);
-    //                $('#txtCode').val(data.SuppliesCode);
-    //                $('#txtName').val(data.SuppliesName);
-    //                $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-    //                $('#ddlSupplyUnit').val(data.Unit).change();
-    //                $('#txtNote').val(data.Note);
-
-    //            }
-    //            else {
-    //                bootbox.alert(response.message);
-    //            }
-    //        },
-    //        error: function (err) {
-    //            console.log(err);
-    //        }
-    //    });
-    //},
-    saveData: function () {
-
-    },
-    
-    
-
-
     //change page
-
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -117,12 +95,12 @@ var homeController = {
     loadDataBySample: function (changePageSize) {
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
-
+        var searchData = $("#txtSearch").val();
         $.ajax({
             url: '/nurse/GetAppBySample',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate, search: searchData },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;

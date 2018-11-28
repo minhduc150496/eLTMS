@@ -3,6 +3,7 @@ using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
+using eLTMS.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,21 +44,6 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
-        //[HttpGet]
-        //public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )
-        //{
-        //    var queryResult = _receptionistService.GetAllAppointment();
-        //    var totalRows = queryResult.Count();
-        //    var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-        //    return Json(new
-        //    {
-        //        success = true,
-        //        data = result,
-        //        total = totalRows
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
 
         [HttpGet]
         public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)
@@ -137,6 +123,29 @@ namespace eLTMS.Web.Controllers
         public JsonResult IsPaid(int sampleGettingId)
         {
             var result = _receptionistService.ChangeIsPaid(sampleGettingId);
+            if (result == true)
+            {
+                var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Đã thanh toán. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             return Json(new
             {
                 success = result

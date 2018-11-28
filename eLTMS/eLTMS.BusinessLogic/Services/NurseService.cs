@@ -13,7 +13,7 @@ namespace eLTMS.BusinessLogic.Services
     public interface INurseService
     {
         bool ChangeIsGot(int sampleGettingId);
-        List<SampleGettingForNurseBySampleDto> GetAllBySample(DateTime date, int sampleId);
+        List<SampleGettingForNurseBySampleDto> GetAllBySample(string search, DateTime date, int sampleId);
     }
     class NurseService : INurseService
     {
@@ -54,7 +54,7 @@ namespace eLTMS.BusinessLogic.Services
 
         }
 
-        public List<SampleGettingForNurseBySampleDto> GetAllBySample(DateTime date, int sampleId)
+        public List<SampleGettingForNurseBySampleDto> GetAllBySample(string search, DateTime date, int sampleId)
         {
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
             var paRepo = RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
@@ -105,6 +105,13 @@ namespace eLTMS.BusinessLogic.Services
                     IsGot = p.spSg.sg.IsGot
 
                 }).ToList();
+            result = result.Where(p => p.StartTime.ToString().Contains(search)
+            || p.SampleGettingId.ToString().Contains(search)
+            || p.Date.ToString().Contains(search)
+            || p.PatientName.ToString().Contains(search)
+            || p.SampleGettingId.ToString().Contains(search)
+            )
+                .ToList();
             return result;
         }
 

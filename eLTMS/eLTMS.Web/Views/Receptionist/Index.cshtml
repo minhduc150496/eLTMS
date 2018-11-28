@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment";
+    ViewBag.Title = "Appointment For Receptionist";
     Layout = "~/Views/Shared/_LayoutPageWarehouseManagement.cshtml";
 }
 <style>
@@ -427,7 +427,7 @@
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">
-                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} @*onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})"*@ onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
+                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
                 <span class="slider round"></span>
             </label>
 
@@ -436,20 +436,8 @@
     </tr>
 </script>
 
-<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+
 <script>
-
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyD4vUTkPWkpHoPRph_C66gJLrYwjG8UAcs",
-    authDomain: "deleteappointment.firebaseapp.com",
-    databaseURL: "https://deleteappointment.firebaseio.com",
-    projectId: "deleteappointment",
-    storageBucket: "deleteappointment.appspot.com",
-    messagingSenderId: "406518127356"
-  };
-  firebase.initializeApp(config);
-
     $( document ).ready(function() {
         var autoDeleteBlood = setInterval(function(){
             var date = new Date();
@@ -463,14 +451,14 @@
                     data: { dateTime: date.toISOString() }, 
                     success: function (response) {
                         if(response.success >0){
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn');
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm máu');
                             homeController.loadDataBySample();
                         }
                     }
                 });
-            //clearInterval(getTimeRight);
             }
-        }, 1000);
+        }, 1000);//1000 => mỗi giây lặp lại hàm
+
         var autoDeleteUrine = setInterval(function () {
             var date = new Date();
             console.log(date.getMinutes() + '-' + date.getSeconds());
@@ -483,14 +471,72 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn');
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm nước tiểu');
                             homeController.loadDataBySample();
                         }
                     }
                 });
-                //clearInterval(getTimeRight);
             }
         }, 1000);
+
+        var autoDeleteCell = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/receptionist/CheckNDeleteCell',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm tế bào');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+        var autoDeleteMucus = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/receptionist/CheckNDeleteMucus',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm dịch');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+        var autoDeletePhan = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 15 || date.getMinutes() == 30 || date.getMinutes() == 45) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/receptionist/CheckNDeletePhan',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm phân');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+
     });
 </script>
 

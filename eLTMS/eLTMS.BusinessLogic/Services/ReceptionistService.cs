@@ -21,6 +21,8 @@ namespace eLTMS.BusinessLogic.Services
         int CheckAndDeleteCell(DateTime dateTime);
         int CheckAndDeleteMucus(DateTime dateTime);
         int CheckAndDeletePhan(DateTime dateTime);
+        List<Token> GetAllTokens();
+
         //DUCBM
         List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId);
     }
@@ -114,8 +116,9 @@ namespace eLTMS.BusinessLogic.Services
                     IsDeleted = false
                 });
                 UnitOfWork.SaveChanges();
+                
                 //tao cuoc hen
-                var paId = paRepo.GetFirst(p => p.IdentityCardNumber == data.IdentityCardNumber).PatientId;
+                var paId = paRepo.GetFirst(p => p.IdentityCardNumber == data.IdentityCardNumber).PatientId;//lấy Id bệnh nhân  dựa vào cmnd
                 var appCode = CreateAppReturnCode(new Appointment
                 {
                     PatientId = paId,
@@ -123,8 +126,9 @@ namespace eLTMS.BusinessLogic.Services
                     IsDeleted = false
                 });
                 UnitOfWork.SaveChanges();
+
                 //xep lich hen cho tung loai xet nghiem
-                var appId = appRepo.GetFirst(p => p.AppointmentCode == appCode).AppointmentId;
+                var appId = appRepo.GetFirst(p => p.AppointmentCode == appCode).AppointmentId;//
                 if (data.Mau == true)
                 {
                     //tim slot va ban trong
@@ -223,19 +227,6 @@ namespace eLTMS.BusinessLogic.Services
             return rs;
         }
 
-        //public List<Appointment> GetAllAppointment()
-        //{
-        //    var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-        //    var apps = appRepo.GetAllApp();
-        //    //var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-        //    //foreach(var app in apps)
-        //    //{
-        //    //    app.SampleGettings= sampleGettingRepo.GetAll().Where(p=>p.Appointment.ap)
-        //    //}
-        //    return apps;
-        //}
-
-
         public class TableAndSlotId
         {
             public int tableId { get; set; }
@@ -269,7 +260,7 @@ namespace eLTMS.BusinessLogic.Services
                     {
                             return new TableAndSlotId
                             {
-                                //neu co 9 cuoc hen ma co 10 cai ban thi lay cai ban stt la 9(tuc la cai ban thu 10) do c# list dem tu 0
+                                //neu co 9 cuoc hen ma co 10 cai ban thi lay cai ban stt la 9(tuc la cai ban thu 10) 
                                 tableId = tables[sgs.Count].TableId,
                                 slotId = slot.SlotId
                             };
@@ -345,10 +336,9 @@ namespace eLTMS.BusinessLogic.Services
             });
             var count = 1;
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
-            //var result = spSgSlotTable.Join(appPas, p => p.spSgSlot.spSg.sg.AppointmentId,
                 c => c.app.AppointmentId, (p, c) => new AppointmentGetBySampleDto
                 {
-                    StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
+                    StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),//xuất ra string giờ : phút
                     SampleName = p.spSg.sp.SampleName,
                     AppointmentCode = c.app.AppointmentCode,
                     OrderNumber = count++,
@@ -669,6 +659,14 @@ namespace eLTMS.BusinessLogic.Services
             var repo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
             var result = repo.GetBySampleGroupIdForReceptionist(sampleGroupId);
             return result;
+        }
+
+        // Author: DucBM
+        public List<Token> GetAllTokens()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
+            var tokens = repo.GetAll();
+            return tokens;
         }
     }
 }

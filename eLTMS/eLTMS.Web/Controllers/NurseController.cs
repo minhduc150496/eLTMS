@@ -22,7 +22,7 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult Index()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Nurse)) // chi co Manager vs Nurse dc vo coi
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Nurse))
             {
                 return View();
             }
@@ -30,44 +30,12 @@ namespace eLTMS.Web.Controllers
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
         
-        //[HttpGet]
-        //public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
-        //{
-        //    var queryResult = _nurseService.GetSampleGettingsBySampleGroupId(sampleGroupId);
-        //    var totalRows = queryResult.Count();
-        //    var result = Mapper.Map<IEnumerable<SampleGetting>, IEnumerable<SampleGettingForReceptionistDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-        //    return Json(new
-        //    {
-        //        success = true,
-        //        data = result,
-        //        total = totalRows
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
-        //[HttpGet]
-        //public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )
-        //{
-        //    var queryResult = _nurseService.GetAllBySample();
-        //    var totalRows = queryResult.Count();
-        //    var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-        //    return Json(new
-        //    {
-        //        success = true,
-        //        data = result,
-        //        total = totalRows
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
-        public JsonResult GetAllAppointment2()
-        {
-            return null;
-        }
 
         [HttpGet]
-        public JsonResult GetAppBySample(DateTime date, int sampleId, int page=1, int pageSize=20)
+        public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)
         {
             //var queryResult = _receptionistService.GetAppBySample(sampleId);
-            var result = _nurseService.GetAllBySample(date, sampleId);
+            var result = _nurseService.GetAllBySample(search, date, sampleId);
             var totalRows = result.Count();
             //var totalRows = queryResult.Count();
             //var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));

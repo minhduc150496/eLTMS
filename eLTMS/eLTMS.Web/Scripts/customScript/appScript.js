@@ -13,9 +13,7 @@ var homeController = {
     checkIsPaid: function (SampleGettingId) {
         homeController.ChangeIsPaid(SampleGettingId);
     },
-    loadIsPaid: function (IsPaid, SampleGettingId) {
-        var a = 1;
-    },
+    
     formatDate: function (date) {
         var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -29,11 +27,11 @@ var homeController = {
     },
     registerEvent: function () {
 
-        $(".Sample").change(function () {
+        $("#select-sample").change(function () {
             homeController.loadDataBySample();
         });
         
-        $(".Date").change(function () {
+        $("#select-date").change(function () {
             homeController.loadDataBySample();
         });
         
@@ -161,70 +159,15 @@ var homeController = {
             homeController.loadDataBySample(true);
         });
 
-        $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            homeController.loadData(true);
-        });
-        $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
-            $('#myModal').modal('show');
-            var id = $(this).data('id');
-            homeController.loadDetail(id);
-        });
-
-        $('.btn-delete').off('click').on('click', function () {
-            var id = $(this).data('id');
-            homeController.deleteSupply(id);
-
-        });
-
     },
     
-    loadDetail: function (id) {
-        $.ajax({
-            url: '/WareHouse/SupplyDetail',
-            data: {
-                id: id
-            },
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response.sucess) {
-                    var data = response.data;
-                    $('#txtSupplyId').val(data.SuppliesId);
-                    $('#txtCode').val(data.SuppliesCode);
-                    $('#txtName').val(data.SuppliesName);
-                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-                    $('#ddlSupplyUnit').val(data.Unit).change();
-                    $('#txtNote').val(data.Note);
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    },
-    saveData: function () {
-
-    },
+    
     resetForm: function () {
-        $('#txtSupplyId').val('0');
-        $('#txtCode').val('');
-        $('#txtName').val('')
-        $('#ddlSupplyType').val('').change();
-        $('#ddlSupplyUnit').val('').change();
-        $('#txtNote').val('')
-        //$('#txtDateOfBirth').val('');
-        //$('#txtName').val('');
-        //$('#txtCMND').val('');
-        //$('#txtPhone').val('');
-        //$('#txtAddress').val('');
-        //$('#txtNote').val('');
+        $('#txtDateOfBirth').val('');
+        $('#txtName').val('');
+        $('#txtCMND').val('');
+        $('#txtPhone').val('');
+        $('#txtAddress').val('');
     },
     
     paging: function (totalRow, callback, changePageSize) {
@@ -252,7 +195,9 @@ var homeController = {
     },
 
 
+
     loadDataBySample: function (changePageSize) {
+        //chi lấy dữ liệu mà select
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
         var searchData = $("#txtSearch").val();
@@ -264,6 +209,7 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
+                    //do du lieu qua html
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
@@ -278,7 +224,7 @@ var homeController = {
                             Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
                             IsPaid: item.IsPaid,
-                            ReadOnly: (item.IsPaid === true) ? "return false;" : "",
+                            ReadOnly: (item.IsPaid === true) ? "return false;" : "", 
                             Checked: (item.IsPaid === true) ?  "checked" : ""
                         });
 
@@ -293,6 +239,8 @@ var homeController = {
             }
         })
     },
+
+
     ChangeIsPaid: function (SampleGettingId) {
         $.ajax({
             url: '/receptionist/IsPaid',
