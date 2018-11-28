@@ -319,7 +319,8 @@
     </script>
 
     <script>
-        // DucBM
+        // LamNH
+        // Receive notifications from Firebase
 
         var config = {
             apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
@@ -365,6 +366,7 @@
             });
 
         var loadMessage = function (payload) {
+            debugger;
             console.log("Message received. ", payload);
             var nNoti = $("#number-of-noti").html();
             nNoti = parseInt(nNoti) + 1;
