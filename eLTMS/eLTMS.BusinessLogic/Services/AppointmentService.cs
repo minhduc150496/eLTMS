@@ -24,9 +24,9 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
-        bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
+        ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
         bool Update(string code, string con);
-        bool DeleteAppointment(int appointmentId);
+        ResponseObjectDto DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
     public class AppointmentService : IAppointmentService
@@ -166,10 +166,13 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetResultByAppCode(appCode);
             return apps;
         }
-
-      
-        public bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
+        
+        // Author: DucBM
+        public ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             // get existing appointment by AppointmentCode
 
@@ -190,7 +193,6 @@ namespace eLTMS.BusinessLogic.Services
             foreach (var sgDto in sampleGettingDtos)
             {
                 var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                sg.SampleGettingCode = ""; // Need a Formula for this Code !!
                 sg.LabTestings = new List<LabTesting>();
                 sg.Status = "NEW";
                 sg.TableId = 1;
@@ -203,13 +205,24 @@ namespace eLTMS.BusinessLogic.Services
                 }
                 appointment.SampleGettings.Add(sg);
             }
+            try
+            {
+                // update entity
+                appRepo.Update(appointment);
+                // save to DB
+                var result = this.UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                }
+            } catch(Exception ex)
+            {
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
+            }
 
-            // update entity
-            appRepo.Update(appointment);
-            // save to DB
-            this.UnitOfWork.SaveChanges();
-
-            return true;
+            return responseObject;
         }
 
         public bool Update(string code, string con)
@@ -233,24 +246,43 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-
-      
-        public bool DeleteAppointment(int appointmentId)
+        
+        // Author: DucBM
+        public ResponseObjectDto DeleteAppointment(int appointmentId)
         {
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             // get existing appointment by AppointmentCode
             var appointment = appRepo.GetAppointmentById(appointmentId);
             if (appointment == null)
             {
-                return false;
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
             }
-            // assign IsDeleted = true
-            appointment.IsDeleted = true;
-            // update entity
-            appRepo.Update(appointment);
-            // save to DB
-            this.UnitOfWork.SaveChanges();
-            return true;
+            else
+            {
+                // assign IsDeleted = true
+                appointment.IsDeleted = true;
+                // update entity
+                appRepo.Update(appointment);
+                try
+                {
+                    // save to DB
+                    var result = this.UnitOfWork.SaveChanges();
+                    if (result.Any())
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                    }
+                } catch(Exception ex)
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                }
+            }
+            return responseObject;
         }
 
       
