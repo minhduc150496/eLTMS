@@ -23,8 +23,8 @@ namespace eLTMS.Web.Utils
 
         public static void SendNotification(byte[] byteArray)
         {
-            string server_api_key = ConfigurationManager.AppSettings["SERVER_API_KEY"];
-            string sender_id = ConfigurationManager.AppSettings["SENDER_ID"];
+            string server_api_key = ConfigurationManager.AppSettings["SERVER_API_KEY"]; 
+            string sender_id = ConfigurationManager.AppSettings["SENDER_ID"]; 
 
             WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
             tRequest.Method = "POST";

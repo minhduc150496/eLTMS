@@ -334,7 +334,7 @@
 
         const messaging = firebase.messaging();
         messaging
-            .requestPermission()
+            .requestPermission() //Firebase
             .then(function () {
                 console.log("Notification permission granted.");
 
@@ -387,7 +387,7 @@
             // Toastr
             toastr["success"](payload.data.message);
           
-            //Reload table
+            //Reload table ajax
             homeController.loadDataBySample();
         
         }
