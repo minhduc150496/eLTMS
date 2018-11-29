@@ -363,7 +363,8 @@ var homeController = {
                         }
 
                     }
-                    else {
+                    else 
+                        /*
                         $.ajax({
                             url: '/LabTest/UpdateLabTesting',
                             type: 'Post',
@@ -380,7 +381,7 @@ var homeController = {
                                     homeController.loadDataLabTestingResult();
                                 }
                             }
-                        })
+                        })/**/
                     }
                 }
             })
