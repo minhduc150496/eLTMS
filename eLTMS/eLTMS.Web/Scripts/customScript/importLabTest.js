@@ -362,27 +362,11 @@ var homeController = {
                             toastr.error(res.validation.Errors[0].ErrorMessage);
                         }
 
-                    }
-                    else 
-                        /*
-                        $.ajax({
-                            url: '/LabTest/UpdateLabTesting',
-                            type: 'Post',
-                            dataType: 'json',
-                            data: { labTesting: allData },
-                            async: false,
-                            success: function (res) {
-                                if (!res.success) {
-                                    toastr.success("Nhận xét không thành công.");
-
-                                }
-                                else {
-                                    toastr.success("Nhận xét thành công.");
-                                    homeController.loadDataLabTestingResult();
-                                }
-                            }
-                        })/**/
-                    }
+                    } toastr.success("Chẩn đoán thành công.");
+                  
+                    $('#myModalLabTestingResult').modal('hide');
+                    location.reload();
+                    
                 }
             })
         })
@@ -473,7 +457,9 @@ var homeController = {
                         $(newRow).find('.colStatus').text(item.Status);
                         $(newRow).find('.colNomal').text(item.Normal);
                         $(newRow).find('.colUnit').text(item.Unit);
-                        
+                        if (item.Status == 'L' || item.Status == 'H') {
+                            $(newRow).addClass('alertQuanity');
+                        }
                     });
 
                     var allRows = $('.data-row');
