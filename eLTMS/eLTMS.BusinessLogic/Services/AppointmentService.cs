@@ -255,6 +255,15 @@ namespace eLTMS.BusinessLogic.Services
                 // modify SampleGettings property               
                 appointment.Conclusion = con;
                 appointment.Status = "DOCTORDONE";
+
+                foreach(var sg in appointment.SampleGettings)
+                {
+                    foreach(var lt in sg.LabTestings)
+                    {
+                        lt.Status = "DOCTORDONE";
+                    }
+                }
+
                 // update entity
                 appRepo.Update(appointment);
                 // save to DB
