@@ -255,8 +255,9 @@ namespace eLTMS.BusinessLogic.Services
                 // modify SampleGettings property               
                 appointment.Conclusion = con;
                 appointment.Status = "DOCTORDONE";
+                appointment.ReturnTime = DateTime.Now;
 
-                foreach(var sg in appointment.SampleGettings)
+                foreach (var sg in appointment.SampleGettings)
                 {
                     foreach(var lt in sg.LabTestings)
                     {

@@ -57,8 +57,11 @@
                         foreach (var labTesting in sample.LabTestings)
                         {
                             <tr>
-                                <td>NFC(C.B.C)(CÔNG THỨC MÁU)</td>
-                                <td>*</td>
+                                <td style="font-weight: bold;">
+                                    <br />
+                                    @(labTesting.LabTestName)
+                                </td>
+                                <td><br />*</td>
                                 <td></td>
                             </tr>
                             foreach (var index in labTesting.LabTestingIndexes)
