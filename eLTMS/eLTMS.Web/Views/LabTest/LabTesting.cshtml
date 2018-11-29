@@ -128,7 +128,6 @@
                                 <th>Mẫu xét nghiệm</th>
                                 <th>Trạng thái</th>
                                 <th>Vị trí</th>
-                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody id="tblDataLabTesting"></tbody>
@@ -154,10 +153,10 @@
         <td>{{Group}}</td>
         <td>{{Status}}</td>
         <td>{{Slot}}</td>
-        <td>
-            <button class="btn btn-danger btn-deleteSampleGroup" data-id="{{LabTestingId}}"><i class="fa fa-trash"></i></button>
+        @*<td>
+            <button class="btn btn-danger btn-changeLabtestingStatus" data-id="{{LabTestingId}}"><i class="fa fa-pencil"></i></button>
 
-        </td>
+        </td>*@
     </tr>
 </script>
 

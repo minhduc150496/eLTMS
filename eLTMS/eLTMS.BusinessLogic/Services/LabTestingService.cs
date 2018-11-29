@@ -17,8 +17,10 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllResult();
         bool Update(List<LabTesting> labTesting);
+        bool UpdateFail(int id);
         bool UpdateStatus(List<LabTesting> labTesting);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
+        LabTesting GetLabTesting(int id);
     }
 
     public class LabTestingService : ILabTestingService
@@ -31,7 +33,13 @@ namespace eLTMS.BusinessLogic.Services
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
         }
-        public bool Update(List<LabTesting> labTesting)
+        public LabTesting GetLabTesting(int id)
+        {
+            var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = labTestingRepo.GetById(id);
+            return labTesting;
+        }
+            public bool Update(List<LabTesting> labTesting)
         {
             var repo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
 
@@ -106,7 +114,40 @@ namespace eLTMS.BusinessLogic.Services
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
             var labTesting = repo.GetAllLabTestingResult();
+            var dupplicatedCode = labTesting
+               .GroupBy(x => x.SampleGetting.Appointment.AppointmentCode)
+               .Where(x => x.Count() > 1)
+               .Select(x => x.Key);
+
+            // list labtesting id  bị xóa
+            List<int> removeLabTestingIds = new List<int>();
+            foreach (var item in dupplicatedCode)
+            {
+                var dupplicatedAppointment = labTesting.Where(x => x.SampleGetting.Appointment.AppointmentCode == item).Skip(1).Select(x => x.LabTestingId).ToList();
+                removeLabTestingIds.AddRange(dupplicatedAppointment);
+
+            }
+            // insert 1 list  bị xóa, xong xóa 1 lần.
+            labTesting.RemoveAll(x => removeLabTestingIds.Contains(x.LabTestingId));
             return labTesting;
+        }
+        public bool UpdateFail(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+
+            try
+            {
+                var labtesting = repo.GetLabTestingById(id);
+                labtesting.Status = "FAIL";
+                repo.Update(labtesting);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
         public List<LabTesting> GetAllResult()
         {

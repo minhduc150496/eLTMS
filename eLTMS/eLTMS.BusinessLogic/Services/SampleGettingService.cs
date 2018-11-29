@@ -16,6 +16,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         SampleGetting GetByCodeForNurse(string code);
         bool UpdateStatusNurseDone(int id);
+        SampleGetting GetSampleGetting(int id);
     }
     public class SampleGettingService : ISampleGettingService
     {
@@ -34,7 +35,12 @@ namespace eLTMS.BusinessLogic.Services
             var result = repo.GetByCodeForNurse(code);
             return result;
         }
-
+        public SampleGetting GetSampleGetting(int id)
+        {
+            var repo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var result = repo.GetById(id);
+            return result;
+        }
         public bool UpdateStatusNurseDone(int id)
         {
             var sampleGettingRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);

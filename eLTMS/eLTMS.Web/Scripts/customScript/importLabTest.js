@@ -334,8 +334,30 @@ var homeController = {
             homeController.loadDataLabTestingIndexHaveLabtestingId(id);
             $('#lblPopupTitle').text('Danh sách các yêu cầu xét nghiệm');
             $('#myModalLabTestingIndexResult1').modal('show');
-     
+            $('#txtLabtestingFailID').val(id);
         });
+
+        $('#btnAgain').off('click').on('click', function () {
+            var id = $('#txtLabtestingFailID').val();            
+            $.ajax({
+                url: '/LabTest/UpdateLabTestingFail',
+                type: 'Post',
+                dataType: 'json',
+                data: { id:id },
+                success: function (res) {
+                    if (!res.sucess) {
+                        if (res.validation && res.validation.Errors) {
+                            toastr.error(res.validation.Errors[0].ErrorMessage);
+                        }
+
+                    } toastr.success("Thành công.");
+
+                    $('#myModalLabTestingResult').modal('hide');
+                    location.reload();
+
+                }
+            })
+        })
         $('#btnAddNewResult').off('click').on('click', function () {
             var ids = "" + $(this).data('ids') + "" ;
             var listId = ids.split(',');
@@ -387,12 +409,11 @@ var homeController = {
                 $('.data-row').remove();
                 $.ig.excel.Workbook.load(buffer, function (workbook) {
                     for (var a = 0; a < 10; a++) {
-                    var column, row, newRow, cellValue, columnIndex, i,
-                        worksheet = workbook.worksheets(a),
-                        columnsNumber = 0,
-                        gridColumns = [],
-                        data = [],
-                        worksheetRowsCount;
+                        var column, row, newRow, cellValue, columnIndex, i,
+                            worksheet = workbook.worksheets(a),
+                            columnsNumber = 0,
+                            gridColumns = [],
+                            data = [];
 
                     // Both the columns and rows in the worksheet are lazily created and because of this most of the time worksheet.columns().count() will return 0
                     // So to get the number of columns we read the values in the first row and count. When value is null we stop counting columns:
