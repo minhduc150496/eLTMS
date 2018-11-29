@@ -3,7 +3,7 @@
 */
 
 CONFIG = {
-    PATIENT_ID: 71, // hard code for dev-ing
+    PATIENT_ID: 145, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
     IS_UPDATE: false,
 };

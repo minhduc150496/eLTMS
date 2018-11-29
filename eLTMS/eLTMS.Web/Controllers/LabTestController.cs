@@ -358,7 +358,8 @@ namespace eLTMS.Web.Controllers
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Ngày sinh: </strong>{item2.DateOB.ToString("dd-MM-yyyy")}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
-                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{item2.Gender}</td></tr>");
+                var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h2>{item2.Conclusion}</h2>");
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);

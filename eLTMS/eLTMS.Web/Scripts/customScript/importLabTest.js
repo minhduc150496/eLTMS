@@ -363,7 +363,7 @@ var homeController = {
                         }
 
                     }
-                    else 
+                    else {
                         /*
                         $.ajax({
                             url: '/LabTest/UpdateLabTesting',
