@@ -96,27 +96,29 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="lblPopupTitle">Kết quả xét nghiệm</h4>
             </div>
+            <input type="hidden" class="form-control" id="txtLabtestingFailID" name="txtLabtestingFailID" value="0">
+            <button class="btn btn-danger" id="btnAgain">Cần làm xét nghiệm lại</button>
             <div class="modal-body">
-              
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Labtesting ID</th>
-                                <th>Index Name</th>
-                                <th>Index Value</th>
-                                <th>Trạng Thái</th>
-                                <th>Mức Trung Bình</th>
-                                <th>Đơn Vị</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tblDataLabTestingIndexResult1"></tbody>
-                    </table>
-                    <div style="margin-left:35%" id="pagination" class="pagination"></div>
-   
+
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Labtesting ID</th>
+                            <th>Index Name</th>
+                            <th>Index Value</th>
+                            <th>Trạng Thái</th>
+                            <th>Mức Trung Bình</th>
+                            <th>Đơn Vị</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDataLabTestingIndexResult1"></tbody>
+                </table>
+                <div style="margin-left:35%" id="pagination" class="pagination"></div>
+
             </div>
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-default" id="btnClose"data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" id="btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
 

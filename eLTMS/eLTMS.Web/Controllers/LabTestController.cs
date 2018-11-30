@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using eLTMS.Models.Enums;
+using eLTMS.Web.Utils;
 
 namespace eLTMS.Web.Controllers
 {
@@ -17,19 +18,23 @@ namespace eLTMS.Web.Controllers
     {
         //private readonly IExportPaperService _exportPaperService;
         private readonly ISampleService _sampleService;
+        private readonly ISampleGettingService _sampleGettingService;
         private readonly ISampleGroupService _sampleGroupService;
         private readonly ILabTestService _labTestService;
+        private readonly IPatientService _patientService;
         private readonly ILabTestingService _labTestingService;
         private readonly ILabTestingIndexService _labTestingIndexService;
         private readonly IAppointmentService _appointmentService;
         private readonly IHospitalSuggestionService _hospitalSuggestionService;
-        public LabTestController(IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        public LabTestController(ISampleGettingService sampleGettingService,IPatientService patientService, IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._appointmentService = appointmentService;
             this._labTestingService = labTestingService;
             this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
+            this._sampleGettingService = sampleGettingService;
+            this._patientService = patientService;
             this._sampleGroupService = sampleGroupService;
             this._hospitalSuggestionService = hospitalSuggestionService;
         }
@@ -204,6 +209,45 @@ namespace eLTMS.Web.Controllers
         public JsonResult UpdateLabTest(LabTest labTest)
         {
             var result = _labTestService.Update(labTest);
+            return Json(new
+            {
+                sucess = result
+            });
+        }
+        [HttpPost]
+        public JsonResult UpdateLabTestingFail(int id)
+        {
+            var result = _labTestingService.UpdateFail(id);
+            var result1 = _labTestingService.GetLabTesting(id);
+            var s = result1.SampleGettingId;
+            var x = _sampleGettingService.GetSampleGetting(int.Parse(s.ToString()));
+            var z = x.AppointmentId; var m = x.SampleId; var n = _sampleService.GetSampleById(int.Parse(m.ToString()));
+            var r = _appointmentService.GetSingleById(int.Parse(z.ToString()));
+            var l = r.PatientId;
+            var result3 =_patientService.GetPatientById(int.Parse(l.ToString()));
+            if (result==true)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Bệnh nhân: " + result3.FullName + " ĐT:" + result3.PhoneNumber + " Cần làm lại xét nghiệm: " + n.SampleName,
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             return Json(new
             {
                 sucess = result
