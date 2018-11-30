@@ -336,7 +336,6 @@ var homeController = {
             $('#myModalLabTestingIndexResult1').modal('show');
             $('#txtLabtestingFailID').val(id);
         });
-
         $('#btnAgain').off('click').on('click', function () {
             var id = $('#txtLabtestingFailID').val();            
             $.ajax({

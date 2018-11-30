@@ -11,6 +11,8 @@ namespace eLTMS.Models.Models.dto
         public string LabTestName { get; set; }
 
         public List<LabTestingIndexDto> LabTestingIndexDtos { get; set; }
+        public string PatientName { get; set; } // Status (length: 20)
+        public string PatientPhone { get; set; } // Status (length: 20)
         public int LabTestingId { get; set; } // LabTestingID (Primary key)
         public int? LabTestId { get; set; } // LabTestID
         public string AppointmentCode { get; set; } // AppointmentCode (length: 20)

@@ -245,6 +245,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
                 .ForMember(dst => dst.MachineSlot, src => src.MapFrom(x => x.MachineSlot))
+                 .ForMember(dst => dst.PatientPhone, src => src.MapFrom(x => x.SampleGetting.Appointment.Patient.PhoneNumber))
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.SampleGetting.Appointment.Patient.FullName))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
 
                 cfg.CreateMap<Slot, SlotDto>();

@@ -36,11 +36,11 @@ var homeController = {
                 async: false,
                 success: function (res) {
                     if (!res.success) {
-                        toastr.success("Nhận xét không thành công.");
+                        toastr.success("Chẩn đoán không thành công.");
 
                     }
                     else {
-                        toastr.success("Nhận xét thành công.");
+                        toastr.success("Chẩn đoán thành công.");
                         homeController.loadDataLabTestingResult();
                     }
                 }

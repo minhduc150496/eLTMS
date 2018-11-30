@@ -14,10 +14,12 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAll();
         List<LabTesting> GetAllLabTestingDate(string date);
         List<LabTesting> GetAllLabTesting();
+        List<LabTesting> GetAllLabTestingFail();
         List<LabTesting> GetAllLabTestingResult();
         List<LabTesting> GetAllResult();
         bool Update(List<LabTesting> labTesting);
         bool UpdateFail(int id);
+        bool Delete(int id);
         bool UpdateStatus(List<LabTesting> labTesting);
         List<LabTesting> GetAllLabTestingHaveAppointmentCode(String code);
         LabTesting GetLabTesting(int id);
@@ -98,6 +100,12 @@ namespace eLTMS.BusinessLogic.Services
             var labTesting = repo.GetAllLabTestings();
             return labTesting;
         }
+        public List<LabTesting> GetAllLabTestingFail()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var labTesting = repo.GetAllLabTestingsFail();
+            return labTesting;
+        }
         public List<LabTesting> GetAllLabTestingDate(string date)
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
@@ -130,6 +138,24 @@ namespace eLTMS.BusinessLogic.Services
             // insert 1 list  bị xóa, xong xóa 1 lần.
             labTesting.RemoveAll(x => removeLabTestingIds.Contains(x.LabTestingId));
             return labTesting;
+        }
+        public bool Delete(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+
+            try
+            {
+                var labtesting = repo.GetLabTestingById(id);
+                labtesting.IsDeleted=true;
+                repo.Update(labtesting);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
         public bool UpdateFail(int id)
         {

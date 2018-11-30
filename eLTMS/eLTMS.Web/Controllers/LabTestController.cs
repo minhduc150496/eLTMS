@@ -64,6 +64,15 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult LabTestingResult()
         {
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
+        }
+        public ActionResult LabTestingFail()
+        {
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
             {
                 return View();
@@ -71,7 +80,6 @@ namespace eLTMS.Web.Controllers
             var returnUrl = Request.Url.AbsoluteUri;
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
-
         public ActionResult LabTestingDone()
         {
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
@@ -172,7 +180,17 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult GetAllLabTestingsFail()
+        {
+            var queryResult = _labTestingService.GetAllLabTestingFail();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAllLabTestings()
         {
@@ -222,12 +240,14 @@ namespace eLTMS.Web.Controllers
         {
             var result = _labTestingService.UpdateFail(id);
             var result1 = _labTestingService.GetLabTesting(id);
-            var s = result1.SampleGettingId;
-            var x = _sampleGettingService.GetSampleGetting(int.Parse(s.ToString()));
-            var z = x.AppointmentId; var m = x.SampleId; var n = _sampleService.GetSampleById(int.Parse(m.ToString()));
-            var r = _appointmentService.GetSingleById(int.Parse(z.ToString()));
-            var l = r.PatientId;
-            var result3 =_patientService.GetPatientById(int.Parse(l.ToString()));
+            //từ labtesting lấy ra samplegetting
+            var s = result1.SampleGettingId; var sampleGetting = _sampleGettingService.GetSampleGetting(int.Parse(s.ToString()));
+            //từ samplegetting lấy ra appointment
+            var z = sampleGetting.AppointmentId; var appointment = _appointmentService.GetSingleById(int.Parse(z.ToString()));
+            //từ samplegetting lấy ra sample
+            var m = sampleGetting.SampleId; var sample = _sampleService.GetSampleById(int.Parse(m.ToString()));
+            //từ appointment lấy ra patient
+            var l = appointment.PatientId; var patient = _patientService.GetPatientById(int.Parse(l.ToString()));
             if (result==true)
             {
                 var tokens = _appointmentService.GetAllTokens();
@@ -238,7 +258,7 @@ namespace eLTMS.Web.Controllers
                         to = token.TokenString,
                         data = new
                         {
-                            message = "Bệnh nhân: " + result3.FullName + " ĐT:" + result3.PhoneNumber + " Cần làm lại xét nghiệm: " + n.SampleName,
+                            message = "Bệnh nhân: " + patient.FullName + " ĐT:" + patient.PhoneNumber + " Cần làm lại xét nghiệm: " + sample.SampleName,
                         }
                     };
                     try
@@ -344,7 +364,15 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-
+        [HttpPost]
+        public JsonResult DeleteLabTesting(int id)
+        {
+            var result = _labTestingService.Delete(id);
+            return Json(new
+            {
+                success = result
+            });
+        }
         [HttpPost]
         public JsonResult DeleteSample(int id)
         {
