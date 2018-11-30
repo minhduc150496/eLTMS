@@ -23,8 +23,6 @@ namespace eLTMS.BusinessLogic.Services
         int CheckAndDeletePhan(DateTime dateTime);
         List<Token> GetAllTokens();
 
-        //DUCBM
-        List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId);
     }
 
     class CashierService : ICashiertService
@@ -652,13 +650,6 @@ namespace eLTMS.BusinessLogic.Services
                 return 0;
             }
 
-        }
-        // DucBM
-        public List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId)
-        {
-            var repo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
-            var result = repo.GetBySampleGroupIdForReceptionist(sampleGroupId);
-            return result;
         }
 
         // Author: DucBM

@@ -15,7 +15,6 @@ namespace eLTMS.DataAccess.Repositories
         List<SampleGetting> GetAll();
         List<SampleGetting> GetAllIncludeApp();
         List<SampleGetting> GetAll2();
-        List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId); // DucBM
         SampleGetting GetByCodeForNurse(string code); // DucBM
         SampleGetting GetFirst(int sampleId, string gettingDate, int patientId);
     }
@@ -40,18 +39,6 @@ namespace eLTMS.DataAccess.Repositories
                 .Include(p => p.Appointment)
                 .ToList();
             return results;
-        }
-
-        // DucBM
-        public List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId)
-        {
-            var result = DbSet.AsQueryable()
-                .Where(x => x.Sample.SampleGroupId == sampleGroupId && x.IsDeleted == false && x.Appointment.PatientId != null)
-                .Include(x => x.Appointment.Patient)
-                .Include(x => x.Slot)
-                .Include(x => x.Table)
-                .ToList();
-            return result;
         }
 
         // DucBM

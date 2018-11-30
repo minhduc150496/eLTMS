@@ -53,6 +53,7 @@
     <Compile Include="ConstantManager.cs" />
     <Compile Include="Enums\RoleEnum.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\PatientGetByDateTestingDto.cs" />
     <Compile Include="Models\dto\ResponseObjectDto.cs" />
     <Compile Include="Models\dto\SampleGettingForNurseBySampleDto.cs" />
     <Compile Include="Models\dto\SlotOptionDto.cs" />

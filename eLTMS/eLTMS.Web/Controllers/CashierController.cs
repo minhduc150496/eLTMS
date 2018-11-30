@@ -31,19 +31,7 @@ namespace eLTMS.Web.Controllers
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
         
-        [HttpGet]
-        public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
-        {
-            var queryResult = _cashierService.GetSampleGettingsBySampleGroupId(sampleGroupId);
-            var totalRows = queryResult.Count();
-            var result = Mapper.Map<IEnumerable<SampleGetting>, IEnumerable<SampleGettingForReceptionistDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-            return Json(new
-            {
-                success = true,
-                data = result,
-                total = totalRows
-            }, JsonRequestBehavior.AllowGet);
-        }
+       
 
         [HttpGet]
         public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)

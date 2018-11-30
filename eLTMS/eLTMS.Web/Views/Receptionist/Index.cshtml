@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment For Receptionist1";
+    ViewBag.Title = "Appointment For Receptionist";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -65,26 +65,12 @@
         }
 </style>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Bạn có muốn thay đổi</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="modal-btn-no">Không</button>
-                <button type="button" class="btn btn-primary" id="modal-btn-si">Có</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="alert" role="alert" id="result" hidden></div>
 
 <section class="content-header">
     <h1>
-        LẤY MẪU XÉT NGHIỆM
+        THÔNG TIN BỆNH NHÂN
     </h1>
 </section>
 
@@ -101,25 +87,18 @@
 
                     <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
                     <button class="btn btn-success" id="btnSearch">Search</button>
-                    Loại xét nghiệm:
-                    <select class="Sample" id="select-sample">
-                        <option value="1">Máu & Nước tiểu</option>
-                        <option value="3">Tế bào học</option>
-                        <option value="4">Phân</option>
-                        <option value="5">Dịch</option>
-                    </select>
                     Ngày:
                     <input type="date" class="Date" id="select-date" />
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>SampleGetting ID</th>
+                                <th>STT</th>
                                 <th>Họ & tên</th>
-                                <th>Loại xét nghiệm</th>
-                                <th>Ngày</th>
-                                <th>Giờ xét nghiệm</th>
-                                <th>Đã lấy mẫu</th>
-
+                                <th>CMND</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày sinh</th>
+                                <th>Xem chi tiết</th>
                             </tr>
                         </thead>
                         <tbody id="tblData"></tbody>
@@ -136,24 +115,69 @@
 <div style="margin-left:35%" id="pagination" class="pagination">
 </div>
 
+<!--Modal detail ycm-->
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">Thông tin các cuộc hẹn</h4>
+            </div>
+            <div class="modal-body">
+                <table id="example3" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>SampleGetting ID</th>
+                            <th>Tên xét nghiệm</th>
+                            @*<th>Loại xét nghiệm</th>*@
+                            <th>Giờ xét nghiệm</th>
+                            <th>Ngày đặt lịch</th>
+                            <th>Giờ đặt lịch</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblData1"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{SgId}}</td>
+        <td>{{OrderNumber}}</td>
         <td>{{FullName}}</td>
-        <td>{{SampleName}}</td>
-        <td>{{Date}}</td>
-        <td>{{StartTime}}</td>
+        <td>{{ID}}</td>
+        <td>{{Phone}}</td>
+        <td>{{Address}}</td>
+        <td>{{DOBirth}}</td>
         <td>
-            <label class="switch">
-                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} onchange="homeController.checkIsGot({{SgId}})" type="checkbox">
-                <span class="slider round"></span>
-            </label>
-
+            <button class="btn btn-primary btn-editResult" data-id="{{PatientID}}"><i class="fa fa-pencil-square-o"></i></button>
         </td>
-
+        
     </tr>
 </script>
 
-<script src="~/Scripts/customScript/nurseChangeSttScript.js"></script>
+
+<!--Modal detail ycm-->
+<script id="data-template1" type="x-tmpl-mustache">
+    <tr>
+        <td>{{OrderNum}}</td>
+        <td>{{SgId}}</td>
+        <td>{{SampleName}}</td>
+        @*<td>{{LabTesting}}</td>*@
+        <td>{{StartTime}}</td>
+        <td>{{EnterDate}}</td>
+        <td>{{EnterTime}}</td>
+    </tr>
+</script>
+<script src="~/Scripts/customScript/receptionist.js"></script>
 
 

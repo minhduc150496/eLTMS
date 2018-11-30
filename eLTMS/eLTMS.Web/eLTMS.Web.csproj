@@ -240,6 +240,7 @@
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ReceptionistController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -7745,8 +7746,8 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\receptionist.js" />
     <Content Include="Scripts\customScript\nurseChangeSttScript.js" />
-    <Content Include="Scripts\customScript\receptionistSampleGettings.js" />
     <Content Include="Scripts\customScript\appScript.js" />
     <Content Include="Scripts\customScript\employee.js" />
     <Content Include="Scripts\customScript\Feedback.js" />
@@ -7810,10 +7811,9 @@
     <Content Include="Views\Cashier\Index.cshtml" />
     <Content Include="Views\LabTest\LabTestingResult.cshtml" />
     <Content Include="Views\LabTest\LabTestingDone.cshtml" />
-    <Content Include="Views\Cashier\SampleGettings.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Nurse\Index.cshtml" />
-    <Content Include="Views\Receptionist1\Index.cshtml" />
+    <Content Include="Views\Receptionist\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

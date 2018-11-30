@@ -1405,6 +1405,34 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // AccountToken
+    [Table("AccountToken", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class AccountToken
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column(@"AccountTokenID", Order = 1, TypeName = "int")]
+        [Index(@"PK__AccountT__B418767C66418BCC", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Account token ID")]
+        public int AccountTokenId { get; set; } // AccountTokenID (Primary key)
+
+        [Column(@"AccountID", Order = 2, TypeName = "int")]
+        [Required]
+        [Display(Name = "Account ID")]
+        public int AccountId { get; set; } // AccountID
+
+        [Column(@"TokenID", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Token ID")]
+        public int TokenId { get; set; } // TokenID
+
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+    }
+
     // Account
     [Table("Account", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -1515,6 +1543,21 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IdentityCardNumber).IsOptional();
             Property(x => x.FullName).IsOptional();
 
+        }
+    }
+
+    // AccountToken
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class AccountTokenConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<AccountToken>
+    {
+        public AccountTokenConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public AccountTokenConfiguration(string schema)
+        {
+            Property(x => x.IsDeleted).IsOptional();
         }
     }
 
