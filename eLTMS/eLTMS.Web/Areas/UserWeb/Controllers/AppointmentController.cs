@@ -61,7 +61,17 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult AppDetail(string app)
+        {
+            var result = _appointmentService.GetSingleByCode(app);
+            var appointment = Mapper.Map<Appointment, AppointmentDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = appointment
+            }, JsonRequestBehavior.AllowGet);
+        }
         // GET: UserWeb/Appointment/Edit/{apId}
         public ActionResult Edit(int appointmentId)
         {

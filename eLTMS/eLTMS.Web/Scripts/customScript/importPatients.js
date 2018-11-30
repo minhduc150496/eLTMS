@@ -15,6 +15,12 @@ var homeController = {
             homeController.loadDataResult(patientId);
 
         });
+        $('.btn-viewResult').off('click').on('click', function () {
+            var code = $(this).data('id');
+            $('#txtResultCodeView').val(code)
+            $('#hiddenFormView').submit();
+
+        });
         $('#btnClose').off('click').on('click', function () {
 
             $('#txtCode').val('');
@@ -133,7 +139,7 @@ var homeController = {
             $('#myModalHistory').modal('hide');
             $('#myModal1').modal('show');
             var id = $(this).data('id');
-            homeController.loadDataResult(id);
+            homeController.loadAppResult(id);
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
@@ -207,6 +213,21 @@ var homeController = {
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
         $('#avatar').attr('src', '');
+    },
+    loadAppResult: function (id, changePageSize) {
+        $.ajax({
+            url: '/appointment/AppDetail',
+            type: 'GET',
+            dataType: 'json',
+            data: { app: id },
+            success: function (response) {
+                if (response.sucess) {
+                    var data = response.data;
+                    $('#txtResultxx').val(data.Conclusion);
+                    $('#txtAppCodexx').val(data.AppointmentCode);
+                }
+            }
+        })
     },
     loadDataResult: function (id,changePageSize) {
         $.ajax({

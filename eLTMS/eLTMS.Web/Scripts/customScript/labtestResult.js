@@ -12,7 +12,12 @@ var homeController = {
     },
     registerEvent: function () {
 
-       
+        $('.btn-viewResult').off('click').on('click', function () {
+            var code = $(this).data('id');
+            $('#txtResultCodeView').val(code)
+            $('#hiddenFormView').submit();
+
+        });
         
         $('.btn-printResult').off('click').on('click', function () {
             var code = $(this).data('id');
@@ -20,8 +25,28 @@ var homeController = {
             $('#hiddenForm').submit();
 
         });
+        $('.btn-editResult').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Cập nhật thông tin xét nghiệm');
+             $('#myModal1').modal('show');
+            var id = $(this).data('id');
+            homeController.loadDataResult(id);
+        });
     },
-   
+    loadDataResult: function (id, changePageSize) {
+        $.ajax({
+            url: '/appointment/AppDetail',
+            type: 'GET',
+            dataType: 'json',
+            data: { app: id},
+            success: function (response) {
+                if (response.sucess) {
+                    var data = response.data;
+                    $('#txtResultxx').val(data.Conclusion);
+                    $('#txtAppCodexx').val(data.AppointmentCode);
+                }
+            }
+        })
+    },
     loadData: function (changePageSize) {
         $.ajax({
             url: '/LabTest/GetAllResult',
