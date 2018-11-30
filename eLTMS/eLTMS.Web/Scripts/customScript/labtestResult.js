@@ -9,19 +9,124 @@ var homeController = {
     init: function () {
         homeController.registerEvent();
         homeController.loadData();
+        homeController.loadDataLabTestingResultFail();
     },
     registerEvent: function () {
+        $('.btn-deleteLabTestingResultFail').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteLabtesting(id);
+            homeController.loadDataLabTestingResultFail();
 
-       
-        
+        });
+        $('.btn-viewResult').off('click').on('click', function () {
+            var code = $(this).data('id');
+            $('#txtResultCodeView').val(code)
+            $('#hiddenFormView').submit();
+
+        });
+        $('#btnSaveResultLT').off('click').on('click', function () {
+            var code = $('#txtAppCodeLT').val();
+            var con = $('#txtResultLT').val();
+            $.ajax({
+                url: '/LabTest/UpdateResult',
+                type: 'Post',
+                dataType: 'json',
+                data: { code: code, con: con },
+                async: false,
+                success: function (res) {
+                    if (!res.success) {
+                        toastr.success("Chẩn đoán không thành công.");
+
+                    }
+                    else {
+                        toastr.success("Chẩn đoán thành công.");
+                        homeController.loadDataLabTestingResult();
+                    }
+                }
+            })
+        });
         $('.btn-printResult').off('click').on('click', function () {
             var code = $(this).data('id');
             $('#txtResultCode').val(code)
             $('#hiddenForm').submit();
 
         });
+        $('.btn-editResult').off('click').on('click', function () {
+            $('#lblPopupTitle').text('Cập nhật thông tin xét nghiệm');
+             $('#myModal1').modal('show');
+            var id = $(this).data('id');
+            homeController.loadDataResult(id);
+        });
     },
-   
+    deleteLabtesting: function (id) {
+        try {
+            $.ajax({
+                url: '/LabTest/DeleteLabtesting',
+                data: {
+                    id: id
+                },
+                async: false,
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success("Xóa thành công.");
+                    }
+                    else {
+                        toastr.error("Xóa không thành công.");
+                    }
+                }
+            });
+
+        }
+
+        catch (err) {
+            alert(err);
+        }
+
+    },
+    loadDataResult: function (id, changePageSize) {
+        $.ajax({
+            url: '/appointment/AppDetail',
+            type: 'GET',
+            dataType: 'json',
+            data: { app: id},
+            success: function (response) {
+                if (response.sucess) {
+                    var data = response.data;
+                    $('#txtResultLT').val(data.Conclusion);
+                    $('#txtAppCodeLT').val(data.AppointmentCode);
+                }
+            }
+        })
+    },
+    loadDataLabTestingResultFail: function (changePageSize) {
+        $.ajax({
+            url: '/LabTest/GetAllLabTestingsFail',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#dataLabTestingResultFail-template').html();
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            LabtestingID: item.LabTestingId,
+                            Name: item.PatientName,
+                            Phone: item.PatientPhone,
+                            Code: item.AppointmentCode,
+                            Sample: item.LabTestName,
+                        });
+
+                    });
+                    $('#tblDataLabTestingResultFail').html(html);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
     loadData: function (changePageSize) {
         $.ajax({
             url: '/LabTest/GetAllResult',

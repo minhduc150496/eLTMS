@@ -87,8 +87,41 @@
 
     </div>
 </div>
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
 
-<form action="/LabTest/ExportOrderDetailToPdf" style="display:none" id="hiddenForm" method="post"> <input type="text" class="form-control" id="txtResultCode" name="code"></form>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="lblPopupTitle">CHỈNH SỬA NHẬN XÉT</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" id="txtAppCodeLT" name="txtAppCodeLT" value="0">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Chẩn đoán:</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="txtResultLT" name="txtResultLT">
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" id="btnSaveResultLT" class="btn btn-success">Lưu</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<form target="_blank"  action="/LabTest/ViewDetailOnWeb" style="display:none" id="hiddenFormView" method="post"> <input type="text" class="form-control" id="txtResultCodeView" name="code"></form>
+<form action="/LabTest/ExportDetailToPdf" style="display:none" id="hiddenForm" method="post"> <input type="text" class="form-control" id="txtResultCode" name="code"></form>
 <script id="dataLabTestingResult-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Getting}}</td>
@@ -97,8 +130,9 @@
         <td>{{Status}}</td>
         
         <td>
+            <button class="btn btn-primary btn-editResult" data-id="{{Getting}}"><i class="fa fa-pencil-square-o"></i></button>
             <button class="btn btn-success btn-printResult" data-id="{{Getting}}"><i class="fa fa-print"></i></button>
-
+            <button class="btn btn-success btn-viewResult" data-id="{{Getting}}"><i class="fa fa-eye"></i></button>
         </td>
     </tr>
 </script>

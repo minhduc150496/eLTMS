@@ -195,6 +195,12 @@
                                         <a href="@Url.Action("LabTestingDone", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Kết quả</span></a>
                                     </li>
                                 }
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician || roleId == (int)RoleEnum.Doctor || roleId == (int)RoleEnum.Receptionist)
+                                {
+                                    <li @(actionName == "LabTestingFail" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTestingFail", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Cần xét nghiệm lại</span></a>
+                                    </li>
+                                }
                             </ul>
                         </li>
                     }
