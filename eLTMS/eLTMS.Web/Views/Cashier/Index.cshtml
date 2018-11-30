@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment For Receptionist";
+    ViewBag.Title = "Appointment For Cashier";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -66,7 +66,7 @@
 </style>
 <section class="content-header">
     <h1>
-        QUẢN LÝ CUỘC HẸN
+        THÔNG TIN CUỘC HẸN
     </h1>
 </section>
 
@@ -416,11 +416,18 @@
 </div>
 
 
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{OrderNumber}}</td>
-        <td>{{FullName}}</td>
+        <td>
+                    <a href="#" data-toggle="tooltip" title="Tạo tooltip thành công!">{{FullName}}</a>
+        </td>
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
         <td>{{Date}}</td>
@@ -445,7 +452,7 @@
             if((date.getMinutes()==00 || date.getMinutes()==10 || date.getMinutes()==20 || date.getMinutes()==30
                 || date.getMinutes()==40 || date.getMinutes()==50) && date.getSeconds()==0) {
                 $.ajax({
-                    url: '/receptionist/CheckAndDeleteBlood',
+                    url: '/cashier/CheckAndDeleteBlood',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() }, 
@@ -465,7 +472,7 @@
             if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
                 || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
                 $.ajax({
-                    url: '/receptionist/CheckNDeleteUrine',
+                    url: '/cashier/CheckNDeleteUrine',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() },
@@ -484,7 +491,7 @@
             console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
                 $.ajax({
-                    url: '/receptionist/CheckNDeleteCell',
+                    url: '/cashier/CheckNDeleteCell',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() },
@@ -503,7 +510,7 @@
             console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
                 $.ajax({
-                    url: '/receptionist/CheckNDeleteMucus',
+                    url: '/cashier/CheckNDeleteMucus',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() },
@@ -522,7 +529,7 @@
             console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 15 || date.getMinutes() == 30 || date.getMinutes() == 45) && date.getSeconds() == 0) {
                 $.ajax({
-                    url: '/receptionist/CheckNDeletePhan',
+                    url: '/cashier/CheckNDeletePhan',
                     type: 'POST',
                     dataType: 'json',
                     data: { dateTime: date.toISOString() },

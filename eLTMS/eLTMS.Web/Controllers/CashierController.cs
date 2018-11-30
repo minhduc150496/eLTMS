@@ -12,18 +12,18 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Controllers
 {
-    public class ReceptionistController : BaseController
+    public class CashierController : BaseController
     {
-        private readonly IReceptionistService _receptionistService;
+        private readonly ICashiertService _cashierService;
 
-        public ReceptionistController(IReceptionistService receptionistService)
+        public CashierController(ICashiertService cashierService)
         {
-            this._receptionistService = receptionistService;
+            this._cashierService = cashierService;
             //this._importPaperService = importPaperService;
         }
         public ActionResult Index()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Cashier))
             {
                 return View();
             }
@@ -34,7 +34,7 @@ namespace eLTMS.Web.Controllers
         [HttpGet]
         public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
         {
-            var queryResult = _receptionistService.GetSampleGettingsBySampleGroupId(sampleGroupId);
+            var queryResult = _cashierService.GetSampleGettingsBySampleGroupId(sampleGroupId);
             var totalRows = queryResult.Count();
             var result = Mapper.Map<IEnumerable<SampleGetting>, IEnumerable<SampleGettingForReceptionistDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
             return Json(new
@@ -49,7 +49,7 @@ namespace eLTMS.Web.Controllers
         public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)
         {
             //var queryResult = _receptionistService.GetAppBySample(sampleId);
-            var result = _receptionistService.GetAllBySample(search, date, sampleId);
+            var result = _cashierService.GetAllBySample(search, date, sampleId);
             var totalRows = result.Count();
             //var totalRows = queryResult.Count();
             //var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
@@ -64,7 +64,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult AddApp(AppointmentAddDto data)
         {
-            var result = _receptionistService.Add(data);
+            var result = _cashierService.Add(data);
             return Json(new
             {
                 success = result
@@ -74,7 +74,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult CheckAndDeleteBlood(DateTime dateTime)
        {
-            var result = _receptionistService.CheckAndDeleteBlood(dateTime);
+            var result = _cashierService.CheckAndDeleteBlood(dateTime);
             return Json(new
             {
                 success = result
@@ -84,7 +84,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult CheckNDeleteUrine(DateTime dateTime)
         {
-            var result = _receptionistService.CheckAndDeleteUrine(dateTime);
+            var result = _cashierService.CheckAndDeleteUrine(dateTime);
             return Json(new
             {
                 success = result
@@ -94,7 +94,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult CheckNDeleteCell(DateTime dateTime)
         {
-            var result = _receptionistService.CheckAndDeleteCell(dateTime);
+            var result = _cashierService.CheckAndDeleteCell(dateTime);
             return Json(new
             {
                 success = result
@@ -103,7 +103,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult CheckNDeleteMucus(DateTime dateTime)
         {
-            var result = _receptionistService.CheckAndDeleteMucus(dateTime);
+            var result = _cashierService.CheckAndDeleteMucus(dateTime);
             return Json(new
             {
                 success = result
@@ -112,7 +112,7 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult CheckNDeletePhan(DateTime dateTime)
         {
-            var result = _receptionistService.CheckAndDeletePhan(dateTime);
+            var result = _cashierService.CheckAndDeletePhan(dateTime);
             return Json(new
             {
                 success = result
@@ -122,10 +122,10 @@ namespace eLTMS.Web.Controllers
         [HttpPost]
         public JsonResult IsPaid(int sampleGettingId)
         {
-            var result = _receptionistService.ChangeIsPaid(sampleGettingId);
+            var result = _cashierService.ChangeIsPaid(sampleGettingId);
             if (result == true)
             {
-                var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
                 foreach (var token in tokens)
                 {
                     var data = new

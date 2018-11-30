@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eLTMS.BusinessLogic.Services
 {
-    public interface IReceptionistService
+    public interface ICashiertService
     {
         bool Add(AppointmentAddDto data);
         bool ChangeIsPaid(int sampleGettingId);
@@ -27,11 +27,11 @@ namespace eLTMS.BusinessLogic.Services
         List<SampleGetting> GetSampleGettingsBySampleGroupId(int sampleGroupId);
     }
 
-    class ReceptionistService : IReceptionistService
+    class CashierService : ICashiertService
     {
         private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
-        public ReceptionistService(IRepositoryHelper repositoryHelper)
+        public CashierService(IRepositoryHelper repositoryHelper)
         {
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();

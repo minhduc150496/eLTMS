@@ -64,7 +64,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />
     <Compile Include="Services\LabTestingService.cs" />
-    <Compile Include="Services\ReceptionistService.cs" />
+    <Compile Include="Services\CashierService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleGettingService.cs" />
     <Compile Include="Services\SampleService.cs" />
