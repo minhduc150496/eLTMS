@@ -122,7 +122,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appCode = CreateAppReturnCode(new Appointment
                 {
                     PatientId = paId,
-                    Date = DateTime.Now.Date,
+                    //Date = DateTime.Now.Date,
                     IsDeleted = false
                 });
                 UnitOfWork.SaveChanges();

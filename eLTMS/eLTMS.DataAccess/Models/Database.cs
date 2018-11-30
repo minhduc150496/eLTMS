@@ -92,6 +92,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Table name")]
         public string TableName { get; set; } // TableName (length: 10)
 
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -307,6 +311,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample group ID")]
         public int? SampleGroupId { get; set; } // SampleGroupId
 
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -361,10 +369,6 @@ namespace eLTMS.DataAccess.Models
         [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
-
-        [Column(@"NumberOfSlots", Order = 7, TypeName = "int")]
-        [Display(Name = "Number of slots")]
-        public int? NumberOfSlots { get; set; } // NumberOfSlots
 
         // Reverse navigation
 
@@ -688,12 +692,6 @@ namespace eLTMS.DataAccess.Models
         [StringLength(20)]
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
-
-        [Column(@"AvatarURL", Order = 13, TypeName = "nvarchar")]
-        [MaxLength(500)]
-        [StringLength(500)]
-        [Display(Name = "Avatar url")]
-        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
         // Reverse navigation
 
@@ -1381,10 +1379,6 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is paid")]
         public bool? IsPaid { get; set; } // IsPaid
 
-        [Column(@"Date", Order = 14, TypeName = "date")]
-        [Display(Name = "Date")]
-        public System.DateTime? Date { get; set; } // Date
-
         // Reverse navigation
 
         /// <summary>
@@ -1424,54 +1418,48 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int AccountId { get; set; } // AccountID (Primary key)
 
-        [Column(@"Role", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Role")]
-        public string Role { get; set; } // Role (length: 20)
-
-        [Column(@"RoleID", Order = 3, TypeName = "int")]
+        [Column(@"RoleID", Order = 2, TypeName = "int")]
         [Display(Name = "Role ID")]
         public int? RoleId { get; set; } // RoleID
 
-        [Column(@"Email", Order = 4, TypeName = "nvarchar")]
+        [Column(@"Email", Order = 3, TypeName = "nvarchar")]
         [MaxLength(255)]
         [StringLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } // Email (length: 255)
 
-        [Column(@"Password", Order = 5, TypeName = "nvarchar")]
+        [Column(@"Password", Order = 4, TypeName = "nvarchar")]
         [MaxLength(128)]
         [StringLength(128)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } // Password (length: 128)
 
-        [Column(@"PhoneNumber", Order = 6, TypeName = "nvarchar")]
+        [Column(@"PhoneNumber", Order = 5, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
 
-        [Column(@"AvatarURL", Order = 7, TypeName = "nvarchar")]
+        [Column(@"AvatarURL", Order = 6, TypeName = "nvarchar")]
         [MaxLength(500)]
         [StringLength(500)]
         [Display(Name = "Avatar url")]
         public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
-        [Column(@"IsDeleted", Order = 8, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"IdentityCardNumber", Order = 9, TypeName = "nvarchar")]
+        [Column(@"IdentityCardNumber", Order = 8, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
 
-        [Column(@"FullName", Order = 10, TypeName = "nvarchar")]
+        [Column(@"FullName", Order = 9, TypeName = "nvarchar")]
         [MaxLength(50)]
         [StringLength(50)]
         [Display(Name = "Full name")]
@@ -1493,7 +1481,7 @@ namespace eLTMS.DataAccess.Models
         /// <summary>
         /// Parent Role pointed by [Account].([RoleId]) (FK_Account_Role)
         /// </summary>
-        [ForeignKey("RoleId")] public virtual Role Role_RoleId { get; set; } // FK_Account_Role
+        [ForeignKey("RoleId")] public virtual Role Role { get; set; } // FK_Account_Role
 
         public Account()
         {
@@ -1518,7 +1506,6 @@ namespace eLTMS.DataAccess.Models
 
         public AccountConfiguration(string schema)
         {
-            Property(x => x.Role).IsOptional();
             Property(x => x.RoleId).IsOptional();
             Property(x => x.Email).IsOptional();
             Property(x => x.Password).IsOptional();
@@ -1554,7 +1541,6 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsPaid).IsOptional();
-            Property(x => x.Date).IsOptional();
 
         }
     }
@@ -1790,7 +1776,6 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
-            Property(x => x.AvatarUrl).IsOptional();
         }
     }
 
@@ -1886,7 +1871,6 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.OpenTime).IsOptional();
             Property(x => x.CloseTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
-            Property(x => x.NumberOfSlots).IsOptional();
         }
     }
 
@@ -1905,6 +1889,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.FinishTime).IsOptional();
             Property(x => x.SlotName).IsOptional();
             Property(x => x.SampleGroupId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1976,6 +1961,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.SampleGroupId).IsOptional();
             Property(x => x.TableName).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -2008,6 +1994,7 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
+        public System.Boolean? IsDeleted { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -2016,6 +2003,7 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 TableID { get; set; }
         public System.Int32? SampleGroupID { get; set; }
         public System.String TableName { get; set; }
+        public System.Boolean? IsDeleted { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]

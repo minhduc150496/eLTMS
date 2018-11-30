@@ -30,16 +30,16 @@
             <table class="table">
                 <tr>
                     <td>
-                        Họ tên: @(resultDto.PatientName)<br />
-                        Địa chỉ: @(resultDto.PatientAddress)
+                        <b>Họ tên:</b> @(resultDto.PatientName)<br />
+                        <b>Địa chỉ:</b> @(resultDto.PatientAddress)
                     </td>
                     <td>
-                        Năm sinh: @(resultDto.PatientBirthYear)<br />
-                        Phái: @(resultDto.PatientGender == "Male" ? "Nam" : "Nữ")
+                        <b>Năm sinh:</b> @(resultDto.PatientBirthYear)<br />
+                        <b>Phái:</b> @(resultDto.PatientGender == "Male" ? "Nam" : "Nữ")
                     </td>
                     <td>
-                        Ngày ĐK: @(resultDto.EnterTime.ToString("dd-MM-yyyy"))<br />
-                        Giờ ĐK: @(resultDto.EnterTime.TimeOfDay)
+                        <b>Ngày ĐK:</b> @(resultDto.EnterTime.ToString("dd-MM-yyyy"))<br />
+                        <b>Giờ ĐK:</b> @(resultDto.EnterTime.ToString("HH:mm:ss"))
                     </td>
                 </tr>
             </table>

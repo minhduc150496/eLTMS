@@ -184,12 +184,15 @@ namespace eLTMS.DataAccess.Repositories
                 return null;
             }
             sDate = sDate.Trim();
-            var result = DbSet.AsQueryable()
+            var ap = DbSet.AsQueryable()
                 .Where(x => x.AppointmentCode.Contains(sDate))
                 .ToList()
-                .LastOrDefault()
-                .AppointmentCode;
-            return result;
+                .LastOrDefault();
+            if (ap==null)
+            {
+                return null;
+            }
+            return ap.AppointmentCode;
         }
     }
 }

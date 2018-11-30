@@ -1,7 +1,7 @@
 ﻿var CONFIG = {
     pageSize: 10,
     pageIndex: 1,
-    PatientId: 71
+    PatientId: 145
 };
 
 var Controller = {

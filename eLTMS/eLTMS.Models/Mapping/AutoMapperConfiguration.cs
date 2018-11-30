@@ -142,7 +142,6 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.EnterTime, src => src.MapFrom(x => x.EnterTime))
                 .ForMember(dst => dst.ReturnTime, src => src.MapFrom(x => x.ReturnTime))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
-                .ForMember(dst => dst.Date, src => src.MapFrom(x => x.Date))
                 .ForMember(dst => dst.ResultApproved, src => src.MapFrom(x => x.ResultApproved));
 
                 //.ForMember(dst => dst.LabTestingDtos, src => src.MapFrom(x => x.LabTestings));
@@ -225,8 +224,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
                 .ForMember(dst => dst.FullName, src => src.MapFrom(x => x.FullName))
                 .ForMember(dst => dst.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
-                .ForMember(dst => dst.RoleDisplay, src => src.MapFrom(x => GetRoleName(x.Account.Role)))
-                .ForMember(dst => dst.Role, src => src.MapFrom(x => x.Account.Role))
+                .ForMember(dst => dst.RoleDisplay, src => src.MapFrom(x => x.Account.Role.RoleName))
+                .ForMember(dst => dst.Role, src => src.MapFrom(x => x.Account.Role.RoleName))
                 .ForMember(dst => dst.AccountId, src => src.MapFrom(x => x.AccountId))
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Gender))
@@ -264,6 +263,8 @@ namespace eLTMS.Models.Mapping
             });
 
         }
+
+        /*
         private static string GetRoleName(string name)
         {
             if (name == "Y tá")
@@ -299,6 +300,6 @@ namespace eLTMS.Models.Mapping
                 return "";
             }
 
-        }
+        }/**/
     }
 }
