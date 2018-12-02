@@ -67,6 +67,18 @@ namespace eLTMS.DataAccess.Models
         [Key]
         [Display(Name = "Token ID")]
         public int TokenId { get; set; } // TokenID (Primary key)
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child AccountTokens where [AccountToken].[TokenID] point to this entity (FK_AccountToken_Token)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<AccountToken> AccountTokens { get; set; } // AccountToken.FK_AccountToken_Token
+
+        public Token()
+        {
+            AccountTokens = new System.Collections.Generic.List<AccountToken>();
+        }
     }
 
     // Table
@@ -1379,6 +1391,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is paid")]
         public bool? IsPaid { get; set; } // IsPaid
 
+        [Column(@"DoctorComment", Order = 14, TypeName = "nvarchar(max)")]
+        [Display(Name = "Doctor comment")]
+        public string DoctorComment { get; set; } // DoctorComment
+
         // Reverse navigation
 
         /// <summary>
@@ -1410,9 +1426,9 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class AccountToken
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"AccountTokenID", Order = 1, TypeName = "int")]
-        [Index(@"PK__AccountT__B418767C66418BCC", 1, IsUnique = true, IsClustered = true)]
+        [Index(@"PK__AccountT__B418767CA1756B47", 1, IsUnique = true, IsClustered = true)]
         [Required]
         [Key]
         [Display(Name = "Account token ID")]
@@ -1431,6 +1447,18 @@ namespace eLTMS.DataAccess.Models
         [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Account pointed by [AccountToken].([AccountId]) (FK_AccountToken_Account)
+        /// </summary>
+        [ForeignKey("AccountId"), Required] public virtual Account Account { get; set; } // FK_AccountToken_Account
+
+        /// <summary>
+        /// Parent Token pointed by [AccountToken].([TokenId]) (FK_AccountToken_Token)
+        /// </summary>
+        [ForeignKey("TokenId"), Required] public virtual Token Token { get; set; } // FK_AccountToken_Token
     }
 
     // Account
@@ -1496,6 +1524,10 @@ namespace eLTMS.DataAccess.Models
         // Reverse navigation
 
         /// <summary>
+        /// Child AccountTokens where [AccountToken].[AccountID] point to this entity (FK_AccountToken_Account)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<AccountToken> AccountTokens { get; set; } // AccountToken.FK_AccountToken_Account
+        /// <summary>
         /// Child Employees where [Employee].[AccountID] point to this entity (FK__Employee__Accoun__68487DD7)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<Employee> Employees { get; set; } // Employee.FK__Employee__Accoun__68487DD7
@@ -1516,6 +1548,7 @@ namespace eLTMS.DataAccess.Models
             IsDeleted = false;
             PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Employees = new System.Collections.Generic.List<Employee>();
+            AccountTokens = new System.Collections.Generic.List<AccountToken>();
         }
     }
 
@@ -1558,6 +1591,7 @@ namespace eLTMS.DataAccess.Models
         public AccountTokenConfiguration(string schema)
         {
             Property(x => x.IsDeleted).IsOptional();
+
         }
     }
 
@@ -1584,6 +1618,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsPaid).IsOptional();
+            Property(x => x.DoctorComment).IsOptional();
 
         }
     }

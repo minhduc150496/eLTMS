@@ -219,6 +219,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.NormalRange, src => src.MapFrom(x => x.NormalRange))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit));
 
+                cfg.CreateMap<LabTestingIndexDto, LabTestingIndex>();
 
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))
