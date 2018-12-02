@@ -107,14 +107,14 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.Sample.SampleName))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName));
 
-                cfg.CreateMap<SampleGetting, SampleGettingForReceptionistDto>()
-                .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.Appointment.AppointmentCode))
-                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName))
-                .ForMember(dst => dst.PatientAddress, src => src.MapFrom(x => x.Appointment.Patient.HomeAddress))
-                .ForMember(dst => dst.PatientPhone, src => src.MapFrom(x => x.Appointment.Patient.PhoneNumber))
-                .ForMember(dst => dst.TableName, src => src.MapFrom(x => x.Table.TableName))
-                .ForMember(dst => dst.FmStartTime, src => src.MapFrom(x => DateTimeUtils.ConvertSecondToShortHour((int)x.Slot.StartTime)))
-                .ForMember(dst => dst.FmFinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertSecondToShortHour((int)x.Slot.FinishTime)));
+                //cfg.CreateMap<Appointment, SampleGettingForReceptionistDto>()
+                //.ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.Appointment.AppointmentCode))
+                //.ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.Appointment.Patient.FullName))
+                //.ForMember(dst => dst.PatientAddress, src => src.MapFrom(x => x.Appointment.Patient.HomeAddress))
+                //.ForMember(dst => dst.PatientPhone, src => src.MapFrom(x => x.Appointment.Patient.PhoneNumber))
+                //.ForMember(dst => dst.TableName, src => src.MapFrom(x => x.Table.TableName))
+                //.ForMember(dst => dst.EnterTime, src => src.MapFrom(x => (x.EnterTime != null) ? x.EnterTime.Value.ToString("dd-MM-yyyy HH:mm") : ""));
+                //.ForMember(dst => dst.FmFinishTime, src => src.MapFrom(x => DateTimeUtils.ConvertSecondToShortHour((int)x.Slot.FinishTime)));
 
                 cfg.CreateMap<ExportPaper, ExportPaperDto>()
                 .ForMember(dst => dst.ExportPaperId, src => src.MapFrom(x => x.ExportPaperId))

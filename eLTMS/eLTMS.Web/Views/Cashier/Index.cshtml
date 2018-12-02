@@ -1,9 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment";
+    ViewBag.Title = "Appointment For Cashier";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
+
     .switch {
         position: relative;
         display: inline-block;
@@ -66,7 +67,7 @@
 </style>
 <section class="content-header">
     <h1>
-        QUẢN LÝ CUỘC HẸN
+        THÔNG TIN CUỘC HẸN
     </h1>
 </section>
 
@@ -82,23 +83,28 @@
                     <br />
 
                     <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
-                    <button class="btn btn-success" id="btnSearch">Tìm</button>
-                    Phòng xét nghiệm:
+                    <button class="btn btn-success" id="btnSearch">Search</button>
+                    Loại xét nghiệm:
                     <select class="Sample" id="select-sample">
-                        <option value="1">Máu và Nước tiểu</option>
-                        <option value="2">Tế bào học</option>
-                        <option value="3">Phân</option>
-                        <option value="4">Dịch</option>
-                    </select><table id="example2" class="table table-bordered table-hover">
+                        <option value="1">Máu</option>
+                        <option value="2">Nước tiểu</option>
+                        <option value="3">Tế bào học</option>
+                        <option value="4">Phân</option>
+                        <option value="5">Dịch</option>
+                    </select>
+                    Ngày:
+                    <input type="date" class="Date" id="select-date" />
+                    <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Appointment Code</th>
+                                <th>STT</th>
                                 <th>Họ & tên</th>
-                                <th>Địa chỉ</th>
                                 <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày</th>
                                 <th>Giờ xét nghiệm</th>
-                                <th>Bàn</th>
                                 <th>Đã thanh toán</th>
+
                             </tr>
                         </thead>
                         <tbody id="tblData"></tbody>
@@ -163,7 +169,7 @@
                     </div>
                 </form>
                 <form class="form-horizontal" action="/action_page.php">
-                    <div class="form-group">
+                    <div class="form-group" id="mauCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Máu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -296,7 +302,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="nuocTieuCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Nước tiểu</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -316,7 +322,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="teBaoHocCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Tế bào học</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -335,7 +341,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="phanCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Phân</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -354,7 +360,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="dichCheckGroup">
                         <label class="control-label col-sm-2" for="pwd">Dịch</label>
                         <div class="col-sm-10">
                             <table style="width:100%">
@@ -411,30 +417,153 @@
 </div>
 
 
-
-
+<script>
+    $('.myPopover').popover({
+        html: true,
+        content: function () {
+            var elementId = $(this).attr("data-popover-content");
+            return $(elementId).html();
+        }
+    });
+</script>
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
-        <td>{{AppointmentCode}}</td>
-        <td>{{PatientName}}</td>
-        <td>{{PatientAddress}}</td>
-        <td>{{PatientPhone}}</td>
-        <td>{{FmStartTime}} - {{FmFinishTime}}</td>
-        <td>{{TableName}}</td>
+        <td>{{OrderNumber}}</td>
+        <td>
+            <a href="#"
+               class="myPopover"
+               data-toggle="popover"
+               data-placement="right" title="Quick guide"
+               data-trigger="hover"
+               data-html="true"
+               data-popover-content="#myPopoverContent">{{FullName}}</a>
+            <div id="myPopoverContent" style="display:none">
+                <strong>Steps to do..</strong>
+                <ol style="padding:10px">
+                    <li>Download this file</li>
+                    <li>Install the software</li>
+                    <li>Restart your computer</li>
+                </ol>
+            </div>
+        </td>
+        <td>{{Phone}}</td>
+        <td>{{Address}}</td>
+        <td>{{Date}}</td>
+        <td>{{StartTime}}</td>
         <td>
             <label class="switch">
-                <input id="{{SampleGettingId}}" onchange="homeController.checkIsPaid({{SampleGettingId}})" onload="homeController.loadIsPaid({{IsPaid}},{{SampleGettingId}})" type="checkbox">
+                <input id="{{SampleGettingId}}" onclick="{{ReadOnly}}" {{Checked}} onchange="homeController.checkIsPaid({{SampleGettingId}})" type="checkbox">
                 <span class="slider round"></span>
             </label>
-
         </td>
-
     </tr>
 </script>
 
+<!--auto delete app-->
+<script>
+    $(document).ready(function () {
+        var autoDeleteBlood = setInterval(function () {
+            var date = new Date();
+            // console.log(date.getMinutes()+'-'+date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
+                || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/cashier/CheckAndDeleteBlood',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm máu');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);//1000 => mỗi giây lặp lại hàm
+
+        var autoDeleteUrine = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
+                || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/cashier/CheckNDeleteUrine',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm nước tiểu');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+        var autoDeleteCell = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/cashier/CheckNDeleteCell',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm tế bào');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+        var autoDeleteMucus = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/cashier/CheckNDeleteMucus',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm dịch');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
+
+        var autoDeletePhan = setInterval(function () {
+            var date = new Date();
+            console.log(date.getMinutes() + '-' + date.getSeconds());
+            if ((date.getMinutes() == 00 || date.getMinutes() == 15 || date.getMinutes() == 30 || date.getMinutes() == 45) && date.getSeconds() == 0) {
+                $.ajax({
+                    url: '/cashier/CheckNDeletePhan',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { dateTime: date.toISOString() },
+                    success: function (response) {
+                        if (response.success > 0) {
+                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm phân');
+                            homeController.loadDataBySample();
+                        }
+                    }
+                });
+            }
+        }, 1000);
 
 
-@section scripts{
-    <script src="~/Scripts/customScript/receptionistSampleGettings.js"></script>
-}
+    });
+</script>
+
+<script src="~/Scripts/customScript/appScript.js"></script>
+
+

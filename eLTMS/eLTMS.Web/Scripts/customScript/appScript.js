@@ -89,7 +89,7 @@ var homeController = {
                 Dich: dich
             };
             $.ajax({
-                url: '/receptionist/AddApp',
+                url: '/cashier/AddApp',
                 type: 'Post',
                 dataType: 'json',
                 data: item,
@@ -202,7 +202,7 @@ var homeController = {
         var selectDate = $("#select-date").val();
         var searchData = $("#txtSearch").val();
         $.ajax({
-            url: '/receptionist/GetAppBySample',
+            url: '/cashier/GetAppBySample',
             type: 'GET',
             dataType: 'json',
             data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate, search: searchData },
@@ -243,7 +243,7 @@ var homeController = {
 
     ChangeIsPaid: function (SampleGettingId) {
         $.ajax({
-            url: '/receptionist/IsPaid',
+            url: '/cashier/IsPaid',
             type: 'POST',
             dataType: 'json',
             data: { sampleGettingId: SampleGettingId },
