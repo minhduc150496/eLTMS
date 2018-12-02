@@ -25,7 +25,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
         ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
-        bool Update(string code, string con);
+        bool Update(string code, string con,string cmt);
         ResponseObjectDto DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
@@ -245,7 +245,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-        public bool Update(string code, string con)
+        public bool Update(string code, string con,string cmt)
         {
             try
             {
@@ -254,6 +254,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appointment = appRepo.GetAppointmentByCode(code);
                 // modify SampleGettings property               
                 appointment.Conclusion = con;
+                appointment.DoctorComment = cmt;
                 appointment.Status = "DOCTORDONE";
                 appointment.ReturnTime = DateTime.Now;
 

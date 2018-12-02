@@ -106,10 +106,10 @@ namespace eLTMS.Web.Controllers
                 data = patient
             }, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        public JsonResult UpdateResult(string code, string con)
+        [HttpPost, ValidateInput(false)]
+        public JsonResult UpdateResult(string code, string con,string cmt)
         {
-            var result = _appointmentService.Update(code, con);
+            var result = _appointmentService.Update(code, con,cmt);
             return Json(new
             {
                 sucess = result

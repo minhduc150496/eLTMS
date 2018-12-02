@@ -27,11 +27,12 @@ var homeController = {
         $('#btnSaveResultLT').off('click').on('click', function () {
             var code = $('#txtAppCodeLT').val();
             var con = $('#txtResultLT').val();
+            var cmt = $('#txtCMTLT').val();
             $.ajax({
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
                 dataType: 'json',
-                data: { code: code, con: con },
+                data: { code: code, con: con,cmt,cmt },
                 async: false,
                 success: function (res) {
                     if (!res.success) {
@@ -96,6 +97,7 @@ var homeController = {
                     var data = response.data;
                     $('#txtResultLT').val(data.Conclusion);
                     $('#txtAppCodeLT').val(data.AppointmentCode);
+                    $('#txtCMTLT').val(data.DoctorComment);
                 }
             }
         })
