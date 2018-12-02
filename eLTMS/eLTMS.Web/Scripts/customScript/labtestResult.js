@@ -28,7 +28,7 @@ var homeController = {
             var code = $('#txtAppCodeLT').val();
             var con = $('#txtResultLT').val();
             //var cmt = $('#txtCMTLT').val();
-            var cmt = $('#txtCMT').froalaEditor('html.get');
+            var cmt = $('#txtCMTLT').froalaEditor('html.get');
             $.ajax({
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
@@ -99,7 +99,7 @@ var homeController = {
                     $('#txtResultLT').val(data.Conclusion);
                     $('#txtAppCodeLT').val(data.AppointmentCode);
                     //$('#txtCMTLT').val(data.DoctorComment);
-                    $('#txtCMT').froalaEditor('html.get', data.DoctorComment);
+                    $('#txtCMTLT').froalaEditor('html.get', data.DoctorComment);
                 }
             }
         })
