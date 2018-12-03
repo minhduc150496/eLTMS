@@ -99,7 +99,7 @@ var homeController = {
                     $('#txtResultLT').val(data.Conclusion);
                     $('#txtAppCodeLT').val(data.AppointmentCode);
                     //$('#txtCMTLT').val(data.DoctorComment);
-                    $('#txtCMTLT').froalaEditor('html.get', data.DoctorComment);
+                    $('#txtCMTLT').froalaEditor('html.set', data.DoctorComment);
                 }
             }
         })

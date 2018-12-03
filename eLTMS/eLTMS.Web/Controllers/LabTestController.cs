@@ -515,7 +515,7 @@ namespace eLTMS.Web.Controllers
             }
 
             allData = allData.Replace("{{DataResult}}", sb.ToString());
-         //   allData = allData.Replace("{{DataResult1}}", sb1.ToString());
+            allData = allData.Replace("{{DataResult1}}", sb1.ToString());
             allData = allData.Replace("{{DataResult2}}", sb2.ToString());
 
             return new ContentResult {
