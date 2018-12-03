@@ -1395,6 +1395,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Doctor comment")]
         public string DoctorComment { get; set; } // DoctorComment
 
+        [Column(@"IsOnline", Order = 15, TypeName = "bit")]
+        [Display(Name = "Is online")]
+        public bool? IsOnline { get; set; } // IsOnline
+
         // Reverse navigation
 
         /// <summary>
@@ -1619,6 +1623,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsPaid).IsOptional();
             Property(x => x.DoctorComment).IsOptional();
+            Property(x => x.IsOnline).IsOptional();
 
         }
     }
