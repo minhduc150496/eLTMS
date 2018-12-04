@@ -144,12 +144,21 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!--<li class="header">MAIN NAVIGATION</li>-->
 
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Receptionist)
+                    {
+                        <li @(controllerName == "Receptionist" ? "class=active" : "")>
+                            <a href="@Url.Action("", "Receptionist")">
+                                <i class="fa fa-calendar"></i>
+                                <span>Quản lý cuộc hẹn</span>
+                            </a>
+                        </li>
+                    }
                     @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier)
                     {
                         <li @(controllerName == "Cashier" ? "class=active" : "")>
                             <a href="@Url.Action("", "Cashier")">
-                                <i class="fa fa-calendar"></i>
-                                <span>Quản lý cuộc hẹn</span>
+                                <i class="fa fa-dollar"></i>
+                                <span>Thu ngân</span>
                             </a>
                         </li>
                     }
@@ -181,11 +190,11 @@
                                 }
 
                                 @*@if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
-                                {
-                                    <li @(actionName == "LabTesting" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu xét nghiệm</span></a>
-                                    </li>
-                                }*@
+                    {
+                        <li @(actionName == "LabTesting" ? "class=active" : "")>
+                            <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu xét nghiệm</span></a>
+                        </li>
+                    }*@
 
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {

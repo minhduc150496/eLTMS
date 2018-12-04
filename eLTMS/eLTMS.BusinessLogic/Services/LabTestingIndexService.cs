@@ -68,13 +68,20 @@ namespace eLTMS.BusinessLogic.Services
             respObj.Success = true;
             respObj.Message = "Thêm các chỉ số thành công.";
             respObj.Data = null;
+            var ltRepo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
             var repo = RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
             try
             {
+                var labTestingId = -1;
                 foreach (var item in labTestingIndexes)
                 {
                     repo.Create(item);
+                    labTestingId = (int)item.LabTestingId;
                 }
+                // change status of LabTesting
+                var lt = ltRepo.GetById(labTestingId);
+                lt.Status = "LabtestDone";
+                
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any())
                 {
@@ -82,7 +89,6 @@ namespace eLTMS.BusinessLogic.Services
                     respObj.Message = "Có lỗi xảy ra";
                     respObj.Data = result;
                 }
-
             }
             catch (Exception ex) {
                 respObj.Success = false;
