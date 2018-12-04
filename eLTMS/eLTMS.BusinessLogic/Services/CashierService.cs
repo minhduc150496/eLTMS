@@ -154,6 +154,30 @@ namespace eLTMS.BusinessLogic.Services
                                 labTesting.LabTestId = lt.LabTestId;
                                 sg.LabTestings.Add(labTesting);
                             }
+                            if (lt.SampleId == 2) // 1: Mau
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                            if (lt.SampleId == 3) // 1: Mau
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                            if (lt.SampleId == 4) // 1: Mau
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                            if (lt.SampleId == 5) // 1: Mau
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
                         }
                         //tao lich hen loai xet nghiem mau 
                         sgRepo.Create(sg);
