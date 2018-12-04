@@ -27,11 +27,15 @@ namespace eLTMS.Web.Api
         {
             this._appointmentService = appointmentService;
         }
-        
+
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
+            if (appoinDto.id != null)
+            {
+                appoinDto.PatientId = appoinDto.id;
+            }
             // call to AppointmentService
             var result = _appointmentService.Create(appoinDto);
 

@@ -105,7 +105,7 @@ namespace eLTMS.BusinessLogic.Services
             var sampleGettingDtos = appointmentDto.SampleGettingDtos;
             foreach (var sgDto in appointmentDto.SampleGettingDtos)
             {
-                var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, appointmentDto.PatientId);
+                var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, (int)appointmentDto.PatientId);
                 if (duplicatedSG != null)
                 {
                     var sampleName = sampleRepo.GetById(sgDto.SampleId).SampleName;
