@@ -154,36 +154,10 @@ namespace eLTMS.BusinessLogic.Services
                                 labTesting.LabTestId = lt.LabTestId;
                                 sg.LabTestings.Add(labTesting);
                             }
-                            if (lt.SampleId == 2) // 1: Mau
-                            {
-                                var labTesting = new LabTesting();
-                                labTesting.LabTestId = lt.LabTestId;
-                                sg.LabTestings.Add(labTesting);
-                            }
-                            if (lt.SampleId == 3) // 1: Mau
-                            {
-                                var labTesting = new LabTesting();
-                                labTesting.LabTestId = lt.LabTestId;
-                                sg.LabTestings.Add(labTesting);
-                            }
-                            if (lt.SampleId == 4) // 1: Mau
-                            {
-                                var labTesting = new LabTesting();
-                                labTesting.LabTestId = lt.LabTestId;
-                                sg.LabTestings.Add(labTesting);
-                            }
-                            if (lt.SampleId == 5) // 1: Mau
-                            {
-                                var labTesting = new LabTesting();
-                                labTesting.LabTestId = lt.LabTestId;
-                                sg.LabTestings.Add(labTesting);
-                            }
                         }
                         //tao lich hen loai xet nghiem mau 
                         sgRepo.Create(sg);
                         //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
-                        
-
                         rs = true;
                     }
 
@@ -195,7 +169,7 @@ namespace eLTMS.BusinessLogic.Services
                     //neu con ban va slot trong thi moi tao lich hen
                     if (slotAndTable != null)
                     {
-                        sgRepo.Create(new SampleGetting
+                        var sg = new SampleGetting //xong tạo sg ở đây
                         {
                             GettingDate = DateTime.Now.Date,
                             AppointmentId = appId,
@@ -203,7 +177,19 @@ namespace eLTMS.BusinessLogic.Services
                             SlotId = slotAndTable.slotId,
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
-                        });
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach (var lt in labTests)
+                        {
+                            if (lt.SampleId == 2) // 2: NT
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem mau 
+                        sgRepo.Create(sg);
                         rs = true;
                     }
                 }
@@ -212,7 +198,7 @@ namespace eLTMS.BusinessLogic.Services
                     var slotAndTable = GetEmptyTableAndSlot(2);
                     if (slotAndTable != null)
                     {
-                        sgRepo.Create(new SampleGetting
+                        var sg = new SampleGetting //xong tạo sg ở đây
                         {
                             GettingDate = DateTime.Now.Date,
                             AppointmentId = appId,
@@ -220,7 +206,19 @@ namespace eLTMS.BusinessLogic.Services
                             SlotId = slotAndTable.slotId,
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
-                        });
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach (var lt in labTests)
+                        {
+                            if (lt.SampleId == 3) 
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem mau 
+                        sgRepo.Create(sg);
                         rs = true;
                     }
                 }
@@ -229,7 +227,7 @@ namespace eLTMS.BusinessLogic.Services
                     var slotAndTable = GetEmptyTableAndSlot(3);
                     if (slotAndTable != null)
                     {
-                        sgRepo.Create(new SampleGetting
+                        var sg = new SampleGetting //xong tạo sg ở đây
                         {
                             GettingDate = DateTime.Now.Date,
                             AppointmentId = appId,
@@ -237,7 +235,19 @@ namespace eLTMS.BusinessLogic.Services
                             SlotId = slotAndTable.slotId,
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
-                        });
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach (var lt in labTests)
+                        {
+                            if (lt.SampleId == 4) 
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem phan 
+                        sgRepo.Create(sg);
                         rs = true;
                     }
                 }
@@ -246,7 +256,7 @@ namespace eLTMS.BusinessLogic.Services
                     var slotAndTable = GetEmptyTableAndSlot(4);
                     if (slotAndTable != null)
                     {
-                        sgRepo.Create(new SampleGetting
+                        var sg = new SampleGetting //xong tạo sg ở đây
                         {
                             GettingDate = DateTime.Now.Date,
                             AppointmentId = appId,
@@ -254,7 +264,19 @@ namespace eLTMS.BusinessLogic.Services
                             SlotId = slotAndTable.slotId,
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
-                        });
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach (var lt in labTests)
+                        {
+                            if (lt.SampleId == 5) 
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem dich 
+                        sgRepo.Create(sg);
                         rs = true;
                     }
                 }
