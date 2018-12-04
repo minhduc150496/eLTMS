@@ -6,13 +6,13 @@
     var controllerName = ViewContext.RouteData.GetRequiredString("controller");
     var account = (Account)Session[ConstantManager.SESSION_ACCOUNT];
     var fullName = (account != null) ? account.FullName : "";
-    var avatarUrl = (account != null && account.AvatarUrl != null) ? account.AvatarUrl : "/Assets/Image/default-avatar-male.png";
+    var avatarUrl = (account != null && account.AvatarUrl != null) ? account.AvatarUrl : "/Assets/Image/default-avatar-male.jpg";
     if (account != null)
     {
         var emp = account.Employees.FirstOrDefault();
         if (emp != null && emp.Gender.ToUpper().Equals("FEMALE"))
         {
-            avatarUrl = "/Assets/Image/default-avatar-female.png";
+            avatarUrl = "/Assets/Image/default-avatar-female.jpg";
         }
     }
     var roleName = (account != null) ? account.Role.RoleName : "";
@@ -144,12 +144,21 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <!--<li class="header">MAIN NAVIGATION</li>-->
 
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Receptionist)
+                    {
+                        <li @(controllerName == "Receptionist" ? "class=active" : "")>
+                            <a href="@Url.Action("", "Receptionist")">
+                                <i class="fa fa-calendar"></i>
+                                <span>Quản lý cuộc hẹn</span>
+                            </a>
+                        </li>
+                    }
                     @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier)
                     {
                         <li @(controllerName == "Cashier" ? "class=active" : "")>
                             <a href="@Url.Action("", "Cashier")">
-                                <i class="fa fa-calendar"></i>
-                                <span>Quản lý cuộc hẹn</span>
+                                <i class="fa fa-dollar"></i>
+                                <span>Thu ngân</span>
                             </a>
                         </li>
                     }
@@ -179,12 +188,14 @@
                                         <a href="@Url.Action("LabTests", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Quản lý loại xét nghiệm</span></a>
                                     </li>
                                 }
-                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
-                                {
-                                    <li @(actionName == "LabTesting" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu xét nghiệm</span></a>
-                                    </li>
-                                }
+
+                                @*@if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                    {
+                        <li @(actionName == "LabTesting" ? "class=active" : "")>
+                            <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu xét nghiệm</span></a>
+                        </li>
+                    }*@
+
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTestingResult" ? "class=active" : "")>
@@ -298,7 +309,7 @@
     <script src="~/Assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Morris.js charts -->
     <script src="~/Assets/bower_components/raphael/raphael.min.js"></script>
-    <script src="~/Assets/bower_components/morris.js/morris.min.js"></script>
+    @*<script src="~/Assets/bower_components/morris.js/morris.min.js"></script>*@
     <!-- Sparkline -->
     <script src="~/Assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->
@@ -320,7 +331,7 @@
     <!-- AdminLTE App -->
     <script src="~/Assets/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/Assets/dist/js/pages/dashboard.js"></script>
+    @*<script src="~/Assets/dist/js/pages/dashboard.js"></script>*@
     <!-- AdminLTE for demo purposes -->
     <script src="~/Assets/dist/js/demo.js"></script>
 

@@ -98,7 +98,7 @@ namespace eLTMS.BusinessLogic.Services
             appointment.Status = "NEW";
             appointment.PatientId = appointmentDto.PatientId;
             appointment.EnterTime = now;
-            appointment.IsOnline = appointmentDto.IsOnline;
+            appointment.IsOnline = true;
 
             appointment.SampleGettings = new List<SampleGetting>();
 

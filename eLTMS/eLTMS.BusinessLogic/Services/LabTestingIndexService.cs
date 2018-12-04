@@ -1,6 +1,7 @@
 ﻿using eLTMS.DataAccess.Infrastructure;
 using eLTMS.DataAccess.Models;
 using eLTMS.DataAccess.Repositories;
+using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTestingIndex> GetAllLabTestingIndex();
         List<LabTestingIndex> GetAllLabTestingIndexHaveLabtestingId(int labtestingId);
         bool AddLabTestingIndex(List<LabTestingIndex> labTestingIndex);
+        ResponseObjectDto AddLabTestingIndexes(List<LabTestingIndex> labTestingIndexes); // DucBM
     }
 
     public class LabTestingIndexService : ILabTestingIndexService
@@ -34,7 +36,6 @@ namespace eLTMS.BusinessLogic.Services
         }
         public bool AddLabTestingIndex(List<LabTestingIndex> labTestingIndex)
         {
-
             var repo = RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
             try
             {
@@ -59,6 +60,42 @@ namespace eLTMS.BusinessLogic.Services
             var labTesting = repo.GetAllLabTestingIndex();
             return labTesting;
         }
-       
+
+        // DucBM
+        public ResponseObjectDto AddLabTestingIndexes(List<LabTestingIndex> labTestingIndexes)
+        {
+            var respObj = new ResponseObjectDto();
+            respObj.Success = true;
+            respObj.Message = "Thêm các chỉ số thành công.";
+            respObj.Data = null;
+            var ltRepo = RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
+            var repo = RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
+            try
+            {
+                var labTestingId = -1;
+                foreach (var item in labTestingIndexes)
+                {
+                    repo.Create(item);
+                    labTestingId = (int)item.LabTestingId;
+                }
+                // change status of LabTesting
+                var lt = ltRepo.GetById(labTestingId);
+                lt.Status = "LabtestDone";
+                
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    respObj.Success = false;
+                    respObj.Message = "Có lỗi xảy ra";
+                    respObj.Data = result;
+                }
+            }
+            catch (Exception ex) {
+                respObj.Success = false;
+                respObj.Message = "Có lỗi xảy ra";
+                respObj.Data = ex;
+            }
+            return respObj;
+        }
     }
 }
