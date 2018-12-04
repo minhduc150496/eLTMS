@@ -436,6 +436,7 @@ namespace eLTMS.Web.Controllers
                 var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h2>{item2.Conclusion}</h2>");
+                allData = allData.Replace("{{Cmt}}", item2.DoctorComment);
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
