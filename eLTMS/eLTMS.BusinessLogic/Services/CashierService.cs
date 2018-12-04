@@ -415,8 +415,7 @@ namespace eLTMS.BusinessLogic.Services
             || p.Phone.ToString().Contains(search)
             || p.PatientName.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)
-            )
-                .ToList();
+            ).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
             return result;
         }
 

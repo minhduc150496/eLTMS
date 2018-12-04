@@ -322,16 +322,17 @@ var homeController = {
                 if (response.success) {
                     var data = response.data;
                     var html = '';
-                    var template = $('#data-template2').html();
+                    var template2 = $('#data-template2').html();
+                    var template3 = $('#data-template3').html();
                     $.each(data.PriceListItemDto, function (i, item) {
-                        html += Mustache.render(template, {
+                        html += Mustache.render(template2, {
                             OrderNumber: i + 1,
                             LabtestName: item.LabtestName,
                             Price: item.Price,
                         });
                     });
-                    html += Mustache.render(template, {
-                        TotalPrice: data.TotalPrice,
+                    html += Mustache.render(template3, {
+                        TotalPrice: data.TotalPrice
                     });
                     console.log(html);
                     $('#tblPriceData').html(html);
