@@ -53,6 +53,7 @@
     <Compile Include="ConstantManager.cs" />
     <Compile Include="Enums\RoleEnum.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\dto\RegisterDto.cs" />
     <Compile Include="Models\dto\PriceListItemDto.cs" />
     <Compile Include="Models\dto\PriceListDto.cs" />
     <Compile Include="Models\dto\PatientGetByDateTestingDto.cs" />
@@ -88,13 +89,12 @@
     <Compile Include="Models\dto\SlotUsageDto.cs" />
     <Compile Include="Models\dto\TokenDto.cs" />
     <Compile Include="Models\dto\SlotDto.cs" />
-    <Compile Include="Models\FileUploadModel.cs" />
+    <Compile Include="Models\dto\FileUploadModel.cs" />
     <Compile Include="Models\dto\SampleGroupDto.cs" />
     <Compile Include="Models\dto\SampleDto.cs" />
     <Compile Include="Models\dto\SampleGettingDto.cs" />
     <Compile Include="Models\dto\SupplyDto.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\LoginResultModel.cs" />
+    <Compile Include="Models\dto\LoginDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />
   </ItemGroup>

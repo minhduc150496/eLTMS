@@ -5,10 +5,9 @@ using System.Web;
 
 namespace eLTMS.Models.Models
 {
-    public class LoginResultModel
+    public class LoginDto
     {
-        public bool LoginSuccess { get; set; }
         public string PhoneNumber { get; set; }
-        public string FullName { get; set; }
+        public string Password { get; set; }
     }
 }

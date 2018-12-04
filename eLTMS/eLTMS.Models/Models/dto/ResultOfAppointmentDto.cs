@@ -31,6 +31,8 @@ namespace eLTMS.Models.Models.dto
 
         public string Conclusion { get; set; } // Conclusion (length: 500)
 
+        public string DoctorComment { get; set; }
+
         public List<ResultOfSampleGettingDto> SampleGettings { get; set; }
     }
 }

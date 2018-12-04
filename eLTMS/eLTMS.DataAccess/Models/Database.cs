@@ -598,7 +598,7 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class PatientAccount
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"PatientAccountID", Order = 1, TypeName = "int")]
         [Index(@"PK__PatientA__048CB9917D834ECE", 1, IsUnique = true, IsClustered = true)]
         [Required]
@@ -724,8 +724,8 @@ namespace eLTMS.DataAccess.Models
         {
             IsDeleted = false;
             Appointments = new System.Collections.Generic.List<Appointment>();
-            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
         }
     }
 
@@ -1550,9 +1550,9 @@ namespace eLTMS.DataAccess.Models
         public Account()
         {
             IsDeleted = false;
-            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Employees = new System.Collections.Generic.List<Employee>();
             AccountTokens = new System.Collections.Generic.List<AccountToken>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
         }
     }
 

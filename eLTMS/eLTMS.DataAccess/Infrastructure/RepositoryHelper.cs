@@ -15,14 +15,14 @@ namespace eLTMS.DataAccess.Infrastructure
 {
     public partial interface IRepositoryHelper
     {
- 
+
         IUnitOfWork GetUnitOfWork();
         TRepository GetRepository<TRepository>(IUnitOfWork unitOfWork)
             where TRepository : class;
     }
     public partial class RepositoryHelper : IRepositoryHelper
     {
-       
+
 
         public IUnitOfWork GetUnitOfWork()
         {
@@ -167,9 +167,15 @@ namespace eLTMS.DataAccess.Infrastructure
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
-             if (typeof(TRepository) == typeof(ITableRepository))
+            if (typeof(TRepository) == typeof(ITableRepository))
             {
                 dynamic repo = new TableRepository();
+                repo.UnitOfWork = unitOfWork;
+                return (TRepository)repo;
+            }
+            if (typeof(TRepository) == typeof(IPatientAccountRepository))
+            {
+                dynamic repo = new PatientAccountRepository();
                 repo.UnitOfWork = unitOfWork;
                 return (TRepository)repo;
             }
