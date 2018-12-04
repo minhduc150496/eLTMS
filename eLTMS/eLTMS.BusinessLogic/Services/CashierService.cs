@@ -731,7 +731,7 @@ namespace eLTMS.BusinessLogic.Services
             var labTestRepo = RepositoryHelper.GetRepository<ILabTestRepository>(UnitOfWork);
             var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
 
-            var sgs = sgRepo.GetAll().Where(p => p.SampleGettingId == sampleGettingId);
+            var sgs = sgRepo.GetAll().Where(p => p.SampleGettingId == sampleGettingId && p.IsPaid != true);
             var lts = labTestingRepo.GetAll().Where(p => p.IsDeleted != true);
             var labs = labTestRepo.GetAll().Where(p => p.IsDeleted != true);
 

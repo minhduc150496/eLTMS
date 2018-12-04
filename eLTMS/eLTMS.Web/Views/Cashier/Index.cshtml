@@ -209,7 +209,7 @@
                                 <tr>
                                     <th>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem1"data-sample-id="1" data-labtest-id="1" value="1">Ct Máu</label>
+                                            <label><input type="checkbox" id="checkBox_loaiXetNghiem1" data-sample-id="1" data-labtest-id="1" value="1">Ct Máu</label>
                                         </div>
                                     </th>
                                     <th>
@@ -468,13 +468,6 @@
                         </tr>
                     </thead>
                     <tbody id="tblPriceData"></tbody>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Tổng Tiền: </th>
-                            <th></th>
-                        </tr>
-                    </thead>   
                 </table>
             </div>
             <div class="modal-footer">
@@ -492,13 +485,14 @@
         <td>{{LabtestName}}</td>
         <td>{{Price}}</td>
     </tr>
+</script>
+<script id="data-template3" type="x-tmpl-mustache">
     <tr>
         <td></td>
-        <td></td>
+        <td>Tổng giá:</td>
         <td>{{TotalPrice}}</td>
     </tr>
 </script>
-
 
 
 <!--load data-->

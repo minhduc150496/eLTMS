@@ -137,6 +137,7 @@
                             <th>Giờ xét nghiệm</th>
                             <th>Ngày đặt lịch</th>
                             <th>Giờ đặt lịch</th>
+                            <th>Xóa cuộc hẹn</th>
                         </tr>
                     </thead>
                     <tbody id="tblData1"></tbody>
@@ -188,7 +189,7 @@
         <td>{{Address}}</td>
         <td>{{DOBirth}}</td>
         <td>
-            <button class="btn btn-primary btn-editResult" data-id="{{PatientID}}"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-primary btn-View" data-id="{{PatientID}}"><i class="fa fa-pencil-square-o"></i></button>
         </td>
         <td>
             <label class="switch">
@@ -207,7 +208,6 @@
         <td>{{Price}}</td>
     </tr>
 </script>
-
 <script id="data-template3" type="x-tmpl-mustache">
     <tr>
         <td></td>
@@ -226,6 +226,9 @@
         <td>{{StartTime}}</td>
         <td>{{EnterDate}}</td>
         <td>{{EnterTime}}</td>
+        <td align="center">
+            <button class="btn btn-danger btn-deleteSG" data-id="{{SgId}}"><i class="fa fa-close"></i></button>
+        </td>
     </tr>
 </script>
 <script src="~/Scripts/customScript/receptionist.js"></script>

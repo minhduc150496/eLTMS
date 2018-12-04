@@ -103,5 +103,15 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult DeleteSampleGetting(int sgId)
+        {
+            var result = _receptionistService.DeleteSG(sgId);
+            return Json(new
+            {
+                success = result
+            });
+        }
     }
 }

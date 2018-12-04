@@ -64,11 +64,18 @@ var homeController = {
             homeController.loadPatientByDate(true);
         });
 
-        $('.btn-editResult').off('click').on('click', function () {
+        $('.btn-View').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.loadDataByPatientId(id);
             $('#lblPopupTitle').text('Thông tin các cuộc hẹn');
             $('#myModal1').modal('show');
+        });
+
+        $('.btn-deleteSG').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteSampleGetting(id);
+            homeController.loadDataByPatientId();
+
         });
     },
     
@@ -224,6 +231,32 @@ var homeController = {
                 }
             }
         })
+    },
+
+    
+    deleteSampleGetting: function (id) {
+        try {
+            $.ajax({
+                url: '/receptionist/DeleteSampleGetting',
+                data: { sgId: id },
+                async: false,
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
+                        toastr.success("Xóa thành công.");
+                        homeController.loadDataByPatientId();
+                    }
+                    else {
+                        toastr.error("Xóa không thành công.");
+
+                    }
+                }
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
     },
 }
 homeController.init();

@@ -91,6 +91,70 @@ var homeController = {
                     SampleId: sampleId
                 });
             });
+            $('#nuocTieuCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#teBaoHocCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#phanCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#dichCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
             console.log(labTests);
 
             if ($('#checkBox_loaiXetNghiem1').prop('checked') === true || $('#checkBox_loaiXetNghiem2').prop('checked') === true ||

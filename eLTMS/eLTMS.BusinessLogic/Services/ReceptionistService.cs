@@ -17,6 +17,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Token> GetAllTokens();
         bool ChangeIsPaid(int patientId, DateTime date);
         PriceListDto GetPrice(int sampleGettingId, DateTime date);
+        bool DeleteSG(int sgId);
     }
     class ReceptionistService : IReceptionistService
     {
@@ -38,7 +39,7 @@ namespace eLTMS.BusinessLogic.Services
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true && p.IsOnline == true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true );
-            var sgs = sgRepo.GetAll().Where(p => p.GettingDate == date);
+            var sgs = sgRepo.GetAll().Where(p => p.GettingDate == date && p.IsDeleted !=true );
             
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             
@@ -176,7 +177,7 @@ namespace eLTMS.BusinessLogic.Services
             var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
 
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
-            var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
+            var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date && p.IsPaid!=true);
             var lts = labTestingRepo.GetAll().Where(p => p.IsDeleted != true);
             var labs = labTestRepo.GetAll().Where(p => p.IsDeleted != true);
 
@@ -204,6 +205,24 @@ namespace eLTMS.BusinessLogic.Services
                 TotalPrice = total,
             };
             return rs;
+        }
+
+        public bool DeleteSG(int sgId)
+        {
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+
+            try
+            {
+                var sg = sgRepo.GetById(sgId);
+                sg.IsDeleted = true;
+                sgRepo.Update(sg);
+                UnitOfWork.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
     }
