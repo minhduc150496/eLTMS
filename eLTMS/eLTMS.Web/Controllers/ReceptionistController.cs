@@ -58,7 +58,50 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult IsPaid(int patientId, DateTime date)
+        {
+            var result = _receptionistService.ChangeIsPaid(patientId,date);
+            if (result == true)
+            {
+                var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Đã thanh toán. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
+            return Json(new
+            {
+                success = result
+            });
+        }
 
-
+        [HttpGet]
+        public JsonResult GetPriceByPatient(int patientId, DateTime date, int page = 1, int pageSize = 20)
+        {
+            var result = _receptionistService.GetPrice(patientId, date);
+            var totalRows = result.TotalPrice;
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -99,6 +99,7 @@
                                 <th>Địa chỉ</th>
                                 <th>Ngày sinh</th>
                                 <th>Xem chi tiết</th>
+                                <th>Thanh toán</th>
                             </tr>
                         </thead>
                         <tbody id="tblData"></tbody>
@@ -149,7 +150,42 @@
     </div>
 </div>
 
+<!--Xác nhận thao tác thanh toan-->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Thực hiện thanh toán</h4>
+            </div>
+            <div>
+                <table id="checkGia" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Loại xét nghiệm</th>
+                            <th>Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblPriceData"></tbody>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="modal-btn-no">Không</button>
+                <button type="button" class="btn btn-primary" id="modal-btn-si">Có</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!--Thanh toán-->
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{OrderNumber}}</td>
@@ -161,12 +197,30 @@
         <td>
             <button class="btn btn-primary btn-editResult" data-id="{{PatientID}}"><i class="fa fa-pencil-square-o"></i></button>
         </td>
-        
+        <td>
+            <label class="switch">
+                <input data-id="{{PatientID}}" id="{{PatientID}}" onclick="{{ReadOnly}}" {{Checked}} onchange="homeController.checkIsPaid({{PatientID}})" type="checkbox" ">
+                <span class="slider round"></span>
+            </label>
+        </td>
     </tr>
 </script>
 
+<!--script load giá-->
+<script id="data-template2" type="x-tmpl-mustache">
+    <tr>
+        <td>{{OrderNumber}}</td>
+        <td>{{LabtestName}}</td>
+        <td>{{Price}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Tổng Tiền: </td>
+        <td>{{TotalPrice}}</td>
+    </tr>
+</script>
 
-<!--Modal detail ycm-->
+<!--Modal detail app ycm-->
 <script id="data-template1" type="x-tmpl-mustache">
     <tr>
         <td>{{OrderNum}}</td>

@@ -50,9 +50,9 @@ namespace eLTMS.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddApp(AppointmentAddDto data)
+        public JsonResult AddApp(AppointmentAddDto data, List<LabTestDto> labTests)
         {
-            var result = _cashierService.Add(data);
+            var result = _cashierService.Add(data, labTests);
             return Json(new
             {
                 success = result
@@ -139,7 +139,19 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-        
-        
+
+        [HttpGet]
+        public JsonResult GetPriceByPatient(int sampleGettingId, int page = 1, int pageSize = 20)
+        {
+            var result = _cashierService.GetPrice(sampleGettingId);
+            var totalRows = result.TotalPrice;
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
