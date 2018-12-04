@@ -26,7 +26,7 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage AddLabTestingIndexes(List<LabTestingIndexDto> ltiDtos)
         {
             var ltis = Mapper.Map<IEnumerable<LabTestingIndexDto>, IEnumerable<LabTestingIndex>>(ltiDtos).ToList();
-            var result = _labTestingIndexService.AddLabTestingIndex(ltis);
+            var result = _labTestingIndexService.AddLabTestingIndexes(ltis);
             var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }

@@ -1,4 +1,6 @@
-﻿using eLTMS.Models.Models.dto;
+﻿using System.Text;
+using System.Threading;
+using eLTMS.Models.Models.dto;
 using GemBox.Spreadsheet;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace LabTechnicianWindowService
@@ -20,6 +20,8 @@ namespace LabTechnicianWindowService
     public partial class Service1 : ServiceBase
     {
         string watchPath = ConfigurationManager.AppSettings["WatchPath"];
+        string backupPath = ConfigurationManager.AppSettings["BackupPath"];
+        string APIDomain = ConfigurationManager.AppSettings["APIDomain"];
 
         public Service1()
         {
@@ -36,8 +38,7 @@ namespace LabTechnicianWindowService
                 {
                     // Create an HttpClient instance
                     HttpClient client = new HttpClient();
-                    //client.BaseAddress = new Uri("http://eltms.azurewebsites.net/");
-                    client.BaseAddress = new Uri("http://localhost:52406/");
+                    client.BaseAddress = new Uri(APIDomain);
 
                     // Usage
                     var ltiDtos = ReadExcelAsDTO(watchPath, e.Name);
@@ -45,9 +46,10 @@ namespace LabTechnicianWindowService
                     // Debug
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("DTO:");
-                    foreach(var dto in ltiDtos)
+                    foreach (var dto in ltiDtos)
                     {
-                        sb.AppendFormat("Name:{0} - Value:{1} - Status:{2} - NormalRange:{3} - Unit:{4}\n", 
+                        dto.IsDeleted = false;
+                        sb.AppendFormat("Name:{0} - Value:{1} - Status:{2} - NormalRange:{3} - Unit:{4}\n",
                             dto.IndexName, dto.IndexValue, dto.LowNormalHigh, dto.NormalRange, dto.Unit);
                     }
                     CreateLogFile(sb.ToString());
@@ -68,14 +70,57 @@ namespace LabTechnicianWindowService
                         CreateLogFile(sb2.ToString());
                     }
 
+                    // Move File To Backup
+                    MoveFileToBackup(e.Name);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Message: "+ex.Message);
+                sb.AppendLine("Message: " + ex.Message);
                 sb.AppendLine("Stack Trace: " + ex.StackTrace);
                 CreateLogFile(sb.ToString());
             }
+        }
+
+        private bool MoveFileToBackup(string FileName)
+        {
+            string path = Path.Combine(watchPath, FileName);
+            string path2 = Path.Combine(backupPath, FileName);
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    // This statement ensures that the file is created,
+                    // but the handle is not kept.
+                    using (FileStream fs = File.Create(path)) { }
+                }
+
+                // Ensure that the target does not exist.
+                if (File.Exists(path2))
+                    File.Delete(path2);
+
+                // Move the file.
+                File.Move(path, path2);
+                CreateLogFile(string.Format("{0} was moved to {1}.", path, path2));
+
+                // See if the original exists now.
+                if (File.Exists(path))
+                {
+                    CreateLogFile("The original file still exists, which is unexpected.");
+                }
+                else
+                {
+                    CreateLogFile("The original file no longer exists, which is expected.");
+                }
+
+            }
+            catch (Exception e)
+            {
+                CreateLogFile(string.Format("The process failed: {0}", e.ToString()));
+                return false;
+            }
+            return true;
         }
 
         private List<LabTestingIndexDto> ReadExcelAsDTO(string FullPath, string FileName)
@@ -87,21 +132,37 @@ namespace LabTechnicianWindowService
             ExcelFile ef = ExcelFile.Load(Path.Combine(FullPath, FileName));
 
             // Iterate through all worksheets in an Excel workbook.
-            int? labTestingId;
-            foreach (ExcelWorksheet sheet in ef.Worksheets)
+            int? labTestingId = null;            
+            var sId = FileName.Split('.').First().Split('_').LastOrDefault();
+            if (sId != null)
             {
                 try
                 {
-                    labTestingId = int.Parse(sheet.Name.Trim());
-                } catch(Exception ex)
+                    labTestingId = int.Parse(sId);
+                }
+                catch (Exception ex)
                 {
                     labTestingId = null;
                 }
+            }
+
+            //foreach (ExcelWorksheet sheet in ef.Worksheets)
+            var sheet = ef.Worksheets.FirstOrDefault();
+            if (sheet != null)
+            {
+                //try
+                //{
+                //    labTestingId = int.Parse(sheet.Name.Trim());
+                //}
+                //catch (Exception ex)
+                //{
+                //    labTestingId = null;
+                //}
 
                 // Iterate through all rows in an Excel worksheet.
                 foreach (ExcelRow row in sheet.Rows)
                 {
-                    if (row.Index==0)
+                    if (row.Index == 0)
                     {
                         continue;
                     }
@@ -180,7 +241,7 @@ namespace LabTechnicianWindowService
                 SW.Close();
             }
         }/**/
-   
+
         public static void CreateLogFile(string content)
         {
             string Destination = "C:\\Users\\Duc\\Documents\\LabTechnician\\Log";
@@ -208,7 +269,8 @@ namespace LabTechnicianWindowService
             try
             {
                 fileSystemWatcher1.Path = watchPath;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
