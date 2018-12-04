@@ -88,10 +88,16 @@
                 </tbody>
             </table>
             <div>
-                <b>Kết luận:</b> @(resultDto.Conclusion)
+                <p>
+                    <b>Kết luận:</b> @(resultDto.Conclusion)
+                </p>
+                <p>
+                    <b>Nhận xét của bác sĩ:</b>
+                </p>
+                @Html.Raw(resultDto.DoctorComment)
             </div>
             <div class="return-time">
-                Ngày: @(resultDto.ReturnTime.ToString("dd-MM-yyyy"))
+                Ngày trả: @(resultDto.ReturnTime.ToString("dd-MM-yyyy"))
             </div>
         </div>
 

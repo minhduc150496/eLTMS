@@ -7,6 +7,10 @@ namespace eLTMS.Models.Models.dto
 {
     public class AccountDto
     {
+        public int AccountId { get; set; }
+
+        public int id { get; set; } // PatientID
+
         public string FullName { get; set; }
         
         public string PhoneNumber { get; set; }

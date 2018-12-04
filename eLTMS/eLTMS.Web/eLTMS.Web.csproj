@@ -7913,6 +7913,22 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Styles\_AdminLayout.css" />
     <Content Include="template-pdf\result.html" />
+    <Content Include="UploadedFiles\20.jpg" />
+    <Content Include="UploadedFiles\42672721_718956451771512_8005283517451730944_n.jpg" />
+    <Content Include="UploadedFiles\43239380_565782290526325_3057618352240328704_n.jpg" />
+    <Content Include="UploadedFiles\43654211_296629081181089_5080956086513565696_n.jpg" />
+    <Content Include="UploadedFiles\600_2e8465e1-74b0-4bf0-8571-12f9a33c729a.jpg" />
+    <Content Include="UploadedFiles\atoms.jpg" />
+    <Content Include="UploadedFiles\bill gates.jpg" />
+    <Content Include="UploadedFiles\FB_IMG_1539140202061.jpg" />
+    <Content Include="UploadedFiles\flower.gif" />
+    <Content Include="UploadedFiles\IMG_0560.JPG" />
+    <Content Include="UploadedFiles\IMG_0561.JPG" />
+    <Content Include="UploadedFiles\IMG_0592.JPG" />
+    <Content Include="UploadedFiles\IMG_3008.JPG" />
+    <Content Include="UploadedFiles\mark.jpg" />
+    <Content Include="UploadedFiles\photo1538182581198-1538182581198118396573.jpg" />
+    <Content Include="UploadedFiles\Venom.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -7952,7 +7968,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\UserWeb\Models\" />
-    <Folder Include="UploadedFiles\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\TestingApi\" />
   </ItemGroup>
