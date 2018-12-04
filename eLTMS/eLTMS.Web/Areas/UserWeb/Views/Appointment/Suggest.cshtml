@@ -14,9 +14,6 @@
         <div class="row text-center">
             <div class="col">
                 <h1>Gợi ý các bệnh viện có khoa chuyên ngành</h1>
-                <div class="breadcroumb_link">
-                    <a href="/UserWeb">Home </a>/ <a href="http://localhost:52406/UserWeb/appointment/suggest">Hospital Suggestion</a>
-                </div>
             </div>
         </div>
     </div>
@@ -91,7 +88,7 @@
                     </table>
                 </a>
             </div>
-            @*<div class="col-md-4" id="tim">
+            <div class="col-md-4" id="tim">
                 <a href="#" class="single_service">
                     <h4><font color="red">Khám chuyên khoa tim</font></h4>
                     <table>
@@ -211,49 +208,17 @@
                         </tr>
                     </table>
                 </a>
-            </div>*@
+            </div>
 
 
         </div>
     </div>
 </div>
 <!-- Service Area End-->
-<!-- Counter Area Start-->
-<div class="counter_area">
-    <div class="container">
-        <div class="row text-center justify-content-center">
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">108</span></h1>
-                    <span>Our staff</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">20</span>+</h1>
-                    <span>Years of experience</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">1450</span></h1>
-                    <span>Happy smiler</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">646</span></h1>
-                    <span>Blood Donate</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Counter Area End-->
 
 @section scripts {
     <script>
-        function loadData() {
+        @*function loadData() {
             if (@(SuggestDto.HospitalPhone)) {
             document.getElementById("tim").style.display = 'none';
         }
@@ -262,8 +227,9 @@
         }
         if ( @(SuggestDto2.HospitalPhone)==null) {
            document.getElementById("phoi").style.display = 'none';
-        }*@
+        }
         }
         loadData();
+        *@
     </script>
 }
