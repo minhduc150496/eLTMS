@@ -28,6 +28,8 @@ namespace eLTMS.Models.Models.dto
 
         public int SampleGettingId { get; set; }
 
+        public int? SampleId { get; set; }
+
         public bool? IsPaid { get; set; }
 
         //public List<string> LabTestName { get; set; }

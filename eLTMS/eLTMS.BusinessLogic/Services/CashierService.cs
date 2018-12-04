@@ -181,7 +181,7 @@ namespace eLTMS.BusinessLogic.Services
                         sg.LabTestings = new List<LabTesting>();
                         foreach (var lt in labTests)
                         {
-                            if (lt.SampleId == 2) // 2: NT
+                            if (lt.SampleId == 2) 
                             {
                                 var labTesting = new LabTesting();
                                 labTesting.LabTestId = lt.LabTestId;
@@ -190,12 +190,15 @@ namespace eLTMS.BusinessLogic.Services
                         }
                         //tao lich hen loai xet nghiem mau 
                         sgRepo.Create(sg);
+                        //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
                         rs = true;
                     }
                 }
                 if (data.TeBaoHoc == true)
                 {
+                    //tim slot va ban trong
                     var slotAndTable = GetEmptyTableAndSlot(2);
+                    //neu con ban va slot trong thi moi tao lich hen
                     if (slotAndTable != null)
                     {
                         var sg = new SampleGetting //xong tạo sg ở đây
@@ -210,7 +213,7 @@ namespace eLTMS.BusinessLogic.Services
                         sg.LabTestings = new List<LabTesting>();
                         foreach (var lt in labTests)
                         {
-                            if (lt.SampleId == 3) 
+                            if (lt.SampleId == 3) // 1: Mau
                             {
                                 var labTesting = new LabTesting();
                                 labTesting.LabTestId = lt.LabTestId;
@@ -219,6 +222,7 @@ namespace eLTMS.BusinessLogic.Services
                         }
                         //tao lich hen loai xet nghiem mau 
                         sgRepo.Create(sg);
+                        //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
                         rs = true;
                     }
                 }
@@ -408,8 +412,9 @@ namespace eLTMS.BusinessLogic.Services
                     Date = p.spSg.sg.GettingDate.Value.ToShortDateString(),
                     //Table = p.table.TableName,
                     SampleGettingId = p.spSg.sg.SampleGettingId,
+                    SampleId = p.spSg.sg.SampleId,
                     IsPaid = p.spSg.sg.IsPaid
-                }).ToList();
+                }).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
             result = result.Where(p => p.StartTime.ToString().Contains(search)
             || p.SampleGettingId.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)
