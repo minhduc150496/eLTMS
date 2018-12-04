@@ -30,5 +30,9 @@ namespace eLTMS.Models.Models.dto
 
         public bool? IsPaid { get; set; }
 
+        //public List<string> LabTestName { get; set; }
+
+        //public List<string> Price { get; set; }
+
     }
 }

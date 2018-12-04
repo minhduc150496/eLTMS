@@ -10,8 +10,8 @@ var homeController = {
         homeController.registerEvent();
     },
 
-    checkIsGot: function (SampleGettingId) {
-
+    checkIsPaid: function (PatientId) {
+        homeController.loadPrice(PatientId);
         var modalConfirm = function (callback) {
 
             $("#mi-modal").modal('show');
@@ -29,13 +29,13 @@ var homeController = {
 
         modalConfirm(function (confirm) {
             if (confirm) {
-                homeController.ChangeIsGot(SampleGettingId);
+                homeController.ChangeIsPaid(PatientId);
             }
             else {
                 homeController.loadPatientByDate();
             }
         });
-        
+
     },
 
     formatDate: function (date) {
@@ -114,7 +114,7 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            OrderNumber: item.OrderNumber,
+                            OrderNumber: i+1,
                             FullName: item.PatientName,
                             PatientID: item.PatientID,
                             ID: item.IdentityCardNumber,
@@ -131,6 +131,25 @@ var homeController = {
                     }, changePageSize);
                     homeController.registerEvent();
                 }
+            }
+        })
+    },
+
+    //ispaid
+    ChangeIsPaid: function (PatientId) {
+        var selectDate = $("#select-date").val();
+        $.ajax({
+            url: '/receptionist/IsPaid',
+            type: 'POST',
+            dataType: 'json',
+            data: { patientId: PatientId, date: selectDate  },
+            success: function (response) {
+                //                homeController.loadPrice(SampleGettingId);
+                if (response.success === true) {
+                    toastr.success('Đổi trạng thái thành công');
+                    homeController.loadDataBySample();
+                }
+
             }
         })
     },
@@ -171,5 +190,39 @@ var homeController = {
         })
     },
 
+    //load giá
+    loadPrice: function (id, changePageSize) {
+        var selectDate = $("#select-date").val();
+        $.ajax({
+            url: '/receptionist/GetPriceByPatient',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, patientId: id, date: selectDate },
+            success: function (response) {
+                //debugger;
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template = $('#data-template2').html();
+                    $.each(data.PriceListItemDto, function (i, item) {
+                        html += Mustache.render(template, {
+                            OrderNumber: i + 1,
+                            LabtestName: item.LabtestName,
+                            Price: item.Price,
+                        });
+                    });
+                    html += Mustache.render(template, {
+                        TotalPrice: data.TotalPrice,
+                    });
+                    console.log(html);
+                    $('#tblPriceData').html(html);
+                    homeController.paging(response.total, function () {
+                        //homeController.loadDataBySample();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
 }
 homeController.init();

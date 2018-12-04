@@ -12,6 +12,7 @@ namespace eLTMS.DataAccess.Repositories
     public interface ILabTestRepository: IRepository<LabTest>
     {
         List<LabTest> GetAll();
+        List<LabTest> GetAllBySGId(int sgId);
         List<LabTest> GetAllLabTest(string code);
         LabTest GetSimpleById(int id);
     }
@@ -32,6 +33,16 @@ namespace eLTMS.DataAccess.Repositories
                 .ToList();
             return result;
         }
+
+        public List<LabTest> GetAllBySGId(int sgId)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => (x.Sample.SampleGettings.Select(y => y.SampleGettingId)).Contains(sgId) && x.IsDeleted == false)
+                .Include(x => x.Sample.SampleGettings)
+                .ToList();
+            return result;
+        }
+
 
         public LabTest GetSimpleById(int id)
         {

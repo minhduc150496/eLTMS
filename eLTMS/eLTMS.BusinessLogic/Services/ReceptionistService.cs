@@ -14,6 +14,9 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<PatientGetByDateTestingDto> GetAllPatientByDateTesting(string search, DateTime date);
         List<SampleGettingForReceptionistDto> GetAppByPatient(int patientId, DateTime date);
+        List<Token> GetAllTokens();
+        bool ChangeIsPaid(int patientId, DateTime date);
+        PriceListDto GetPrice(int sampleGettingId, DateTime date);
     }
     class ReceptionistService : IReceptionistService
     {
@@ -33,13 +36,10 @@ namespace eLTMS.BusinessLogic.Services
             var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
             var spRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
 
-            var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
-            var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
+            var apps = appRepo.GetAll().Where(p => p.IsDeleted != true && p.IsOnline == true);
+            var pas = paRepo.GetAll().Where(p => p.IsDeleted != true );
             var sgs = sgRepo.GetAll().Where(p => p.GettingDate == date);
-            //if (sampleId == 1)
-            //{
-            //    sgs = sgRepo.GetAll().Where(p => (p.SampleId == 1 || p.SampleId==2) && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
-            //}
+            
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             
             //app + patient (1)
@@ -132,6 +132,79 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-      
+        public List<Token> GetAllTokens()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
+            var tokens = repo.GetAll();
+            return tokens;
+        }
+
+        public bool ChangeIsPaid(int patientId,DateTime date)
+        {
+            try
+            {
+                var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+                var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+                var paRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+
+                var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
+                var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
+               
+                foreach (var sg in sgs) {
+                    sg.IsPaid = true;
+                    sg.Status = "WAITING";
+                    sgRepo.Update(sg);
+
+                    var app = appRepo.GetById(sg.AppointmentId);
+                    app.Status = "RECEPTDONE";
+                    appRepo.Update(app);
+                    UnitOfWork.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public PriceListDto GetPrice(int patientId,DateTime date)
+        {
+            var paRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var labTestRepo = RepositoryHelper.GetRepository<ILabTestRepository>(UnitOfWork);
+            var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
+
+            var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
+            var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
+            var lts = labTestingRepo.GetAll().Where(p => p.IsDeleted != true);
+            var labs = labTestRepo.GetAll().Where(p => p.IsDeleted != true);
+
+            var ltsSgs = sgs.Join(lts, p => p.SampleGettingId, c => c.SampleGettingId, (p, c) => new
+            {
+                sg = p,
+                lt = c
+            });
+            var count = 1;
+            var result = ltsSgs.Join(labs, p => p.lt.LabTestId,
+                c => c.LabTestId, (p, c) => new PriceListItemDto
+                {
+                    OrderNumber = count++,
+                    LabtestName = c.LabTestName,
+                    Price = c.Price,
+                }).ToList();
+            int? total = 0;
+            foreach (var i in result)
+            {
+                total += i.Price;
+            }
+            var rs = new PriceListDto
+            {
+                PriceListItemDto = result,
+                TotalPrice = total,
+            };
+            return rs;
+        }
+
     }
 }

@@ -12,7 +12,7 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface ICashiertService
     {
-        bool Add(AppointmentAddDto data);
+        bool Add(AppointmentAddDto data, List<LabTestDto> labTests);
         bool ChangeIsPaid(int sampleGettingId);
         //List<Appointment> GetAllAppointment();
         List<AppointmentGetBySampleDto> GetAllBySample(string search, DateTime date, int sampleId);
@@ -21,6 +21,7 @@ namespace eLTMS.BusinessLogic.Services
         int CheckAndDeleteCell(DateTime dateTime);
         int CheckAndDeleteMucus(DateTime dateTime);
         int CheckAndDeletePhan(DateTime dateTime);
+        PriceListDto GetPrice(int sampleGettingId);
         List<Token> GetAllTokens();
 
     }
@@ -92,7 +93,7 @@ namespace eLTMS.BusinessLogic.Services
         }
 
         //ten ten
-        public bool Add(AppointmentAddDto data)
+        public bool Add(AppointmentAddDto data, List<LabTestDto> labTests)
         {
             var rs = false;
             var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
@@ -105,7 +106,6 @@ namespace eLTMS.BusinessLogic.Services
                 paRepo.Create(new Patient
                 {
                     //AccountId = accId,
-                    IsOnline = false,
                     IdentityCardNumber = data.IdentityCardNumber,
                     DateOfBirth = data.DateOfBirth,
                     HomeAddress = data.Address,
@@ -117,9 +117,11 @@ namespace eLTMS.BusinessLogic.Services
                 
                 //tao cuoc hen
                 var paId = paRepo.GetFirst(p => p.IdentityCardNumber == data.IdentityCardNumber).PatientId;//lấy Id bệnh nhân  dựa vào cmnd
-                var appCode = CreateAppReturnCode(new Appointment
+                var appCode = CreateAppReturnCode(new Appointment //ở dây tui tạo app
                 {
                     PatientId = paId,
+                    Status = "NEW",
+                    IsOnline = false,
                     //Date = DateTime.Now.Date,
                     IsDeleted = false
                 });
@@ -134,8 +136,7 @@ namespace eLTMS.BusinessLogic.Services
                     //neu con ban va slot trong thi moi tao lich hen
                     if (slotAndTable != null)
                     {
-                        //tao lich hen loai xet nghiem mau 
-                        sgRepo.Create(new SampleGetting
+                        var sg = new SampleGetting //xong tạo sg ở đây
                         {
                             GettingDate = DateTime.Now.Date,
                             AppointmentId = appId,
@@ -143,7 +144,22 @@ namespace eLTMS.BusinessLogic.Services
                             SlotId = slotAndTable.slotId,
                             TableId = slotAndTable.tableId,
                             IsDeleted = false
-                        });
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach(var lt in labTests)
+                        {
+                            if (lt.SampleId==1) // 1: Mau
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem mau 
+                        sgRepo.Create(sg);
+                        //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
+                        
+
                         rs = true;
                     }
 
@@ -347,7 +363,6 @@ namespace eLTMS.BusinessLogic.Services
                     //Table = p.table.TableName,
                     SampleGettingId = p.spSg.sg.SampleGettingId,
                     IsPaid = p.spSg.sg.IsPaid
-
                 }).ToList();
             result = result.Where(p => p.StartTime.ToString().Contains(search)
             || p.SampleGettingId.ToString().Contains(search)
@@ -376,8 +391,8 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
-                var apps = appRepo.GetAll().ToList();
+                var pas = paRepo.GetAll().ToList();
+                var apps = appRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
                 var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 1)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
@@ -437,8 +452,8 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
-                var apps = appRepo.GetAll().ToList();
+                var pas = paRepo.GetAll().ToList();
+                var apps = appRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
                 var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 2)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
@@ -497,8 +512,8 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
-                var apps = appRepo.GetAll().ToList();
+                var pas = paRepo.GetAll().ToList();
+                var apps = appRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
                 var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 3)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
@@ -554,8 +569,8 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
-                var apps = appRepo.GetAll().ToList();
+                var pas = paRepo.GetAll().ToList();
+                var apps = appRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
                 var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 5)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
@@ -611,8 +626,8 @@ namespace eLTMS.BusinessLogic.Services
 
             try
             {
-                var pas = paRepo.GetAll().Where(p => p.IsOnline == true).ToList();
-                var apps = appRepo.GetAll().ToList();
+                var pas = paRepo.GetAll().ToList();
+                var apps = appRepo.GetAll().Where(p => p.IsOnline == true).ToList();
                 var slots = slotRepo.GetAll().Where(p => p.StartTime == time).ToList();
                 var sgs = sgRepo.GetAll().Where(p => p.GettingDate == dateNow && p.IsPaid != true && (p.SampleId == 4)).ToList();
                 var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
@@ -659,5 +674,42 @@ namespace eLTMS.BusinessLogic.Services
             var tokens = repo.GetAll();
             return tokens;
         }
+
+        public PriceListDto GetPrice(int sampleGettingId)
+        {
+            var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
+            var labTestRepo = RepositoryHelper.GetRepository<ILabTestRepository>(UnitOfWork);
+            var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
+
+            var sgs = sgRepo.GetAll().Where(p => p.SampleGettingId == sampleGettingId);
+            var lts = labTestingRepo.GetAll().Where(p => p.IsDeleted != true);
+            var labs = labTestRepo.GetAll().Where(p => p.IsDeleted != true);
+
+            var ltsSgs = sgs.Join(lts, p => p.SampleGettingId, c => c.SampleGettingId, (p, c) => new
+            {
+                sg = p,
+                lt = c
+            });
+            var count = 1;
+            var result = ltsSgs.Join(labs, p => p.lt.LabTestId,
+                c => c.LabTestId, (p, c) => new PriceListItemDto
+                {
+                    OrderNumber = count++,
+                    LabtestName = c.LabTestName,
+                    Price = c.Price,
+                }).ToList();
+            int? total = 0;
+            foreach (var i in result)
+            {
+                total += i.Price;
+            }
+            var rs = new PriceListDto
+            {
+                PriceListItemDto = result,
+                TotalPrice = total, 
+            };
+            return rs;
+        }
     }
 }
+    
