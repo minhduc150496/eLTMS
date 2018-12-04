@@ -25,7 +25,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
         ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
-        bool Update(string code, string con);
+        bool Update(string code, string con,string cmt);
         ResponseObjectDto DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
@@ -98,6 +98,7 @@ namespace eLTMS.BusinessLogic.Services
             appointment.Status = "NEW";
             appointment.PatientId = appointmentDto.PatientId;
             appointment.EnterTime = now;
+            appointment.IsOnline = appointmentDto.IsOnline;
 
             appointment.SampleGettings = new List<SampleGetting>();
 
@@ -144,12 +145,26 @@ namespace eLTMS.BusinessLogic.Services
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
+                    var validations = new List<object>();
+                    foreach(var item in result)
+                    {
+                        validations.Add(new {
+                            ErrorMessage = item.ErrorMessage,
+                            MemberName = item.MemberNames
+                        });
+                    }
+                    responseObject.Data = validations;
                 }
             }
             catch (Exception ex)
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
+                responseObject.Data = new
+                {
+                    ErrorMessage = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
             }
             return responseObject;
         }
@@ -234,18 +249,33 @@ namespace eLTMS.BusinessLogic.Services
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
+                    var validations = new List<object>();
+                    foreach (var item in result)
+                    {
+                        validations.Add(new
+                        {
+                            ErrorMessage = item.ErrorMessage,
+                            MemberName = item.MemberNames
+                        });
+                    }
+                    responseObject.Data = validations;
                 }
             }
             catch (Exception ex)
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
+                responseObject.Data = new
+                {
+                    ErrorMessage = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
             }
 
             return responseObject;
         }
 
-        public bool Update(string code, string con)
+        public bool Update(string code, string con,string cmt)
         {
             try
             {
@@ -254,6 +284,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appointment = appRepo.GetAppointmentByCode(code);
                 // modify SampleGettings property               
                 appointment.Conclusion = con;
+                appointment.DoctorComment = cmt;
                 appointment.Status = "DOCTORDONE";
                 appointment.ReturnTime = DateTime.Now;
 
@@ -305,12 +336,27 @@ namespace eLTMS.BusinessLogic.Services
                     {
                         responseObject.Success = false;
                         responseObject.Message = "Có lỗi xảy ra";
+                        var validations = new List<object>();
+                        foreach (var item in result)
+                        {
+                            validations.Add(new
+                            {
+                                ErrorMessage = item.ErrorMessage,
+                                MemberName = item.MemberNames
+                            });
+                        }
+                        responseObject.Data = validations;
                     }
                 }
                 catch (Exception ex)
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = new
+                    {
+                        ErrorMessage = ex.Message,
+                        StackTrace = ex.StackTrace
+                    };
                 }
             }
             return responseObject;

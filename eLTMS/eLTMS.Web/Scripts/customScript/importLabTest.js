@@ -362,6 +362,8 @@ var homeController = {
             var listId = ids.split(',');
             var code = $('#txtCode').val();
             var con = $('#txtResult').val(); 
+            //var cmt = $('#txtCMT').val(); 
+            var cmt = $('#txtCMT').froalaEditor('html.get');
             var allData = [];
             $.each(listId, function (i, item) {
                 
@@ -376,7 +378,7 @@ var homeController = {
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
                 dataType: 'json',
-                data: { code:code,con:con },
+                data: { code:code,con:con,cmt:cmt },
                 success: function (res) {
                     if (!res.sucess) {
                         if (res.validation && res.validation.Errors) {

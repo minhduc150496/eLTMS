@@ -295,10 +295,10 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-        [HttpPost]
-        public JsonResult UpdateResult(string code,string con)
+        [HttpPost, ValidateInput(false)]
+        public JsonResult UpdateResult(string code,string con,string cmt)
         {
-            var result = _appointmentService.Update(code,con);
+            var result = _appointmentService.Update(code,con,cmt);
             return Json(new
             {
                 success = result
@@ -436,6 +436,7 @@ namespace eLTMS.Web.Controllers
                 var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h2>{item2.Conclusion}</h2>");
+                allData = allData.Replace("{{Cmt}}", item2.DoctorComment);
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
@@ -502,6 +503,7 @@ namespace eLTMS.Web.Controllers
                 var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
+                allData = allData.Replace("{{Cmt}}", item2.DoctorComment);
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);

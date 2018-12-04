@@ -39,7 +39,7 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 foreach (var item in labTestingIndex)
-                {               
+                {
                     repo.Create(item);
                 }
                 var result = UnitOfWork.SaveChanges();
@@ -49,7 +49,7 @@ namespace eLTMS.BusinessLogic.Services
                 }
 
             }
-            catch (Exception) { return false; }
+            catch (Exception ex) { return false; }
             return true;
         }
 

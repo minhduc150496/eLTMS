@@ -16,6 +16,8 @@ namespace eLTMS.Models.Mapping
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<Account, AccountDto>();
+
                 cfg.CreateMap<Supply, SupplyDto>()
                 .ForMember(dst => dst.SuppliesId, src => src.MapFrom(x => x.SuppliesId))
                 .ForMember(dst => dst.SuppliesName, src => src.MapFrom(x => x.SuppliesName))
@@ -149,7 +151,7 @@ namespace eLTMS.Models.Mapping
                 cfg.CreateMap<Appointment, ResultOfAppointmentDto>() // Author: DucBM
                 .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => (x.Employee != null) ? x.Employee.FullName : ""))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.FullName : ""))
-                .ForMember(dst => dst.PatientBirthYear, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.DateOfBirth.Value.Year.ToString() : ""))
+                .ForMember(dst => dst.PatientBirthYear, src => src.MapFrom(x => (x.Patient != null && x.Patient.DateOfBirth != null) ? x.Patient.DateOfBirth.Value.Year.ToString() : ""))
                 .ForMember(dst => dst.PatientGender, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.Gender : ""))
                 .ForMember(dst => dst.PatientAddress, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.HomeAddress : ""))
                 .ForMember(dst => dst.SampleGettings, src => src.MapFrom(x => x.SampleGettings));
@@ -169,6 +171,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.AppointmentCode))
                 .ForMember(dst => dst.AppointmentId, src => src.MapFrom(x => x.AppointmentId))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
+                .ForMember(dst => dst.DoctorComment, src => src.MapFrom(x => x.DoctorComment))
                 .ForMember(dst => dst.DateResult, src => src.MapFrom(x => (x.ReturnTime != null) ? x.ReturnTime.Value.ToString("dd-MM-yyyy") : ""))
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => (x.Employee != null) ? x.Employee.FullName : ""))
@@ -192,6 +195,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Phone, src => src.MapFrom(x => x.Patient.PhoneNumber))
                 .ForMember(dst => dst.Address, src => src.MapFrom(x => x.Patient.HomeAddress))
                 .ForMember(dst => dst.Date, src => src.MapFrom(x => x.ReturnTime))
+                 .ForMember(dst => dst.DoctorComment, src => src.MapFrom(x => x.DoctorComment))
                  .ForMember(dst => dst.DateOB, src => src.MapFrom(x => x.Patient.DateOfBirth))
                  .ForMember(dst => dst.Gender, src => src.MapFrom(x => x.Patient.Gender))
                 .ForMember(dst => dst.Conclusion, src => src.MapFrom(x => x.Conclusion))
@@ -219,6 +223,7 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.NormalRange, src => src.MapFrom(x => x.NormalRange))
                 .ForMember(dst => dst.Unit, src => src.MapFrom(x => x.Unit));
 
+                cfg.CreateMap<LabTestingIndexDto, LabTestingIndex>();
 
                 cfg.CreateMap<Employee, EmployeeDto>()
                 .ForMember(dst => dst.EmployeeID, src => src.MapFrom(x => x.EmployeeId))

@@ -52,6 +52,17 @@ namespace eLTMS.Web.Api
             return response;
         }
 
+        [HttpPost]
+        [Route("api/account/login-patient")]
+        public HttpResponseMessage LoginPatient(LoginModel loginModel)
+        {
+            var phoneNumber = loginModel.PhoneNumber; // sure that not empty from client
+            var password = loginModel.Password; // sure that not empty from client
+            var respObj = this._accountService.CheckLoginPatient(phoneNumber, password);
+            var response = Request.CreateResponse(HttpStatusCode.OK, respObj);
+            return response;
+        }
+
         [HttpGet]
         [Route("api/account/logout")]
         public HttpResponseMessage Logout()

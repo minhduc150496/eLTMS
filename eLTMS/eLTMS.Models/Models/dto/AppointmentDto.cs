@@ -14,9 +14,10 @@ namespace eLTMS.Models.Models.dto
         public int PatientId { get; set; }
 
         public string PatientName { get; set; }
+        public bool? IsOnline { get; set; }
 
         public string TestPurpose { get; set; }
-
+        public string DoctorComment { get; set; } // DoctorComment
         public string DateResult { get; set; }
         public List<SampleGettingDto> SampleGettingDtos { get; set; }
         public string Conclusion { get; set; } // Conclusion (length: 500)
