@@ -38,7 +38,7 @@ var Model = {
     slotDtos: {},
     appointmentId: -1,
     appointmentDto: {
-        PatientId: CONFIG.PATIENT_ID,
+        //PatientId: CONFIG.PATIENT_ID,
         SampleGettingDtos: []
     },
     suggestResult: null
@@ -70,7 +70,14 @@ var Controller = {
             });
         });
 
-        $("#btn-next").click(function () {
+        $("#btn-next-01").click(function () {
+            var duration = 200;
+            $("#step-0").fadeOut(duration, function () {
+                $("#step-1").fadeIn(duration);
+            });
+        })
+
+        $("#btn-next-12").click(function () {
             // VALIDATION:
             var $checks = $("#step-1-form input[type='checkbox']:checked");
             ////console.log($checks);
@@ -90,7 +97,14 @@ var Controller = {
             });
         });
 
-        $("#btn-prev").click(function () {
+        $("#btn-prev-10").click(function () {
+            var duration = 200;
+            $("#step-1").fadeOut(duration, function () {
+                $("#step-0").fadeIn(duration);
+            });
+        });
+
+        $("#btn-prev-21").click(function () {
             var duration = 200;
             $("#step-2").fadeOut(duration, function () {
                 $("#step-1").fadeIn(duration);
@@ -149,6 +163,12 @@ var Controller = {
                     Model.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
                 }
             }
+
+            Model.appointmentDto.PatientDto = {};
+            Model.appointmentDto.PatientDto.FullName = $('#p-name').val();
+            Model.appointmentDto.PatientDto.IdentityCardNumber = $('#p-cmnd').val();
+            Model.appointmentDto.PatientDto.PhoneNumber = $('#p-phone').val();
+
             // ajax for create new appointment
             if (CONFIG.IS_UPDATE) {
                 Model.appointmentDto.AppointmentId = Model.AppointmentId;

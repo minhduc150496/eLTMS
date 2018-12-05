@@ -25,7 +25,7 @@ namespace eLTMS.BusinessLogic.Services
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
         ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
-        bool Update(string code, string con,string cmt);
+        bool Update(string code, string con, string cmt);
         ResponseObjectDto DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
@@ -75,10 +75,33 @@ namespace eLTMS.BusinessLogic.Services
             var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
             var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
             var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
 
             var responseObject = new ResponseObjectDto();
             responseObject.Success = true;
             responseObject.Message = "Đặt lịch thành công";
+
+            Patient patient = null;
+            if (appointmentDto.PatientDto != null)
+            {
+                var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                patient = patientRepo.GetByIDCNumber(idcNumber);
+                if (patient == null)
+                {
+                    patient = new Patient();
+                    patient.FullName = appointmentDto.PatientDto.FullName;
+                    patient.IdentityCardNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                    patient.PhoneNumber = appointmentDto.PatientDto.PhoneNumber;
+                    patientRepo.Create(patient);
+                    UnitOfWork.SaveChanges(); // IMPORTANT!!
+
+                    patient.PatientCode = "BN" + patient.PatientId;
+                }
+
+                appointmentDto.PatientId = patient.PatientId;
+            }
+
+
 
             var appointment = new Appointment();
             // Convert AppointmentDto to Appointment
@@ -94,6 +117,8 @@ namespace eLTMS.BusinessLogic.Services
             }
             var code = sDate + "-" + (count + 1);
 
+
+            appointment.PatientId = patient.PatientId;
             appointment.AppointmentCode = code;
             appointment.Status = "NEW";
             appointment.PatientId = appointmentDto.PatientId;
@@ -146,9 +171,10 @@ namespace eLTMS.BusinessLogic.Services
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
                     var validations = new List<object>();
-                    foreach(var item in result)
+                    foreach (var item in result)
                     {
-                        validations.Add(new {
+                        validations.Add(new
+                        {
                             ErrorMessage = item.ErrorMessage,
                             MemberName = item.MemberNames
                         });
@@ -275,7 +301,7 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
-        public bool Update(string code, string con,string cmt)
+        public bool Update(string code, string con, string cmt)
         {
             try
             {
@@ -290,7 +316,7 @@ namespace eLTMS.BusinessLogic.Services
 
                 foreach (var sg in appointment.SampleGettings)
                 {
-                    foreach(var lt in sg.LabTestings)
+                    foreach (var lt in sg.LabTestings)
                     {
                         lt.Status = "DOCTORDONE";
                     }

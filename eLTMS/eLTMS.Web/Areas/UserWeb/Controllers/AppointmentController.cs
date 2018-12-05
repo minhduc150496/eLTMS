@@ -71,7 +71,7 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
                 success = true,
                 data = result,
                 patient = patient,
-                patientDob = patient.DateOfBirth.Value.ToString("dd-MM-yyyy"),
+                patientDob = (patient.DateOfBirth!=null)?patient.DateOfBirth.Value.ToString("dd-MM-yyyy"):"",
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
