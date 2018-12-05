@@ -32,9 +32,9 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
-            if (appoinDto.id != null)
+            if (appoinDto.PatientId != null)
             {
-                appoinDto.PatientId = appoinDto.id;
+                appoinDto.PatientId = appoinDto.PatientId;
             }
             // call to AppointmentService
             var result = _appointmentService.Create(appoinDto);

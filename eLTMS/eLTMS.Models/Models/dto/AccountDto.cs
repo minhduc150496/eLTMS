@@ -9,7 +9,7 @@ namespace eLTMS.Models.Models.dto
     {
         public int AccountId { get; set; }
 
-        public int id { get; set; } // PatientID
+        public int PatientId { get; set; } // PatientID
 
         public string FullName { get; set; }
         

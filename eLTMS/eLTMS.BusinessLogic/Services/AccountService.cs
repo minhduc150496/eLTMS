@@ -47,19 +47,21 @@ namespace eLTMS.BusinessLogic.Services
             var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
             Account account = repo.GetAccountPatientForLogin(phoneNumber, password);
             var accountDto = Mapper.Map<Account, AccountDto>(account);
-            var patientAccount = account.PatientAccounts.FirstOrDefault();
-            if (patientAccount !=null)
-            {
-                accountDto.id = patientAccount.PatientId;
-            }
 
             var respObj = new ResponseObjectDto();
             if (account != null)
             {
+                var patientAccount = account.PatientAccounts.FirstOrDefault();
+                if (patientAccount != null)
+                {
+                    accountDto.PatientId = patientAccount.PatientId;
+                }
+
                 respObj.Success = true;
                 respObj.Message = "Đăng nhập thành công";
                 respObj.Data = accountDto;
-            } else
+            }
+            else
             {
                 respObj.Success = false;
                 respObj.Message = "Sai số điện thoại hoặc mật khẩu";

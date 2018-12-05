@@ -71,127 +71,150 @@ namespace eLTMS.BusinessLogic.Services
 
         public ResponseObjectDto Create(AppointmentDto appointmentDto)
         {
-            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
-            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
-            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
-
             var responseObject = new ResponseObjectDto();
             responseObject.Success = true;
             responseObject.Message = "Đặt lịch thành công";
 
-            Patient patient = null;
-            if (appointmentDto.PatientDto != null)
-            {
-                var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
-                patient = patientRepo.GetByIDCNumber(idcNumber);
-                if (patient == null)
-                {
-                    patient = new Patient();
-                    patient.FullName = appointmentDto.PatientDto.FullName;
-                    patient.IdentityCardNumber = appointmentDto.PatientDto.IdentityCardNumber;
-                    patient.PhoneNumber = appointmentDto.PatientDto.PhoneNumber;
-                    patientRepo.Create(patient);
-                    UnitOfWork.SaveChanges(); // IMPORTANT!!
-
-                    patient.PatientCode = "BN" + patient.PatientId;
-                }
-
-                appointmentDto.PatientId = patient.PatientId;
-            }
-
-
-
-            var appointment = new Appointment();
-            // Convert AppointmentDto to Appointment
-            var now = DateTime.Now;
-            var sDate = now.ToString("yyyy-MM-dd");
-
-            // Generate code
-            var lastcode = appointmentRepo.GetLastCode(sDate);
-            var count = 0;
-            if (lastcode != null)
-            {
-                count = int.Parse(lastcode.Substring("yyyy-MM-dd-".Length));
-            }
-            var code = sDate + "-" + (count + 1);
-
-
-            appointment.PatientId = patient.PatientId;
-            appointment.AppointmentCode = code;
-            appointment.Status = "NEW";
-            appointment.PatientId = appointmentDto.PatientId;
-            appointment.EnterTime = now;
-            appointment.IsOnline = true;
-
-            appointment.SampleGettings = new List<SampleGetting>();
-
-            var sampleGettingDtos = appointmentDto.SampleGettingDtos;
-            foreach (var sgDto in appointmentDto.SampleGettingDtos)
-            {
-                var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, (int)appointmentDto.PatientId);
-                if (duplicatedSG != null)
-                {
-                    var sampleName = sampleRepo.GetById(sgDto.SampleId).SampleName;
-                    var date = DateTime.Parse(sgDto.GettingDate).ToString("dd-MM-yyyy");
-                    responseObject.Success = false;
-                    responseObject.Message = string.Format("Bạn đã từng đăng ký lấy mẫu {0} vào ngày {1}.\n Bạn không thể lấy mẫu {0} 2 lần 1 ngày.", sampleName, date);
-                    return responseObject;
-                }
-
-                var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                var avaiTable = tableRepo.GetFirstAvailableTable((int)sg.SlotId, (DateTime)sg.GettingDate);
-                if (avaiTable == null)
-                {
-                    responseObject.Success = false;
-                    responseObject.Message = "Có ca xét nghiệm đã hết chỗ";
-                    return responseObject;
-                }
-                sg.TableId = avaiTable.TableId;
-                sg.Status = "NEW";
-                sg.LabTestings = new List<LabTesting>();
-                foreach (var id in sgDto.LabTestIds)
-                {
-                    var labTesting = new LabTesting();
-                    labTesting.LabTestId = id;
-                    labTesting.SampleGettingId = sg.SampleGettingId;
-                    labTesting.Status = "NEW";
-                    sg.LabTestings.Add(labTesting);
-                }
-                appointment.SampleGettings.Add(sg);
-            }
-            // Create
-            appointmentRepo.Create(appointment);
             try
             {
-                var result = this.UnitOfWork.SaveChanges();
-                if (result.Any())
+                var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+                var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+                var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+                var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+                var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
+
+                Patient patient = null;
+                if (appointmentDto.PatientDto != null) // Make Ap. without Login
+                {
+                    var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                    patient = patientRepo.GetByIDCNumber(idcNumber);
+                    if (patient == null)
+                    {
+                        // Create a new Patient
+                        patient = new Patient();
+                        patient.FullName = appointmentDto.PatientDto.FullName;
+                        patient.IdentityCardNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                        patient.PhoneNumber = appointmentDto.PatientDto.PhoneNumber;
+                        patientRepo.Create(patient);
+                        UnitOfWork.SaveChanges(); // IMPORTANT!!
+
+                        patient.PatientCode = "BN" + patient.PatientId;
+                    }
+
+                    appointmentDto.PatientId = patient.PatientId;
+                }
+                else if (appointmentDto.PatientId != null) // Make Ap. with Login
+                {
+                    patient = patientRepo.GetById((int)appointmentDto.PatientId);
+                    if (patient == null)
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                        responseObject.Data = new
+                        {
+                            MessageForDev = "Không tồn tại PatientId này"
+                        };
+                        return responseObject;
+                    }
+                }
+                else
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
-                    var validations = new List<object>();
-                    foreach (var item in result)
+                    responseObject.Data = new
                     {
-                        validations.Add(new
-                        {
-                            ErrorMessage = item.ErrorMessage,
-                            MemberName = item.MemberNames
-                        });
+                        MessageForDev = "PatientId truyền vào là Null"
+                    };
+                    return responseObject;
+                }
+
+                var appointment = new Appointment();
+                // Convert AppointmentDto to Appointment
+                var now = DateTime.Now;
+                var sDate = now.ToString("yyyy-MM-dd");
+
+                // Generate code
+                var lastcode = appointmentRepo.GetLastCode(sDate);
+                var count = 0;
+                if (lastcode != null)
+                {
+                    count = int.Parse(lastcode.Substring("yyyy-MM-dd-".Length));
+                }
+                var code = sDate + "-" + (count + 1);
+
+
+                appointment.PatientId = patient.PatientId;
+                appointment.AppointmentCode = code;
+                appointment.Status = "NEW";
+                appointment.PatientId = appointmentDto.PatientId;
+                appointment.EnterTime = now;
+                appointment.IsOnline = true;
+
+                appointment.SampleGettings = new List<SampleGetting>();
+
+                var sampleGettingDtos = appointmentDto.SampleGettingDtos;
+                foreach (var sgDto in appointmentDto.SampleGettingDtos)
+                {
+                    var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, (int)appointmentDto.PatientId);
+                    if (duplicatedSG != null)
+                    {
+                        var sampleName = sampleRepo.GetById(sgDto.SampleId).SampleName;
+                        var date = DateTime.Parse(sgDto.GettingDate).ToString("dd-MM-yyyy");
+                        responseObject.Success = false;
+                        responseObject.Message = string.Format("Bạn đã từng đăng ký lấy mẫu {0} vào ngày {1}.\n Bạn không thể lấy mẫu {0} 2 lần 1 ngày.", sampleName, date);
+                        return responseObject;
                     }
-                    responseObject.Data = validations;
+
+                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                    var avaiTable = tableRepo.GetFirstAvailableTable((int)sg.SlotId, (DateTime)sg.GettingDate);
+                    if (avaiTable == null)
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có ca xét nghiệm đã hết chỗ";
+                        return responseObject;
+                    }
+                    sg.TableId = avaiTable.TableId;
+                    sg.Status = "NEW";
+                    sg.LabTestings = new List<LabTesting>();
+                    foreach (var id in sgDto.LabTestIds)
+                    {
+                        var labTesting = new LabTesting();
+                        labTesting.LabTestId = id;
+                        labTesting.SampleGettingId = sg.SampleGettingId;
+                        labTesting.Status = "NEW";
+                        sg.LabTestings.Add(labTesting);
+                    }
+                    appointment.SampleGettings.Add(sg);
+                }
+                // Create
+                appointmentRepo.Create(appointment);
+                try
+                {
+                    var result = this.UnitOfWork.SaveChanges();
+                    if (result.Any())
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                        responseObject.Data = result;
+                        return responseObject;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = ex;
+                    return responseObject;
                 }
             }
             catch (Exception ex)
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
-                responseObject.Data = new
-                {
-                    ErrorMessage = ex.Message,
-                    StackTrace = ex.StackTrace
-                };
+                responseObject.Data = ex;
+                return responseObject;
             }
+
             return responseObject;
         }
 
@@ -275,16 +298,7 @@ namespace eLTMS.BusinessLogic.Services
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
-                    var validations = new List<object>();
-                    foreach (var item in result)
-                    {
-                        validations.Add(new
-                        {
-                            ErrorMessage = item.ErrorMessage,
-                            MemberName = item.MemberNames
-                        });
-                    }
-                    responseObject.Data = validations;
+                    responseObject.Data = result;
                 }
             }
             catch (Exception ex)
@@ -347,6 +361,7 @@ namespace eLTMS.BusinessLogic.Services
             {
                 responseObject.Success = false;
                 responseObject.Message = "Có lỗi xảy ra";
+                return responseObject;
             }
             else
             {
@@ -362,27 +377,14 @@ namespace eLTMS.BusinessLogic.Services
                     {
                         responseObject.Success = false;
                         responseObject.Message = "Có lỗi xảy ra";
-                        var validations = new List<object>();
-                        foreach (var item in result)
-                        {
-                            validations.Add(new
-                            {
-                                ErrorMessage = item.ErrorMessage,
-                                MemberName = item.MemberNames
-                            });
-                        }
-                        responseObject.Data = validations;
+                        responseObject.Data = result;
                     }
                 }
                 catch (Exception ex)
                 {
                     responseObject.Success = false;
                     responseObject.Message = "Có lỗi xảy ra";
-                    responseObject.Data = new
-                    {
-                        ErrorMessage = ex.Message,
-                        StackTrace = ex.StackTrace
-                    };
+                    responseObject.Data = ex;
                 }
             }
             return responseObject;
