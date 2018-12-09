@@ -34,7 +34,7 @@ namespace eLTMS.Web.Api
         public HttpResponseMessage GetSampleById(int id)
         {
             var sample = _sampleService.GetSampleById(id);
-            var sampleDtos = Mapper.Map<SampleDto>(sample);
+            var sampleDtos = Mapper.Map<SampleDto>(sample);//chuyen data sang dto
             var response = Request.CreateResponse(HttpStatusCode.OK, sampleDtos);
             return response;
         }
