@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Danh sách cuộc hẹn";
+    ViewBag.Title = "Tra cứu cuộc hẹn";
 }
 @section styles {
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row text-center">
             <div class="col">
-                <h1>Cuộc hẹn của bạn</h1>
+                <h1>Tra cứu cuộc hẹn</h1>
             </div>
         </div>
     </div>
@@ -21,8 +21,34 @@
     <div class="container">
         <div class="content-box">
 
+            <div class="text-center" style="margin-bottom: 25px">
+                <input id="txt-search" type="text" placeholder="Số CMND của bạn"/>
+                <button id="btn-search" class="btn btn-info">Tra cứu</button>
+            </div>
+
+            <div id="content-nodata" class="text-center" style="display: none">
+                Không tìm thấy kết quả nào.
+            </div>
+
+            <div id="content-result" style="display: none">
+
+            <div class="text-center" style="margin-bottom: 30px">
+                <p>
+                    <b>Tên bệnh nhân:</b>
+                    <span id="patient-name"></span>
+                </p>
+                <p>
+                    <b>Ngày sinh:</b>
+                    <span id="patient-dob"></span>
+                </p>
+                <p>
+                    <b>Số điện thoại:</b>
+                    <span id="patient-phone"></span>
+                </p>
+            </div>
+
             <div class="text-right">
-                <b>Trạng thái:</b>
+                <b>Lọc theo trạng thái:</b>
 
                 <div class="pretty p-icon p-smooth p-bigger">
                     <input type="checkbox" id="chkNew" />
@@ -47,8 +73,8 @@
                 </div>
             </div>
 
-            <div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
-            </div>
+            @*<div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            </div>*@
 
             <table class="table table-bordered table-striped">
                 <thead>
@@ -63,7 +89,9 @@
                 <tbody id="tblData"></tbody>
             </table>
 
-            <div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            <div id="pagination" class="div-pagination">
+            </div>
+
             </div>
 
         </div>
@@ -111,7 +139,7 @@
         </td>
         <td>
             {{#IsNew}}
-            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_blank" class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
+            <a href="/UserWeb/Appointment/Edit?appointmentId={{AppointmentId}}" target="_self" tooltips class="btn btn-primary btn-edit" data-id="{{AppointmentId}}"><i class="fa fa-edit"></i></a>
             <button class="btn btn-danger btn-delete" data-id="{{AppointmentId}}"><i class="fa fa-trash-alt"></i></button>
             {{/IsNew}}
             {{#IsDone}}

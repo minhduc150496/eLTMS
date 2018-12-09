@@ -1,6 +1,6 @@
 ﻿<html>
 <head>
-    <title>Plumsail Invoice</title>
+    <title>Phiếu kết quả xét nghiệm</title>
     <style>
         /* Base CSS styles DO NOT CHANGE OR REMOVE */
         body {
@@ -279,13 +279,16 @@
         <!-- invoice-other -->
         <div id="payment-details">
             <h2>Chẩn đoán:  {{Con}}</h2>
-            <h2><a href="http://localhost:52406/UserWeb/appointment/suggest">Danh sách các bệnh viện chuyên khoa</a></h2>
-            <!--<h2>Danh sách các bệnh viện chuyên khoa:</h2>
+            <h2>Ghi chú của bác sĩ:</h2>
+            <div>{{Cmt}}</div>
+            <!--<h2>Gợi ý các bệnh viện chuyên khoa:</h2>
     <div id="iban">
         <table>
             {{DataResult1}}
         </table>
     </div>-->
+            <h2><a href="http://localhost:52406/UserWeb/appointment/suggest">Danh sách các bệnh viện chuyên khoa</a></h2>
+
         </div>
 
         <!-- payment-details -->

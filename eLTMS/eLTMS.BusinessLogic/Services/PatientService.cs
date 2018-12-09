@@ -17,6 +17,7 @@ namespace eLTMS.BusinessLogic.Services
         //bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
         bool Update(Patient patientdto);
         Patient GetPatientById(int id);
+        Patient GetPatientByIdentityCardNumber(string number);
         bool Delete(int id);
         // bool UpdatePatient(Patient dto);
     }
@@ -74,13 +75,13 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 // create Patient Code in format BN-00000001
-                int newCode = 0;
+                /*int newCode = 0;
                 var lastCode = repo.GetLastPatientCode();
                 if (lastCode != null)
                 {
-                    newCode = int.Parse(lastCode) + 1;
+                    newCode = int.Parse(lastCode.Substring(2)) + 1;
                 }
-                patient.PatientCode = newCode.ToString("D8"); // format as 8 digits
+                patient.PatientCode = newCode.ToString("D8"); // format as 8 digits/**/
 
                 repo.Create(patient);
                 UnitOfWork.SaveChanges();
@@ -145,6 +146,14 @@ namespace eLTMS.BusinessLogic.Services
             }
 
             return true;
+        }
+
+        // DucBM
+        public Patient GetPatientByIdentityCardNumber(string number)
+        {
+            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
+            var patient = patientRepo.GetByIDCNumber(number);
+            return patient;
         }
     }
 }

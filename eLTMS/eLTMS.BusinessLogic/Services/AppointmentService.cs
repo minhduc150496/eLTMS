@@ -15,20 +15,18 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface IAppointmentService
     {
-        bool Create(AppointmentDto appointment);
+        ResponseObjectDto Create(AppointmentDto appointment);
         Appointment GetSingleByCode(string code);
         Appointment GetSingleById(int appointmentId); // Author: DucBM
         Appointment GetResultDoneByAppointmentId(int appointmentId); // Author: DucBM
         List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // Author: DucBM
-        List<Appointment> GetNewApp(int patientId);
-        List<Appointment> GetOldApp(int patientId);
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
         List<Appointment> GetResultByAppCode(string appCode);
-        bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
-        bool Update(string code, string con);
-        bool DeleteAppointment(int appointmentId);
+        ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sgDtos);
+        bool Update(string code, string con, string cmt);
+        ResponseObjectDto DeleteAppointment(int appointmentId);
         List<Token> GetAllTokens();
     }
     public class AppointmentService : IAppointmentService
@@ -49,7 +47,7 @@ namespace eLTMS.BusinessLogic.Services
             return apps;
         }
 
-        // Author: DucBM
+
         public Appointment GetSingleById(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -62,7 +60,7 @@ namespace eLTMS.BusinessLogic.Services
             var result = appRepo.GetAppointmentByCode(code);
             return result;
         }
-        // Author: DucBM
+
         public Appointment GetResultDoneByAppointmentId(int appointmentId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
@@ -70,69 +68,163 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-        // Author: DucBM
-        public bool Create(AppointmentDto appointmentDto)
+
+        public ResponseObjectDto Create(AppointmentDto appointmentDto)
         {
-            var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var appointment = new Appointment();
-            // Convert AppointmentDto to Appointment
-            var now = DateTime.Now;
-            var sDate = now.ToString("yyyy-MM-dd");
-            var count = appointmentRepo.CountByDate(sDate);
-            var code = sDate + "-" + count;
-            appointment.AppointmentCode = code;
-            appointment.Status = "NEW";
-            appointment.PatientId = appointmentDto.PatientId;
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+            responseObject.Message = "Đặt lịch thành công";
 
-            appointment.SampleGettings = new List<SampleGetting>();
-
-            foreach (var sgDto in appointmentDto.SampleGettingDtos)
+            try
             {
-                var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                sg.TableId = null;
-                sg.LabTestings = new List<LabTesting>();
-                foreach (var id in sgDto.LabTestIds)
+                var appointmentRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+                var sgRepo = this.RepositoryHelper.GetRepository<ISampleGettingRepository>(this.UnitOfWork);
+                var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
+                var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
+                var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
+
+                Patient patient = null;
+                if (appointmentDto.PatientDto != null) // Make Ap. without Login
                 {
-                    var labTesting = new LabTesting();
-                    labTesting.LabTestId = id;
-                    labTesting.SampleGettingId = sg.SampleGettingId;
-                    labTesting.Status = "NEW";
-                    sg.LabTestings.Add(labTesting);
+                    var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                    patient = patientRepo.GetByIDCNumber(idcNumber);
+                    if (patient == null)
+                    {
+                        // Create a new Patient
+                        patient = new Patient();
+                        patient.FullName = appointmentDto.PatientDto.FullName;
+                        patient.IdentityCardNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                        patient.PhoneNumber = appointmentDto.PatientDto.PhoneNumber;
+                        patientRepo.Create(patient);
+                        UnitOfWork.SaveChanges(); // IMPORTANT!!
+
+                        patient.PatientCode = "BN" + patient.PatientId;
+                    }
+
+                    appointmentDto.PatientId = patient.PatientId;
                 }
-                appointment.SampleGettings.Add(sg);
+                else if (appointmentDto.PatientId != null) // Make Ap. with Login
+                {
+                    patient = patientRepo.GetById((int)appointmentDto.PatientId);
+                    if (patient == null)
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                        responseObject.Data = new
+                        {
+                            MessageForDev = "Không tồn tại PatientId này"
+                        };
+                        return responseObject;
+                    }
+                }
+                else
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = new
+                    {
+                        MessageForDev = "PatientId truyền vào là Null"
+                    };
+                    return responseObject;
+                }
+
+                var appointment = new Appointment();
+                // Convert AppointmentDto to Appointment
+                var now = DateTime.Now;
+                var sDate = now.ToString("yyyy-MM-dd");
+
+                // Generate code
+                var lastcode = appointmentRepo.GetLastCode(sDate);
+                var count = 0;
+                if (lastcode != null)
+                {
+                    count = int.Parse(lastcode.Substring("yyyy-MM-dd-".Length));
+                }
+                var code = sDate + "-" + (count + 1);
+
+
+                appointment.PatientId = patient.PatientId;
+                appointment.AppointmentCode = code;
+                appointment.Status = "NEW";
+                appointment.PatientId = appointmentDto.PatientId;
+                appointment.EnterTime = now;
+                appointment.IsOnline = true;
+
+                appointment.SampleGettings = new List<SampleGetting>();
+
+                var sampleGettingDtos = appointmentDto.SampleGettingDtos;
+                foreach (var sgDto in appointmentDto.SampleGettingDtos)
+                {
+                    var duplicatedSG = sgRepo.GetFirst(sgDto.SampleId, sgDto.GettingDate, (int)appointmentDto.PatientId);
+                    if (duplicatedSG != null)
+                    {
+                        var sampleName = sampleRepo.GetById(sgDto.SampleId).SampleName;
+                        var date = DateTime.Parse(sgDto.GettingDate).ToString("dd-MM-yyyy");
+                        responseObject.Success = false;
+                        responseObject.Message = string.Format("Bạn đã từng đăng ký lấy mẫu {0} vào ngày {1}.\n Bạn không thể lấy mẫu {0} 2 lần 1 ngày.", sampleName, date);
+                        return responseObject;
+                    }
+
+                    var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
+                    var avaiTable = tableRepo.GetFirstAvailableTable((int)sg.SlotId, (DateTime)sg.GettingDate);
+                    if (avaiTable == null)
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có ca xét nghiệm đã hết chỗ";
+                        return responseObject;
+                    }
+                    sg.TableId = avaiTable.TableId;
+                    sg.Status = "NEW";
+                    sg.LabTestings = new List<LabTesting>();
+                    foreach (var id in sgDto.LabTestIds)
+                    {
+                        var labTesting = new LabTesting();
+                        labTesting.LabTestId = id;
+                        labTesting.SampleGettingId = sg.SampleGettingId;
+                        labTesting.Status = "NEW";
+                        sg.LabTestings.Add(labTesting);
+                    }
+                    appointment.SampleGettings.Add(sg);
+                }
+                // Create
+                appointmentRepo.Create(appointment);
+                try
+                {
+                    var result = this.UnitOfWork.SaveChanges();
+                    if (result.Any())
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                        responseObject.Data = result;
+                        return responseObject;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = ex;
+                    return responseObject;
+                }
             }
-            // Create
-            appointmentRepo.Create(appointment);
-            var result = this.UnitOfWork.SaveChanges();
-            if (result.Any())
+            catch (Exception ex)
             {
-                return false;
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
+                responseObject.Data = ex;
+                return responseObject;
             }
-            return true;
+
+            return responseObject;
         }
 
-        // Author: DucBM
+
         public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
         {
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             var apps = appRepo.GetAppointmentsByPatientId(patientId);
             var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(apps).ToList();
             return appDtos;
-        }
-
-        public List<Appointment> GetNewApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var apps = appRepo.GetNewAppByPatientId(patientId);
-            return apps;
-        }
-
-        public List<Appointment> GetOldApp(int patientId)
-        {
-            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
-            var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
-            var apps = appRepo.GetOldAppByPatientId(patientId);
-            return apps;
         }
 
         public List<Appointment> GetResult(int patientId)
@@ -158,8 +250,12 @@ namespace eLTMS.BusinessLogic.Services
         }
 
         // Author: DucBM
-        public bool UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
+        public ResponseObjectDto UpdateAppointment(int appointmentId, List<SampleGettingDto> sampleGettingDtos)
         {
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+            responseObject.Message = "Chỉnh sửa lịch thành công";
+
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             // get existing appointment by AppointmentCode
 
@@ -180,7 +276,6 @@ namespace eLTMS.BusinessLogic.Services
             foreach (var sgDto in sampleGettingDtos)
             {
                 var sg = Mapper.Map<SampleGettingDto, SampleGetting>(sgDto);
-                sg.SampleGettingCode = ""; // Need a Formula for this Code !!
                 sg.LabTestings = new List<LabTesting>();
                 sg.Status = "NEW";
                 sg.TableId = 1;
@@ -193,16 +288,34 @@ namespace eLTMS.BusinessLogic.Services
                 }
                 appointment.SampleGettings.Add(sg);
             }
+            try
+            {
+                // update entity
+                appRepo.Update(appointment);
+                // save to DB
+                var result = this.UnitOfWork.SaveChanges();
+                if (result.Any())
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = result;
+                }
+            }
+            catch (Exception ex)
+            {
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
+                responseObject.Data = new
+                {
+                    ErrorMessage = ex.Message,
+                    StackTrace = ex.StackTrace
+                };
+            }
 
-            // update entity
-            appRepo.Update(appointment);
-            // save to DB
-            this.UnitOfWork.SaveChanges();
-
-            return true;
+            return responseObject;
         }
 
-        public bool Update(string code, string con)
+        public bool Update(string code, string con, string cmt)
         {
             try
             {
@@ -211,7 +324,18 @@ namespace eLTMS.BusinessLogic.Services
                 var appointment = appRepo.GetAppointmentByCode(code);
                 // modify SampleGettings property               
                 appointment.Conclusion = con;
+                appointment.DoctorComment = cmt;
                 appointment.Status = "DOCTORDONE";
+                appointment.ReturnTime = DateTime.Now;
+
+                foreach (var sg in appointment.SampleGettings)
+                {
+                    foreach (var lt in sg.LabTestings)
+                    {
+                        lt.Status = "DOCTORDONE";
+                    }
+                }
+
                 // update entity
                 appRepo.Update(appointment);
                 // save to DB
@@ -225,25 +349,48 @@ namespace eLTMS.BusinessLogic.Services
         }
 
         // Author: DucBM
-        public bool DeleteAppointment(int appointmentId)
+        public ResponseObjectDto DeleteAppointment(int appointmentId)
         {
+            var responseObject = new ResponseObjectDto();
+            responseObject.Success = true;
+
             var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
             // get existing appointment by AppointmentCode
             var appointment = appRepo.GetAppointmentById(appointmentId);
             if (appointment == null)
             {
-                return false;
+                responseObject.Success = false;
+                responseObject.Message = "Có lỗi xảy ra";
+                return responseObject;
             }
-            // assign IsDeleted = true
-            appointment.IsDeleted = true;
-            // update entity
-            appRepo.Update(appointment);
-            // save to DB
-            this.UnitOfWork.SaveChanges();
-            return true;
+            else
+            {
+                // assign IsDeleted = true
+                appointment.IsDeleted = true;
+                // update entity
+                appRepo.Update(appointment);
+                try
+                {
+                    // save to DB
+                    var result = this.UnitOfWork.SaveChanges();
+                    if (result.Any())
+                    {
+                        responseObject.Success = false;
+                        responseObject.Message = "Có lỗi xảy ra";
+                        responseObject.Data = result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseObject.Success = false;
+                    responseObject.Message = "Có lỗi xảy ra";
+                    responseObject.Data = ex;
+                }
+            }
+            return responseObject;
         }
 
-        // Author: DucBM
+
         public List<Token> GetAllTokens()
         {
             var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);

@@ -27,7 +27,8 @@ namespace eLTMS.DataAccess.Repositories
                                    out result);
             var resultRequrest = DbSet.AsQueryable()
                 .Include(x => x.Account)
-                .Where(x => ((validateDay == true && DbFunctions.TruncateTime(result) == DbFunctions.TruncateTime(x.StartDate.Value)) || (validateDay==true&&DbFunctions.TruncateTime(result)==DbFunctions.TruncateTime(x.DateOfBirth.Value))||x.FullName.Contains(fullName)||x.PhoneNumber.Contains(fullName)||x.HomeAddress.Contains(fullName)||x.Account.Role.Contains(fullName))||x.Account.Email.Contains(fullName) && x.IsDeleted == false)
+                .Include(x => x.Account.Role)
+                .Where(x => (((validateDay == true && DbFunctions.TruncateTime(result) == DbFunctions.TruncateTime(x.StartDate.Value)) || (validateDay==true&&DbFunctions.TruncateTime(result)==DbFunctions.TruncateTime(x.DateOfBirth.Value))||x.FullName.Contains(fullName)||x.PhoneNumber.Contains(fullName)||x.HomeAddress.Contains(fullName)||x.Account.Role.RoleName.Contains(fullName))||x.Account.Email.Contains(fullName)) && x.IsDeleted == false)
                 .ToList();
             return resultRequrest;
         }

@@ -16,6 +16,7 @@ using System.Web.Script.Serialization;
 using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
 using eLTMS.Web.Utils;
+using eLTMS.Models;
 
 namespace eLTMS.Web.Api
 {
@@ -27,62 +28,19 @@ namespace eLTMS.Web.Api
             this._appointmentService = appointmentService;
         }
 
-        [HttpGet]
-        [Route("api/SendMessage")] // just for testing
-        public IHttpActionResult SendMessage()
-        {
-            var tokens = _appointmentService.GetAllTokens();
-            foreach (var token in tokens)
-            {
-                var data = new
-                {
-                    to = token.TokenString,
-                    data = new
-                    {
-                        message = "This is a test notification.",
-                    }
-                };
-                try
-                {
-                    SendNotificationUtils.SendNotification(data);
-                }
-                catch (Exception ex)
-                {
-                    //
-                }
-            }
-            return Ok();
-        }
-
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
+            if (appoinDto.PatientId != null)
+            {
+                appoinDto.PatientId = appoinDto.PatientId;
+            }
             // call to AppointmentService
-            var success = true;
-            Object obj = new
-            {
-                Success = true,
-                Message = "Đặt lịch thành công."
-            };
-            try
-            {
-                this._appointmentService.Create(appoinDto);
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                obj = new
-                {
-                    Success = false,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                    InnerExceptionMessage = ex.InnerException.Message
-                };
-            }
+            var result = _appointmentService.Create(appoinDto);
 
             // push noti
-            if (success)
+            if (result.Success)
             {
                 var tokens = _appointmentService.GetAllTokens();
                 foreach (var token in tokens)
@@ -105,7 +63,8 @@ namespace eLTMS.Web.Api
                     }
                 }
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+
+            var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }
 
@@ -118,59 +77,17 @@ namespace eLTMS.Web.Api
             return response;
         }
 
-        /*
-        [HttpGet]
-        [Route("api/appointment/get-new-appointments-by-patient-id")]
-        public HttpResponseMessage GetNewAppointment(int patientId)
-        {
-            var app = _appointmentService.GetNewApp(patientId);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
-
-            var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
-            return response;
-        }/**/
-
-        /*
-        [HttpGet]
-        [Route("api/appointment/get-old-appointments-by-patient-id")]
-        public HttpResponseMessage GetOldAppointment(int patientId)
-        {
-            var app = _appointmentService.GetOldApp(patientId);
-            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(app);
-            var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
-            return response;
-        }/**/
-
         [HttpPut]
         [Route("api/appointment/update-appointment")]
         public HttpResponseMessage UpdateAppointment(AppointmentDto appointmentDto)
         {
-            var success = true;
-            Object obj = new
-            {
-                Success = true,
-                Message = "Đổi lịch thành công."
-            };
-            try
-            {
-                this._appointmentService.UpdateAppointment(appointmentDto.AppointmentId, appointmentDto.SampleGettingDtos);
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                obj = new
-                {
-                    Success = false,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                    InnerExceptionMessage = ex.InnerException.Message
-                };
-            }
+            
+            var result = this._appointmentService.UpdateAppointment(appointmentDto.AppointmentId, appointmentDto.SampleGettingDtos);
 
             // push noti
-            if (success)
+            if (result.Success)
             {
-                var tokens = _appointmentService.GetAllTokens();
+                var tokens =  _appointmentService.GetAllTokens();
                 foreach (var token in tokens)
                 {
                     var data = new
@@ -191,7 +108,7 @@ namespace eLTMS.Web.Api
                     }
                 }
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }
 
@@ -199,30 +116,10 @@ namespace eLTMS.Web.Api
         [Route("api/appointment/delete-appointment")]
         public HttpResponseMessage DeleteAppointment(int appointmentId)
         {
-            var success = true;
-            Object obj = new
-            {
-                Success = true,
-                Message = "Hủy lịch thành công."
-            };
-            try
-            {
-                _appointmentService.DeleteAppointment(appointmentId);
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                obj = new
-                {
-                    Success = false,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace,
-                    InnerExceptionMessage = ex.InnerException.Message
-                };
-            }
+            var result = this._appointmentService.DeleteAppointment(appointmentId);
 
             // send noti
-            if (success)
+            if (result.Success)
             {
                 var tokens = _appointmentService.GetAllTokens();
                 foreach (var token in tokens)
@@ -245,7 +142,7 @@ namespace eLTMS.Web.Api
                     }
                 }
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK, obj);
+            var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }
 

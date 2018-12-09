@@ -41,6 +41,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,11 +59,13 @@
     <Compile Include="Services\LabTestingIndexService.cs" />
     <Compile Include="Services\LabTestService.cs" />
     <Compile Include="Services\HospitalSuggestionService.cs" />
+    <Compile Include="Services\ReceptionistService.cs" />
+    <Compile Include="Services\NurseService.cs" />
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AppointmentService.cs" />
     <Compile Include="Services\LabTestingService.cs" />
-    <Compile Include="Services\ReceptionistService.cs" />
+    <Compile Include="Services\CashierService.cs" />
     <Compile Include="Services\SampleGroupService.cs" />
     <Compile Include="Services\SampleGettingService.cs" />
     <Compile Include="Services\SampleService.cs" />

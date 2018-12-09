@@ -19,12 +19,13 @@ namespace eLTMS.Web.Api
             this._accountService = accountService;
         }
 
+        /*
         [HttpPost]
         [Route("api/account/login")]
-        public HttpResponseMessage Login(LoginModel loginModel)
+        public HttpResponseMessage Login(loginDto loginDto)
         {
-            var phoneNumber = loginModel.PhoneNumber; // sure that not empty from client
-            var password = loginModel.Password; // sure that not empty from client
+            var phoneNumber = loginDto.PhoneNumber; // sure that not empty from client
+            var password = loginDto.Password; // sure that not empty from client
             var account = this._accountService.checkLogin(phoneNumber, password);
             object loginResult = null;
             if (account != null)
@@ -50,20 +51,26 @@ namespace eLTMS.Web.Api
             }
             var response = Request.CreateResponse(HttpStatusCode.OK, loginResult);
             return response;
+        }/**/
+
+        [HttpPost]
+        [Route("api/account/login-patient")]
+        public HttpResponseMessage LoginPatient(LoginDto loginDto)
+        {
+            var phoneNumber = loginDto.PhoneNumber; // sure that not empty from client
+            var password = loginDto.Password; // sure that not empty from client
+            var respObj = this._accountService.CheckLoginPatient(phoneNumber, password);
+            var response = Request.CreateResponse(HttpStatusCode.OK, respObj);
+            return response;
         }
 
-        [HttpGet]
-        [Route("api/account/logout")]
-        public HttpResponseMessage Logout()
+        [HttpPost]
+        [Route("api/account/register-patient")]
+        public HttpResponseMessage RegisterPatient(RegisterDto regDto)
         {
-            return null;
-        }
-
-        [HttpGet]
-        [Route("api/account/register")]
-        public HttpResponseMessage Register()
-        {
-            return null;
+            var respObj = this._accountService.RegisterPatient(regDto);
+            var response = Request.CreateResponse(HttpStatusCode.OK, respObj);
+            return response;
         }
 
     }

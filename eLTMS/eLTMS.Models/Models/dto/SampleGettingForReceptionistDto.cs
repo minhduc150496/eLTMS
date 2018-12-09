@@ -5,25 +5,23 @@ using System.Web;
 
 namespace eLTMS.Models.Models.dto
 {
+    //sd cho modal thông tin cac cuoc hen cua benh nhan
+    //sd trong RecepService
     public class SampleGettingForReceptionistDto
     {
+        public int? OrderNumber { get; set; }
+
         public int SampleGettingId { get; set; }
 
-        public string AppointmentCode { get; set; }
+        public string SampleName { get; set; }
 
-        public string PatientName { get; set; }
+        public string LabTestName { get; set; }
 
-        public string PatientPhone { get; set; }
+        public string EnterDate { get; set; }
 
-        public string PatientAddress { get; set; }
-        
-        public string FmStartTime { get; set; }
+        public string EnterTime { get; set; }
 
-        public string FmFinishTime { get; set; }
-
-        public string TableName { get; set; }
-
-        public bool IsPaid { get; set; }
+        public string StartTime { get; set; }
 
     }
 }

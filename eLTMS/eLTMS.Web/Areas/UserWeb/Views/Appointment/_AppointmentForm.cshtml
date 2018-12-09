@@ -1,9 +1,44 @@
 ﻿<!-- appoinment Page Start-->
 <div class="appoinment_form_area create_appointment_area p100">
     <div class="container">
-        <div class="step-box" id="step-1">
+        <div class="step-box" id="step-0">
             <h2 class="text-center">
-                <b>Bước 1/2: Chọn loại xét nghiệm:</b>
+                <b>Bước 1/3: Nhập thông tin bệnh nhân:</b>
+            </h2>
+            <div id="alert-patient" class="alert alert-danger" role="alert">
+                Xin quý khách vui lòng điền đủ thông tin!
+            </div>
+            <div class="text-center">
+                <style>
+                    #p-table td {
+                        border: none;
+                    }
+                </style>
+                <table id="p-table" style="margin: 0 auto">
+                    <tr>
+                        <td>Họ tên:</td>
+                        <td><input type="text" id="p-name" /></td>
+                    </tr>
+                    <tr>
+                        <td>Số CMND:</td>
+                        <td><input type="text" id="p-cmnd" /></td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại liên hệ:</td>
+                        <td><input type="text" id="p-phone" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="button-box">
+                <button id="btn-next-01" type="button" class="custom_btn next_btn">
+                    Bước 2
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div> <!-- end step 1 -->
+        <div class="step-box" id="step-1" style="display: none">
+            <h2 class="text-center">
+                <b>Bước 2/3: Chọn loại xét nghiệm:</b>
             </h2>
             <div id="alert-required-labtests" class="alert alert-danger" role="alert">
                 Xin quý khách vui lòng chọn các loại xét nghiệm cần làm!
@@ -11,15 +46,19 @@
             <div id="step-1-form">
             </div>
             <div class="button-box">
-                <button id="btn-next" type="button" class="custom_btn next_btn">
-                    Bước 2
+                <button id="btn-prev-10" type="button" class="custom_btn prev_btn">
+                    <i class="fa fa-arrow-left"></i>
+                    Bước 1
+                </button>
+                <button id="btn-next-12" type="button" class="custom_btn next_btn">
+                    Bước 3
                     <i class="fa fa-arrow-right"></i>
                 </button>
             </div>
         </div> <!-- end step 1 -->
         <div class="step-box step-box-2" id="step-2">
             <h2>
-                <b>Bước 2/2: Chọn thời gian lấy mẫu:</b>
+                <b>Bước 3/3: Chọn thời gian lấy mẫu:</b>
             </h2>
             <div id="alert-required-datetime" class="alert alert-danger" role="alert">
                 Xin quý khách vui lòng điền đầy đủ thông tin: ngày, giờ
@@ -28,9 +67,9 @@
             </div>
 
             <div class="button-box text-center">
-                <button id="btn-prev" type="button" class="custom_btn prev_btn">
+                <button id="btn-prev-21" type="button" class="custom_btn prev_btn">
                     <i class="fa fa-arrow-left"></i>
-                    Bước 1
+                    Bước 2
                 </button>
                 <button id="btn-submit" type="button" class="custom_btn submit_btn">
                     Đặt lịch
@@ -48,11 +87,11 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                <h3 class="text text-center out-message">Đặt lịch thành công!</h3>
+                <div class="text text-center out-message">Đặt lịch thành công!</div>
             </div>
             <div class="modal-footer">
                 <div class="button-box">
-                    <button type="button" class="btn btn-success"data-dismiss="modal">Đồng ý</button>
+                    <a href="/UserWeb/Appointment/ViewAppointments" class="btn btn-link">Xem danh sách lịch hẹn</a>
                 </div>
             </div>
         </div>
@@ -66,14 +105,14 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                <h3 class="text text-center out-message">
+                <div class="text text-center out-message">
                     Có lỗi xảy ra.
                     Xin quý khách vui lòng thử lại.
-                </h3>
+                </div>
             </div>
             <div class="modal-footer">
                 <div class="button-box">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Đồng ý</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -90,10 +129,10 @@
                 <div class="box-loader">
                     <img class="img-loader" src="~/Areas/UserWeb/Images/color-dots-loader.gif" />
                 </div>
-                <h3 class="text text-center out-message">
+                <div class="text text-center out-message">
                     Hệ thống đang xử lí.<br />
                     Xin quý khách vui lòng chờ trong giây lát...
-                </h3>
+                </div>
             </div>
         </div>
 
@@ -124,7 +163,7 @@
 </script>
 
 <script id="step-2-template" type="x-tmpl-mustache">
-    <table>
+    <table id="table-step2">
         <thead>
             <tr>
                 <th>#</th>
@@ -185,7 +224,7 @@
 <script id="options-template" type="x-tmpl-mustache">
     <option value="">-- Vui lòng chọn một ca --</option>
     {{#SlotOptions}}
-    <option value="{{SlotId}}" {{#IsUnavailable}} disabled {{/IsUnavailable}}>
+    <option value="{{SlotId}}" data-start-time="{{StartTime}}" {{#IsUnavailable}} disabled {{/IsUnavailable}}>
         {{FmStartTime}}-{{FmFinishTime}}
         {{#IsUnavailable}}
         (hết chỗ)

@@ -13,6 +13,7 @@ namespace eLTMS.DataAccess.Repositories
     {
         List<Patient> GetAllPatient(string phoneNumber);
         Patient GetSimpleById(int id);
+        Patient GetByIDCNumber(string number);// DucBM
         string GetLastPatientCode(); // DucBM
     }
 
@@ -21,9 +22,19 @@ namespace eLTMS.DataAccess.Repositories
     {
         public List<Patient> GetAllPatient(string phoneNumber)
         {
-            var result = DbSet.AsQueryable()                
-                .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.PatientId.ToString().Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber)  && x.IsDeleted == false)
+            var result = DbSet.AsQueryable()
+                .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.PatientId.ToString().Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber) && x.IsDeleted == false)
                 .ToList();
+            return result;
+        }
+
+        // DucBM
+        public Patient GetByIDCNumber(string number)
+        {
+            var result = DbSet.AsQueryable()
+                .Where(x => x.IdentityCardNumber == number)
+                .ToList()
+                .FirstOrDefault();
             return result;
         }
 
@@ -31,10 +42,16 @@ namespace eLTMS.DataAccess.Repositories
         public string GetLastPatientCode()
         {
             var result = DbSet.AsQueryable()
-                .Select(x => x.PatientCode)
-                .OrderBy(x => x)
+                .Where(x => x.PatientCode != null)
+                .OrderBy(x => x.PatientCode)
+                .ToList()
                 .LastOrDefault();
-            return result;
+            string s = null;
+            if (result != null)
+            {
+                s = result.PatientCode;
+            }
+            return s;
         }
 
         public Patient GetSimpleById(int id)

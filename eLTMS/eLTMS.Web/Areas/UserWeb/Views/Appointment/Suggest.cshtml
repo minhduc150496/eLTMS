@@ -1,7 +1,11 @@
-﻿@{
-    ViewBag.Title = "Danh sách bệnh viện";
+﻿
+@using eLTMS.Models.Models.dto
+@{
+    ViewBag.Title = "Đặt lịch xét nghiệm";
+    HospitalSuggestionDto SuggestDto = ViewBag.SuggestDto;
+    HospitalSuggestionDto SuggestDto1 = ViewBag.SuggestDto1;
+    HospitalSuggestionDto SuggestDto2 = ViewBag.SuggestDto2;
 }
-
 
 
 <!-- breadcroumb Area Start-->
@@ -10,9 +14,6 @@
         <div class="row text-center">
             <div class="col">
                 <h1>Gợi ý các bệnh viện có khoa chuyên ngành</h1>
-                <div class="breadcroumb_link">
-                    <a href="/UserWeb">Home </a>/ <a href="hospitalSuggestion.html">Hospital Suggestion</a>
-                </div>
             </div>
         </div>
     </div>
@@ -22,7 +23,7 @@
 <div class="service_area">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" id="gan">
                 <a href="#" class="single_service">
                     <h4><font color="red">Khám chuyên khoa gan</font></h4>
                     <table>
@@ -87,7 +88,7 @@
                     </table>
                 </a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" id="tim">
                 <a href="#" class="single_service">
                     <h4><font color="red">Khám chuyên khoa tim</font></h4>
                     <table>
@@ -153,7 +154,7 @@
                     </table>
                 </a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" id="phoi">
                 <a href="#" class="single_service">
                     <h4><font color="red">Khám chuyên khoa phổi</font></h4>
                     <table>
@@ -209,235 +210,26 @@
                 </a>
             </div>
 
-            <div class="col-md-4">
-                <a href="#" class="single_service">
-                    <h4><font color="red">Khám chuyên khoa ung thư</font></h4>
-                    <table>
-                        <tr><td><strong> BỆNH VIỆN UNG BỨU TP.HCM</strong></td></tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Địa chỉ:
-                                </strong>3 Nơ Trang Long, P.7, Q.Bình Thạnh
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>08.3843.3021
-                            </td>
-                        </tr>
-                        <tr><td><strong>BỆNH VIỆN Vinmec Central Park</strong></td></tr>
-                        <tr>
-                            <td style="float:left">
-                                <p align="left">
-                                    <strong>
-                                        Địa chỉ:
-                                    </strong>:208 Nguyễn Hữu Cảnh, P.22, Quận Bình Thạnh
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong> : 1900 7123
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>
-                                    BỆNH VIỆN CHỢ RẪY
-                                </strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    <p align="left">Địa chỉ:
-                                </strong> 201B Nguyễn Chí Thanh, P.12, Q.5, TP.HCM
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>  028 3856 3534
-                            </td>
-                        </tr>
-                    </table>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" class="single_service">
-                    <h4><font color="red">Khám chuyên khoa tiêu hóa</font></h4>
-                    <table>
-                        <tr><td><strong> BỆNH VIỆN ĐH Y DƯỢC TP.HCM</strong></td></tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Địa chỉ:
-                                </strong>215 Hồng Bàng, P.11, Q.5, TP.HCM
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>028 3855 4269
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>
-                                    BỆNH VIỆN NHÂN DÂN GIA ĐỊNH
-                                </strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <p align="left">
-                                    <strong>
-                                        Địa chỉ:
-                                    </strong>: 1 Nơ Trang Long, phường 12, Bình Thạnh, Hồ Chí Minh
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong> : 028 3551 0104
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>
-                                    BỆNH VIỆN CHỢ RẪY
-                                </strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    <p align="left">Địa chỉ:
-                                </strong> 201B Nguyễn Chí Thanh, P.12, Q.5, TP.HCM
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>  028 3856 3534
-                            </td>
-                        </tr>
-                    </table>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" class="single_service">
-                    <h4><font color="red">Khám chuyên khoa thận</font></h4>
-                    <table>
-                        <tr>
-                            <td>
-                                <strong>
-                                    BỆNH VIỆN NHÂN DÂN 115
-                                </strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <p align="left">
-                                    <strong>
-                                        Địa chỉ:
-                                    </strong> 818 Sư Vạn Hạnh, P.12, Q.10, TP.HỒ CHÍ MINH
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>  (028) 3865 0969
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>
-                                    BỆNH VIỆN BÌNH DÂN
-                                </strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Địa chỉ:
-                                </strong>: 371 Điện Biên Phủ, P.4, Q.3, TP.HCM
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong> : 1900 7123
-                            </td>
-                        </tr>
-                        <tr><td><strong> BỆNH VIỆN ĐH Y DƯỢC TP.HCM</strong></td></tr>
-                        <tr>
-                            <td style="float:left">
-                                <p align="left">
-                                    <strong>
-                                        Địa chỉ:
-                                    </strong>215 Hồng Bàng, P.11, Q.5, TP.HỒ CHÍ MINH
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="float:left">
-                                <strong>
-                                    Điện thoại:
-                                </strong>028 3855 4269
-                            </td>
-                        </tr>
-                    </table>
-                </a>
-            </div>
+
         </div>
     </div>
 </div>
 <!-- Service Area End-->
-<!-- Counter Area Start-->
-<div class="counter_area">
-    <div class="container">
-        <div class="row text-center justify-content-center">
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">108</span></h1>
-                    <span>Our staff</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">20</span>+</h1>
-                    <span>Years of experience</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">1450</span></h1>
-                    <span>Happy smiler</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="single_counter">
-                    <h1><span class="count">646</span></h1>
-                    <span>Blood Donate</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Counter Area End-->
+
+@section scripts {
+    <script>
+        @*function loadData() {
+            if (@(SuggestDto.HospitalPhone)) {
+            document.getElementById("tim").style.display = 'none';
+        }
+        @*if ( @(SuggestDto1.HospitalPhone)==null) {
+           document.getElementById("gan").style.display = 'none';
+        }
+        if ( @(SuggestDto2.HospitalPhone)==null) {
+           document.getElementById("phoi").style.display = 'none';
+        }
+        }
+        loadData();
+        *@
+    </script>
+}

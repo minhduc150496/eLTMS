@@ -15,22 +15,33 @@ var homeController = {
             homeController.loadDataResult(patientId);
 
         });
+        $('.btn-viewResult').off('click').on('click', function () {
+            var code = $(this).data('id');
+            $('#txtResultCodeView').val(code)
+            $('#hiddenFormView').submit();
+
+        });
+        $('#btnClose').off('click').on('click', function () {
+
+            $('#txtCode').val('');
+        });
         $('#btnSaveResult').off('click').on('click', function () {
             var code = $('#txtAppCode').val();
             var con = $('#txtResult').val(); 
+            var cmt = $('#txtCMTPT').froalaEditor('html.get');
             $.ajax({
                 url: '/LabTest/UpdateResult',
                 type: 'Post',
                 dataType: 'json',
-                data: { code: code, con: con },
+                data: { code: code, con: con,cmt:cmt },
                 async: false,
                 success: function (res) {
                     if (!res.success) {
-                        toastr.success("Nhận xét không thành công.");
+                        toastr.success("Chẩn đoán không thành công.");
 
                     }
                     else {
-                        toastr.success("Nhận xét thành công.");
+                        toastr.success("Chẩn đoán thành công.");
                         homeController.loadDataLabTestingResult();
                     }
                 }
@@ -45,6 +56,7 @@ var homeController = {
             var phone = $('#txtPhoneNumber').val();
             var homeAddress = $('#txtHomeAddress').val();
             var companyAddress = $('#txtCompanyAddress').val();
+            var cmnd = $('#txtCmnd').val();
             var date = $('#txtDate').val();
             var isDeleted = "False";
             var patient = {
@@ -57,6 +69,7 @@ var homeController = {
                 PhoneNumber: phone,
                 HomeAddress: homeAddress,
                 CompanyAddress: companyAddress,
+                IdentityCardNumber: cmnd,
                 IsDeleted: isDeleted,
                 AvatarUrl: $('#avatar').attr('src')
             }
@@ -77,6 +90,7 @@ var homeController = {
                             toastr.success("Tạo mới thành công.");
                             $('#myModal').modal('hide');
                             homeController.loadData();
+                            location.reload();
                         }
                     }
                 })
@@ -95,7 +109,8 @@ var homeController = {
                         }
                         else {
                             toastr.success("Cập nhật thành công.");
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide');                            
+                            location.reload();
                             homeController.loadData();
                         }
                     }
@@ -125,7 +140,7 @@ var homeController = {
             $('#myModalHistory').modal('hide');
             $('#myModal1').modal('show');
             var id = $(this).data('id');
-            homeController.loadDataResult(id);
+            homeController.loadAppResult(id);
         });
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
@@ -179,6 +194,7 @@ var homeController = {
                     $('#txtPhoneNumber').val(data.PhoneNumber.trim());
                     $('#txtHomeAddress').val(data.HomeAddress);
                     $('#txtCompanyAddress').val(data.CompanyAddress);
+                    $('#txtCmnd').val(data.IdentityCardNumber);
                     $('#avatar').attr('src', data.Avatar);
                 }
                 else {
@@ -189,8 +205,8 @@ var homeController = {
     },
     resetForm: function () {
         $('#txtPatientId').val('0');
-        $('#txtCode').val('');
         $('#txtAccountId').val('');
+        $('#txtCmnd').val('');
         $('#txtName').val('');
         $('#txtDate').val('');
         $('#ddlGender').val('').change();
@@ -198,6 +214,23 @@ var homeController = {
         $('#txtHomeAddress').val('');
         $('#txtCompanyAddress').val('');
         $('#avatar').attr('src', '');
+    },
+    loadAppResult: function (id, changePageSize) {
+        $.ajax({
+            url: '/appointment/AppDetail',
+            type: 'GET',
+            dataType: 'json',
+            data: { app: id },
+            success: function (response) {
+                if (response.sucess) {
+                    var data = response.data;
+                    $('#txtResultxx').val(data.Conclusion);
+                    $('#txtAppCodexx').val(data.AppointmentCode);
+                    $('#txtCMTPT').froalaEditor('html.set', data.DoctorComment);
+                
+                }
+            }
+        })
     },
     loadDataResult: function (id,changePageSize) {
         $.ajax({
@@ -267,7 +300,7 @@ var homeController = {
                     });
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                       // homeController.loadData();
+                       homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }

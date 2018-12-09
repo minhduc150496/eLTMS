@@ -1,12 +1,12 @@
 ﻿var CONFIG = {
     pageSize: 10,
     pageIndex: 1,
-    PatientId: 71
+    PatientId: 145
 };
 
 var Controller = {
     init: function () {
-        Controller.loadData();
+        //Controller.loadData();
         Controller.registerEvent();
     },
     registerEvent: function () {
@@ -20,6 +20,10 @@ var Controller = {
             "timeOut": 5000,
             "extendedTimeOut": 1000
         }
+
+        $('#btn-search').off('click').on('click', function () {
+            Controller.loadData();
+        })
         
         $('.btn-delete').off('click').on('click', function () {
             var id = $(this).data('id');
@@ -119,7 +123,7 @@ var Controller = {
             type: 'GET',
             dataType: 'json',
             data: {
-                patientId: CONFIG.PatientId,
+                cardNumber: $('#txt-search').val(),
                 page: CONFIG.pageIndex,
                 pageSize: CONFIG.pageSize,
                 sttNew: sttNew,
@@ -129,6 +133,7 @@ var Controller = {
             success: function (response) {
                 //console.log(data);
                 if (response.success) {
+                    var hasData = response.data.length > 0;
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(response.data, function (index, item) {
@@ -136,6 +141,8 @@ var Controller = {
                         var labTests = [];
                         for (var i = 0; i < item.SampleGettingDtos.length; i++) {
                             var sampleGetting = item.SampleGettingDtos[i];
+                            //var sDate = sampleGetting.GettingDate;
+                            //sampleGetting.FmGettingDate = moment(sDate, 'yyyy-MM-dd').format('dd-MM-yyyy');
                             for (var j = 0; j < sampleGetting.LabTests.length; j++) {
                                 var labTest = sampleGetting.LabTests[j];
                                 labTest.sPrice = labTest.Price.toLocaleString("VN");
@@ -151,17 +158,31 @@ var Controller = {
                             LabTests: labTests,
                             TotalPrice: totalPrice.toLocaleString("VN"),
                             IsNew: item.Status == "NEW",
-                            IsProcess: item.Status != "NEW" && item.Status != "DONE",
-                            IsDone: item.Status == "DONE"
+                            IsProcess: item.Status != "NEW" && item.Status != "DOCTORDONE",
+                            IsDone: item.Status == "DOCTORDONE"
                         });
                     });
                     //console.log(html);
                     $('#tblData').html(html);
+
+                    var patient = response.patient;
+                    $('#patient-name').html(patient.FullName);
+                    $('#patient-dob').html(response.patientDob);
+                    $('#patient-phone').html(patient.PhoneNumber);
+
+                    if (hasData) {
+                        $('#content-result').show(0);
+                        $('#content-nodata').hide(0);
+                    } else {
+                        $('#content-result').hide(0);
+                        $('#content-nodata').show(0);
+                    }
+
                     Controller.paging(response.total, function () {
                         Controller.loadData();
                     }, changePageSize);
                     Controller.registerEvent();
-                }
+                } // end if success
             }
         })
     },

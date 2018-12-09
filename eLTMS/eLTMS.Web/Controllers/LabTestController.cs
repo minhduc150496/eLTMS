@@ -10,6 +10,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using eLTMS.Models.Enums;
+using eLTMS.Web.Utils;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
 
 namespace eLTMS.Web.Controllers
 {
@@ -17,19 +21,23 @@ namespace eLTMS.Web.Controllers
     {
         //private readonly IExportPaperService _exportPaperService;
         private readonly ISampleService _sampleService;
+        private readonly ISampleGettingService _sampleGettingService;
         private readonly ISampleGroupService _sampleGroupService;
         private readonly ILabTestService _labTestService;
+        private readonly IPatientService _patientService;
         private readonly ILabTestingService _labTestingService;
         private readonly ILabTestingIndexService _labTestingIndexService;
         private readonly IAppointmentService _appointmentService;
         private readonly IHospitalSuggestionService _hospitalSuggestionService;
-        public LabTestController(IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        public LabTestController(ISampleGettingService sampleGettingService,IPatientService patientService, IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
         {
             this._labTestService = labTestService;
             this._appointmentService = appointmentService;
             this._labTestingService = labTestingService;
             this._labTestingIndexService = labTestingIndexService;
             this._sampleService = sampleService;
+            this._sampleGettingService = sampleGettingService;
+            this._patientService = patientService;
             this._sampleGroupService = sampleGroupService;
             this._hospitalSuggestionService = hospitalSuggestionService;
         }
@@ -56,6 +64,15 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult LabTestingResult()
         {
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
+        }
+        public ActionResult LabTestingFail()
+        {
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
             {
                 return View();
@@ -63,7 +80,6 @@ namespace eLTMS.Web.Controllers
             var returnUrl = Request.Url.AbsoluteUri;
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
-
         public ActionResult LabTestingDone()
         {
             if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
@@ -164,11 +180,32 @@ namespace eLTMS.Web.Controllers
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult GetAllLabTestingsFail()
+        {
+            var queryResult = _labTestingService.GetAllLabTestingFail();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAllLabTestings()
         {
             var queryResult = _labTestingService.GetAllLabTesting();
+            var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
+            return Json(new
+            {
+                success = true,
+                data = result,
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllLabTestingDate(string date)
+        {
+            var queryResult = _labTestingService.GetAllLabTestingDate(date);
             var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult);
             return Json(new
             {
@@ -198,6 +235,47 @@ namespace eLTMS.Web.Controllers
                 sucess = result
             });
         }
+        [HttpPost]
+        public JsonResult UpdateLabTestingFail(int id)
+        {
+            var result = _labTestingService.UpdateFail(id);
+            var result1 = _labTestingService.GetLabTesting(id);
+            //từ labtesting lấy ra samplegetting
+            var s = result1.SampleGettingId; var sampleGetting = _sampleGettingService.GetSampleGetting(int.Parse(s.ToString()));
+            //từ samplegetting lấy ra appointment
+            var z = sampleGetting.AppointmentId; var appointment = _appointmentService.GetSingleById(int.Parse(z.ToString()));
+            //từ samplegetting lấy ra sample
+            var m = sampleGetting.SampleId; var sample = _sampleService.GetSampleById(int.Parse(m.ToString()));
+            //từ appointment lấy ra patient
+            var l = appointment.PatientId; var patient = _patientService.GetPatientById(int.Parse(l.ToString()));
+            if (result==true)
+            {
+                var tokens = _appointmentService.GetAllTokens();
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Bệnh nhân: " + patient.FullName + " ĐT:" + patient.PhoneNumber + " Cần làm lại xét nghiệm: " + sample.SampleName,
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
+            return Json(new
+            {
+                sucess = result
+            });
+        }
 
         [HttpPost]
         public JsonResult UpdateLabTesting(List<LabTesting> labTesting)
@@ -217,10 +295,10 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-        [HttpPost]
-        public JsonResult UpdateResult(string code,string con)
+        [HttpPost, ValidateInput(false)]
+        public JsonResult UpdateResult(string code,string con,string cmt)
         {
-            var result = _appointmentService.Update(code,con);
+            var result = _appointmentService.Update(code,con,cmt);
             return Json(new
             {
                 success = result
@@ -286,7 +364,15 @@ namespace eLTMS.Web.Controllers
                 success = result
             });
         }
-
+        [HttpPost]
+        public JsonResult DeleteLabTesting(int id)
+        {
+            var result = _labTestingService.Delete(id);
+            return Json(new
+            {
+                success = result
+            });
+        }
         [HttpPost]
         public JsonResult DeleteSample(int id)
         {
@@ -309,7 +395,7 @@ namespace eLTMS.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult ExportOrderDetailToPdf(string code)
+        public ActionResult ExportDetailToPdf(string code)
         {
             StringBuilder sb = new StringBuilder();
             StringBuilder sb1 = new StringBuilder(); StringBuilder sb2 = new StringBuilder();
@@ -347,8 +433,10 @@ namespace eLTMS.Web.Controllers
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Ngày sinh: </strong>{item2.DateOB.ToString("dd-MM-yyyy")}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
                 sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
-                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{item2.Gender}</td></tr>");
+                var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
                 allData = allData.Replace("{{Con}}", $"<h2>{item2.Conclusion}</h2>");
+                allData = allData.Replace("{{Cmt}}", item2.DoctorComment);
                 string x = item2.Conclusion + "";
                 var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
                 var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
@@ -373,7 +461,69 @@ namespace eLTMS.Web.Controllers
             Response.End();
             return null;
         }
+        [HttpPost]
+        public ActionResult ViewDetailOnWeb(string code)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb1 = new StringBuilder(); StringBuilder sb2 = new StringBuilder();
+            var queryResult2 = _appointmentService.GetResultByAppCode(code);
+            var result2 = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult2);
+            var queryResult1 = _labTestingService.GetAllLabTestingHaveAppointmentCode(code);
+            var result1 = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult1);
+            foreach (var item1 in result1)
+            {
+                var queryResult = _labTestingIndexService.GetAllLabTestingIndexHaveLabtestingId(item1.LabTestingId);
+                var result = Mapper.Map<IEnumerable<LabTestingIndex>, IEnumerable<LabTestingIndexDto>>(queryResult);
+                var changeColor = "";
+                sb.AppendLine($"<tr><td><h3>{item1.LabTestName}</h3><td></tr>");
+                foreach (var item in result)
 
+                {
+                    if (item.LowNormalHigh.Contains("L")) changeColor = "'background-color: yellow;'";
+                    if (item.LowNormalHigh.Contains("H")) changeColor = "'background-color: #FF6A6A;'";
+                    if (item.LowNormalHigh.Contains("N")) changeColor = "'background-color: white;'";
+                    sb.AppendLine("<tr>");
+                    sb.AppendLine($"<td class='no'>{item.IndexName}</td>");
+                    sb.AppendLine($"<td class='colUnit' style= {changeColor}>{item.IndexValue}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.LowNormalHigh}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.NormalRange}</td>");
+                    sb.AppendLine($"<td class='colUnit'style= {changeColor}>{item.Unit}</td>");
+                    sb.AppendLine("</tr>");
+                }
+            }
+            var Renderer = new IronPdf.HtmlToPdf();
+            var allData = System.IO.File.ReadAllText(Server.MapPath("~/template-pdf/result.html"));
+            foreach (var item2 in result2)
+            {
+                allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
+                sb2.AppendLine($"<tr><td class='no'><strong>Tên: </strong>{item2.PatientName}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Ngày sinh: </strong>{item2.DateOB.ToString("dd-MM-yyyy")}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item2.Address}</td></tr>");
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item2.Phone}</td></tr>");
+                var gender = (item2.Gender == "Male") ? "Nam" : "Nữ";
+                sb2.AppendLine($"<tr><td class='colUnit'><strong>Giới tính: </strong>{gender}</td></tr>");
+                allData = allData.Replace("{{Con}}", $"<h3>{item2.Conclusion}</h3>");
+                allData = allData.Replace("{{Cmt}}", item2.DoctorComment);
+                string x = item2.Conclusion + "";
+                var queryResult3 = _hospitalSuggestionService.GetAllHospitalSuggestions(x);
+                var result3 = Mapper.Map<IEnumerable<HospitalSuggestion>, IEnumerable<HospitalSuggestionDto>>(queryResult3);
+                foreach (var item3 in result3)
+                {
+                    sb1.AppendLine($"<tr><td class='no'><strong>{item3.HospitalList}</strong></td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Địa chỉ: </strong>{item3.HospitalAdd}</td></tr>");
+                    sb1.AppendLine($"<tr><td class='colUnit'><strong>Điện thoại: </strong>{item3.HospitalPhone}</td></tr>");
+                }
+            }
+
+            allData = allData.Replace("{{DataResult}}", sb.ToString());
+            allData = allData.Replace("{{DataResult1}}", sb1.ToString());
+            allData = allData.Replace("{{DataResult2}}", sb2.ToString());
+
+            return new ContentResult {
+        ContentType = "text/html",
+        Content = allData
+    };
+        }
 
     }
 }

@@ -15,8 +15,8 @@ namespace eLTMS.DataAccess.Repositories
         List<SampleGetting> GetAll();
         List<SampleGetting> GetAllIncludeApp();
         List<SampleGetting> GetAll2();
-        List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId); // DucBM
         SampleGetting GetByCodeForNurse(string code); // DucBM
+        SampleGetting GetFirst(int sampleId, string gettingDate, int patientId);
     }
     public class SampleGettingRepository : RepositoryBase<SampleGetting>, ISampleGettingRepository
     {
@@ -42,24 +42,26 @@ namespace eLTMS.DataAccess.Repositories
         }
 
         // DucBM
-        public List<SampleGetting> GetBySampleGroupIdForReceptionist(int sampleGroupId)
+        public SampleGetting GetByCodeForNurse(string code) // Stt: WAITING - chờ lấy mẫu
         {
+            int id = int.Parse(code); // temp
             var result = DbSet.AsQueryable()
-                .Where(x => x.Sample.SampleGroupId == sampleGroupId && x.IsDeleted == false && x.Appointment.PatientId != null)
+                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingId.Equals(id))
                 .Include(x => x.Appointment.Patient)
-                .Include(x => x.Slot)
-                .Include(x => x.Table)
-                .ToList();
+                .Include(x => x.Sample)
+                .FirstOrDefault();
             return result;
         }
 
-        // DucBM
-        public SampleGetting GetByCodeForNurse(string code) // Stt: WAITING - chờ lấy mẫu
+        public SampleGetting GetFirst(int sampleId, string gettingDate, int patientId)
         {
+            DateTime dt = DateTime.Parse(gettingDate);
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingCode.Equals(code))
-                .Include(x => x.Appointment.Patient)
-                .Include(x => x.Sample)
+                .Include(x => x.Appointment)
+                .Where(x => x.IsDeleted==false 
+                    && x.SampleId == sampleId 
+                    && x.Appointment.PatientId == patientId 
+                    && DbFunctions.TruncateTime(x.GettingDate)==DbFunctions.TruncateTime(dt))
                 .FirstOrDefault();
             return result;
         }

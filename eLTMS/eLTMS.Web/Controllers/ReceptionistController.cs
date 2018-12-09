@@ -3,6 +3,7 @@ using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
+using eLTMS.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,47 +31,25 @@ namespace eLTMS.Web.Controllers
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
         
+       
         [HttpGet]
-        public JsonResult GetAllSampleGettingsBySampleGroupId(int sampleGroupId, int page = 1, int pageSize = 20)
+        public JsonResult GetPatientByDate(string search, DateTime date, int page=1, int pageSize=20)
         {
-            var queryResult = _receptionistService.GetSampleGettingsBySampleGroupId(sampleGroupId);
-            var totalRows = queryResult.Count();
-            var result = Mapper.Map<IEnumerable<SampleGetting>, IEnumerable<SampleGettingForReceptionistDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-            return Json(new
-            {
-                success = true,
-                data = result,
-                total = totalRows
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetAllAppointment(int page = 1, int pageSize = 20 )
-        {
-            var queryResult = _receptionistService.GetAllAppointment();
-            var totalRows = queryResult.Count();
-            var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
-            return Json(new
-            {
-                success = true,
-                data = result,
-                total = totalRows
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetAllAppointment2()
-        {
-            return null;
-        }
-
-        [HttpGet]
-        public JsonResult GetAppBySample(DateTime date, int sampleId, int page=1, int pageSize=20)
-        {
-            //var queryResult = _receptionistService.GetAppBySample(sampleId);
-            var result = _receptionistService.GetAllBySample(date, sampleId);
+            var result = _receptionistService.GetAllPatientByDateTesting(search, date);
             var totalRows = result.Count();
-            //var totalRows = queryResult.Count();
-            //var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
+            return Json(new
+            {
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetAppByPatientId(int patientId, DateTime date, int page = 1, int pageSize = 20)
+        {
+            var result = _receptionistService.GetAppByPatient(patientId, date);
+            var totalRows = result.Count();
             return Json(new
             {
                 success = true,
@@ -80,73 +59,59 @@ namespace eLTMS.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddApp(AppointmentAddDto data)
+        public JsonResult IsPaid(int patientId, DateTime date)
         {
-            var result = _receptionistService.Add(data);
+            var result = _receptionistService.ChangeIsPaid(patientId,date);
+            if (result == true)
+            {
+                var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Đã thanh toán. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             return Json(new
             {
                 success = result
             });
         }
 
-        [HttpPost]
-        public JsonResult CheckAndDeleteBlood(DateTime dateTime)
-       {
-            var result = _receptionistService.CheckAndDeleteBlood(dateTime);
+        [HttpGet]
+        public JsonResult GetPriceByPatient(int patientId, DateTime date, int page = 1, int pageSize = 20)
+        {
+            var result = _receptionistService.GetPrice(patientId, date);
+            var totalRows = result.TotalPrice;
             return Json(new
             {
-                success = result
-            });
+                success = true,
+                data = result,
+                total = totalRows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult CheckNDeleteUrine(DateTime dateTime)
+        public JsonResult DeleteSampleGetting(int sgId)
         {
-            var result = _receptionistService.CheckAndDeleteUrine(dateTime);
+            var result = _receptionistService.DeleteSG(sgId);
             return Json(new
             {
                 success = result
             });
         }
-
-        [HttpPost]
-        public JsonResult CheckNDeleteCell(DateTime dateTime)
-        {
-            var result = _receptionistService.CheckAndDeleteCell(dateTime);
-            return Json(new
-            {
-                success = result
-            });
-        }
-        [HttpPost]
-        public JsonResult CheckNDeleteMucus(DateTime dateTime)
-        {
-            var result = _receptionistService.CheckAndDeleteMucus(dateTime);
-            return Json(new
-            {
-                success = result
-            });
-        }
-        [HttpPost]
-        public JsonResult CheckNDeletePhan(DateTime dateTime)
-        {
-            var result = _receptionistService.CheckAndDeletePhan(dateTime);
-            return Json(new
-            {
-                success = result
-            });
-        }
-
-        [HttpPost]
-        public JsonResult IsPaid(int sampleGettingId)
-        {
-            var result = _receptionistService.ChangeIsPaid(sampleGettingId);
-            return Json(new
-            {
-                success = result
-            });
-        }
-        
-        
     }
 }

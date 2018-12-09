@@ -3,7 +3,7 @@
 */
 
 CONFIG = {
-    PATIENT_ID: 71, // hard code for dev-ing
+    PATIENT_ID: 145, // hard code for dev-ing
     SAMPLE_DTOS_KEY: "SAMPLE_DTOS",
     IS_UPDATE: false,
 };
@@ -31,13 +31,6 @@ var Utils = {
     } // end function
 };
 
-map = new Map();
-map.set(1, 5685);
-map.set(2, 5686);
-map.set(3, 6077);
-map.set(4, 5710);
-map.set(5, 5732);
-
 var Model = {
     firebaseDB: {},
     sampleDtos: {},
@@ -45,7 +38,7 @@ var Model = {
     slotDtos: {},
     appointmentId: -1,
     appointmentDto: {
-        PatientId: CONFIG.PATIENT_ID,
+        //PatientId: CONFIG.PATIENT_ID,
         SampleGettingDtos: []
     },
     suggestResult: null
@@ -65,12 +58,29 @@ var Controller = {
                 keyboard: false,
                 show: false,
             });
+            $("#fail-modal").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: false,
+            });
+            $("#processing-modal").modal({
+                backdrop: "static",
+                keyboard: false,
+                show: false,
+            });
         });
 
-        $("#btn-next").click(function () {
+        $("#btn-next-01").click(function () {
+            var duration = 200;
+            $("#step-0").fadeOut(duration, function () {
+                $("#step-1").fadeIn(duration);
+            });
+        })
+
+        $("#btn-next-12").click(function () {
             // VALIDATION:
             var $checks = $("#step-1-form input[type='checkbox']:checked");
-            //console.log($checks);
+            ////console.log($checks);
             var noChecked = $checks.length == 0;
             if (noChecked) { // user did not check any checkbox, not allow to go to step 2
                 $("html, body").animate({
@@ -87,7 +97,14 @@ var Controller = {
             });
         });
 
-        $("#btn-prev").click(function () {
+        $("#btn-prev-10").click(function () {
+            var duration = 200;
+            $("#step-1").fadeOut(duration, function () {
+                $("#step-0").fadeIn(duration);
+            });
+        });
+
+        $("#btn-prev-21").click(function () {
             var duration = 200;
             $("#step-2").fadeOut(duration, function () {
                 $("#step-1").fadeIn(duration);
@@ -96,6 +113,8 @@ var Controller = {
 
         // fixing...
         $("#btn-submit").click(function () {
+            //$("#btn-submit").attr('disabled', true);
+
             // VALIDATION: required fill all fields
             var hasEmptyField = false;
             $("#step-2 [type='date']").each(function (index, element) {
@@ -118,6 +137,7 @@ var Controller = {
 
 
             // create SampleGettingDtos and assign to Model
+            Model.appointmentDto.SampleGettingDtos = [];
             for (var i = 0; i < Model.sampleDtos.length; i++) {
                 var sampleDto = Model.sampleDtos[i];
                 if (sampleDto.IsSelected) {
@@ -143,10 +163,16 @@ var Controller = {
                     Model.appointmentDto.SampleGettingDtos.push(sampleGettingDto);
                 }
             }
+
+            Model.appointmentDto.PatientDto = {};
+            Model.appointmentDto.PatientDto.FullName = $('#p-name').val();
+            Model.appointmentDto.PatientDto.IdentityCardNumber = $('#p-cmnd').val();
+            Model.appointmentDto.PatientDto.PhoneNumber = $('#p-phone').val();
+
             // ajax for create new appointment
             if (CONFIG.IS_UPDATE) {
                 Model.appointmentDto.AppointmentId = Model.AppointmentId;
-                console.log(Model.appointmentDto);
+                //console.log(Model.appointmentDto);
             }
             var jsonData = JSON.stringify(Model.appointmentDto);
             Controller.sendToServer(jsonData);
@@ -181,11 +207,11 @@ var Controller = {
         if (typeof flagInitForEdit !== 'undefined' && flagInitForEdit == true) {
             flagInitForEdit = false;
             CONFIG.IS_UPDATE = true;
-            console.log('AppointDto:', AppointDto);
+            //console.log('AppointDto:', AppointDto);
             Model.AppointmentId = AppointDto.AppointmentId;
             Model.AppointmentDto = JSON.parse(JSON.stringify(AppointDto));
-            console.log(Model.AppointmentId);
-            console.log(Model.AppointmentDto);
+            //console.log(Model.AppointmentId);
+            //console.log(Model.AppointmentDto);
             for (var i = 0; i < AppointDto.SampleGettingDtos.length; i++) {
                 var sample = AppointDto.SampleGettingDtos[i];
                 // set getting date for Model.sampleDtos
@@ -217,7 +243,7 @@ var Controller = {
                 labTest.FmPrice = labTest.Price.toLocaleString("VN-vi");
             }
         }
-        //console.log(Model.sampleDtos);
+        ////console.log(Model.sampleDtos);
 
     }, // end Action
     renderStep2Html: function () {
@@ -235,17 +261,37 @@ var Controller = {
 
         // load slot options of a Sample when change it's getting date
         $("#step-2-form input[type='date']").off("change").on("change", function () {
-            console.log("on change");
+            //console.log("on change");
             var sampleId = $(this).closest('[data-sample-id]').data('sample-id');
             var sampleGroupId = Model.sampleDtos.find(function (item) {
                 return item.SampleId == sampleId;
             }).SampleGroupId;
             var gettingDate = $(this).val();
             Controller.loadSlotOptions(sampleId, sampleGroupId, gettingDate);
+
+            Controller.sortTableRows();
+        })
+        $("#step-2-form select").off("change").on("change", function () {
+            Controller.sortTableRows();
+        })
+
+        // set value min max for input type date
+        $('#table-step2 [type="date"]').each(function (index, el) {
+            if (CONFIG.IS_UPDATE == false) { // is create
+                $(el).val(Tomorrow);
+            }
+            $(el).attr('min', Tomorrow);
+            $(el).attr('max', MaxGettingDate);
         })
 
 
         // load slot options
+        flagNNotLoadedOptions = 0;
+        for (var i = 0; i < Model.sampleDtos.length; i++) {
+            if (Model.sampleDtos[i].IsSelected) {
+                flagNNotLoadedOptions++;
+            }
+        }
         for (var i = 0; i < Model.sampleDtos.length; i++) {
             var sampleDto = Model.sampleDtos[i];
             if (sampleDto.IsSelected) {
@@ -261,7 +307,7 @@ var Controller = {
         for (var i = 1; i < 6; i++) {
             var slotId = map.get(i);
             var $option = $("[data-sample-id='" + i + "'] select [value='" + slotId + "']");
-            console.log($option);
+            //console.log($option);
             $option.prop('selected', true);
         }/**/
 
@@ -269,7 +315,7 @@ var Controller = {
             if (Model.appointmentDto.SampleGettingDtos != null && Model.appointmentDto.SampleGettingDtos.length > 0) {
                 $(Model.appointmentDto.SampleGettingDtos).each(function (index, el) {
                     var $option = $("[data-sample-id='" + el.SampleId + "'] select [value='" + el.SlotId + "']");
-                    console.log($option);
+                    // //console.log($option);
                     $option.prop('selected', true);
                 });
             }
@@ -284,7 +330,7 @@ var Controller = {
             var sample = Model.sampleDtos[i];
             for (var j = 0; j < sample.LabTests.length; j++) {
                 var labTest = sample.LabTests[j];
-                console.log(labTest.IsChecked);
+                //console.log(labTest.IsChecked);
                 if (labTest.IsChecked == true) {
                     totalPrice += labTest.Price;
                 }
@@ -295,8 +341,8 @@ var Controller = {
 
     }, // end Action
     loadSlotOptions: function (sampleId, sampleGroupId, gettingDate) {
-        console.log('gettingDate', gettingDate);
-        console.log('sampleGroupId', sampleGroupId);
+        //console.log('gettingDate', gettingDate);
+        //console.log('sampleGroupId', sampleGroupId);
         $.ajax({
             method: "GET",
             contentType: "application/json",
@@ -307,35 +353,62 @@ var Controller = {
             },
             async: true,
             success: function (data) {
-                // render
+                // render options
                 for (var i = 0; i < data.length; i++) {
                     data[i].IsUnavailable = data[i].IsAvailable == false;
                     data[i].FmStartTime = Utils.formatTimeShort(data[i].StartTime);
                     data[i].FmFinishTime = Utils.formatTimeShort(data[i].FinishTime);
                 }
-                data = { SlotOptions: data };
-                //console.log(data);
+                // //console.log(data);
                 var template = $("#options-template").html();
-                var html = Mustache.render(template, data);
+                var html = Mustache.render(template, { SlotOptions: data });
                 $("#step-2-form [data-sample-id='" + sampleId + "'] select").html(html);
+
+                // update to Model.sampleDtos
+                for (var i = 0; i < Model.sampleDtos.length; i++) {
+                    var sampleDto = Model.sampleDtos[i];
+                    if (sampleDto.SampleId == sampleId) {
+                        sampleDto.SlotOptions = data;
+                        flagNNotLoadedOptions--;
+                        if (flagNNotLoadedOptions == 0) {
+                            //debugger
+                            Controller.suggestSlots();
+                            Controller.sortTableRows();
+                        }
+                        break;
+                    }
+                }
             }
         });
     },
     suggestSlots: function () {
-
-        Model.comingDate = $("#coming-date").val();
-        var hour = parseInt($("#coming-hour").val());
-        var min = parseInt($("#coming-min").val());
-        console.log(hour, min);
+        //debugger;
+        var hour = 7;
+        var min = 0;
+        ////console.log(hour, min);
         if (hour != null && min != null) {
-            Model.comingTime = hour * 60 * 60 + min * 60;
-            // console.log(Model.sampleDtos);
-            var result = AppointmentSuggestor.CalcTheBestTour(Model.slotDtos, Model.comingDate, Model.comingTime, Model.sampleDtos);
+            var comingTime = hour * 60 * 60 + min * 60;
+            // //console.log(Model.sampleDtos);
+            var selectedSampleDtos = [];
+            for (var i = 0; i < Model.sampleDtos.length; i++) {
+                var sampleDto = Model.sampleDtos[i];
+                if (sampleDto.IsSelected == true) {
+                    selectedSampleDtos.push(sampleDto);
+                }
+            }
+            var result = AppointmentSuggestor.CalcTheBestTour(selectedSampleDtos, comingTime);
             Model.suggestResult = result;
-            console.log(result);
-            Controller.renderStep2bHtml();
+            //console.log('result: ', result);
+            //Controller.renderStep2bHtml();
+            // RENDER ...
+            for (var i = 0; i < result.length; i++) {
+                var sampleId = result[i].SampleId;
+                var slotId = result[i].SlotId;
+                var $option = $("[data-sample-id='" + sampleId + "'] select [value='" + slotId + "']");
+                //console.log(sampleId, slotId, $option);
+                $option.prop('selected', true);
+            }
         }
-
     }, // end Action
     renderLabTestList: function () {
         // get all sampleDtos and LabTests
@@ -352,11 +425,11 @@ var Controller = {
                 }
             }
         }
-        if (sSampleDtos == null || 1 == 1) {
+        if (sSampleDtos == null) {
             $.ajax({
                 url: "/api/sample/get-all"
             }).success(function (data) {
-                //console.log(data);
+                ////console.log(data);
                 Model.sampleDtos = data; // CONFIG
                 sSampleDtos = JSON.stringify(data);
                 // save to local storage
@@ -393,7 +466,7 @@ var Controller = {
             sURL = "/api/appointment/update-appointment";
         }
         // call AJAX to create a new Appointment
-        console.log("json:", jsonData)
+        //console.log("json:", jsonData)
         $.ajax({
             method: sMethod,
             contentType: "application/json",
@@ -402,6 +475,7 @@ var Controller = {
             async: true,
             data: jsonData,
             success: function (data) {
+                //$("#btn-submit").attr('disabled', false);
                 var checkResult = function (data) {
                     $("#processing-modal").modal('hide');
                     if (data.Success == true) {
@@ -421,8 +495,9 @@ var Controller = {
                 }
             },
             fail: function (data) {
-                console.log("response: ");
-                console.log(data);
+                //console.log("response: ");
+                //console.log(data);
+                //$("#btn-submit").attr('disabled', false);
                 if (openingProcessingModal) {
                     $("#processing-modal").on("shown.bs.modal", function (e) {
                         e.stopPropagation();
@@ -438,6 +513,27 @@ var Controller = {
         }); // end AJAX define
 
     }, // end Action
+    sortTableRows: function () {
+        var $table = $('#table-step2');
+        var rows = $table.find('tr').get();
+        rows.sort(function (a, b) {
+            var dateA = $(a).find('[type=date]').val();
+            var dateB = $(b).find('[type=date]').val();
+            var timeA = parseInt($(a).find('option:selected').data('start-time'));
+            var timeB = parseInt($(b).find('option:selected').data('start-time'));
+            if (dateA < dateB) return -1;
+            if (dateA > dateB) return 1;
+            if (timeA < timeB) return -1;
+            if (timeA > timeB) return 1;
+            return 0;
+        });
+        $.each(rows, function (index, row) {
+            $table.children('tbody').append(row);
+        });
+        $("#table-step2 tbody tr:not(:last-child()) td:first-child()").each(function (index, el) {
+            $(this).html(index + 1);
+        });
+    }
 }
 Controller.init();
 

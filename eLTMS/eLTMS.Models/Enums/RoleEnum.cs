@@ -14,6 +14,7 @@ namespace eLTMS.Models.Enums
         LabTechnician = 4,
         Doctor = 5,
         WarehouseKeeper = 6,
-        Manager = 7
+        Manager = 7,
+        Cashier = 8
     }
 }

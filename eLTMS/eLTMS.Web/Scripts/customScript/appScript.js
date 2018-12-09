@@ -10,12 +10,35 @@ var homeController = {
         homeController.loadDataBySample();
         homeController.registerEvent();
     },
+
     checkIsPaid: function (SampleGettingId) {
-        homeController.ChangeIsPaid(SampleGettingId);
+        homeController.loadPrice(SampleGettingId);
+        var modalConfirm = function (callback) {
+
+            $("#mi-modal").modal('show');
+
+            $("#modal-btn-si").on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                homeController.ChangeIsPaid(SampleGettingId);
+            }
+            else {
+                homeController.loadDataBySample();
+            }
+        });
+
     },
-    loadIsPaid: function (IsPaid, SampleGettingId) {
-        var a = 1;
-    },
+    
     formatDate: function (date) {
         var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -27,13 +50,14 @@ var homeController = {
 
         return [year, month, day].join('-');
     },
+
     registerEvent: function () {
 
-        $(".Sample").change(function () {
+        $("#select-sample").change(function () {
             homeController.loadDataBySample();
         });
         
-        $(".Date").change(function () {
+        $("#select-date").change(function () {
             homeController.loadDataBySample();
         });
         
@@ -49,6 +73,89 @@ var homeController = {
             var teBaoHoc = false;
             var phan = false;
             var dich = false;
+
+            var labTests = [];
+            $('#mauCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#nuocTieuCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#teBaoHocCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#phanCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            $('#dichCheckGroup input[type=checkbox]:checked').each(function (index, element) {
+                var dataLT = $(element).data('labtest-id');
+                if (dataLT == '') {
+                    dataLT = -1;
+                }
+                var dataSP = $(element).data('sample-id');
+                if (dataSP == '') {
+                    dataSP = -1;
+                }
+                var labtestId = parseInt(dataLT);
+                var sampleId = parseInt(dataSP);
+                labTests.push({
+                    LabTestId: labtestId,
+                    SampleId: sampleId
+                });
+            });
+            console.log(labTests);
 
             if ($('#checkBox_loaiXetNghiem1').prop('checked') === true || $('#checkBox_loaiXetNghiem2').prop('checked') === true ||
                 $('#checkBox_loaiXetNghiem3').prop('checked') === true
@@ -91,16 +198,17 @@ var homeController = {
                 Dich: dich
             };
             $.ajax({
-                url: '/receptionist/AddApp',
+                url: '/cashier/AddApp',
                 type: 'Post',
                 dataType: 'json',
-                data: item,
+                data: {
+                    data: item,
+                    labTests: labTests
+                },
                 success: function (res) {
                     if (!res.success) {
-                        if (res.validation && res.validation.Errors) {
-                            toastr.error(res.validation.Errors[0].ErrorMessage);
-                        }
-
+                        toastr.error("Tạo mới thất bại.");
+                        $('#myModal').modal('hide');
                     }
                     else {
                         toastr.success("Tạo mới thành công.");
@@ -112,12 +220,9 @@ var homeController = {
 
         });
 
-        $('#cbIsPaid').change(function () {
-            $('#cbIsPaid').val($(this).is(':checked'));
-        });
 
         $('#btnAddNew').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Thêm mới vật tư');
+            $('#lblPopupTitle').text('Thêm mới cuộc hẹn');
             homeController.resetForm();
             $('#myModal').modal('show');
             var selectedSample = $(".Sample").children("option:selected").val();
@@ -162,105 +267,26 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadDataBySample(true);
         });
+        /*
+        console.log('register switch')
+        $('label.switch input').off('change').on('change', function () {
+            var sampleGettingId = $(this).data('id');
+            console.log(sampleGettingId);
+            homeController.checkIsPaid(sampleGettingId);
+        });/**/
 
-        $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            homeController.loadData(true);
-        });
-        $('.btn-edit').off('click').on('click', function () {
-            $('#lblPopupTitle').text('Cập nhật vật tư');
-            $('#myModal').modal('show');
-            var id = $(this).data('id');
-            homeController.loadDetail(id);
-        });
-
-        $('.btn-delete').off('click').on('click', function () {
-            var id = $(this).data('id');
-            homeController.deleteSupply(id);
-
-        });
 
     },
     
-    loadDetail: function (id) {
-        $.ajax({
-            url: '/WareHouse/SupplyDetail',
-            data: {
-                id: id
-            },
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response.sucess) {
-                    var data = response.data;
-                    $('#txtSupplyId').val(data.SuppliesId);
-                    $('#txtCode').val(data.SuppliesCode);
-                    $('#txtName').val(data.SuppliesName);
-                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-                    $('#ddlSupplyUnit').val(data.Unit).change();
-                    $('#txtNote').val(data.Note);
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    },
-    saveData: function () {
-
-    },
+    
     resetForm: function () {
         $('#txtDateOfBirth').val('');
         $('#txtName').val('');
         $('#txtCMND').val('');
         $('#txtPhone').val('');
         $('#txtAddress').val('');
-        $('#txtNote').val('');
     },
-    loadData: function (changePageSize) {
-        var selectedSample = $(this).children("option:selected").val();
-        $.ajax({
-            url: '/receptionist/GetAllAppointment',
-            type: 'GET',
-            dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample },             
-            success: function (response) {
-                if (response.success) {
-                    var data = response.data;
-                    var html = '';
-                    var template = $('#data-template').html();
-                    $.each(data, function (i, item) {
-                        var sample = "";
-                        $.each(item.SampleGettingDtos, function (e, etem) {
-                            sample = sample + etem.SampleName + ": " + etem.StartTime + " ";
-                        });
-                        html += Mustache.render(template, {
-                            AppCode: item.AppointmentCode,
-                            FullName: item.PatientName,
-                            Phone: item.Phone,
-                            Address: item.Address,
-                            SampleName: sample /*+ item.SampleGettingDtos.StartTime +"/n"*/,
-                            //StartTime: item.Unit,
-                            //Note: item.Note,
-
-                        });
-
-                    });
-                    console.log(html);
-                    $('#tblData').html(html);
-                    homeController.paging(response.total, function () {
-                        homeController.loadData();
-                    }, changePageSize);
-                    homeController.registerEvent();
-                }
-            }
-        })
-    },
+    
     paging: function (totalRow, callback, changePageSize) {
         var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
 
@@ -285,18 +311,22 @@ var homeController = {
         });
     },
 
+    //nayf la cua cashierjs
 
     loadDataBySample: function (changePageSize) {
-        var selectedSample = $(".Sample").children("option:selected").val();
-        var selectDate = $(".Date").val();
+        //chi lấy dữ liệu mà select
+        var selectedSample = $("#select-sample").children("option:selected").val();
+        var selectDate = $("#select-date").val();
+        var searchData = $("#txtSearch").val();
         $.ajax({
-            url: '/receptionist/GetAppBySample',
+            url: '/cashier/GetAppBySample',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate  },
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleId: selectedSample, date: selectDate, search: searchData },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
+                    //do du lieu qua html
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
@@ -311,13 +341,65 @@ var homeController = {
                             Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
                             IsPaid: item.IsPaid,
-                            ReadOnly: (item.IsPaid === true) ? "return false;" : "",
+                            ReadOnly: (item.IsPaid === true) ? "return false;" : "", 
                             Checked: (item.IsPaid === true) ?  "checked" : ""
                         });
-
                     });
+
                     console.log(html);
                     $('#tblData').html(html);
+                    homeController.paging(response.total, function () {
+                        homeController.loadDataBySample();
+                    }, changePageSize);
+                    homeController.registerEvent();
+                }
+            }
+        })
+    },
+
+
+    ChangeIsPaid: function (SampleGettingId) {
+        $.ajax({
+            url: '/cashier/IsPaid',
+            type: 'POST',
+            dataType: 'json',
+            data: { sampleGettingId: SampleGettingId },
+            success: function (response) {
+//                homeController.loadPrice(SampleGettingId);
+                if (response.success === true) {
+                    toastr.success('Đổi trạng thái thành công');
+                    homeController.loadDataBySample();
+                }
+                
+            }
+        })
+    },
+
+    loadPrice: function (id, changePageSize) {
+        $.ajax({
+            url: '/cashier/GetPriceByPatient',
+            type: 'GET',
+            dataType: 'json',
+            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize, sampleGettingId: id },
+            success: function (response) {
+                //debugger;
+                if (response.success) {
+                    var data = response.data;
+                    var html = '';
+                    var template2 = $('#data-template2').html();
+                    var template3 = $('#data-template3').html();
+                    $.each(data.PriceListItemDto, function (i, item) {
+                        html += Mustache.render(template2, {
+                            OrderNumber: i + 1,
+                            LabtestName: item.LabtestName,
+                            Price: item.Price,
+                        });
+                    });
+                    html += Mustache.render(template3, {
+                        TotalPrice: data.TotalPrice
+                    });
+                    console.log(html);
+                    $('#tblPriceData').html(html);
                     homeController.paging(response.total, function () {
                         //homeController.loadDataBySample();
                     }, changePageSize);
@@ -326,20 +408,6 @@ var homeController = {
             }
         })
     },
-    ChangeIsPaid: function (SampleGettingId) {
-        $.ajax({
-            url: '/receptionist/IsPaid',
-            type: 'POST',
-            dataType: 'json',
-            data: { sampleGettingId: SampleGettingId },
-            success: function (response) {
-                if (response.success === true) {
-                    toastr.success('Đổi trạng thái thành công');
-                    homeController.loadDataBySample();
-                }
-                
-            }
-        })
-    }
+
 }
 homeController.init();

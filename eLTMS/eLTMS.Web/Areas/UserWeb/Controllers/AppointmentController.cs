@@ -13,9 +13,11 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
     public class AppointmentController : Controller
     {
         private readonly IAppointmentService _appointmentService;
-        public AppointmentController(IAppointmentService appointmentService)
+        private readonly IPatientService _patientService;
+        public AppointmentController(IAppointmentService appointmentService, IPatientService patientService)
         {
             this._appointmentService = appointmentService;
+            this._patientService = patientService;
         }
 
         // GET: UserWeb/Appointment
@@ -36,10 +38,20 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             return View("ViewAppointments", "_Layout");
         }
         [HttpGet]
-        public JsonResult GetAppointmentsByPatientId(int patientId, int page = 1, int pageSize = 20,
+        public JsonResult GetAppointmentsByPatientId(string cardNumber, int page = 1, int pageSize = 20,
             bool sttNew = true, bool sttProcess = true, bool sttDone = true)
         {
-            var queryResult = _appointmentService.GetAppointmentsByPatientId(patientId);
+            var patient = _patientService.GetPatientByIdentityCardNumber(cardNumber); // get first
+            if (patient==null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    total = 0
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            var queryResult = _appointmentService.GetAppointmentsByPatientId(patient.PatientId); 
             var totalRows = queryResult.Count();
             if (sttNew == false)
             {
@@ -47,21 +59,33 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             }
             if (sttProcess == false)
             {
-                queryResult = queryResult.Where(x => !(x.Status != "NEW" && x.Status != "DONE")).ToList();
+                queryResult = queryResult.Where(x => !(x.Status != "NEW" && x.Status != "DOCTORDONE")).ToList();
             }
             if (sttDone == false)
             {
-                queryResult = queryResult.Where(x => !(x.Status == "DONE")).ToList();
+                queryResult = queryResult.Where(x => !(x.Status == "DOCTORDONE")).ToList();
             }
             var result = queryResult.Skip((page - 1) * pageSize).Take(pageSize);
             return Json(new
             {
                 success = true,
                 data = result,
+                patient = patient,
+                patientDob = (patient.DateOfBirth!=null)?patient.DateOfBirth.Value.ToString("dd-MM-yyyy"):"",
                 total = totalRows
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult AppDetail(string app)
+        {
+            var result = _appointmentService.GetSingleByCode(app);
+            var appointment = Mapper.Map<Appointment, AppointmentDto>(result);
+            return Json(new
+            {
+                sucess = true,
+                data = appointment
+            }, JsonRequestBehavior.AllowGet);
+        }
         // GET: UserWeb/Appointment/Edit/{apId}
         public ActionResult Edit(int appointmentId)
         {

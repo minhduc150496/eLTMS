@@ -178,7 +178,7 @@ namespace eLTMS.Web.Controllers
         {
             var queryResult = _supplyService.GetAllSupplies(string.Empty);
 
-            var result = queryResult.Select(x => new { x.SuppliesId, x.SuppliesName, x.SuppliesCode , x.Unit}).ToList();
+            var result = queryResult.Select(x => new { x.SuppliesId, x.SuppliesName, x.SuppliesCode , x.Unit, x.Quantity}).ToList();
             return Json(new
             {
                 success = true,
@@ -347,23 +347,6 @@ namespace eLTMS.Web.Controllers
             {
                 file.Save(stream, options);
                 return stream.ToArray();
-            }
-        }
-
-        private static SaveOptions GetSaveOptions(string format)
-        {
-            switch (format.ToUpperInvariant())
-            {
-                case "XLSX":
-                    return SaveOptions.XlsxDefault;
-                case "XLS":
-                    return SaveOptions.XlsDefault;
-                case "ODS":
-                    return SaveOptions.OdsDefault;
-                case "CSV":
-                    return SaveOptions.CsvDefault;
-                default:
-                    throw new NotSupportedException("Format '" + format + "' is not supported.");
             }
         }
     }

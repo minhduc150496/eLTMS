@@ -14,27 +14,28 @@ namespace eLTMS.DataAccess.Repositories
     public interface IAppointmentRepository : IRepository<Appointment>
     {
         List<Appointment> GetAppointmentsByPatientId(int patientId); // DucBM
-        List<Appointment> GetNewAppByPatientId(int patientId);
-        List<Appointment> GetOldAppByPatientId(int patientId);
         List<Appointment> GetAppointmentByPhone(string phoneNumber);
         List<Appointment> GetResultByPatientId(int patientId);
         List<Appointment> GetResultDoneByPatientId(int patientId);
         Appointment GetResultDoneByAppointmentId(int patientId); // DucBM
-        List<Appointment> GetAllApp(); 
+        List<Appointment> GetAllApp();
         Appointment GetAppById(int appId);
         Appointment GetAppointmentByCode(string code);
         Appointment GetAppointmentById(int id);
         Appointment GetAppointmentByIdInclude(int id);
         List<Appointment> GetResultByAppCode(string appCode);
         int? CountByDate(string sDate);
+        string GetLastCode(string sDate);
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
         // DucBM
         public List<Appointment> GetAppointmentsByPatientId(int patientId)
         {
+            //var sId = patientId.ToString();
             var result = DbSet.AsQueryable()
-                .Where(x => x.PatientId == patientId && x.IsDeleted==false)
+                .Include(x => x.Patient)
+                .Where(x => x.PatientId == patientId && x.IsDeleted == false)
                 .Include(x => x.SampleGettings)
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
@@ -48,7 +49,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                .Include(x => x.Patient)
-               .Include(x => x.SampleGettings.Select(y=>y.Sample))
+               .Include(x => x.SampleGettings.Select(y => y.Sample))
                .ToList();
             return result;
         }
@@ -58,33 +59,6 @@ namespace eLTMS.DataAccess.Repositories
                .Include(x => x.Patient)
                .Include(x => x.SampleGettings.Select(y => y.Sample))
                .FirstOrDefault(p => p.AppointmentId == appId);
-            return result;
-        }
-        public List<Appointment> GetNewAppByPatientId(int patientId)
-        {
-            var appointment = DbSet.AsQueryable()
-                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("NEW") && x.PatientId == patientId)
-                .Include(x => x.Patient)
-                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
-                .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .OrderByDescending(x => x.AppointmentId)
-                .FirstOrDefault();
-            if (appointment==null)
-            {
-                return null;
-            }
-            var result = new List<Appointment>();
-            result.Add(appointment);
-            return result;
-        }
-
-        public List<Appointment> GetOldAppByPatientId(int patientId)
-        {
-            var result = DbSet.AsQueryable()
-                .Where(x => x.IsDeleted == false && x.Status.ToUpper().Contains("DONE") && x.PatientId == patientId)
-                .Include(x => x.Patient)
-                .Include(x => x.SampleGettings.Select(y => y.Sample))
-                .ToList();
             return result;
         }
 
@@ -107,7 +81,8 @@ namespace eLTMS.DataAccess.Repositories
         public Appointment GetResultDoneByAppointmentId(int apId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.AppointmentId == apId) // lack of status doctor done
+                .Where(x => x.IsDeleted == false && x.AppointmentId == apId
+                && (x.Status.ToUpper().Equals("DOCTORDONE") || x.Status.ToUpper().Equals("LABTESTDONE"))) // lack of status doctor done
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
                 .Include(x => x.SampleGettings.Select(y => y.Sample))
@@ -122,7 +97,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<Appointment> GetResultDoneByPatientId(int patientId)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.PatientId == patientId&&x.Status.Contains("DOCTORDONE"))
+                .Where(x => x.PatientId == patientId && x.Status.Contains("DOCTORDONE"))
                 .Include(x => x.Patient)
                 .Include(x => x.Employee)
 
@@ -200,13 +175,27 @@ namespace eLTMS.DataAccess.Repositories
             }
             sDate = sDate.Trim();
             //var dateLength = "yyyy-MM-dd".Length;
-            var result = DbSet.AsQueryable().
-                //Where(x => x.IsDeleted==false && x.AppointmentCode.Take(dateLength).Equals(sDate))
-                Where(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate))
-                .Count();
+            var result = DbSet.AsQueryable()
+                .Count(x => x.IsDeleted == false && x.AppointmentCode.Contains(sDate));
             return result;
         }
 
-       
+        public string GetLastCode(string sDate)
+        {
+            if (sDate == null)
+            {
+                return null;
+            }
+            sDate = sDate.Trim();
+            var ap = DbSet.AsQueryable()
+                .Where(x => x.AppointmentCode.Contains(sDate))
+                .ToList()
+                .LastOrDefault();
+            if (ap == null)
+            {
+                return null;
+            }
+            return ap.AppointmentCode;
+        }
     }
 }

@@ -13,9 +13,23 @@ namespace eLTMS.DataAccess.Repositories
     {
         Account GetByPhoneNumber(string phoneNumber);
         Account GetByPhoneNumberIncludeRoleEmployeePatient(string phoneNumber);
+        Account GetAccountPatientForLogin(string phoneNumber, string password);
     }
     public class AccountRepository : RepositoryBase<Account>, IAccountRepository
     {
+        public Account GetAccountPatientForLogin(string phoneNumber, string password)
+        {
+            var account = DbSet.AsQueryable()
+                .Include(x => x.PatientAccounts)
+                .Where(x => x.IsDeleted == false
+                    && x.PhoneNumber.Trim().Equals(phoneNumber.Trim()) 
+                    && x.Password.Equals(password.Trim()) 
+                    && x.RoleId == 1)
+                .ToList()
+                .FirstOrDefault();
+            return account;
+        }
+        
         public Account GetByPhoneNumber(string phoneNumber)
         {
             var account = DbSet.AsQueryable()
@@ -29,7 +43,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var account = DbSet.AsQueryable()
                 .Where(x => x.PhoneNumber.Trim().Equals(phoneNumber.Trim()))
-                .Include(x => x.Role_RoleId)
+                .Include(x => x.Role)
                 .Include(x => x.Employees)
                 .Include(x => x.PatientAccounts.Select(y => y.Patient))
                 .ToList()

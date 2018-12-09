@@ -67,6 +67,18 @@ namespace eLTMS.DataAccess.Models
         [Key]
         [Display(Name = "Token ID")]
         public int TokenId { get; set; } // TokenID (Primary key)
+
+        // Reverse navigation
+
+        /// <summary>
+        /// Child AccountTokens where [AccountToken].[TokenID] point to this entity (FK_AccountToken_Token)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<AccountToken> AccountTokens { get; set; } // AccountToken.FK_AccountToken_Token
+
+        public Token()
+        {
+            AccountTokens = new System.Collections.Generic.List<AccountToken>();
+        }
     }
 
     // Table
@@ -91,6 +103,10 @@ namespace eLTMS.DataAccess.Models
         [StringLength(10)]
         [Display(Name = "Table name")]
         public string TableName { get; set; } // TableName (length: 10)
+
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
 
         // Reverse navigation
 
@@ -307,6 +323,10 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Sample group ID")]
         public int? SampleGroupId { get; set; } // SampleGroupId
 
+        [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
         // Reverse navigation
 
         /// <summary>
@@ -361,10 +381,6 @@ namespace eLTMS.DataAccess.Models
         [Column(@"IsDeleted", Order = 6, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
-
-        [Column(@"NumberOfSlots", Order = 7, TypeName = "int")]
-        [Display(Name = "Number of slots")]
-        public int? NumberOfSlots { get; set; } // NumberOfSlots
 
         // Reverse navigation
 
@@ -445,6 +461,10 @@ namespace eLTMS.DataAccess.Models
         [Column(@"OrderNumber", Order = 11, TypeName = "int")]
         [Display(Name = "Order number")]
         public int? OrderNumber { get; set; } // OrderNumber
+
+        [Column(@"IsGot", Order = 12, TypeName = "bit")]
+        [Display(Name = "Is got")]
+        public bool? IsGot { get; set; } // IsGot
 
         // Reverse navigation
 
@@ -578,7 +598,7 @@ namespace eLTMS.DataAccess.Models
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
     public class PatientAccount
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"PatientAccountID", Order = 1, TypeName = "int")]
         [Index(@"PK__PatientA__048CB9917D834ECE", 1, IsUnique = true, IsClustered = true)]
         [Required]
@@ -685,12 +705,6 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
 
-        [Column(@"AvatarURL", Order = 13, TypeName = "nvarchar")]
-        [MaxLength(500)]
-        [StringLength(500)]
-        [Display(Name = "Avatar url")]
-        public string AvatarUrl { get; set; } // AvatarURL (length: 500)
-
         // Reverse navigation
 
         /// <summary>
@@ -710,8 +724,8 @@ namespace eLTMS.DataAccess.Models
         {
             IsDeleted = false;
             Appointments = new System.Collections.Generic.List<Appointment>();
-            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
             Feedbacks = new System.Collections.Generic.List<Feedback>();
+            PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
         }
     }
 
@@ -1377,9 +1391,13 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Is paid")]
         public bool? IsPaid { get; set; } // IsPaid
 
-        [Column(@"Date", Order = 14, TypeName = "date")]
-        [Display(Name = "Date")]
-        public System.DateTime? Date { get; set; } // Date
+        [Column(@"DoctorComment", Order = 14, TypeName = "nvarchar(max)")]
+        [Display(Name = "Doctor comment")]
+        public string DoctorComment { get; set; } // DoctorComment
+
+        [Column(@"IsOnline", Order = 15, TypeName = "bit")]
+        [Display(Name = "Is online")]
+        public bool? IsOnline { get; set; } // IsOnline
 
         // Reverse navigation
 
@@ -1407,6 +1425,46 @@ namespace eLTMS.DataAccess.Models
         }
     }
 
+    // AccountToken
+    [Table("AccountToken", Schema = "dbo")]
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class AccountToken
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"AccountTokenID", Order = 1, TypeName = "int")]
+        [Index(@"PK__AccountT__B418767CA1756B47", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Account token ID")]
+        public int AccountTokenId { get; set; } // AccountTokenID (Primary key)
+
+        [Column(@"AccountID", Order = 2, TypeName = "int")]
+        [Required]
+        [Display(Name = "Account ID")]
+        public int AccountId { get; set; } // AccountID
+
+        [Column(@"TokenID", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Token ID")]
+        public int TokenId { get; set; } // TokenID
+
+        [Column(@"IsDeleted", Order = 4, TypeName = "bit")]
+        [Display(Name = "Is deleted")]
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        // Foreign keys
+
+        /// <summary>
+        /// Parent Account pointed by [AccountToken].([AccountId]) (FK_AccountToken_Account)
+        /// </summary>
+        [ForeignKey("AccountId"), Required] public virtual Account Account { get; set; } // FK_AccountToken_Account
+
+        /// <summary>
+        /// Parent Token pointed by [AccountToken].([TokenId]) (FK_AccountToken_Token)
+        /// </summary>
+        [ForeignKey("TokenId"), Required] public virtual Token Token { get; set; } // FK_AccountToken_Token
+    }
+
     // Account
     [Table("Account", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
@@ -1420,54 +1478,48 @@ namespace eLTMS.DataAccess.Models
         [Display(Name = "Account ID")]
         public int AccountId { get; set; } // AccountID (Primary key)
 
-        [Column(@"Role", Order = 2, TypeName = "nvarchar")]
-        [MaxLength(20)]
-        [StringLength(20)]
-        [Display(Name = "Role")]
-        public string Role { get; set; } // Role (length: 20)
-
-        [Column(@"RoleID", Order = 3, TypeName = "int")]
+        [Column(@"RoleID", Order = 2, TypeName = "int")]
         [Display(Name = "Role ID")]
         public int? RoleId { get; set; } // RoleID
 
-        [Column(@"Email", Order = 4, TypeName = "nvarchar")]
+        [Column(@"Email", Order = 3, TypeName = "nvarchar")]
         [MaxLength(255)]
         [StringLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } // Email (length: 255)
 
-        [Column(@"Password", Order = 5, TypeName = "nvarchar")]
+        [Column(@"Password", Order = 4, TypeName = "nvarchar")]
         [MaxLength(128)]
         [StringLength(128)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } // Password (length: 128)
 
-        [Column(@"PhoneNumber", Order = 6, TypeName = "nvarchar")]
+        [Column(@"PhoneNumber", Order = 5, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; } // PhoneNumber (length: 20)
 
-        [Column(@"AvatarURL", Order = 7, TypeName = "nvarchar")]
+        [Column(@"AvatarURL", Order = 6, TypeName = "nvarchar")]
         [MaxLength(500)]
         [StringLength(500)]
         [Display(Name = "Avatar url")]
         public string AvatarUrl { get; set; } // AvatarURL (length: 500)
 
-        [Column(@"IsDeleted", Order = 8, TypeName = "bit")]
+        [Column(@"IsDeleted", Order = 7, TypeName = "bit")]
         [Display(Name = "Is deleted")]
         public bool? IsDeleted { get; set; } // IsDeleted
 
-        [Column(@"IdentityCardNumber", Order = 9, TypeName = "nvarchar")]
+        [Column(@"IdentityCardNumber", Order = 8, TypeName = "nvarchar")]
         [MaxLength(20)]
         [StringLength(20)]
         [Display(Name = "Identity card number")]
         public string IdentityCardNumber { get; set; } // IdentityCardNumber (length: 20)
 
-        [Column(@"FullName", Order = 10, TypeName = "nvarchar")]
+        [Column(@"FullName", Order = 9, TypeName = "nvarchar")]
         [MaxLength(50)]
         [StringLength(50)]
         [Display(Name = "Full name")]
@@ -1475,6 +1527,10 @@ namespace eLTMS.DataAccess.Models
 
         // Reverse navigation
 
+        /// <summary>
+        /// Child AccountTokens where [AccountToken].[AccountID] point to this entity (FK_AccountToken_Account)
+        /// </summary>
+        public virtual System.Collections.Generic.ICollection<AccountToken> AccountTokens { get; set; } // AccountToken.FK_AccountToken_Account
         /// <summary>
         /// Child Employees where [Employee].[AccountID] point to this entity (FK__Employee__Accoun__68487DD7)
         /// </summary>
@@ -1489,12 +1545,13 @@ namespace eLTMS.DataAccess.Models
         /// <summary>
         /// Parent Role pointed by [Account].([RoleId]) (FK_Account_Role)
         /// </summary>
-        [ForeignKey("RoleId")] public virtual Role Role_RoleId { get; set; } // FK_Account_Role
+        [ForeignKey("RoleId")] public virtual Role Role { get; set; } // FK_Account_Role
 
         public Account()
         {
             IsDeleted = false;
             Employees = new System.Collections.Generic.List<Employee>();
+            AccountTokens = new System.Collections.Generic.List<AccountToken>();
             PatientAccounts = new System.Collections.Generic.List<PatientAccount>();
         }
     }
@@ -1514,7 +1571,6 @@ namespace eLTMS.DataAccess.Models
 
         public AccountConfiguration(string schema)
         {
-            Property(x => x.Role).IsOptional();
             Property(x => x.RoleId).IsOptional();
             Property(x => x.Email).IsOptional();
             Property(x => x.Password).IsOptional();
@@ -1523,6 +1579,22 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
             Property(x => x.FullName).IsOptional();
+
+        }
+    }
+
+    // AccountToken
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class AccountTokenConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<AccountToken>
+    {
+        public AccountTokenConfiguration()
+            : this("dbo")
+        {
+        }
+
+        public AccountTokenConfiguration(string schema)
+        {
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1550,7 +1622,8 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.Status).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsPaid).IsOptional();
-            Property(x => x.Date).IsOptional();
+            Property(x => x.DoctorComment).IsOptional();
+            Property(x => x.IsOnline).IsOptional();
 
         }
     }
@@ -1786,7 +1859,6 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.IsDeleted).IsOptional();
             Property(x => x.IsOnline).IsOptional();
             Property(x => x.IdentityCardNumber).IsOptional();
-            Property(x => x.AvatarUrl).IsOptional();
         }
     }
 
@@ -1861,6 +1933,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.SlotId).IsOptional();
             Property(x => x.GettingDate).IsOptional();
             Property(x => x.OrderNumber).IsOptional();
+            Property(x => x.IsGot).IsOptional();
 
         }
     }
@@ -1881,7 +1954,6 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.OpenTime).IsOptional();
             Property(x => x.CloseTime).IsOptional();
             Property(x => x.IsDeleted).IsOptional();
-            Property(x => x.NumberOfSlots).IsOptional();
         }
     }
 
@@ -1900,6 +1972,7 @@ namespace eLTMS.DataAccess.Models
             Property(x => x.FinishTime).IsOptional();
             Property(x => x.SlotName).IsOptional();
             Property(x => x.SampleGroupId).IsOptional();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -1971,6 +2044,7 @@ namespace eLTMS.DataAccess.Models
         {
             Property(x => x.SampleGroupId).IsOptional();
             Property(x => x.TableName).IsOptional().IsFixedLength();
+            Property(x => x.IsDeleted).IsOptional();
 
         }
     }
@@ -2003,6 +2077,16 @@ namespace eLTMS.DataAccess.Models
         public System.Int32 SlotID { get; set; }
         public System.String SlotName { get; set; }
         public System.Int32? SampleGroupId { get; set; }
+        public System.Boolean? IsDeleted { get; set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
+    public class GetFistAvailableTableReturnModel
+    {
+        public System.Int32 TableID { get; set; }
+        public System.Int32? SampleGroupID { get; set; }
+        public System.String TableName { get; set; }
+        public System.Boolean? IsDeleted { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
