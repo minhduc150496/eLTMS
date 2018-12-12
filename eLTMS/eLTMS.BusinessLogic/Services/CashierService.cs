@@ -73,7 +73,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
 
                 var sampleGetting = sgRepo.GetFirst(p => p.SampleGettingId == sampleGettingId);
-
+                sampleGetting.IsGot = false;
                 sampleGetting.IsPaid = true;
                 sampleGetting.Status = "WAITING";
                 sgRepo.Update(sampleGetting);

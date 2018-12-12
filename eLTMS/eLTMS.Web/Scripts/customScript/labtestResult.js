@@ -14,8 +14,14 @@ var homeController = {
     registerEvent: function () {
         $('.btn-deleteLabTestingResultFail').off('click').on('click', function () {
             var id = $(this).data('id');
-            homeController.deleteLabtesting(id);
+            //homeController.deleteLabtesting(id);
+            homeController.ChangeIsPaid(id);
             homeController.loadDataLabTestingResultFail();
+
+        });
+        $('.btn-closeLabTestingResultFail').off('click').on('click', function () {
+            var id = $(this).data('id');
+            homeController.deleteLabtesting(id);
 
         });
         $('.btn-viewResult').off('click').on('click', function () {
@@ -73,6 +79,7 @@ var homeController = {
                 success: function (response) {
                     if (response.success == true) {
                         toastr.success("Xóa thành công.");
+                        location.reload();
                     }
                     else {
                         toastr.error("Xóa không thành công.");
@@ -104,6 +111,22 @@ var homeController = {
             }
         })
     },
+    ChangeIsPaid: function (SampleGettingId) {
+        $.ajax({
+            url: '/cashier/IsPaid',
+            type: 'POST',
+            dataType: 'json',
+            data: { sampleGettingId: SampleGettingId },
+            success: function (response) {
+                //                homeController.loadPrice(SampleGettingId);
+                if (response.success === true) {
+                    toastr.success('Đổi trạng thái thành công');
+                    homeController.loadDataBySample();
+                }
+
+            }
+        })
+    },
     loadDataLabTestingResultFail: function (changePageSize) {
         $.ajax({
             url: '/LabTest/GetAllLabTestingsFail',
@@ -118,10 +141,12 @@ var homeController = {
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
                             LabtestingID: item.LabTestingId,
+                            SampleGettingID: item.SampleGettingId,
                             Name: item.PatientName,
                             Phone: item.PatientPhone,
                             Code: item.AppointmentCode,
                             Sample: item.LabTestName,
+                            Price: item.Price,
                         });
 
                     });
