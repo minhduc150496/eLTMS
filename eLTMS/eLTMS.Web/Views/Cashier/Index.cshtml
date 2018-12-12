@@ -98,7 +98,7 @@
 
 <section class="content-header">
     <h1>
-        THÔNG TIN CUỘC HẸN
+        Danh sách ca lấy mẫu
     </h1>
 </section>
 
@@ -531,7 +531,7 @@
     $(document).ready(function () {
         var autoDeleteBlood = setInterval(function () {
             var date = new Date();
-            // console.log(date.getMinutes()+'-'+date.getSeconds());
+            // // console.log(date.getMinutes()+'-'+date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
                 || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
                 $.ajax({
@@ -551,7 +551,7 @@
 
         var autoDeleteUrine = setInterval(function () {
             var date = new Date();
-            console.log(date.getMinutes() + '-' + date.getSeconds());
+            //// console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 10 || date.getMinutes() == 20 || date.getMinutes() == 30
                 || date.getMinutes() == 40 || date.getMinutes() == 50) && date.getSeconds() == 0) {
                 $.ajax({
@@ -571,7 +571,7 @@
 
         var autoDeleteCell = setInterval(function () {
             var date = new Date();
-            console.log(date.getMinutes() + '-' + date.getSeconds());
+            //// console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
                 $.ajax({
                     url: '/cashier/CheckNDeleteCell',
@@ -590,7 +590,7 @@
 
         var autoDeleteMucus = setInterval(function () {
             var date = new Date();
-            console.log(date.getMinutes() + '-' + date.getSeconds());
+            // console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 20 || date.getMinutes() == 40) && date.getSeconds() == 0) {
                 $.ajax({
                     url: '/cashier/CheckNDeleteMucus',
@@ -609,7 +609,7 @@
 
         var autoDeletePhan = setInterval(function () {
             var date = new Date();
-            console.log(date.getMinutes() + '-' + date.getSeconds());
+            // console.log(date.getMinutes() + '-' + date.getSeconds());
             if ((date.getMinutes() == 00 || date.getMinutes() == 15 || date.getMinutes() == 30 || date.getMinutes() == 45) && date.getSeconds() == 0) {
                 $.ajax({
                     url: '/cashier/CheckNDeletePhan',

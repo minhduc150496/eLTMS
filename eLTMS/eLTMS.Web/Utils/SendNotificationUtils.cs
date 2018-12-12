@@ -7,11 +7,32 @@ using System.Configuration;
 using System.Web.Script.Serialization;
 using System.Net;
 using System.IO;
+using eLTMS.DataAccess.Models;
 
 namespace eLTMS.Web.Utils
 {
     public class SendNotificationUtils
     {
+        public static void SendNotification(object data, List<Token> tokens)
+        {
+            foreach (var token in tokens)
+            {
+                var dataToSend = new
+                {
+                    to = token.TokenString,
+                    data
+                };
+                try
+                {
+                    SendNotificationUtils.SendNotification(dataToSend);
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+            }
+        }
+
         public static void SendNotification(object data)
         {
             var serializer = new JavaScriptSerializer();
