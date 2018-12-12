@@ -287,6 +287,15 @@ namespace eLTMS.Web.Controllers
             });
         }
         [HttpPost]
+        public JsonResult DeleteAll(List<LabTestingIndex> labTestingIndex)
+        {
+            var result = _labTestingIndexService.DeleteAll(labTestingIndex);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
         public JsonResult UpdateStatus(List<LabTesting> labTesting)
         {
             var result = _labTestingService.UpdateStatus(labTesting);
@@ -368,6 +377,15 @@ namespace eLTMS.Web.Controllers
         public JsonResult DeleteLabTesting(int id)
         {
             var result = _labTestingService.Delete(id);
+            return Json(new
+            {
+                success = result
+            });
+        }
+        [HttpPost]
+        public JsonResult DeleteLabTestingIndex(int id)
+        {
+            var result = _labTestingIndexService.Delete(id);
             return Json(new
             {
                 success = result

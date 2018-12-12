@@ -34,7 +34,9 @@
                                 <th>Số điện thoại</th>
                                 <th>Mã lịch hẹn</th>
                                 <th>Cần xét nghiệm lại</th>
-                                <th width="150px">Đã xét nghiệm lại</th>
+                                <th>Gía</th>
+                                <th width="150px">Đã thanh toán</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody id="tblDataLabTestingResultFail"></tbody>
@@ -55,9 +57,12 @@
         <td>{{Phone}}</td>
         <td>{{Code}}</td>
         <td>{{Sample}}</td>
+        <td>{{Price}}</td>
         <td align="center">
-            <button class="btn btn-danger btn-deleteLabTestingResultFail" data-id="{{LabtestingID}}"><i class="fa fa-close"></i></button>
-
+            <button class="btn btn-success btn-deleteLabTestingResultFail" data-id="{{SampleGettingID}}"><i class="fa fa-check"></i></button>
+        </td>
+        <td align="center">
+             <button class="btn btn-danger btn-closeLabTestingResultFail" data-id="{{LabtestingID}}"><i class="fa fa-close"></i></button>
         </td>
     </tr>
 </script>

@@ -242,10 +242,12 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Email, src => src.MapFrom(x => x.Account.Email));
                 cfg.CreateMap<LabTesting, LabTestingDto>()
                 .ForMember(dst => dst.LabTestName, src => src.MapFrom(x => x.LabTest.LabTestName))
+                .ForMember(dst => dst.Price, src => src.MapFrom(x => x.LabTest.Price))
                 .ForMember(dst => dst.LabTestingId, src => src.MapFrom(x => x.LabTestingId))
                 .ForMember(dst => dst.LabTestId, src => src.MapFrom(x => x.LabTestId))
                 .ForMember(dst => dst.AppointmentCode, src => src.MapFrom(x => x.SampleGetting.Appointment.AppointmentCode))
                 .ForMember(dst => dst.SampleId, src => src.MapFrom(x => x.SampleGetting.SampleId))
+                .ForMember(dst => dst.SampleGettingId, src => src.MapFrom(x => x.SampleGetting.SampleGettingId))
                 .ForMember(dst => dst.SampleName, src => src.MapFrom(x => x.SampleGetting.Sample.SampleName))
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.IsDeleted, src => src.MapFrom(x => x.IsDeleted))
