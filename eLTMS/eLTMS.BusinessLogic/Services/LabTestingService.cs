@@ -146,7 +146,7 @@ namespace eLTMS.BusinessLogic.Services
             try
             {
                 var labtesting = repo.GetLabTestingById(id);
-                labtesting.IsDeleted=true;
+                labtesting.Status="RETEST";
                 repo.Update(labtesting);
                 var result = UnitOfWork.SaveChanges();
                 if (result.Any()) return false;

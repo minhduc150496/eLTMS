@@ -21,7 +21,10 @@ namespace eLTMS.DataAccess.Repositories
         {
             var account = DbSet.AsQueryable()
                 .Include(x => x.PatientAccounts)
-                .Where(x => x.PhoneNumber.Trim().Equals(phoneNumber.Trim()) && x.Password.Equals(password.Trim()) && x.RoleId == 1)
+                .Where(x => x.IsDeleted == false
+                    && x.PhoneNumber.Trim().Equals(phoneNumber.Trim()) 
+                    && x.Password.Equals(password.Trim()) 
+                    && x.RoleId == 1)
                 .ToList()
                 .FirstOrDefault();
             return account;

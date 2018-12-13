@@ -17,47 +17,46 @@ using Google.Apis.Auth.OAuth2;
 using System.Threading.Tasks;
 using eLTMS.Web.Utils;
 using eLTMS.Models;
+using eLTMS.Models.Enums;
 
 namespace eLTMS.Web.Api
 {
     public class AppointmentApiController : ApiController
     {
         private readonly IAppointmentService _appointmentService;
-        public AppointmentApiController(IAppointmentService appointmentService)
+        private readonly ITokenService _tokenService;
+        public AppointmentApiController(IAppointmentService appointmentService, ITokenService tokenService)
         {
             this._appointmentService = appointmentService;
+            this._tokenService = tokenService;
         }
-        
+
         [HttpPost]
         [Route("api/appointment/create")]
         public HttpResponseMessage Create(AppointmentDto appoinDto)
         {
+            if (appoinDto.PatientId != null)
+            {
+                appoinDto.PatientId = appoinDto.PatientId;
+            }
             // call to AppointmentService
             var result = _appointmentService.Create(appoinDto);
 
             // push noti
             if (result.Success)
             {
-                var tokens = _appointmentService.GetAllTokens();
-                foreach (var token in tokens)
+                var tokens = _tokenService.GetAll();
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Manager
+                };
+                var data = new
                 {
-                    var data = new
-                    {
-                        to = token.TokenString,
-                        data = new
-                        {
-                            message = "Có thêm cuộc hẹn mới. ",
-                        }
-                    };
-                    try
-                    {
-                        SendNotificationUtils.SendNotification(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        //
-                    }
-                }
+                    roleIds,
+                    message = "Có cuộc hẹn vừa được thêm."
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
             }
 
             var response = Request.CreateResponse(HttpStatusCode.OK, result);

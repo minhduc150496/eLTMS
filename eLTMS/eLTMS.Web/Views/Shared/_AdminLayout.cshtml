@@ -149,7 +149,7 @@
                         <li @(controllerName == "Receptionist" ? "class=active" : "")>
                             <a href="@Url.Action("", "Receptionist")">
                                 <i class="fa fa-calendar"></i>
-                                <span>Quản lý cuộc hẹn</span>
+                                <span>Tiếp tân bệnh viện</span>
                             </a>
                         </li>
                     }
@@ -158,7 +158,7 @@
                         <li @(controllerName == "Cashier" ? "class=active" : "")>
                             <a href="@Url.Action("", "Cashier")">
                                 <i class="fa fa-dollar"></i>
-                                <span>Thu ngân</span>
+                                <span>Tiếp tân bộ phận</span>
                             </a>
                         </li>
                     }
@@ -269,7 +269,7 @@
                             </ul>
                         </li>
                     }
-                    @if (roleId == (int)RoleEnum.Manager)
+                    @*@if (roleId == (int)RoleEnum.Manager)
                     {
                         <li @(controllerName == "Feedback" ? "class=active" : "")>
                             <a href="@Url.Action("Feedbacks", "Feedback")">
@@ -277,7 +277,7 @@
                                 <span>Quản lý Feedback</span>
                             </a>
                         </li>
-                    }
+                    }*@
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -349,7 +349,20 @@
     </script>
 
     <script>
-        // LamNH
+
+        roleId = @roleId;
+        RoleEnum = {
+            "Patient": 1,
+            "Receptionist": 2,
+            "Nurse": 3,
+            "LabTechnician": 4,
+            "Doctor": 5,
+            "WarehouseKeeper": 6,
+            "Manager": 7,
+            "Cashier": 8
+        };
+        Object.freeze(RoleEnum);
+
         // Receive notifications from Firebase
 
         var config = {
@@ -396,29 +409,31 @@
             });
 
         var loadMessage = function (payload) {
-            console.log("Message received. ", payload);
-            var nNoti = $("#number-of-noti").html();
-            nNoti = parseInt(nNoti) + 1;
-            $("#number-of-noti").html(nNoti);
-            if (nNoti == 0) {
-                $("#number-of-noti").hide(0);
-            } else {
-                $("#number-of-noti").show(0);
+            var roleIds = payload.data.roleIds;
+            if (roleIds.includes(roleId)) {
+                console.log("Message received. ", payload);
+                var nNoti = $("#number-of-noti").html();
+                nNoti = parseInt(nNoti) + 1;
+                $("#number-of-noti").html(nNoti);
+                if (nNoti == 0) {
+                    $("#number-of-noti").hide(0);
+                } else {
+                    $("#number-of-noti").show(0);
+                }
+                var template = $("#menu-noti-item-template").html();
+                var data = {
+                    Url: "#",
+                    Message: payload.data.message
+                };
+                var html = Mustache.render(template, data);
+                $("#menu-noti").prepend(html);
+
+                // Toastr
+                toastr["success"](payload.data.message);
+
+                //Reload table ajax
+                homeController.loadDataBySample();
             }
-            var template = $("#menu-noti-item-template").html();
-            var data = {
-                Url: "#",
-                Message: payload.data.message
-            };
-            var html = Mustache.render(template, data);
-            $("#menu-noti").prepend(html);
-
-            // Toastr
-            toastr["success"](payload.data.message);
-
-            //Reload table ajax
-            homeController.loadDataBySample();
-
         }
         messaging.onMessage(loadMessage);
 
