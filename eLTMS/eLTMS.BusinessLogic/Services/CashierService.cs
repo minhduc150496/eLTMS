@@ -103,10 +103,25 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             try
             {
+                //tao account 
+                var account = accRepo.GetAll().FirstOrDefault(p => p.PhoneNumber == data.Phone);
+                if (account == null)
+                {
+                    accRepo.Create(new Account
+                    {
+                        PhoneNumber = data.Phone,
+                        FullName = data.Name,
+                        IsDeleted = false,
+                    });
+                }
+                UnitOfWork.SaveChanges();
+                //tao patient
+                var accId = accRepo.GetAll().FirstOrDefault(p => p.PhoneNumber == data.Phone).AccountId;
                 paRepo.Create(new Patient
                 {
-                    //AccountId = accId,
-                    IdentityCardNumber = data.IdentityCardNumber,
+                    AccountId = accId,
+                    //Gender=data.Gender,
+                    //IdentityCardNumber = data.IdentityCardNumber,
                     DateOfBirth = data.DateOfBirth,
                     HomeAddress = data.Address,
                     FullName = data.Name,
@@ -116,7 +131,7 @@ namespace eLTMS.BusinessLogic.Services
                 UnitOfWork.SaveChanges();
                 
                 //tao cuoc hen
-                var paId = paRepo.GetFirst(p => p.IdentityCardNumber == data.IdentityCardNumber).PatientId;//lấy Id bệnh nhân  dựa vào cmnd
+                var paId = paRepo.GetFirst(p => p.PhoneNumber == data.Phone).PatientId;//lấy Id bệnh nhân  dựa vào cmnd
                 var appCode = CreateAppReturnCode(new Appointment //ở dây tui tạo app
                 {
                     PatientId = paId,
