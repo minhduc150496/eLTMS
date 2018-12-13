@@ -41,6 +41,7 @@ var Model = {
         //PatientId: CONFIG.PATIENT_ID,
         SampleGettingDtos: []
     },
+    patientDto: {},
     suggestResult: null
 }
 
@@ -51,6 +52,12 @@ var Controller = {
     registerEvent: function () {
 
         $(document).ready(function () {
+
+            var $dob = $('#step-0 [name=p-dob]');
+            var currDate = new Date(Date.now());
+            var sNow = currDate.getFullYear() + "-" + (currDate.getMonth() + 1) + "-" + currDate.getDate();
+            $dob.attr('max', sNow);
+
             $("#step-2").hide(0);
             Controller.renderLabTestList();
             $("#success-modal").modal({
@@ -71,10 +78,67 @@ var Controller = {
         });
 
         $("#btn-next-01").click(function () {
-            var duration = 200;
-            $("#step-0").fadeOut(duration, function () {
-                $("#step-1").fadeIn(duration);
-            });
+            var valid = true;
+            
+            var fullName = $('#step-0 [name=p-name]').val();
+            var $name = $('#step-0 [name=p-name] ~ .valid-mess');
+            $name.html("");
+            if (fullName === "") {
+                $name.html('Vui lòng điền họ tên của bạn');
+                valid = false;
+                if (fullName.length > 100) {
+                    $name.html('Họ tên tối đa 100 ký tự');
+                    valid = false;
+                }
+            } 
+            
+            var gender = $('#step-0 [name=p-gender]').val();
+
+            var dob = $('#step-0 [name=p-dob]').val();
+            var $dob = $('#step-0 [name=p-dob] ~ .valid-mess');
+            $dob.html("");
+            if (dob === "") {
+                $dob.html('Vui lòng điền ngày sinh của bạn');
+                valid = false;
+            } 
+
+            var phone = $('#step-0 [name=p-phone]').val();
+            var $phone = $('#step-0 [name=p-phone] ~ .valid-mess');
+            $phone.html("");
+            if (phone === "") {
+                $phone.html('Vui lòng điền số điện thoại của bạn');
+                valid = false;
+                if (phone.length > 20) {
+                    $phone.html('Số điện thoại tối đa 100 ký tự');
+                    valid = false;
+                }
+            } 
+
+            var address = $('#step-0 [name=p-address]').val();
+            var $address = $('#step-0 [name=p-address] ~ .valid-mess');
+            $address.html("");
+            if (address === "") {
+                $address.html('Vui lòng điền địa chỉ của bạn');
+                valid = false;
+                if (address.length > 200) {
+                    $address.html('Địa chỉ tối đa 100 ký tự');
+                    valid = false;
+                }
+            } 
+
+            if (valid) {
+                Model.patientDto = {
+                    FullName: fullName,
+                    Gender: gender,
+                    DateOfBirth: dob,
+                    PhoneNumber: phone,
+                    HomeAddress: address
+                };
+                var duration = 200;
+                $("#step-0").fadeOut(duration, function () {
+                    $("#step-1").fadeIn(duration);
+                });
+            }
         })
 
         $("#btn-next-12").click(function () {
@@ -164,10 +228,11 @@ var Controller = {
                 }
             }
 
-            Model.appointmentDto.PatientDto = {};
-            Model.appointmentDto.PatientDto.FullName = $('#p-name').val();
-            Model.appointmentDto.PatientDto.IdentityCardNumber = $('#p-cmnd').val();
-            Model.appointmentDto.PatientDto.PhoneNumber = $('#p-phone').val();
+            Model.appointmentDto.PatientDto = Model.patientDto;
+            //Model.appointmentDto.PatientDto = {};
+            //Model.appointmentDto.PatientDto.FullName = $('#p-name').val();
+            //Model.appointmentDto.PatientDto.IdentityCardNumber = $('#p-cmnd').val();
+            //Model.appointmentDto.PatientDto.PhoneNumber = $('#p-phone').val();
 
             // ajax for create new appointment
             if (CONFIG.IS_UPDATE) {
@@ -479,7 +544,14 @@ var Controller = {
                 var checkResult = function (data) {
                     $("#processing-modal").modal('hide');
                     if (data.Success == true) {
-                        showModalWithMessage($("#success-modal"), data.Message);
+                        if (typeof data.Data.DefaultPassword != 'undefined') {
+                            var html = data.Message + "<br> Tài khoản của bạn vừa được tạo:<br>" +
+                                "Số điện thoại: " + data.Data.PhoneNumber + "<br>" +
+                                "Mật khẩu mặc định: " + data.Data.DefaultPassword;
+                            showModalWithMessage($("#success-modal"), html);
+                        } else {
+                            showModalWithMessage($("#success-modal"), data.Message);
+                        }
                     } else {
                         showModalWithMessage($("#fail-modal"), data.Message);
                     }

@@ -39,6 +39,16 @@ namespace eLTMS.DataAccess.Repositories
             return account;
         }
 
+        public Account GetByPhoneNumberIncludePatient(string phoneNumber)
+        {
+            var account = DbSet.AsQueryable()
+                .Where(x => x.PhoneNumber.Trim().Equals(phoneNumber.Trim()))
+                .Include(x => x.PatientAccounts.Select(y => y.Patient))
+                .ToList()
+                .FirstOrDefault();
+            return account;
+        }
+
         public Account GetByPhoneNumberIncludeRoleEmployeePatient(string phoneNumber)
         {
             var account = DbSet.AsQueryable()

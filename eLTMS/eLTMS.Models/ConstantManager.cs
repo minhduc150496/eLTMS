@@ -9,5 +9,7 @@ namespace eLTMS.Models
     public class ConstantManager
     {
         public const string SESSION_ACCOUNT = "SESSION_ACCOUNT";
+
+        public const string DEFAULT_PASSWORD = "123456789";
     }
 }

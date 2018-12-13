@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using eLTMS.Models;
+using eLTMS.Models.Enums;
 //using eLTMS.Models.;
 
 namespace eLTMS.BusinessLogic.Services
@@ -82,24 +84,85 @@ namespace eLTMS.BusinessLogic.Services
                 var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
                 var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
                 var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
+                var accRepo = this.RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
 
                 Patient patient = null;
                 if (appointmentDto.PatientDto != null) // Make Ap. without Login
                 {
-                    var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
-                    patient = patientRepo.GetByIDCNumber(idcNumber);
+                    //var idcNumber = appointmentDto.PatientDto.IdentityCardNumber;
+                    //patient = patientRepo.GetByIDCNumber(idcNumber);
+                    var phone = appointmentDto.PatientDto.PhoneNumber;
+                    var account = accRepo.GetByPhoneNumber(phone);
+
+                    if (account == null)
+                    {
+                        account = new Account();
+                        account.FullName = appointmentDto.PatientDto.FullName;
+                        account.PhoneNumber = phone;
+                        account.Password = ConstantManager.DEFAULT_PASSWORD;
+                        account.RoleId = (int)RoleEnum.Patient;
+                        account.IsDeleted = false;
+                        accRepo.Create(account);
+                        try
+                        {
+                            var result = this.UnitOfWork.SaveChanges();
+                            if (result.Any())
+                            {
+                                responseObject.Success = false;
+                                responseObject.Message = "Có lỗi xảy ra";
+                                responseObject.Data = result;
+                                return responseObject;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            responseObject.Success = false;
+                            responseObject.Message = "Có lỗi xảy ra";
+                            responseObject.Data = ex;
+                            return responseObject;
+                        }
+                        responseObject.Data = new
+                        {
+                            appointmentDto.PatientDto.PhoneNumber,
+                            DefaultPassword = account.Password
+                        }; 
+                    }
+                    int accountId = account.AccountId;
+
+                    var dateOfBirth = DateTime.Parse(appointmentDto.PatientDto.DateOfBirth);
+                    patient = patientRepo.GetBy(accountId, appointmentDto.PatientDto.FullName, dateOfBirth);
                     if (patient == null)
                     {
                         // Create a new Patient
                         patient = new Patient();
+                        patient.AccountId = accountId;
                         patient.FullName = appointmentDto.PatientDto.FullName;
                         patient.IdentityCardNumber = appointmentDto.PatientDto.IdentityCardNumber;
                         patient.PhoneNumber = appointmentDto.PatientDto.PhoneNumber;
+                        patient.DateOfBirth = dateOfBirth;
+                        patient.Gender = appointmentDto.PatientDto.Gender;
+                        patient.HomeAddress = appointmentDto.PatientDto.HomeAddress;
                         patientRepo.Create(patient);
-                        UnitOfWork.SaveChanges(); // IMPORTANT!!
-
+                        try
+                        {
+                            var result = this.UnitOfWork.SaveChanges();
+                            if (result.Any())
+                            {
+                                responseObject.Success = false;
+                                responseObject.Message = "Có lỗi xảy ra";
+                                responseObject.Data = result;
+                                return responseObject;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            responseObject.Success = false;
+                            responseObject.Message = "Có lỗi xảy ra";
+                            responseObject.Data = ex;
+                            return responseObject;
+                        }
                         patient.PatientCode = "BN" + patient.PatientId;
-                    }
+                    } 
 
                     appointmentDto.PatientId = patient.PatientId;
                 }
