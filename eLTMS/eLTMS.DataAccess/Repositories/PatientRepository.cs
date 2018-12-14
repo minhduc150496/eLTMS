@@ -15,6 +15,7 @@ namespace eLTMS.DataAccess.Repositories
         Patient GetSimpleById(int id);
         Patient GetByIDCNumber(string number);// DucBM
         string GetLastPatientCode(); // DucBM
+        Patient GetBy(int accountId, string fullName, DateTime dateOfBirth); // DucBM
     }
 
 
@@ -25,6 +26,14 @@ namespace eLTMS.DataAccess.Repositories
             var result = DbSet.AsQueryable()
                 .Where(x => x.PhoneNumber.Contains(phoneNumber) || x.PatientId.ToString().Contains(phoneNumber) || x.FullName.Contains(phoneNumber) || x.PatientCode.Contains(phoneNumber) || x.HomeAddress.Contains(phoneNumber) && x.IsDeleted == false)
                 .ToList();
+            return result;
+        }
+
+        // DucBM
+        public Patient GetBy(int accountId, string fullName, DateTime dateOfBirth)
+        {
+            var result = DbSet.AsQueryable()
+                .FirstOrDefault(x => x.AccountId == accountId && x.FullName == fullName && x.DateOfBirth == dateOfBirth);
             return result;
         }
 
