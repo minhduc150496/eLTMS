@@ -124,7 +124,7 @@ var homeController = {
                             OrderNumber: i+1,
                             FullName: item.PatientName,
                             PatientID: item.PatientID,
-                            ID: item.IdentityCardNumber,
+                            //ID: item.IdentityCardNumber,
                             Phone: item.Phone,
                             Address: item.Address,
                             DOBirth: item.DateOfBirth,

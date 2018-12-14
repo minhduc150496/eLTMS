@@ -22,7 +22,7 @@ namespace eLTMS.Models.Models.dto
 
         public string DateOfBirth { get; set; }
 
-        public string IdentityCardNumber { get; set; }
+        //public string IdentityCardNumber { get; set; }
 
     }
 }

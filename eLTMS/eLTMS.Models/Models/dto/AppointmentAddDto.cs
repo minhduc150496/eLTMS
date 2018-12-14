@@ -10,6 +10,7 @@ namespace eLTMS.Models.Models.dto
     {
         public string Name { get; set; }
         public string Phone { get; set; }
+        public int PatientId { get; set; }
         public DateTime? DateOfBirth { get; set; }
         //public string IdentityCardNumber { get; set; }
         public string Address { get; set; }
@@ -18,6 +19,6 @@ namespace eLTMS.Models.Models.dto
         public bool TeBaoHoc { get; set; }
         public bool Phan { get; set; }
         public bool Dich { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
     }
 }
