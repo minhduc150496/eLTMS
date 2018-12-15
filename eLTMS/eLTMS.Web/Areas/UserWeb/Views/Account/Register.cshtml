@@ -1,0 +1,88 @@
+﻿@section styles {
+    <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
+}
+
+<!-- breadcroumb Area Start-->
+<div class="breadvroumb_area">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h1>Đăng ký</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcroumb Area End-->
+<!-- register Page Start-->
+<div class="appoinment_form_area register_page_area">
+    <div class="container">
+        <form action="/UserWeb/HomePage/CheckLogin">
+            <table id="p-table" style="margin: 0 auto" cellspacing="10">
+                <tr>
+                    <td>Họ tên:</td>
+                    <td class="text-left">
+                        <input type="text" name="p-name" style="width: 230px" />
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Giới tính:</td>
+                    <td class="text-left">
+                        <label>
+                            <input type="radio" name="p-gender" value="Male" checked />
+                            Nam
+                        </label>
+                        <label>
+                            <input type="radio" name="p-gender" value="Female" />
+                            Nữ
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ngày sinh:</td>
+                    <td class="text-left">
+                        <input type="date" name="p-dob" />
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại:</td>
+                    <td class="text-left">
+                        <input type="text" name="p-phone" />
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mật khẩu:</td>
+                    <td class="text-left">
+                        <input type="password" name="p-phone" />
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nhập lại mật khẩu:</td>
+                    <td class="text-left">
+                        <input type="password" name="p-phone" />
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ:</td>
+                    <td class="text-left">
+                        <textarea type="text" name="p-address" rows="4" style="width: 300px"></textarea>
+                        <div class="valid-mess"></div>
+                    </td>
+                </tr>
+            </table>
+            <div class="button-box">
+                <button type="reset" class="custom_btn">
+                    Reset
+                </button>
+                <button type="submit" class="custom_btn">
+                    Đăng ký
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- register Page End-->
