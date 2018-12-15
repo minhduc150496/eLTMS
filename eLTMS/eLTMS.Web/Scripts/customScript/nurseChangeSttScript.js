@@ -6,7 +6,7 @@ var homeController = {
     init: function () {
         var dateNow = homeController.formatDate(new Date());
         document.getElementById("select-date").value = dateNow;
-        homeController.loadDataBySample();
+        homeController.loadAppBySample();
         homeController.registerEvent();
     },
 
@@ -32,7 +32,7 @@ var homeController = {
                 homeController.ChangeIsGot(SampleGettingId);
             }
             else {
-                homeController.loadDataBySample();
+                homeController.loadAppBySample();
             }
         });
         
@@ -53,15 +53,15 @@ var homeController = {
     registerEvent: function () {
 
         $("#select-sample").change(function () {
-            homeController.loadDataBySample();
+            homeController.loadAppBySample();
         });
         
         $("#select-date").change(function () {
-            homeController.loadDataBySample();
+            homeController.loadAppBySample();
         });
 
         $('#btnSearch').off('click').on('click', function () {
-            homeController.loadDataBySample(true);
+            homeController.loadAppBySample(true);
         });
 
     },
@@ -92,7 +92,7 @@ var homeController = {
     },
 
 
-    loadDataBySample: function (changePageSize) {
+    loadAppBySample: function (changePageSize) {
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
         var searchData = $("#txtSearch").val();
@@ -140,7 +140,7 @@ var homeController = {
             success: function (response) {
                 if (response.success === true) {
                     toastr.success('Đổi trạng thái thành công');
-                    homeController.loadDataBySample();
+                    homeController.loadAppBySample();
                 }
                 
             }

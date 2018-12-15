@@ -67,6 +67,7 @@ namespace eLTMS.BusinessLogic.Services
                     DateOfBirth = p.pa.DateOfBirth != null ? p.pa.DateOfBirth.Value.ToShortDateString() : "",
                     Address = p.pa.HomeAddress,
                     //IdentityCardNumber = p.pa.IdentityCardNumber
+                    IsPaid = p.app.IsPaid
 
                 }).GroupBy(a => a.PatientID).Select(g => g.First()).ToList();
 

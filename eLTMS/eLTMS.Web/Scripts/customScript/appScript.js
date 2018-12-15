@@ -369,7 +369,7 @@ var homeController = {
             success: function (response) {
 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
-                    toastr.success('Đổi trạng thái thành công');
+                    toastr.success('Thanh toán hoàn tất');
                     homeController.loadDataBySample();
                 }
                 
