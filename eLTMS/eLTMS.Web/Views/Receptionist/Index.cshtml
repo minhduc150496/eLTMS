@@ -85,7 +85,7 @@
                     <br />
                     <br />
 
-                    <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
+                    <input type="text" id="txtSearch" placeholder="Mã bệnh nhân" />
                     <button class="btn btn-success" id="btnSearch">Search</button>
                     Ngày:
                     <input type="date" class="Date" id="select-date" />
@@ -94,7 +94,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Họ & tên</th>
-                                <th>CMND</th>
+                                @*<th>CMND</th>*@
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
                                 <th>Ngày sinh</th>
@@ -184,7 +184,7 @@
     <tr>
         <td>{{OrderNumber}}</td>
         <td>{{FullName}}</td>
-        <td>{{ID}}</td>
+        @*<td>{{ID}}</td>*@
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
         <td>{{DOBirth}}</td>
@@ -215,6 +215,7 @@
         <td>{{TotalPrice}}</td>
     </tr>
 </script>
+
 
 <!--Modal detail app ycm-->
 <script id="data-template1" type="x-tmpl-mustache">

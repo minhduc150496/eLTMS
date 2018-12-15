@@ -35,8 +35,9 @@ var homeController = {
                 homeController.loadPatientByDate();
             }
         });
-
     },
+
+
 
     formatDate: function (date) {
         var d = new Date(date),
@@ -124,10 +125,13 @@ var homeController = {
                             OrderNumber: i+1,
                             FullName: item.PatientName,
                             PatientID: item.PatientID,
-                            ID: item.IdentityCardNumber,
+                            //ID: item.IdentityCardNumber,
                             Phone: item.Phone,
                             Address: item.Address,
                             DOBirth: item.DateOfBirth,
+                            IsPaid: item.IsPaid,
+                            ReadOnly: (item.IsPaid === true) ? "return false;" : "",
+                            Checked: (item.IsPaid === true) ? "checked" : ""
                         });
 
                     });
@@ -153,7 +157,7 @@ var homeController = {
             success: function (response) {
                 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
-                    toastr.success('Đổi trạng thái thành công');
+                    toastr.success('Thanh toán hoàn tất');
                     homeController.loadDataBySample();
                 }
 

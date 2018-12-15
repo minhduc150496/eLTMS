@@ -3,6 +3,7 @@ using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
 using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
+using eLTMS.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,29 @@ namespace eLTMS.Web.Controllers
         public JsonResult IsGot(int sampleGettingId)
         {
             var result = _nurseService.ChangeIsGot(sampleGettingId);
+            if (result == true)
+            {
+                var tokens = _nurseService.GetAllTokens();// lấy tất cả device token
+                foreach (var token in tokens)
+                {
+                    var data = new
+                    {
+                        to = token.TokenString,
+                        data = new
+                        {
+                            message = "Đã lấy mẫu. ",
+                        }
+                    };
+                    try
+                    {
+                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            }
             return Json(new
             {
                 success = result

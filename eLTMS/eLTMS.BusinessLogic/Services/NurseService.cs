@@ -12,6 +12,7 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface INurseService
     {
+        List<Token> GetAllTokens();
         bool ChangeIsGot(int sampleGettingId);
         List<SampleGettingForNurseBySampleDto> GetAllBySample(string search, DateTime date, int sampleId);
     }
@@ -115,6 +116,11 @@ namespace eLTMS.BusinessLogic.Services
             return result;
         }
 
-        
+        public List<Token> GetAllTokens()
+        {
+            var repo = this.RepositoryHelper.GetRepository<ITokenRepository>(UnitOfWork);
+            var tokens = repo.GetAll();
+            return tokens;
+        }
     }
 }
