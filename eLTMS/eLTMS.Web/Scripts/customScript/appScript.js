@@ -67,13 +67,15 @@ var homeController = {
             var address = $('#txtAddress').val();
             var phone = $('#txtPhone').val();
             var dateOfBirth = $('#txtDateOfBirth').val();
-            var cmnd = $('#txtCMND').val();
+            //var cmnd = $('#txtCMND').val();
+            var gender = $('#ddlGender').val();
             var mau = false;
             var nuocTieu = false;
             var teBaoHoc = false;
             var phan = false;
             var dich = false;
 
+     
             var labTests = [];
             $('#mauCheckGroup input[type=checkbox]:checked').each(function (index, element) {
                 var dataLT = $(element).data('labtest-id');
@@ -190,7 +192,7 @@ var homeController = {
                 Phone: phone,
                 Address: address,
                 DateOfBirth: dateOfBirth,
-                IdentityCardNumber: cmnd,
+                Gender: gender,
                 Mau: mau,
                 NuocTieu: nuocTieu,
                 TeBaoHoc: teBaoHoc,
@@ -282,7 +284,7 @@ var homeController = {
     resetForm: function () {
         $('#txtDateOfBirth').val('');
         $('#txtName').val('');
-        $('#txtCMND').val('');
+        $('#ddlGender').val('');
         $('#txtPhone').val('');
         $('#txtAddress').val('');
     },
@@ -367,7 +369,7 @@ var homeController = {
             success: function (response) {
 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
-                    toastr.success('Đổi trạng thái thành công');
+                    toastr.success('Thanh toán hoàn tất');
                     homeController.loadDataBySample();
                 }
                 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eLTMS.BusinessLogic.Services;
 using eLTMS.DataAccess.Models;
+using eLTMS.Models.Enums;
 using eLTMS.Models.Models.dto;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Areas.UserWeb.Controllers
 {
-    public class AppointmentController : Controller
+    public class AppointmentController : BaseController
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IPatientService _patientService;
@@ -35,8 +36,14 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         // GET: UserWeb/Appointment/ViewAppointments
         public ActionResult ViewAppointments()
         {
-            return View("ViewAppointments", "_Layout");
+            if (base.ValidRole((int)RoleEnum.Patient))
+            {
+                return View("ViewAppointments", "_Layout");
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
         }
+
         [HttpGet]
         public JsonResult GetAppointmentsByPatientId(string cardNumber, int page = 1, int pageSize = 20,
             bool sttNew = true, bool sttProcess = true, bool sttDone = true)

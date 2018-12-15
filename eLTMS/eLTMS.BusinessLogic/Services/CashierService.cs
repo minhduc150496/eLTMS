@@ -73,7 +73,7 @@ namespace eLTMS.BusinessLogic.Services
                 var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
 
                 var sampleGetting = sgRepo.GetFirst(p => p.SampleGettingId == sampleGettingId);
-
+                sampleGetting.IsGot = false;
                 sampleGetting.IsPaid = true;
                 sampleGetting.Status = "WAITING";
                 sgRepo.Update(sampleGetting);
@@ -103,23 +103,41 @@ namespace eLTMS.BusinessLogic.Services
             var slotRepo = RepositoryHelper.GetRepository<ISlotRepository>(UnitOfWork);
             try
             {
-                paRepo.Create(new Patient
+                //tao account 
+                var account = accRepo.GetAll().FirstOrDefault(p => p.PhoneNumber == data.Phone);
+                if (account == null)
                 {
-                    //AccountId = accId,
-                    IdentityCardNumber = data.IdentityCardNumber,
-                    DateOfBirth = data.DateOfBirth,
-                    HomeAddress = data.Address,
-                    FullName = data.Name,
-                    PhoneNumber = data.Phone,
-                    IsDeleted = false
-                });
+                    accRepo.Create(new Account
+                    {
+                        PhoneNumber = data.Phone,
+                        FullName = data.Name,
+                        IsDeleted = false,
+                    });
+                }
                 UnitOfWork.SaveChanges();
-                
+                //tao patient
+                var accId = accRepo.GetAll().FirstOrDefault(p => p.PhoneNumber == data.Phone).AccountId;
+                Patient patient = null;
+                patient = new Patient();
+
+                patient.AccountId = accId;
+                patient.Gender = data.Gender;
+                //IdentityCardNumber = data.IdentityCardNumber,
+                patient.DateOfBirth = data.DateOfBirth;
+                patient.HomeAddress = data.Address;
+                patient.FullName = data.Name;
+                patient.PhoneNumber = data.Phone;
+                patient.IsDeleted = false;
+                paRepo.Create(patient);
+
+                UnitOfWork.SaveChanges();
+                patient.PatientCode = "BN" + patient.PatientId;
+
                 //tao cuoc hen
-                var paId = paRepo.GetFirst(p => p.IdentityCardNumber == data.IdentityCardNumber).PatientId;//lấy Id bệnh nhân  dựa vào cmnd
-                var appCode = CreateAppReturnCode(new Appointment //ở dây tui tạo app
+                //var paId = paRepo.GetFirst(p => p.PhoneNumber == data.Phone).PatientId;//lấy Id bệnh nhân  dựa vào phone
+                var appCode = CreateAppReturnCode(new Appointment //tạo app
                 {
-                    PatientId = paId,
+                    PatientId = patient.PatientId,
                     Status = "NEW",
                     IsOnline = false,
                     //Date = DateTime.Now.Date,
@@ -160,7 +178,6 @@ namespace eLTMS.BusinessLogic.Services
                         //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
                         rs = true;
                     }
-
                 }
                 if (data.NuocTieu == true)
                 {
@@ -194,10 +211,39 @@ namespace eLTMS.BusinessLogic.Services
                         rs = true;
                     }
                 }
+                if (data.Phan == true)
+                {
+                    var slotAndTable = GetEmptyTableAndSlot(2);
+                    if (slotAndTable != null)
+                    {
+                        var sg = new SampleGetting //xong tạo sg ở đây
+                        {
+                            GettingDate = DateTime.Now.Date,
+                            AppointmentId = appId,
+                            SampleId = 4,
+                            SlotId = slotAndTable.slotId,
+                            TableId = slotAndTable.tableId,
+                            IsDeleted = false
+                        };
+                        sg.LabTestings = new List<LabTesting>();
+                        foreach (var lt in labTests)
+                        {
+                            if (lt.SampleId == 4)
+                            {
+                                var labTesting = new LabTesting();
+                                labTesting.LabTestId = lt.LabTestId;
+                                sg.LabTestings.Add(labTesting);
+                            }
+                        }
+                        //tao lich hen loai xet nghiem phan 
+                        sgRepo.Create(sg);
+                        rs = true;
+                    }
+                }
                 if (data.TeBaoHoc == true)
                 {
                     //tim slot va ban trong
-                    var slotAndTable = GetEmptyTableAndSlot(2);
+                    var slotAndTable = GetEmptyTableAndSlot(3);
                     //neu con ban va slot trong thi moi tao lich hen
                     if (slotAndTable != null)
                     {
@@ -223,35 +269,6 @@ namespace eLTMS.BusinessLogic.Services
                         //tao lich hen loai xet nghiem mau 
                         sgRepo.Create(sg);
                         //var ID = sgRepo.GetFirst(p => p.SampleGettingId == sgId).SampleGettingId;
-                        rs = true;
-                    }
-                }
-                if (data.Phan == true)
-                {
-                    var slotAndTable = GetEmptyTableAndSlot(3);
-                    if (slotAndTable != null)
-                    {
-                        var sg = new SampleGetting //xong tạo sg ở đây
-                        {
-                            GettingDate = DateTime.Now.Date,
-                            AppointmentId = appId,
-                            SampleId = 4,
-                            SlotId = slotAndTable.slotId,
-                            TableId = slotAndTable.tableId,
-                            IsDeleted = false
-                        };
-                        sg.LabTestings = new List<LabTesting>();
-                        foreach (var lt in labTests)
-                        {
-                            if (lt.SampleId == 4) 
-                            {
-                                var labTesting = new LabTesting();
-                                labTesting.LabTestId = lt.LabTestId;
-                                sg.LabTestings.Add(labTesting);
-                            }
-                        }
-                        //tao lich hen loai xet nghiem phan 
-                        sgRepo.Create(sg);
                         rs = true;
                     }
                 }
@@ -330,6 +347,7 @@ namespace eLTMS.BusinessLogic.Services
                             };
                     }
                 }
+                //Phân
                 else if (sampleGroupId == 2)
                 {
                     if (sgs.Count < tables.Count) 
@@ -341,6 +359,7 @@ namespace eLTMS.BusinessLogic.Services
                             };
                     }
                 }
+                //Tế Bào
                 else if (sampleGroupId == 3)
                 {
                     if (sgs.Count < tables.Count)
@@ -352,6 +371,7 @@ namespace eLTMS.BusinessLogic.Services
                             };
                     }
                 }
+                //Dịch
                 else if (sampleGroupId == 4)
                 {
                     if (sgs.Count < tables.Count)
@@ -420,7 +440,7 @@ namespace eLTMS.BusinessLogic.Services
             || p.Phone.ToString().Contains(search)
             || p.PatientName.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)
-            ).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
+            ).GroupBy(a => a.PatientName).Select(g => g.First()).ToList().OrderBy(a=>a.StartTime).ToList();
             return result;
         }
 

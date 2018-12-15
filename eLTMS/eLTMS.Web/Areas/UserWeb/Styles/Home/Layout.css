@@ -46,3 +46,10 @@ h1, h2, h3, h4, h5, h6, p {
     padding-top: 50px;
     padding-bottom: 50px;
 }
+
+.login_area {
+    text-align: right;
+}
+.user-welcome {
+    line-height: 20px;
+}

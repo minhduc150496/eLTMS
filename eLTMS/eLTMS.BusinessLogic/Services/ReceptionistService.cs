@@ -16,7 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         List<SampleGettingForReceptionistDto> GetAppByPatient(int patientId, DateTime date);
         List<Token> GetAllTokens();
         bool ChangeIsPaid(int patientId, DateTime date);
-        PriceListDto GetPrice(int sampleGettingId, DateTime date);
+        PriceListDto GetPrice(int patientId, DateTime date);
         bool DeleteSG(int sgId);
     }
     class ReceptionistService : IReceptionistService
@@ -66,7 +66,8 @@ namespace eLTMS.BusinessLogic.Services
                     Phone = p.pa.PhoneNumber,
                     DateOfBirth = p.pa.DateOfBirth != null ? p.pa.DateOfBirth.Value.ToShortDateString() : "",
                     Address = p.pa.HomeAddress,
-                    IdentityCardNumber = p.pa.IdentityCardNumber
+                    //IdentityCardNumber = p.pa.IdentityCardNumber
+                    IsPaid = c.sg.IsPaid
 
                 }).GroupBy(a => a.PatientID).Select(g => g.First()).ToList();
 
@@ -148,10 +149,30 @@ namespace eLTMS.BusinessLogic.Services
                 var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
                 var paRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
 
+                var apps = appRepo.GetAll();
                 var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
                 var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
-               
-                foreach (var sg in sgs) {
+
+
+                //app + patient (1)
+                var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
+                {
+                    app = p,
+                    pa = c
+                });
+
+                //(1) + sampleGetting 
+                var appPasSg = appPas.Join(sgs, p => p.app.AppointmentId, c => c.AppointmentId, (p, c) => new
+                {
+                    appPa = p,
+                    sg = c
+                });
+                var listSg = new List<SampleGetting>();
+                foreach(var item in appPasSg)
+                {
+                    listSg.Add(sgRepo.GetById(item.sg.SampleGettingId));
+                }
+                foreach (var sg in listSg) {
                     sg.IsPaid = true;
                     sg.Status = "WAITING";
                     sgRepo.Update(sg);
@@ -175,19 +196,31 @@ namespace eLTMS.BusinessLogic.Services
             var sgRepo = RepositoryHelper.GetRepository<ISampleGettingRepository>(UnitOfWork);
             var labTestRepo = RepositoryHelper.GetRepository<ILabTestRepository>(UnitOfWork);
             var labTestingRepo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(this.UnitOfWork);
+            var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
 
+            var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
-            var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date && p.IsPaid!=true);
+            var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
             var lts = labTestingRepo.GetAll().Where(p => p.IsDeleted != true);
             var labs = labTestRepo.GetAll().Where(p => p.IsDeleted != true);
 
-            var ltsSgs = sgs.Join(lts, p => p.SampleGettingId, c => c.SampleGettingId, (p, c) => new
+            var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
             {
-                sg = p,
+                app = p,
+                pa = c
+            });
+            var appPasSgs = appPas.Join(sgs, p => p.app.AppointmentId, c => c.AppointmentId, (p, c) => new
+            {
+                appPa = p,
+                sg = c
+            });
+            var appPasSgsLts = appPasSgs.Join(lts, p => p.sg.SampleGettingId, c => c.SampleGettingId, (p, c) => new
+            {
+                appPaSg = p,
                 lt = c
             });
             var count = 1;
-            var result = ltsSgs.Join(labs, p => p.lt.LabTestId,
+            var result = appPasSgsLts.Join(labs, p => p.lt.LabTestId,
                 c => c.LabTestId, (p, c) => new PriceListItemDto
                 {
                     OrderNumber = count++,

@@ -18,6 +18,7 @@ namespace eLTMS.BusinessLogic.Services
     {
         Account checkLogin(string phoneNumber, string password);
         ResponseObjectDto CheckLoginPatient(string phoneNumber, string password);
+        ResponseObjectDto CheckLoginPatientForWeb(string phoneNumber, string password);
         ResponseObjectDto RegisterPatient(RegisterDto regDto);
         Account GetById(int accountId);
     }
@@ -42,6 +43,36 @@ namespace eLTMS.BusinessLogic.Services
             return null;
         }/**/
 
+        // DucBM
+        public ResponseObjectDto CheckLoginPatientForWeb(string phoneNumber, string password)
+        {
+            var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
+            Account account = repo.GetAccountPatientForLogin(phoneNumber, password);
+            var accountDto = Mapper.Map<Account, AccountDto>(account);
+
+            var respObj = new ResponseObjectDto();
+            if (account != null)
+            {
+                var patientAccount = account.PatientAccounts.FirstOrDefault();
+                if (patientAccount != null)
+                {
+                    accountDto.PatientId = patientAccount.PatientId;
+                } /**/
+
+                respObj.Success = true;
+                respObj.Message = "Đăng nhập thành công";
+                respObj.Data = account;
+            }
+            else
+            {
+                respObj.Success = false;
+                respObj.Message = "Sai số điện thoại hoặc mật khẩu";
+                respObj.Data = null;
+            }
+            return respObj;
+        }
+
+        // DucBM -- for Mobile
         public ResponseObjectDto CheckLoginPatient(string phoneNumber, string password)
         {
             var repo = RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
@@ -55,7 +86,7 @@ namespace eLTMS.BusinessLogic.Services
                 if (patientAccount != null)
                 {
                     accountDto.PatientId = patientAccount.PatientId;
-                }
+                } /**/
 
                 respObj.Success = true;
                 respObj.Message = "Đăng nhập thành công";

@@ -12,20 +12,57 @@
                 <style>
                     #p-table td {
                         border: none;
+                        vertical-align: top;
+                        padding-bottom: 10px;
+                    }
+                    #p-table label {
+                        margin-bottom: 0;
+                    }
+                    .valid-mess {
+                        color: red;
                     }
                 </style>
-                <table id="p-table" style="margin: 0 auto">
+                <table id="p-table" style="margin: 0 auto" cellspacing="10">
                     <tr>
                         <td>Họ tên:</td>
-                        <td><input type="text" id="p-name" /></td>
+                        <td class="text-left">
+                            <input type="text" name="p-name" style="width: 230px" />
+                            <div class="valid-mess"></div>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Số CMND:</td>
-                        <td><input type="text" id="p-cmnd" /></td>
+                        <td>Giới tính:</td>
+                        <td class="text-left">
+                            <label>
+                                <input type="radio" name="p-gender" value="Male" checked />
+                                Nam
+                            </label>
+                            <label>
+                                <input type="radio" name="p-gender" value="Female" />
+                                Nữ
+                            </label>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Số điện thoại liên hệ:</td>
-                        <td><input type="text" id="p-phone" /></td>
+                        <td>Ngày sinh:</td>
+                        <td class="text-left">
+                            <input type="date" name="p-dob" />
+                            <div class="valid-mess"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại:</td>
+                        <td class="text-left">
+                            <input type="text" name="p-phone"/>
+                            <div class="valid-mess"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ:</td>
+                        <td class="text-left">
+                            <textarea type="text" name="p-address" rows="4" style="width: 300px"></textarea>
+                            <div class="valid-mess"></div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -80,6 +117,48 @@
     </div>
 </div>
 <!-- appoinment Page End-->
+
+
+
+<!-- Modal -->
+<div id="verify-phone-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text text-center out-message">
+                    <p>
+                        Mã xác nhận đã được gửi đến số điện thoại
+                    </p>
+                    <p style="text-align:center; font-size: 30px; font-weight:bold">
+                        039 562 0718
+                    </p>
+                    <p>
+                        Quý khách vui lòng 
+                        <span style="font-weight: bold; color: red">nhập mã xác nhận</span>
+                        vào đây để tiếp tục đặt lịch:
+                    </p>
+                    <p>
+                        <input type="text" name="p-verify-code" style="margin-top:15px; text-align: center;color: #0a408a;font-weight: bold;font-size: 22px;width: 150px;" />
+                    </p>
+                    <p>
+                        <button id="btn-retake-code" class="btn btn-danger" style="margin-top: 10px">
+                            Xác nhận
+                        </button>
+                    </p>
+                    <p>
+                        <button id="btn-retake-code" class="btn btn-link" style="font-size: 12px">
+                            Nhận lại mã xác nhận
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <!-- Modal -->
 <div id="success-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -98,6 +177,7 @@
 
     </div>
 </div>
+
 <!-- Modal -->
 <div id="fail-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -148,8 +228,8 @@
             {{#LabTests}}
             <div class="col-md-3">
                 <div class="pretty p-icon p-smooth p-bigger">
-                    <input type="checkbox" data-labtest-index="{{Index}}" data-labtest-id="{{LabTestId}}" 
-                           {{#IsSelected}}checked{{/IsSelected}} />
+                    <input type="checkbox" data-labtest-index="{{Index}}" data-labtest-id="{{LabTestId}}"
+                           {{#IsSelected}} checked{{/IsSelected}} />
                     <div class="state p-danger">
                         <i class="icon fa fa-check"></i>
                         <label>{{LabTestName}}</label>
@@ -202,8 +282,7 @@
                     <input type="date" value="2018-12-01" min="2018-11-22" max="2018-12-30" />
                 </td>
                 <td>
-                    <select style="overflow-y: scroll">
-                    </select>
+                    <select style="overflow-y: scroll"></select>
                 </td>
             </tr>
             {{/IsSelected}}

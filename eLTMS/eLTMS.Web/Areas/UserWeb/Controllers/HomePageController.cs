@@ -1,4 +1,6 @@
-﻿using System;
+﻿using eLTMS.BusinessLogic.Services;
+using eLTMS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,8 +8,9 @@ using System.Web.Mvc;
 
 namespace eLTMS.Web.Areas.UserWeb.Controllers
 {
-    public class HomePageController : Controller
+    public class HomePageController : BaseController
     {
+        private readonly IAccountService _accountService;
         // GET: /UserWeb/Index
         public ActionResult Index()
         {
@@ -49,5 +52,6 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
         {
             return View("ServiceDetails", "_Layout");
         }
+
     }
 }

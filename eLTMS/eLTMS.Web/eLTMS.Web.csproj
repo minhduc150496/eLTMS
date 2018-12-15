@@ -236,7 +236,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Areas\UserWeb\Controllers\AccountController.cs" />
     <Compile Include="Areas\UserWeb\Controllers\AppointmentController.cs" />
+    <Compile Include="Areas\UserWeb\Controllers\BaseController.cs" />
     <Compile Include="Areas\UserWeb\Controllers\HomePageController.cs" />
     <Compile Include="Areas\UserWeb\UserWebAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -635,6 +637,7 @@
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\UserWeb\Views\Account\Login.cshtml" />
     <None Include="Areas\UserWeb\Views\HomePage\Index.cshtml" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="Assets\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
@@ -7901,6 +7904,7 @@
     <Content Include="DbConnection\eLTMS.edmx.diagram">
       <DependentUpon>eLTMS.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\UserWeb\Views\Account\Register.cshtml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\eLTMS - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

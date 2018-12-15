@@ -15,6 +15,8 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTestingIndex> GetAllLabTestingIndex();
         List<LabTestingIndex> GetAllLabTestingIndexHaveLabtestingId(int labtestingId);
         bool AddLabTestingIndex(List<LabTestingIndex> labTestingIndex);
+        bool Delete(int id);
+        bool DeleteAll(List<LabTestingIndex> labTestingI);
         ResponseObjectDto AddLabTestingIndexes(List<LabTestingIndex> labTestingIndexes); // DucBM
     }
 
@@ -27,6 +29,29 @@ namespace eLTMS.BusinessLogic.Services
         {
             RepositoryHelper = repositoryHelper;
             UnitOfWork = RepositoryHelper.GetUnitOfWork();
+        }
+        public bool DeleteAll(List<LabTestingIndex> labTesting)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
+
+            try
+            {
+                var ids = labTesting.Select(x => x.LabtTestingIndexId).ToList();
+                var labtest = repo.GetLabTestingIndexByListId(ids);
+                foreach (var item in labTesting)
+                {
+                    var curentLabTest = labtest.SingleOrDefault(x => x.LabtTestingIndexId == item.LabtTestingIndexId);
+                    //curentLabTest.IsDeleted = true;
+                    repo.Delete(curentLabTest);
+                }
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
         public List<LabTestingIndex> GetAllLabTestingIndexHaveLabtestingId(int labtestingId)
         {
@@ -60,7 +85,24 @@ namespace eLTMS.BusinessLogic.Services
             var labTesting = repo.GetAllLabTestingIndex();
             return labTesting;
         }
+        public bool Delete(int id)
+        {
+            var repo = RepositoryHelper.GetRepository<ILabTestingIndexRepository>(UnitOfWork);
 
+            try
+            {
+                var labtestingI = repo.GetById(id);
+                labtestingI.IsDeleted = true;
+                repo.Update(labtestingI);
+                var result = UnitOfWork.SaveChanges();
+                if (result.Any()) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
         // DucBM
         public ResponseObjectDto AddLabTestingIndexes(List<LabTestingIndex> labTestingIndexes)
         {

@@ -337,7 +337,38 @@ var homeController = {
             $('#txtLabtestingFailID').val(id);
         });
         $('#btnAgain').off('click').on('click', function () {
-            var id = $('#txtLabtestingFailID').val();            
+            var id = $('#txtLabtestingFailID').val();  
+            $.ajax({
+                url: '/LabTest/GetAllLabTestingIndexHaveLabtestingId',
+                type: 'GET',
+                dataType: 'json',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        var data = response.data;
+                        //$.each(data, function (i, item) {                            
+                        //    homeController.deleteLabtestingIndex(item.LabtTestingIndexId);
+                        //});
+                        $.ajax({
+                            url: '/LabTest/DeleteAll',
+                            type: 'Post',
+                            dataType: 'json',
+                            data: { labTestingIndex: data },
+                            async: false,
+                            success: function (res) {
+                                if (!res.success) {
+                                    toastr.success("Xóa không thành công.");
+
+                                }
+                                else {
+                                    toastr.success("Xóa thành công.");
+
+                                }
+                            }
+                        })
+                    }
+                }
+            })
             $.ajax({
                 url: '/LabTest/UpdateLabTestingFail',
                 type: 'Post',
@@ -362,7 +393,6 @@ var homeController = {
             var listId = ids.split(',');
             var code = $('#txtCode').val();
             var con = $('#txtResult').val(); 
-            //var cmt = $('#txtCMT').val(); 
             var cmt = $('#txtCMT').froalaEditor('html.get');
             var allData = [];
             $.each(listId, function (i, item) {
@@ -551,7 +581,6 @@ var homeController = {
                 success: function (response) {
                     if (response.success == true) {
                         toastr.success("Xóa thành công.");
-                        // homeController.loadDataSample(true);
                     }
                     else {
                         toastr.error("Xóa không thành công.");
@@ -579,6 +608,32 @@ var homeController = {
                 success: function (response) {
                     if (response.success == true) {
                         toastr.success("Xóa thành công.");
+                    }
+                    else {
+                        toastr.error("Xóa không thành công.");
+                    }
+                }
+            });
+
+        }
+
+        catch (err) {
+            alert(err);
+        }
+
+    },
+    deleteLabtestingIndex: function (id) {
+        try {
+            $.ajax({
+                url: '/LabTest/DeleteLabTestingIndex',
+                data: {
+                    id: id
+                },
+                async: false,
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success == true) {
                     }
                     else {
                         toastr.error("Xóa không thành công.");

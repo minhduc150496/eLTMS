@@ -21,6 +21,7 @@ namespace LabTechnicianWindowService
     {
         string watchPath = ConfigurationManager.AppSettings["WatchPath"];
         string backupPath = ConfigurationManager.AppSettings["BackupPath"];
+        static string logPath = ConfigurationManager.AppSettings["LogPath"];
         string APIDomain = ConfigurationManager.AppSettings["APIDomain"];
 
         public Service1()
@@ -244,7 +245,7 @@ namespace LabTechnicianWindowService
 
         public static void CreateLogFile(string content)
         {
-            string Destination = "C:\\Users\\Duc\\Documents\\LabTechnician\\Log";
+            string Destination = logPath;
             StreamWriter SW;
             if (Directory.Exists(Destination))
             {
