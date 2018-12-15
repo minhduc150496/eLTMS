@@ -440,7 +440,7 @@ namespace eLTMS.BusinessLogic.Services
             || p.Phone.ToString().Contains(search)
             || p.PatientName.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)
-            ).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
+            ).GroupBy(a => a.PatientName).Select(g => g.First()).ToList().OrderBy(a=>a.StartTime).ToList();
             return result;
         }
 

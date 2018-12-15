@@ -67,7 +67,7 @@ namespace eLTMS.BusinessLogic.Services
                     DateOfBirth = p.pa.DateOfBirth != null ? p.pa.DateOfBirth.Value.ToShortDateString() : "",
                     Address = p.pa.HomeAddress,
                     //IdentityCardNumber = p.pa.IdentityCardNumber
-                    IsPaid = p.app.IsPaid
+                    IsPaid = c.sg.IsPaid
 
                 }).GroupBy(a => a.PatientID).Select(g => g.First()).ToList();
 
@@ -149,10 +149,30 @@ namespace eLTMS.BusinessLogic.Services
                 var appRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
                 var paRepo = RepositoryHelper.GetRepository<IAppointmentRepository>(UnitOfWork);
 
+                var apps = appRepo.GetAll();
                 var pas = paRepo.GetAll().Where(p => p.IsDeleted != true && p.PatientId == patientId);
                 var sgs = sgRepo.GetAll().Where(p => p.IsDeleted != true && p.GettingDate == date);
-               
-                foreach (var sg in sgs) {
+
+
+                //app + patient (1)
+                var appPas = apps.Join(pas, p => p.PatientId, c => c.PatientId, (p, c) => new
+                {
+                    app = p,
+                    pa = c
+                });
+
+                //(1) + sampleGetting 
+                var appPasSg = appPas.Join(sgs, p => p.app.AppointmentId, c => c.AppointmentId, (p, c) => new
+                {
+                    appPa = p,
+                    sg = c
+                });
+                var listSg = new List<SampleGetting>();
+                foreach(var item in appPasSg)
+                {
+                    listSg.Add(sgRepo.GetById(item.sg.SampleGettingId));
+                }
+                foreach (var sg in listSg) {
                     sg.IsPaid = true;
                     sg.Status = "WAITING";
                     sgRepo.Update(sg);

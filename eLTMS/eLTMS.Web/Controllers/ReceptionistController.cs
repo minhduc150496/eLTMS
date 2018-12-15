@@ -65,25 +65,17 @@ namespace eLTMS.Web.Controllers
             if (result == true)
             {
                 var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
-                foreach (var token in tokens)
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Manager
+                };
+                var data = new
                 {
-                    var data = new
-                    {
-                        to = token.TokenString,
-                        data = new
-                        {
-                            message = "Đã thanh toán. ",
-                        }
-                    };
-                    try
-                    {
-                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
-                    }
-                    catch (Exception ex)
-                    {
-                        //
-                    }
-                }
+                    roleIds,
+                    message = "Có cuộc hẹn vừa được thêm."
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
             }
             return Json(new
             {

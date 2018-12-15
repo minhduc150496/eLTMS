@@ -58,7 +58,6 @@ namespace eLTMS.Web.Api
                 };
                 SendNotificationUtils.SendNotification(data, tokens);
             }
-
             var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
         }
