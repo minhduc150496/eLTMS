@@ -544,7 +544,7 @@ var Controller = {
                 var checkResult = function (data) {
                     $("#processing-modal").modal('hide');
                     if (data.Success == true) {
-                        if (typeof data.Data.DefaultPassword != 'undefined') {
+                        if (data.Data != null && typeof data.Data.DefaultPassword != 'undefined') {
                             var html = data.Message + "<br> Tài khoản của bạn vừa được tạo:<br>" +
                                 "Số điện thoại: " + data.Data.PhoneNumber + "<br>" +
                                 "Mật khẩu mặc định: " + data.Data.DefaultPassword;

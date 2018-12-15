@@ -16,11 +16,11 @@ namespace eLTMS.BusinessLogic.Services
 {
     public interface ISmsService
     {
-        Account SendSms(string phoneNumber, string password);
+        //Account SendSms(string phoneNumber, string password);
     }
     public class SmsService : ISmsService
     {
-        private readonly IRepositoryHelper RepositoryHelper;
+        /*private readonly IRepositoryHelper RepositoryHelper;
         private readonly IUnitOfWork UnitOfWork;
         public SmsService(IRepositoryHelper repositoryHelper)
         {
