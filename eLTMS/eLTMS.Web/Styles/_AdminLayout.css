@@ -2,6 +2,6 @@
     margin-top: 50px !important;
 }
 
-.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a {
-    white-space: normal;
+.notifications-menu .menu a {
+    white-space: normal !important;
 }
