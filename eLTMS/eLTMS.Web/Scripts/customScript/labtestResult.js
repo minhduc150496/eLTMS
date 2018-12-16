@@ -12,13 +12,13 @@ var homeController = {
         homeController.loadDataLabTestingResultFail();
     },
     registerEvent: function () {
-        $('.btn-deleteLabTestingResultFail').off('click').on('click', function () {
-            var id = $(this).data('id');
-            //homeController.deleteLabtesting(id);
-            homeController.ChangeIsPaid(id);
-            homeController.loadDataLabTestingResultFail();
+        //$('.btn-deleteLabTestingResultFail').off('click').on('click', function () {
+        //    var id = $(this).data('id');
+        //    //homeController.deleteLabtesting(id);
+        //    homeController.ChangeIsPaid(id);
+        //    homeController.loadDataLabTestingResultFail();
 
-        });
+        //});
         $('.btn-closeLabTestingResultFail').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteLabtesting(id);
@@ -59,6 +59,7 @@ var homeController = {
             $('#hiddenForm').submit();
 
         });
+
         $('.btn-editResult').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật thông tin xét nghiệm');
              $('#myModal1').modal('show');
@@ -94,6 +95,33 @@ var homeController = {
         }
 
     },
+    checkIsGot: function (SampleGettingId) {
+
+        var modalConfirm = function (callback) {
+
+            $("#mi-modal").modal('show');
+
+            $("#modal-btn-si").off('click').on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").off('click').on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                homeController.ChangeIsPaid(SampleGettingId);
+            }
+            else {
+                homeController.loadDataLabTestingResultFail();
+            }
+        });
+
+    },
     loadDataResult: function (id, changePageSize) {
         $.ajax({
             url: '/appointment/AppDetail',
@@ -118,10 +146,8 @@ var homeController = {
             dataType: 'json',
             data: { sampleGettingId: SampleGettingId },
             success: function (response) {
-                //                homeController.loadPrice(SampleGettingId);
-                if (response.success === true) {
+               if (response.success === true) {
                     toastr.success('Đổi trạng thái thành công');
-                    homeController.loadDataBySample();
                 }
 
             }

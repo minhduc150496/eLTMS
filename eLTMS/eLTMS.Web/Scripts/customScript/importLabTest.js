@@ -359,7 +359,7 @@ var homeController = {
 
                                 }
                                 else {
-                                    toastr.success("Xóa thành công.");
+                                    toastr.success("Thành công.");
 
                                 }
                             }
@@ -378,7 +378,7 @@ var homeController = {
                             toastr.error(res.validation.Errors[0].ErrorMessage);
                         }
 
-                    } toastr.success("Thành công.");
+                    } 
 
                     $('#myModalLabTestingResult').modal('hide');
                     location.reload();

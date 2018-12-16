@@ -525,7 +525,7 @@ namespace eLTMS.Web.Controllers
                 }
             }
             var Renderer = new IronPdf.HtmlToPdf();
-            var allData = System.IO.File.ReadAllText(Server.MapPath("~/template-pdf/result.html"));
+            var allData = System.IO.File.ReadAllText(Server.MapPath("~/template-pdf/resultPrint.html"));
             foreach (var item2 in result2)
             {
                 allData = allData.Replace("{{InvoiceDate}}", $"{item2.Date}");
