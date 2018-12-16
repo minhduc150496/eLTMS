@@ -16,9 +16,6 @@ namespace eLTMS.BusinessLogic.Services
     {
         List<Sample> GetAll();
         List<SampleDto> GetAllSampleDtos();
-        //bool Create(LabTest newTesting);
-        //bool CreateMany(List<LabTest> newTestings);
-        //bool Update(LabTest testing);
         bool Delete(int id);
         bool AddSample(Sample sample);
         Sample GetSampleById(int id);
@@ -41,6 +38,7 @@ namespace eLTMS.BusinessLogic.Services
             return samples;
         }
 
+        //DucBM
         public List<SampleDto> GetAllSampleDtos()
         {
             var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(UnitOfWork);
