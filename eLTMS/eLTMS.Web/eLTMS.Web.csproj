@@ -7881,6 +7881,7 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\sampleFail.js" />
     <Content Include="Scripts\customScript\receptionist.js" />
     <Content Include="Scripts\customScript\nurseChangeSttScript.js" />
     <Content Include="Scripts\customScript\appScript.js" />
@@ -7971,6 +7972,7 @@
     <Content Include="Views\Receptionist\Index.cshtml" />
     <Content Include="Views\LabTest\LabTestingFail.cshtml" />
     <Content Include="templates\XNTemplate.xlsx" />
+    <Content Include="Views\LabTest\SampleFail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

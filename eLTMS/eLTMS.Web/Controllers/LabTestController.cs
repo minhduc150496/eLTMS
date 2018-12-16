@@ -91,7 +91,15 @@ namespace eLTMS.Web.Controllers
             var returnUrl = Request.Url.AbsoluteUri;
             return RedirectToAction("Login", "Account", new { returnUrl });
         }
-        
+        public ActionResult SampleFail()
+        {
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
+            {
+                return View();
+            }
+            var returnUrl = Request.Url.AbsoluteUri;
+            return RedirectToAction("Login", "Account", new { returnUrl });
+        }
         [HttpGet]
         public JsonResult GetAllSamples( int page = 1, int pageSize = 20)
         {
