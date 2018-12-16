@@ -4,6 +4,7 @@
 }
 var homeController = {
     init: function () {
+        var paId = 0;
         var dateNow = homeController.formatDate(new Date());
         document.getElementById("select-date").value = dateNow;
         homeController.loadPatientByDate();
@@ -50,7 +51,7 @@ var homeController = {
 
         return [year, month, day].join('-');
     },
-
+    
     registerEvent: function () {
 
         $("#select-sample").change(function () {
@@ -64,9 +65,10 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadPatientByDate(true);
         });
-
+        
         $('.btn-View').off('click').on('click', function () {
             var id = $(this).data('id');
+            paId = id;
             homeController.loadDataByPatientId(id);
             $('#lblPopupTitle').text('Thông tin các cuộc hẹn');
             $('#myModal1').modal('show');
@@ -75,7 +77,7 @@ var homeController = {
         $('.btn-deleteSG').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSampleGetting(id);
-            homeController.loadDataByPatientId();
+            
 
         });
     },
@@ -157,10 +159,10 @@ var homeController = {
             success: function (response) {
                 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
-                    toastr.success('Thanh toán hoàn tất');
+                    //toastr.success('Thanh toán hoàn tất');
                     homeController.loadDataBySample();
+                    homeController.loadPatientByDate();
                 }
-
             }
         })
     },
@@ -249,7 +251,7 @@ var homeController = {
                 success: function (response) {
                     if (response.success == true) {
                         toastr.success("Xóa thành công.");
-                        homeController.loadDataByPatientId();
+                        homeController.loadDataByPatientId(paId);
                     }
                     else {
                         toastr.error("Xóa không thành công.");
