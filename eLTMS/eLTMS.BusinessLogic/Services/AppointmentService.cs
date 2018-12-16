@@ -261,6 +261,8 @@ namespace eLTMS.BusinessLogic.Services
                     sg.TableId = avaiTable.TableId;
                     sg.Status = "NEW";
                     sg.LabTestings = new List<LabTesting>();
+                    sg.IsGot = false;
+                    sg.IsPaid = false;
                     sg.IsDeleted = false;
                     foreach (var id in sgDto.LabTestIds)
                     {
