@@ -22,7 +22,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .Include(x => x.SupplyType)
-                .Where(x => x.SuppliesCode.Contains(suppliesCode) || x.SuppliesName.Contains(suppliesCode) && x.IsDeleted == false)           
+                .Where(x => (x.SuppliesCode.Contains(suppliesCode) || x.SuppliesName.Contains(suppliesCode)) && x.IsDeleted == false)           
                 .ToList();
             return result;
         }

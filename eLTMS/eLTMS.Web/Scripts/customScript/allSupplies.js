@@ -87,11 +87,11 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-        $('.btn-delete').off('click').on('click', function () {
-            var id = $(this).data('id');
-            homeController.deleteSupply(id);
+        //$('.btn-delete').off('click').on('click', function () {
+        //    var id = $(this).data('id');
+        //    homeController.deleteSupply(id);
             
-        });
+        //});
         $("#txtSearch").off('change').on("change", function () {
             homeController.loadData(true);
         })
@@ -117,6 +117,33 @@ var homeController = {
                 console.log(err);
             }
         });
+    },
+    checkIsDelete: function (SampleGettingId) {
+
+        var modalConfirm = function (callback) {
+
+            $("#mi-modal").modal('show');
+
+            $("#modal-btn-si").off('click').on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").off('click').on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                homeController.deleteSupply(SampleGettingId);
+            }
+            else {
+                homeController.loadData();
+            }
+        });
+
     },
     loadDetail: function (id) {
         $.ajax({

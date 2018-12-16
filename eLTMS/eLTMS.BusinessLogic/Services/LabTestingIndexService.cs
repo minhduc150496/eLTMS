@@ -41,7 +41,7 @@ namespace eLTMS.BusinessLogic.Services
                 foreach (var item in labTesting)
                 {
                     var curentLabTest = labtest.SingleOrDefault(x => x.LabtTestingIndexId == item.LabtTestingIndexId);
-                    //curentLabTest.IsDeleted = true;
+                    curentLabTest.IsDeleted = true;
                     repo.Delete(curentLabTest);
                 }
                 var result = UnitOfWork.SaveChanges();

@@ -42,6 +42,7 @@ namespace eLTMS.BusinessLogic.Services
                 foreach(var lab in labs)
                 {
                     lab.Status = "WAITING";
+                    lab.IsDeleted = false;
                     labRepo.Update(lab);
                 }
 

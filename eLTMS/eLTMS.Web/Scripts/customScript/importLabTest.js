@@ -136,6 +136,7 @@ var homeController = {
                     IndexValue: value,
                     LowNormalHigh: labTestingIndexStatus,
                     NormalRange: nomal,
+                    IsDeleted: false,
                     Unit: unit
                 }
                 allData1.push(data1);
@@ -307,11 +308,11 @@ var homeController = {
             var id = $(this).data('id');
             homeController.loadDetail(id);
         });
-        $('.btn-delete').off('click').on('click', function () {
-            var id = $(this).data('id');
-            homeController.delete(id);
+        //$('.btn-delete').off('click').on('click', function () {
+        //    var id = $(this).data('id');
+        //    homeController.delete(id);
             
-        });
+        //});
         $('.btn-deleteSample').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteSample(id);
@@ -346,9 +347,6 @@ var homeController = {
                 success: function (response) {
                     if (response.success) {
                         var data = response.data;
-                        //$.each(data, function (i, item) {                            
-                        //    homeController.deleteLabtestingIndex(item.LabtTestingIndexId);
-                        //});
                         $.ajax({
                             url: '/LabTest/DeleteAll',
                             type: 'Post',
@@ -989,6 +987,33 @@ var homeController = {
                 setTimeout(callback, 200);
             }
         });
+    },
+    checkIsDelete: function (SampleGettingId) {
+
+        var modalConfirm = function (callback) {
+
+            $("#mi-modal").modal('show');
+
+            $("#modal-btn-si").off('click').on("click", function () {
+                callback(true);
+                $("#mi-modal").modal('hide');
+            });
+
+            $("#modal-btn-no").off('click').on("click", function () {
+                callback(false);
+                $("#mi-modal").modal('hide');
+            });
+        };
+
+        modalConfirm(function (confirm) {
+            if (confirm) {
+                homeController.delete(SampleGettingId);
+            }
+            else {
+                homeController.loadData();
+            }
+        });
+
     },
     getColorByStatus: function (status) {
         if (status == 'L') {
