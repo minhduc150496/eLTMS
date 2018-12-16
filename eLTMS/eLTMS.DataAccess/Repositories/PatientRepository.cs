@@ -41,7 +41,8 @@ namespace eLTMS.DataAccess.Repositories
         public Patient GetByIDCNumber(string number)
         {
             var result = DbSet.AsQueryable()
-                .Where(x => x.IdentityCardNumber == number)
+                //.Where(x => x.IdentityCardNumber == number)
+                .OrderByDescending(x => x.PatientId)
                 .ToList()
                 .FirstOrDefault();
             return result;

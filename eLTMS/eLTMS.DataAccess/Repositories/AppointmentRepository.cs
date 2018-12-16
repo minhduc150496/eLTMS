@@ -35,7 +35,7 @@ namespace eLTMS.DataAccess.Repositories
             //var sId = patientId.ToString();
             var result = DbSet.AsQueryable()
                 .Include(x => x.Patient)
-                .Where(x => x.PatientId == patientId && x.IsDeleted == false)
+                .Where(x => x.PatientId == patientId && x.IsDeleted != true)
                 .Include(x => x.SampleGettings)
                 .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
                 .Include(x => x.SampleGettings.Select(y => y.Sample))

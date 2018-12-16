@@ -36,6 +36,13 @@ namespace eLTMS.Web.Areas.UserWeb.Controllers
             return View("Register", "_Layout");
         }
 
+        //[ValidateAntiForgeryToken]
+        //public ActionResult RegisterPatient(FormCollection fc)
+        //{
+        //    var respObj = this._accountService.RegisterPatient();
+        //    return View("Register", "_Layout");
+        //}
+
         [HttpPost]
         public ActionResult CheckLoginPatient(FormCollection fc)
         {

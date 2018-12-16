@@ -6,7 +6,7 @@
 
 var Controller = {
     init: function () {
-        //Controller.loadData();
+        Controller.loadData();
         Controller.registerEvent();
     },
     registerEvent: function () {

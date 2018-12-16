@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Tra cứu cuộc hẹn";
+    ViewBag.Title = "Danh sách cuộc hẹn";
 }
 @section styles {
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row text-center">
             <div class="col">
-                <h1>Tra cứu cuộc hẹn</h1>
+                <h1>Danh sách cuộc hẹn</h1>
             </div>
         </div>
     </div>
@@ -21,8 +21,8 @@
     <div class="container">
         <div class="content-box">
 
-            <div class="text-center" style="margin-bottom: 25px">
-                <input id="txt-search" type="text" placeholder="Số CMND của bạn"/>
+            <div hidden class="text-center" style="margin-bottom: 25px">
+                <input id="txt-search" type="text" placeholder="Số CMND của bạn" value="16"/>
                 <button id="btn-search" class="btn btn-info">Tra cứu</button>
             </div>
 
