@@ -81,26 +81,18 @@ namespace eLTMS.Web.Api
             // push noti
             if (result.Success)
             {
-                var tokens =  _appointmentService.GetAllTokens();
-                foreach (var token in tokens)
+                var tokens = _tokenService.GetAll();
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Manager
+                };
+                var data = new
                 {
-                    var data = new
-                    {
-                        to = token.TokenString,
-                        data = new
-                        {
-                            message = "Có cuộc hẹn vừa thay đổi. ",
-                        }
-                    };
-                    try
-                    {
-                        SendNotificationUtils.SendNotification(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        //
-                    }
-                }
+                    roleIds,
+                    message = "Có cuộc hẹn vừa được chỉnh sửa."
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
             }
             var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;
@@ -115,26 +107,18 @@ namespace eLTMS.Web.Api
             // send noti
             if (result.Success)
             {
-                var tokens = _appointmentService.GetAllTokens();
-                foreach (var token in tokens)
+                var tokens = _tokenService.GetAll();
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Manager
+                };
+                var data = new
                 {
-                    var data = new
-                    {
-                        to = token.TokenString,
-                        data = new
-                        {
-                            message = "Có cuộc hẹn vừa được hủy. ",
-                        }
-                    };
-                    try
-                    {
-                        SendNotificationUtils.SendNotification(data);
-                    }
-                    catch (Exception ex)
-                    {
-                        //
-                    }
-                }
+                    roleIds,
+                    message = "Có cuộc hẹn vừa được hủy."
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
             }
             var response = Request.CreateResponse(HttpStatusCode.OK, result);
             return response;

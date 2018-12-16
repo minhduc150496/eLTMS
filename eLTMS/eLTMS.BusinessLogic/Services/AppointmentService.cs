@@ -142,6 +142,8 @@ namespace eLTMS.BusinessLogic.Services
                         patient.DateOfBirth = dateOfBirth;
                         patient.Gender = appointmentDto.PatientDto.Gender;
                         patient.HomeAddress = appointmentDto.PatientDto.HomeAddress;
+                        patient.IsDeleted = false;
+
                         patientRepo.Create(patient);
                         try
                         {
@@ -212,6 +214,7 @@ namespace eLTMS.BusinessLogic.Services
                 appointment.PatientId = appointmentDto.PatientId;
                 appointment.EnterTime = now;
                 appointment.IsOnline = true;
+                appointment.IsDeleted = false;
 
                 appointment.SampleGettings = new List<SampleGetting>();
 

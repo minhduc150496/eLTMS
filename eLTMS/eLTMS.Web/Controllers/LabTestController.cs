@@ -29,7 +29,8 @@ namespace eLTMS.Web.Controllers
         private readonly ILabTestingIndexService _labTestingIndexService;
         private readonly IAppointmentService _appointmentService;
         private readonly IHospitalSuggestionService _hospitalSuggestionService;
-        public LabTestController(ISampleGettingService sampleGettingService,IPatientService patientService, IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService)
+        private readonly ITokenService _tokenService;
+        public LabTestController(ISampleGettingService sampleGettingService,IPatientService patientService, IHospitalSuggestionService hospitalSuggestionService, IAppointmentService appointmentService,ILabTestingIndexService labTestingIndexService, ILabTestingService labTestingService, ILabTestService labTestService, ISampleService sampleService, ISampleGroupService sampleGroupService, ITokenService tokenService)
         {
             this._labTestService = labTestService;
             this._appointmentService = appointmentService;
@@ -40,6 +41,7 @@ namespace eLTMS.Web.Controllers
             this._patientService = patientService;
             this._sampleGroupService = sampleGroupService;
             this._hospitalSuggestionService = hospitalSuggestionService;
+            this._tokenService = tokenService;
         }
         
         public ActionResult LabTests()
@@ -250,6 +252,19 @@ namespace eLTMS.Web.Controllers
             var l = appointment.PatientId; var patient = _patientService.GetPatientById(int.Parse(l.ToString()));
             if (result==true)
             {
+                var tokens = _tokenService.GetAll();
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Bệnh nhân: " + patient.FullName + " ĐT:" + patient.PhoneNumber + " Cần làm lại xét nghiệm: " + sample.SampleName,
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+                /*
                 var tokens = _appointmentService.GetAllTokens();
                 foreach (var token in tokens)
                 {
@@ -269,7 +284,7 @@ namespace eLTMS.Web.Controllers
                     {
                         //
                     }
-                }
+                }/**/
             }
             return Json(new
             {
