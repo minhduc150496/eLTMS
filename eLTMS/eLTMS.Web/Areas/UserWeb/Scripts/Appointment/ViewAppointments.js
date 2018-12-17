@@ -1,7 +1,7 @@
 ﻿var CONFIG = {
     pageSize: 10,
     pageIndex: 1,
-    PatientId: 145
+    //PatientId: 145
 };
 
 var Controller = {
@@ -74,34 +74,6 @@ var Controller = {
             }
         });
     },
-    loadDetail: function (id) {
-        $.ajax({
-            url: '/WareHouse/SupplyDetail',
-            data: {
-                id: id
-            },
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response.sucess) {
-                    var data = response.data;
-                    $('#txtSupplyId').val(data.SuppliesId);
-                    $('#txtCode').val(data.SuppliesCode);
-                    $('#txtName').val(data.SuppliesName);
-                    $('#ddlSupplyType').val(data.SuppliesTypeId).change();
-                    $('#ddlSupplyUnit').val(data.Unit).change();
-                    $('#txtNote').val(data.Note);
-
-                }
-                else {
-                    bootbox.alert(response.message);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    },
     resetForm: function () {
         $('#txtSupplyId').val('0');
         $('#txtCode').val('');
@@ -119,11 +91,11 @@ var Controller = {
         }
         $.ajax({
             //url: '/api/appointment/get-appointments-by-patient-id?patientId=' + CONFIG.PatientId,
-            url: '/UserWeb/Appointment/GetAppointmentsByPatientId',
+            url: '/UserWeb/Appointment/GetAppointmentsByAccountId',
             type: 'GET',
             dataType: 'json',
             data: {
-                cardNumber: $('#txt-search').val(),
+                accountId: accountId,
                 page: CONFIG.pageIndex,
                 pageSize: CONFIG.pageSize,
                 sttNew: sttNew,
@@ -131,7 +103,7 @@ var Controller = {
                 sttDone: sttDone,
             },
             success: function (response) {
-                //console.log(data);
+                console.log(response);
                 if (response.success) {
                     var hasData = response.data.length > 0;
                     var html = '';
@@ -152,6 +124,7 @@ var Controller = {
                         }
                         html += Mustache.render(template, {
                             Index: (index + 1),
+                            PatientName: item.PatientName,
                             AppointmentId: item.AppointmentId,
                             AppointmentCode: item.AppointmentCode,
                             SampleGettings: item.SampleGettingDtos,
@@ -166,9 +139,9 @@ var Controller = {
                     $('#tblData').html(html);
 
                     var patient = response.patient;
-                    $('#patient-name').html(patient.FullName);
-                    $('#patient-dob').html(response.patientDob);
-                    $('#patient-phone').html(patient.PhoneNumber);
+                    //$('#patient-name').html(patient.FullName);
+                    //$('#patient-dob').html(response.patientDob);
+                    //$('#patient-phone').html(patient.PhoneNumber);
 
                     if (hasData) {
                         $('#content-result').show(0);
