@@ -178,9 +178,9 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GetAllResult(int page = 1, int pageSize = 20)
+        public JsonResult GetAllResult(string s,int page = 1, int pageSize = 20)
         {
-            var queryResult = _labTestingService.GetAllResult();
+            var queryResult = _labTestingService.GetAllResult(s);
             var totalRows = queryResult.Count();
             var result = Mapper.Map<IEnumerable<LabTesting>, IEnumerable<LabTestingDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));
             return Json(new
