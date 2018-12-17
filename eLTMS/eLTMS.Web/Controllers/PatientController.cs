@@ -65,6 +65,17 @@ namespace eLTMS.Web.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult GetAllResultsNoPaging(int id)
+        {
+            var result = _appointmentService.GetResultDone(id);
+            var resultDto = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(result);
+            return Json(new
+            {
+                success = true,
+                data = resultDto
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult GetAllPatients(string phoneNumber = "", int page = 1, int pageSize = 20)
         {
             var queryResult = _patientService.GetAllPatients(phoneNumber);
