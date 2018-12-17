@@ -6,7 +6,7 @@ var homeController = {
     init: function () {
         var dateNow = homeController.formatDate(new Date());
         document.getElementById("select-date").value = dateNow;
-        homeController.loadAppBySample();
+        homeController.loadData();
         homeController.registerEvent();
     },
 
@@ -32,7 +32,7 @@ var homeController = {
                 homeController.ChangeIsGot(SampleGettingId);
             }
             else {
-                homeController.loadAppBySample();
+                homeController.loadData();
             }
         });
         
@@ -53,15 +53,15 @@ var homeController = {
     registerEvent: function () {
 
         $("#select-sample").change(function () {
-            homeController.loadAppBySample();
+            homeController.loadData();
         });
         
         $("#select-date").change(function () {
-            homeController.loadAppBySample();
+            homeController.loadData();
         });
 
         $('#btnSearch').off('click').on('click', function () {
-            homeController.loadAppBySample(true);
+            homeController.loadData(true);
         });
 
     },
@@ -92,7 +92,7 @@ var homeController = {
     },
 
 
-    loadAppBySample: function (changePageSize) {
+    loadData: function (changePageSize) {
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
         var searchData = $("#txtSearch").val();
@@ -108,6 +108,7 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
+                            OrderNumber: item.OrderNumber,
                             SgId: item.SampleGettingId,
                             FullName: item.PatientName,
                             SampleName: item.SampleName,
@@ -122,7 +123,7 @@ var homeController = {
                     console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        //homeController.loadDataBySample();
+                        homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
@@ -139,8 +140,8 @@ var homeController = {
             data: { sampleGettingId: SampleGettingId },
             success: function (response) {
                 if (response.success === true) {
-                    toastr.success('Đổi trạng thái thành công');
-                    homeController.loadAppBySample();
+                    //toastr.success('Đổi trạng thái thành công');
+                    homeController.loadData();
                 }
                 
             }
