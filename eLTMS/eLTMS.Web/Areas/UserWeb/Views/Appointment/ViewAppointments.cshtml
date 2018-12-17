@@ -1,5 +1,13 @@
-﻿@{
+﻿@using eLTMS.DataAccess.Models
+@using eLTMS.Models
+@{
     ViewBag.Title = "Danh sách cuộc hẹn";
+    var account = (Account)Session[ConstantManager.SESSION_PATIENT_ACCOUNT];
+    var accountId = -1;
+    if (account != null)
+    {
+        accountId = account.AccountId;
+    }
 }
 @section styles {
     <link rel="stylesheet" href="~/Areas/UserWeb/Styles/Appointment/Appointment.css">
@@ -20,32 +28,6 @@
 <div class="view_appointments_area p50">
     <div class="container">
         <div class="content-box">
-
-            <div hidden class="text-center" style="margin-bottom: 25px">
-                <input id="txt-search" type="text" placeholder="Số CMND của bạn" value="16"/>
-                <button id="btn-search" class="btn btn-info">Tra cứu</button>
-            </div>
-
-            <div id="content-nodata" class="text-center" style="display: none">
-                Không tìm thấy kết quả nào.
-            </div>
-
-            <div id="content-result" style="display: none">
-
-            <div class="text-center" style="margin-bottom: 30px">
-                <p>
-                    <b>Tên bệnh nhân:</b>
-                    <span id="patient-name"></span>
-                </p>
-                <p>
-                    <b>Ngày sinh:</b>
-                    <span id="patient-dob"></span>
-                </p>
-                <p>
-                    <b>Số điện thoại:</b>
-                    <span id="patient-phone"></span>
-                </p>
-            </div>
 
             <div class="text-right">
                 <b>Lọc theo trạng thái:</b>
@@ -73,24 +55,46 @@
                 </div>
             </div>
 
-            @*<div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            <div id="content-nodata" class="text-center" style="display: none">
+                Không tìm thấy kết quả nào.
+            </div>
+
+            <div id="content-result" style="display: none">
+
+                @*<div class="text-center" style="margin-bottom: 30px" hidden>
+                <p>
+                    <b>Tên bệnh nhân:</b>
+                    <span id="patient-name"></span>
+                </p>
+                <p>
+                    <b>Ngày sinh:</b>
+                    <span id="patient-dob"></span>
+                </p>
+                <p>
+                    <b>Số điện thoại:</b>
+                    <span id="patient-phone"></span>
+                </p>
             </div>*@
 
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Mã cuộc hẹn</th>
-                        <th>Thời gian lấy mẫu</th>
-                        <th>Các loại xét nghiệm</th>
-                        <th>Trạng thái</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody id="tblData"></tbody>
-            </table>
+                @*<div style="margin: 25px 0 25px 35%" id="pagination" class="div-pagination">
+            </div>*@
 
-            <div id="pagination" class="div-pagination">
-            </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Mã cuộc hẹn</th>
+                            <th>Bệnh nhân</th>
+                            <th>Thời gian lấy mẫu</th>
+                            <th>Các loại xét nghiệm</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblData"></tbody>
+                </table>
+
+                <div id="pagination" class="div-pagination">
+                </div>
 
             </div>
 
@@ -101,6 +105,7 @@
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{AppointmentCode}}</td>
+        <td>{{PatientName}}</td>
         <td>
             <ul>
                 {{#SampleGettings}}
@@ -152,5 +157,8 @@
 </script>
 
 @section scripts{
+    <script>
+        accountId = @accountId;
+    </script>
     <script src="~/Areas/UserWeb/Scripts/Appointment/ViewAppointments.js"></script>
 }

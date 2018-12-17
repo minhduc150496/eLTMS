@@ -67,13 +67,14 @@ namespace eLTMS.Web.Controllers
                 var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
                 int[] roleIds = {
                     (int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Nurse,
                     (int)RoleEnum.Cashier,
-                    (int)RoleEnum.Manager
+                    //(int)RoleEnum.Manager
                 };
                 var data = new
                 {
                     roleIds,
-                    message = "Có cuộc hẹn vừa được thêm."
+                    message = "Thanh toán hoàn tất"
                 };
                 SendNotificationUtils.SendNotification(data, tokens);
             }
@@ -100,6 +101,22 @@ namespace eLTMS.Web.Controllers
         public JsonResult DeleteSampleGetting(int sgId)
         {
             var result = _receptionistService.DeleteSG(sgId);
+            if (result == true)
+            {
+                var tokens = _receptionistService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Nurse,
+                    //(int)RoleEnum.Cashier,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn thành công"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result

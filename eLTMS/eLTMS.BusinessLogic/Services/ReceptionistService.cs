@@ -70,14 +70,8 @@ namespace eLTMS.BusinessLogic.Services
                     IsPaid = c.sg.IsPaid
 
                 }).GroupBy(a => a.PatientID).Select(g => g.First()).ToList();
-
-            //result = result.Where(p => p.StartTime.ToString().Contains(search)
-            //|| p.SampleGettingId.ToString().Contains(search)
-            //|| p.Date.ToString().Contains(search)
-            //|| p.PatientName.ToString().Contains(search)
-            //|| p.SampleGettingId.ToString().Contains(search)
-            //)
-            //    .ToList();
+            result = result.Where(p => p.PatientName.ToString().Contains(search)
+           || p.Phone.ToString().Contains(search)).ToList();               
             return result;
         }
 

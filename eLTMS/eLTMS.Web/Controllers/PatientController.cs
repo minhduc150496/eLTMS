@@ -31,7 +31,7 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Patients()
         {   
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist, (int)RoleEnum.Cashier))
             {
                 var patient = _patientService.GetAllPatients("").LastOrDefault();
                 if (patient != null)
@@ -62,6 +62,17 @@ namespace eLTMS.Web.Controllers
                 success = true,
                 data = result,
                 total = totalRows
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetAllResultsNoPaging(int id)
+        {
+            var result = _appointmentService.GetResultDone(id);
+            var resultDto = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(result);
+            return Json(new
+            {
+                success = true,
+                data = resultDto
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

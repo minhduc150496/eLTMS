@@ -22,6 +22,7 @@ namespace eLTMS.BusinessLogic.Services
         Appointment GetSingleById(int appointmentId); // Author: DucBM
         Appointment GetResultDoneByAppointmentId(int appointmentId); // Author: DucBM
         List<AppointmentDto> GetAppointmentsByPatientId(int patientId); // Author: DucBM
+        List<AppointmentDto> GetAppointmentsByAccountId(int accountId); // Author: DucBM
         List<Appointment> GetResult(int patientId);
         List<Appointment> GetResultDone(int patientId);
         List<Appointment> GetAppByPhone(string phone);
@@ -84,6 +85,7 @@ namespace eLTMS.BusinessLogic.Services
                 var sampleRepo = this.RepositoryHelper.GetRepository<ISampleRepository>(this.UnitOfWork);
                 var tableRepo = this.RepositoryHelper.GetRepository<ITableRepository>(this.UnitOfWork);
                 var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(this.UnitOfWork);
+                var patientAccountRepo = this.RepositoryHelper.GetRepository<IPatientAccountRepository>(this.UnitOfWork);
                 var accRepo = this.RepositoryHelper.GetRepository<IAccountRepository>(this.UnitOfWork);
 
                 Patient patient = null;
@@ -125,7 +127,7 @@ namespace eLTMS.BusinessLogic.Services
                         {
                             appointmentDto.PatientDto.PhoneNumber,
                             DefaultPassword = account.Password
-                        }; 
+                        };
                     }
                     int accountId = account.AccountId;
 
@@ -164,7 +166,24 @@ namespace eLTMS.BusinessLogic.Services
                             return responseObject;
                         }
                         patient.PatientCode = "BN" + patient.PatientId;
-                    } 
+                    }
+
+                    if (account != null && patient != null)
+                    {
+                        var patientAccount = new PatientAccount();
+                        patientAccount.AccountId = account.AccountId;
+                        patientAccount.PatientId = patient.PatientId;
+                        patientAccount.IsDeleted = false;
+                        patientAccountRepo.Create(patientAccount);
+                        var result = this.UnitOfWork.SaveChanges();
+                        if (result.Any())
+                        {
+                            responseObject.Success = false;
+                            responseObject.Message = "Có lỗi xảy ra";
+                            responseObject.Data = result;
+                            return responseObject;
+                        }
+                    }
 
                     appointmentDto.PatientId = patient.PatientId;
                 }
@@ -242,12 +261,16 @@ namespace eLTMS.BusinessLogic.Services
                     sg.TableId = avaiTable.TableId;
                     sg.Status = "NEW";
                     sg.LabTestings = new List<LabTesting>();
+                    sg.IsGot = false;
+                    sg.IsPaid = false;
+                    sg.IsDeleted = false;
                     foreach (var id in sgDto.LabTestIds)
                     {
                         var labTesting = new LabTesting();
                         labTesting.LabTestId = id;
                         labTesting.SampleGettingId = sg.SampleGettingId;
                         labTesting.Status = "NEW";
+                        labTesting.IsDeleted = false;
                         sg.LabTestings.Add(labTesting);
                     }
                     appointment.SampleGettings.Add(sg);
@@ -284,6 +307,13 @@ namespace eLTMS.BusinessLogic.Services
             return responseObject;
         }
 
+        public List<AppointmentDto> GetAppointmentsByAccountId(int accountId)
+        {
+            var appRepo = this.RepositoryHelper.GetRepository<IAppointmentRepository>(this.UnitOfWork);
+            var apps = appRepo.GetAppointmentsByAccountId(accountId);
+            var appDtos = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>(apps).ToList();
+            return appDtos;
+        }
 
         public List<AppointmentDto> GetAppointmentsByPatientId(int patientId)
         {

@@ -55,25 +55,18 @@ namespace eLTMS.Web.Controllers
             if (result == true)
             {
                 var tokens = _nurseService.GetAllTokens();// lấy tất cả device token
-                foreach (var token in tokens)
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Nurse,
+                    //(int)RoleEnum.Cashier,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
                 {
-                    var data = new
-                    {
-                        to = token.TokenString,
-                        data = new
-                        {
-                            message = "Đã lấy mẫu. ",
-                        }
-                    };
-                    try
-                    {
-                        SendNotificationUtils.SendNotification(data); // dòng lệnh gửi data từ server => Firebase, Firebase => Device có device token trong list
-                    }
-                    catch (Exception ex)
-                    {
-                        //
-                    }
-                }
+                    roleIds,
+                    message = "Hoàn tất lấy mẫu"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
             }
             return Json(new
             {

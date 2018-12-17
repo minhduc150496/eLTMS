@@ -86,7 +86,7 @@
 
 <section class="content-header">
     <h1>
-        LẤY MẪU XÉT NGHIỆM
+        DANH SÁCH CHỜ LẤY MẪU
     </h1>
 </section>
 
@@ -115,7 +115,9 @@
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>STT</th>
                                 <th>SampleGetting ID</th>
+                                <th>LabTesting ID</th>
                                 <th>Họ & tên</th>
                                 <th>Loại xét nghiệm</th>
                                 <th>Ngày</th>
@@ -140,7 +142,9 @@
 
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
+        <td>{{OrderNumber}}</td>
         <td>{{SgId}}</td>
+        <td>{{LtIds}}</td>
         <td>{{FullName}}</td>
         <td>{{SampleName}}</td>
         <td>{{Date}}</td>

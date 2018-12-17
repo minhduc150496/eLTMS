@@ -8,6 +8,10 @@ CONFIG = {
     IS_UPDATE: false,
 };
 
+if (typeof flagInitForEdit !== 'undefined' && flagInitForEdit == true) {
+    CONFIG.IS_UPDATE = true;
+}
+
 var Utils = {
     formatTimeShort: function (time) {
         var hour = Math.floor(time / 60 / 60);
@@ -53,12 +57,21 @@ var Controller = {
 
         $(document).ready(function () {
 
+            if (CONFIG.IS_UPDATE) {
+                $('#step-0').hide(0);
+                $('#step-1').show(0);
+                $('#btn-prev-10').hide(0);
+                $('#btn-next-12 span').html('Bước 2');
+                $('#btn-prev-21 span').html('Bước 1');
+                $('#step-1 h2 span').html('Bước 1/2');
+                $('#step-2 h2 span').html('Bước 2/2');
+            }
+
             var $dob = $('#step-0 [name=p-dob]');
             var currDate = new Date(Date.now());
             var sNow = currDate.getFullYear() + "-" + (currDate.getMonth() + 1) + "-" + currDate.getDate();
             $dob.attr('max', sNow);
-
-            $("#step-2").hide(0);
+            
             Controller.renderLabTestList();
             $("#success-modal").modal({
                 backdrop: "static",
@@ -271,7 +284,6 @@ var Controller = {
 
         if (typeof flagInitForEdit !== 'undefined' && flagInitForEdit == true) {
             flagInitForEdit = false;
-            CONFIG.IS_UPDATE = true;
             //console.log('AppointDto:', AppointDto);
             Model.AppointmentId = AppointDto.AppointmentId;
             Model.AppointmentDto = JSON.parse(JSON.stringify(AppointDto));

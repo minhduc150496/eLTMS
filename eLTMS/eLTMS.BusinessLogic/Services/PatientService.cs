@@ -17,7 +17,6 @@ namespace eLTMS.BusinessLogic.Services
         //bool Update(int id, string code, string name, string gender, string phone, string address, string companyAddress);
         bool Update(Patient patientdto);
         Patient GetPatientById(int id);
-        Patient GetPatientByIdentityCardNumber(string number);
         bool Delete(int id);
         // bool UpdatePatient(Patient dto);
     }
@@ -146,14 +145,6 @@ namespace eLTMS.BusinessLogic.Services
             }
 
             return true;
-        }
-
-        // DucBM
-        public Patient GetPatientByIdentityCardNumber(string number)
-        {
-            var patientRepo = this.RepositoryHelper.GetRepository<IPatientRepository>(UnitOfWork);
-            var patient = patientRepo.GetByIDCNumber(number);
-            return patient;
         }
     }
 }

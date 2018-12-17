@@ -10,6 +10,8 @@ namespace eLTMS.Models.Models.dto
     {
         public int SampleGettingId { get; set; }
 
+        public int? OrderNumber { get; set; }
+
         public string SampleName { get; set; }
 
         public string PatientName { get; set; }
@@ -19,5 +21,7 @@ namespace eLTMS.Models.Models.dto
         public string StartTime { get; set; }
 
         public bool? IsGot { get; set; }
+
+        public List<int> LabTestingIds { get; set; }
     }
 }

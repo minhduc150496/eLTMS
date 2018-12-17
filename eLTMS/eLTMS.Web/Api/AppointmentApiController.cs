@@ -134,6 +134,16 @@ namespace eLTMS.Web.Api
             return response;
         }
 
+        // DucBM
+        [HttpGet]
+        [Route("api/appointment/get-results-by-account-id")]
+        public HttpResponseMessage GetResultByAccountId(int accountId)
+        {
+            var appDtos = _appointmentService.GetAppointmentsByAccountId(accountId);
+            var response = Request.CreateResponse(HttpStatusCode.OK, appDtos);
+            return response;
+        }
+
         [HttpGet]
         [Route("api/appointment/get-result-by-appointment-code")]
         public HttpResponseMessage GetResultByAppCode(string appCode)

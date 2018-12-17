@@ -176,7 +176,8 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.Status, src => src.MapFrom(x => x.Status))
                 .ForMember(dst => dst.DoctorName, src => src.MapFrom(x => (x.Employee != null) ? x.Employee.FullName : ""))
                 .ForMember(dst => dst.SampleGettingDtos, src => src.MapFrom(x => x.SampleGettings))
-                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.FullName : ""));
+                .ForMember(dst => dst.PatientName, src => src.MapFrom(x => (x.Patient != null) ? x.Patient.FullName : ""))
+                .ForMember(dst => dst.PatientDto, src => src.MapFrom(x => x.Patient));
 
 
                 cfg.CreateMap<AppointmentDto, Appointment>()

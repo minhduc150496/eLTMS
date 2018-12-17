@@ -34,7 +34,7 @@ namespace LabTechnicianWindowService
         {
             try
             {
-                Thread.Sleep(6000);
+                Thread.Sleep(4000);
                 if (CheckFileExistance(watchPath, e.Name))
                 {
                     // Create an HttpClient instance

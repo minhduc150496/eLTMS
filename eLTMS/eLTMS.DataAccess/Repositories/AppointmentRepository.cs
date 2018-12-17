@@ -26,6 +26,7 @@ namespace eLTMS.DataAccess.Repositories
         List<Appointment> GetResultByAppCode(string appCode);
         int? CountByDate(string sDate);
         string GetLastCode(string sDate);
+        List<Appointment> GetAppointmentsByAccountId(int accountId); // DucBM
     }
     public class AppointmentRepository : RepositoryBase<Appointment>, IAppointmentRepository
     {
@@ -196,6 +197,34 @@ namespace eLTMS.DataAccess.Repositories
                 return null;
             }
             return ap.AppointmentCode;
+        }
+
+        public List<Appointment> GetAppointmentsByAccountId(int accountId)
+        {
+            var aps = DbSet.AsQueryable()
+                .Include(x => x.SampleGettings)
+                .Include(x => x.SampleGettings.Select(y => y.LabTestings.Select(z => z.LabTest)))
+                .Include(x => x.SampleGettings.Select(y => y.Sample))
+                .Include(x => x.SampleGettings.Select(y => y.Slot))
+                .Include(x => x.Employee)
+                .Include(x => x.Patient.PatientAccounts)
+                .Include(x => x.Patient)
+                .Where(x => x.IsDeleted != true)
+                .OrderByDescending(x => x.AppointmentId)
+                .ToList();
+            var result = new List<Appointment>();
+            foreach (var ap in aps)
+            {
+                foreach (var acc in ap.Patient.PatientAccounts)
+                {
+                    if (acc.AccountId == accountId)
+                    {
+                        result.Add(ap);
+                        break;
+                    }
+                }
+            }
+            return result;
         }
     }
 }

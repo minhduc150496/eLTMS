@@ -6945,7 +6945,7 @@
     <Content Include="Assets\documentation\index.html" />
     <Content Include="Assets\documentation\style.css" />
     <Content Include="Assets\Image\default-avatar-female.jpg" />
-    <Content Include="Assets\Image\default-avatar-male.png" />
+    <Content Include="Assets\Image\default-avatar-male.jpg" />
     <Content Include="Assets\pages\calendar.html" />
     <Content Include="Assets\pages\charts\chartjs.html" />
     <Content Include="Assets\pages\charts\flot.html" />

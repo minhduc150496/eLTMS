@@ -13,7 +13,6 @@ namespace eLTMS.DataAccess.Repositories
     {
         List<Patient> GetAllPatient(string phoneNumber);
         Patient GetSimpleById(int id);
-        Patient GetByIDCNumber(string number);// DucBM
         string GetLastPatientCode(); // DucBM
         Patient GetBy(int accountId, string fullName, DateTime dateOfBirth); // DucBM
     }
@@ -34,17 +33,6 @@ namespace eLTMS.DataAccess.Repositories
         {
             var result = DbSet.AsQueryable()
                 .FirstOrDefault(x => x.AccountId == accountId && x.FullName == fullName && x.DateOfBirth == dateOfBirth);
-            return result;
-        }
-
-        // DucBM
-        public Patient GetByIDCNumber(string number)
-        {
-            var result = DbSet.AsQueryable()
-                //.Where(x => x.IdentityCardNumber == number)
-                .OrderByDescending(x => x.PatientId)
-                .ToList()
-                .FirstOrDefault();
             return result;
         }
 
