@@ -431,14 +431,12 @@
                 // Toastr
                 toastr["success"](payload.data.message);
 
-                //Reload table ajax
-                homeController.loadDataBySample();
-                homeController.loadPatientByDate();
-                homeController.loadAppBySample();
+                ////Reload table ajax
+                homeController.loadData();
             }
+            homeController.loadAppBySample();
         }
         messaging.onMessage(loadMessage);
-
     </script>
 
     @RenderSection("scripts", required: false)

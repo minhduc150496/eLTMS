@@ -112,8 +112,8 @@ namespace eLTMS.BusinessLogic.Services
             || p.Date.ToString().Contains(search)
             || p.PatientName.ToString().Contains(search)
             || p.SampleGettingId.ToString().Contains(search)
-            )
-                .ToList();
+            ).ToList()
+            .OrderBy(a => a.StartTime).ToList();
             return result;
         }
 

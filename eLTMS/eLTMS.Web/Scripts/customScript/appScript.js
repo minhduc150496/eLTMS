@@ -7,7 +7,7 @@ var homeController = {
         //homeController.loadData();
         var dateNow = homeController.formatDate(new Date());
         document.getElementById("select-date").value = dateNow;
-        homeController.loadDataBySample();
+        homeController.loadData();
         homeController.registerEvent();
     },
 
@@ -33,7 +33,7 @@ var homeController = {
                 homeController.ChangeIsPaid(SampleGettingId);
             }
             else {
-                homeController.loadDataBySample();
+                homeController.loadData();
             }
         });
 
@@ -54,11 +54,11 @@ var homeController = {
     registerEvent: function () {
 
         $("#select-sample").change(function () {
-            homeController.loadDataBySample();
+            homeController.loadData();
         });
         
         $("#select-date").change(function () {
-            homeController.loadDataBySample();
+            homeController.loadData();
         });
         
 
@@ -215,7 +215,7 @@ var homeController = {
                     else {
                         toastr.success("Tạo mới thành công.");
                         $('#myModal').modal('hide');
-                        homeController.loadDataBySample();
+                        homeController.loadData();
                     }
                 }
             });
@@ -267,7 +267,7 @@ var homeController = {
 
 
         $('#btnSearch').off('click').on('click', function () {
-            homeController.loadDataBySample(true);
+            homeController.loadData(true);
         });
         /*
         console.log('register switch')
@@ -315,7 +315,7 @@ var homeController = {
 
     //nayf la cua cashierjs
 
-    loadDataBySample: function (changePageSize) {
+    loadData: function (changePageSize) {
         //chi lấy dữ liệu mà select
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
@@ -351,7 +351,7 @@ var homeController = {
                     console.log(html);
                     $('#tblData').html(html);
                     homeController.paging(response.total, function () {
-                        homeController.loadDataBySample();
+                        homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
@@ -369,8 +369,8 @@ var homeController = {
             success: function (response) {
 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
-                    toastr.success('Thanh toán hoàn tất');
-                    homeController.loadDataBySample();
+                    //toastr.success('Thanh toán hoàn tất');
+                    homeController.loadData();
                 }
                 
             }

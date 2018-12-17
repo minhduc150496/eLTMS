@@ -7,7 +7,7 @@ var homeController = {
         var paId = 0;
         var dateNow = homeController.formatDate(new Date());
         document.getElementById("select-date").value = dateNow;
-        homeController.loadPatientByDate();
+        homeController.loadData();
         homeController.registerEvent();
     },
 
@@ -33,7 +33,7 @@ var homeController = {
                 homeController.ChangeIsPaid(PatientId);
             }
             else {
-                homeController.loadPatientByDate();
+                homeController.loadData();
             }
         });
     },
@@ -55,15 +55,15 @@ var homeController = {
     registerEvent: function () {
 
         $("#select-sample").change(function () {
-            homeController.loadPatientByDate();
+            homeController.loadData();
         });
         
         $("#select-date").change(function () {
-            homeController.loadPatientByDate();
+            homeController.loadData();
         });
 
         $('#btnSearch').off('click').on('click', function () {
-            homeController.loadPatientByDate(true);
+            homeController.loadData(true);
         });
         
         $('.btn-View').off('click').on('click', function () {
@@ -108,7 +108,7 @@ var homeController = {
     },
 
    
-    loadPatientByDate: function (changePageSize) {
+    loadData: function (changePageSize) {
         var selectedSample = $("#select-sample").children("option:selected").val();
         var selectDate = $("#select-date").val();
         var searchData = $("#txtSearch").val();
@@ -160,8 +160,8 @@ var homeController = {
                 //                homeController.loadPrice(SampleGettingId);
                 if (response.success === true) {
                     //toastr.success('Thanh toán hoàn tất');
-                    homeController.loadDataBySample();
-                    homeController.loadPatientByDate();
+                    //homeController.loadDataBySample();
+                    homeController.loadData();
                 }
             }
         })
