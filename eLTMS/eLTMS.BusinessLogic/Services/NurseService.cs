@@ -95,10 +95,11 @@ namespace eLTMS.BusinessLogic.Services
                 spSg = p,
                 slot = c
             });
-
+            int count = 1;
             var result = spSgSlots.Join(appPas, p => p.spSg.sg.AppointmentId,
                 c => c.app.AppointmentId, (p, c) => new SampleGettingForNurseBySampleDto
                 {
+                    OrderNumber = count++,
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     SampleGettingId = p.spSg.sg.SampleGettingId,
                     SampleName = p.spSg.sp.SampleName,

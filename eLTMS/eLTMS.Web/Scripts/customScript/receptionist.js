@@ -250,7 +250,7 @@ var homeController = {
                 dataType: 'json',
                 success: function (response) {
                     if (response.success == true) {
-                        toastr.success("Xóa thành công.");
+                        //toastr.success("Xóa thành công.");
                         homeController.loadDataByPatientId(paId);
                     }
                     else {

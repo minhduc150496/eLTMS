@@ -217,7 +217,7 @@
                             </ul>
                         </li>
                     }
-                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier)
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier || roleId == (int)RoleEnum.Receptionist)
                     {
                         <li class="treeview @("Patient,Employee".Contains(controllerName) ? "menu-open" : "")">
                             <a href="#">
@@ -228,7 +228,7 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu" @("Patient,Employee".Contains(controllerName) ? "style=display:block" : "")>
-                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier)
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier || roleId == (int)RoleEnum.Receptionist)
                                 {
                                     <li @(actionName == "Patients" ? "class=active" : "")>
                                         <a href="@Url.Action("Patients", "Patient")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Bệnh nhân</span></a>

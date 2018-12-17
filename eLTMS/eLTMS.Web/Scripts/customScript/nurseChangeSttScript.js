@@ -108,6 +108,7 @@ var homeController = {
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
+                            OrderNumber: item.OrderNumber,
                             SgId: item.SampleGettingId,
                             FullName: item.PatientName,
                             SampleName: item.SampleName,
