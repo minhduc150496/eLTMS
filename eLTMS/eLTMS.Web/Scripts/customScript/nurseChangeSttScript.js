@@ -110,6 +110,7 @@ var homeController = {
                         html += Mustache.render(template, {
                             OrderNumber: item.OrderNumber,
                             SgId: item.SampleGettingId,
+                            LtIds: item.LabTestingIds,
                             FullName: item.PatientName,
                             SampleName: item.SampleName,
                             StartTime: item.StartTime,

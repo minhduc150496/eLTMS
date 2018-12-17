@@ -23,6 +23,7 @@ namespace eLTMS.DataAccess.Repositories
         public List<SampleGetting> GetAll()
         {
             var results = DbSet.AsQueryable()
+                .Include(x => x.LabTestings)
                 .ToList();
             return results;
         }
@@ -46,7 +47,7 @@ namespace eLTMS.DataAccess.Repositories
         {
             int id = int.Parse(code); // temp
             var result = DbSet.AsQueryable()
-                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted==false && x.SampleGettingId.Equals(id))
+                .Where(x => x.Status.ToUpper().Contains("WAITING") && x.IsDeleted == false && x.SampleGettingId.Equals(id))
                 .Include(x => x.Appointment.Patient)
                 .Include(x => x.Sample)
                 .FirstOrDefault();
@@ -58,10 +59,10 @@ namespace eLTMS.DataAccess.Repositories
             DateTime dt = DateTime.Parse(gettingDate);
             var result = DbSet.AsQueryable()
                 .Include(x => x.Appointment)
-                .Where(x => x.IsDeleted==false 
-                    && x.SampleId == sampleId 
-                    && x.Appointment.PatientId == patientId 
-                    && DbFunctions.TruncateTime(x.GettingDate)==DbFunctions.TruncateTime(dt))
+                .Where(x => x.IsDeleted == false
+                    && x.SampleId == sampleId
+                    && x.Appointment.PatientId == patientId
+                    && DbFunctions.TruncateTime(x.GettingDate) == DbFunctions.TruncateTime(dt))
                 .FirstOrDefault();
             return result;
         }

@@ -67,7 +67,8 @@ namespace eLTMS.BusinessLogic.Services
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
-            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
+            var sampleGettings = sgRepo.GetAll();
+            var sgs = sampleGettings.Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
             if (sampleId == 1)
             {
                 sgs = sgRepo.GetAll().Where(p => (p.SampleId == 1 || p.SampleId==2) && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
@@ -102,6 +103,7 @@ namespace eLTMS.BusinessLogic.Services
                     OrderNumber = count++,
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     SampleGettingId = p.spSg.sg.SampleGettingId,
+                    LabTestingIds = GetIdList(p.spSg.sg.LabTestings),
                     SampleName = p.spSg.sp.SampleName,
                     PatientName = c.pa.FullName,
                     Date = p.spSg.sg.GettingDate.Value.ToShortDateString(),
@@ -114,7 +116,17 @@ namespace eLTMS.BusinessLogic.Services
             || p.PatientName.ToString().Contains(search)
             || p.SampleGettingId.ToString().Contains(search)
             ).ToList()
-            .OrderBy(a => a.StartTime).ToList();
+            .OrderBy(a => a.StartTime).ToList();            
+
+            return result;
+        }
+        private List<int> GetIdList(ICollection<LabTesting> labTestings)
+        {
+            var result = new List<int>();
+            foreach(var lt in labTestings)
+            {
+                result.Add(lt.LabTestingId);
+            }
             return result;
         }
 
