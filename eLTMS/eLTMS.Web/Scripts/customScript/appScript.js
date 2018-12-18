@@ -186,40 +186,93 @@ var homeController = {
                 || $('#checkBox_loaiXetNghiem32').prop('checked') === true || $('#checkBox_loaiXetNghiem33').prop('checked') === true ||
                 $('#checkBox_loaiXetNghiem34').prop('checked') === true)
                 dich = true;
+            //validate
+            var valid = true;
 
-            var item = {
-                Name: name,
-                Phone: phone,
-                Address: address,
-                DateOfBirth: dateOfBirth,
-                Gender: gender,
-                Mau: mau,
-                NuocTieu: nuocTieu,
-                TeBaoHoc: teBaoHoc,
-                Phan: phan,
-                Dich: dich
-            };
-            $.ajax({
-                url: '/cashier/AddApp',
-                type: 'Post',
-                dataType: 'json',
-                data: {
-                    data: item,
-                    labTests: labTests
-                },
-                success: function (res) {
-                    if (!res.success) {
-                        toastr.error("Tạo mới thất bại.");
-                        $('#myModal').modal('hide');
-                    }
-                    else {
-                        toastr.success("Tạo mới thành công.");
-                        $('#myModal').modal('hide');
-                        homeController.loadData();
-                    }
+            var $name = $('#step-0 [name=txtName] ~ .valid-mess');
+            $name.html("");
+            if (name === "") {
+                $name.html('Vui lòng điền đầy đủ họ tên');
+                valid = false;
+                if (name.length > 100) {
+                    $name.html('Họ tên dài tối đa 100 ký tự');
+                    valid = false;
                 }
-            });
+            }
 
+            var $dob = $('#step-0 [name=txtDateOfBirth] ~ .valid-mess');
+            $dob.html("");
+            if (dateOfBirth === "") {
+                $dob.html('Vui lòng điền ngày sinh');
+                valid = false;
+            } 
+
+            var $phone = $('#step-0 [name=txtPhone] ~ .valid-mess');
+            $phone.html("");
+            //var rgPhone = /d;
+            if (phone === "") {
+                $phone.html('Vui lòng điền đầy đủ số điện thoại');
+                valid = false;
+            }
+            else
+            if (phone.length > 11) {
+                $phone.html('Số điện thoại có độ dài tối đa 11 ký tự');
+                valid = false;
+            }
+
+            var $address = $('#step-0 [name=txtAddress] ~ .valid-mess');
+            $address.html("");
+            if (address === "") {
+                $address.html('Vui lòng điền đầy đủ địa chỉ');
+                valid = false;
+                if (address.length > 100) {
+                    $address.html('Địa chỉ dài tối đa 100 ký tự');
+                    valid = false;
+                }
+            } 
+            
+            //var $check = $('#step-0 [name=checkGroup] ~ .valid-mess');
+            //if (mau === false && nuocTieu === false && teBaoHoc === false && phan === false && dich === false) {
+            //    $check.html('Vui lòng chọn loại xét nghiệm');
+            //    valid = false;
+            //} 
+
+            if (valid) {
+                var item = {
+                    Name: name,
+                    Phone: phone,
+                    Address: address,
+                    DateOfBirth: dateOfBirth,
+                    Gender: gender,
+                    Mau: mau,
+                    NuocTieu: nuocTieu,
+                    TeBaoHoc: teBaoHoc,
+                    Phan: phan,
+                    Dich: dich
+                };
+                $.ajax({
+                    url: '/cashier/AddApp',
+                    type: 'Post',
+                    dataType: 'json',
+                    data: {
+                        data: item,
+                        labTests: labTests
+                    },
+                    success: function (res) {
+                        if (!res.success) {
+                            toastr.error("Tạo mới thất bại.");
+                            $('#myModal').modal('hide');
+                        }
+                        else {
+                            toastr.success("Tạo mới thành công.");
+                            $('#myModal').modal('hide');
+                            homeController.loadData();
+                        }
+                    }
+                });
+            } else {
+                console.log("invalid");
+            }
         });
 
 
@@ -266,9 +319,13 @@ var homeController = {
         });
 
 
-        $('#btnSearch').off('click').on('click', function () {
+        //$('#btnSearch').off('click').on('click', function () {
+        //    homeController.loadData(true);
+        //});
+
+        $("#txtSearch").off('change').on("change", function () {
             homeController.loadData(true);
-        });
+        })
         /*
         console.log('register switch')
         $('label.switch input').off('change').on('change', function () {
@@ -284,37 +341,12 @@ var homeController = {
     resetForm: function () {
         $('#txtDateOfBirth').val('');
         $('#txtName').val('');
-        $('#ddlGender').val('');
+        $('#ddlGender').val('Male');
         $('#txtPhone').val('');
         $('#txtAddress').val('');
     },
     
-    paging: function (totalRow, callback, changePageSize) {
-        var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
-
-        //Unbind pagination if it existed or click change pagesize
-        if ($('#pagination a').length === 0 || changePageSize === true) {
-            $('#pagination').empty();
-            $('#pagination').removeData("twbs-pagination");
-            $('#pagination').unbind("page");
-        }
-
-        $('#pagination').twbsPagination({
-            totalPages: totalPage,
-            first: "Đầu",
-            next: "Tiếp",
-            last: "Cuối",
-            prev: "Trước",
-            visiblePages: 10,
-            onPageClick: function (event, page) {
-                homeconfig.pageIndex = page;
-                setTimeout(callback, 200);
-            }
-        });
-    },
-
-    //nayf la cua cashierjs
-
+    //cashier load cuộc hẹn trong ngày
     loadData: function (changePageSize) {
         //chi lấy dữ liệu mà select
         var selectedSample = $("#select-sample").children("option:selected").val();
@@ -328,6 +360,7 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
+                    searchData = data.PatientName;
                     //do du lieu qua html
                     var html = '';
                     var template = $('#data-template').html();
@@ -335,10 +368,11 @@ var homeController = {
                         html += Mustache.render(template, {
                             AppCode: item.AppointmentCode,
                             FullName: item.PatientName,
+                            DOB: item.DateOfBirth,
                             Phone: item.Phone,
                             Address: item.Address,
                             StartTime: item.StartTime,
-                            OrderNumber: item.OrderNumber,
+                            OrderNumber: i+1,
                             Date: item.Date,
                             Table: item.Table,
                             SampleGettingId: item.SampleGettingId,
@@ -403,13 +437,37 @@ var homeController = {
                     console.log(html);
                     $('#tblPriceData').html(html);
                     homeController.paging(response.total, function () {
-                        //homeController.loadDataBySample();
+                        homeController.loadData();
                     }, changePageSize);
                     homeController.registerEvent();
                 }
             }
         })
     },
+
+    paging: function (totalRow, callback, changePageSize) {
+        var totalPage = Math.ceil(totalRow / homeconfig.pageSize);
+
+        //Unbind pagination if it existed or click change pagesize
+        if ($('#pagination a').length === 0 || changePageSize === true) {
+            $('#pagination').empty();
+            $('#pagination').removeData("twbs-pagination");
+            $('#pagination').unbind("page");
+        }
+
+        $('#pagination').twbsPagination({
+            totalPages: totalPage,
+            first: "Đầu",
+            next: "Tiếp",
+            last: "Cuối",
+            prev: "Trước",
+            visiblePages: 10,
+            onPageClick: function (event, page) {
+                homeconfig.pageIndex = page;
+                setTimeout(callback, 200);
+            }
+        });
+    }
 
 }
 homeController.init();

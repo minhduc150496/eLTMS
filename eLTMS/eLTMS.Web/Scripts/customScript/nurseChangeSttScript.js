@@ -64,6 +64,9 @@ var homeController = {
             homeController.loadData(true);
         });
 
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
     },
     
     //change page
@@ -104,12 +107,14 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
+                    searchData = data.PatientName;
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
-                            OrderNumber: item.OrderNumber,
+                            OrderNumber: i+1,
                             SgId: item.SampleGettingId,
+                            DOB: item.DateOfBirth,
                             LtIds: item.LabTestingIds,
                             FullName: item.PatientName,
                             SampleName: item.SampleName,

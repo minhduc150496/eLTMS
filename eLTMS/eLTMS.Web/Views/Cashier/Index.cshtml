@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment For Cashier";
+    ViewBag.Title = "Department Receptionist";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -93,6 +93,9 @@
         display: block;
         z-index: 999;
     }
+    .valid-mess {
+        color: red;
+    }
 </style>
 
 
@@ -108,13 +111,13 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
-                    <button class="btn btn-success" id="btnAddNew">Thêm mới</button>
+                    <button class="btn btn-success" id="btnAddNew">Thêm mới cuộc hẹn</button>
                     <br />
                     <br />
-
-                    <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
-                    <button class="btn btn-success" id="btnSearch">Search</button>
-                    Loại xét nghiệm:
+                    <label>Tìm kiếm:</label>
+                    <input type="text" id="txtSearch" placeholder="Tên/Sđt" />
+                    @*<button class="btn btn-success" id="btnSearch">Search</button>*@
+                    <label>Loại xét nghiệm:</label>
                     <select class="Sample" id="select-sample">
                         <option value="1">Máu</option>
                         <option value="2">Nước tiểu</option>
@@ -122,16 +125,17 @@
                         <option value="4">Phân</option>
                         <option value="5">Dịch</option>
                     </select>
-                    Ngày:
+                    <label>Ngày:</label>
                     <input type="date" class="Date" id="select-date" />
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>STT</th>
                                 <th>Họ & tên</th>
+                                <th>Ngày sinh</th>
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
-                                <th>Ngày</th>
+                                <th>Ngày xét nghiệm</th>
                                 <th>Giờ xét nghiệm</th>
                                 <th>Thanh toán</th>
                             </tr>
@@ -146,7 +150,6 @@
     <!-- /.row -->
 </section>
 <!-- /.content -->
-
 <div style="margin-left:35%" id="pagination" class="pagination"></div>
 
 
@@ -155,7 +158,7 @@
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content" id="step-0">
             <div class="modal-body">
                 <form class="form-horizontal" action="/action_page.php">
                     <div class="form-group" align="center">
@@ -166,17 +169,15 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Họ tên</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtName" name="txtName">
+                            <input type="text" class="form-control" placeholder="Họ và tên bệnh nhân" id="txtName" name="txtName">
+                            <div class="valid-mess"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Giới tính</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="ddlGender">
-                                <option value="">
-                                    ----- Chọn -----
-                                </option>
-                                <option value="Male">
+                                <option selected value="Male">
                                     Nam
                                 </option>
                                 <option value="Female">
@@ -189,18 +190,21 @@
                         <label class="control-label col-sm-2" for="email">Ngày sinh</label>
                         <div class="col-sm-10">
                             <input type="date" class="form-control" id="txtDateOfBirth" name="txtDateOfBirth">
+                            <div class="valid-mess"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Số điện thoại</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtPhone">
+                            <input type="number" class="form-control" placeholder="Số điện thoại dài tối đa 11 kí tự" ="txtPhone" name="txtPhone">
+                            <div class="valid-mess"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Địa chỉ</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txtAddress" name="txtAddress">
+                            <input type="text" class="form-control" placeholder="Địa chỉ bệnh nhân" ="txtAddress" name="txtAddress">
+                            <div class="valid-mess"></div>
                         </div>
                     </div>
                 </form>
@@ -522,6 +526,7 @@
                     </table>
                 /div>*@
         </td>
+        <td>{{DOB}}</td>
         <td>{{Phone}}</td>
         <td>{{Address}}</td>
         <td>{{Date}}</td>
@@ -551,8 +556,8 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm máu');
-                            homeController.loadDataBySample();
+                            //toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm máu');
+                            homeController.loadData();
                         }
                     }
                 });
@@ -571,8 +576,8 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm nước tiểu');
-                            homeController.loadDataBySample();
+                            //toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm nước tiểu');
+                            homeController.loadData();
                         }
                     }
                 });
@@ -590,8 +595,8 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm tế bào');
-                            homeController.loadDataBySample();
+                            //toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm tế bào');
+                            homeController.loadData();
                         }
                     }
                 });
@@ -609,8 +614,8 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm dịch');
-                            homeController.loadDataBySample();
+                           // toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm dịch');
+                            homeController.loadData();
                         }
                     }
                 });
@@ -628,8 +633,8 @@
                     data: { dateTime: date.toISOString() },
                     success: function (response) {
                         if (response.success > 0) {
-                            toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm phân');
-                            homeController.loadDataBySample();
+                            //toastr.success('Đã xóa ' + response.success + ' cuộc hẹn xét nghiệm phân');
+                            homeController.loadData();
                         }
                     }
                 });

@@ -66,7 +66,7 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult LabTestingResult()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist, (int)RoleEnum.Doctor))
             {
                 return View();
             }
@@ -75,7 +75,7 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult LabTestingFail()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
             {
                 return View();
             }

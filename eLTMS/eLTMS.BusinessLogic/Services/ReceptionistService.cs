@@ -39,7 +39,8 @@ namespace eLTMS.BusinessLogic.Services
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true && p.IsOnline == true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true );
-            var sgs = sgRepo.GetAll().Where(p => p.GettingDate == date && p.IsDeleted !=true );
+            var sgs = sgRepo.GetAll().Where(p => p.GettingDate == date && p.IsDeleted !=true 
+            && p.Status != "NURSEDONE" && p.Status != "DOCTORDONE");
             
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             
@@ -70,8 +71,8 @@ namespace eLTMS.BusinessLogic.Services
                     IsPaid = c.sg.IsPaid
 
                 }).GroupBy(a => a.PatientID).Select(g => g.First()).ToList();
-            result = result.Where(p => p.PatientName.ToString().Contains(search)
-           || p.Phone.ToString().Contains(search)).ToList();               
+            result = result.Where(p => p.PatientName.ToString().ToLower().Contains(search.ToLower())
+            || p.Phone.ToString().Contains(search)).ToList();               
             return result;
         }
 
@@ -119,6 +120,7 @@ namespace eLTMS.BusinessLogic.Services
                     OrderNumber = count++,
                     SampleGettingId = p.spSg.sg.SampleGettingId,
                     SampleName = p.spSg.sp.SampleName,
+                    Status = p.spSg.sg.Status,
                     //LabTesting = p.spSg.sp.LabTests,
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     EnterDate = c.app.EnterTime.Value.ToString("dd/MM/yyyy"),

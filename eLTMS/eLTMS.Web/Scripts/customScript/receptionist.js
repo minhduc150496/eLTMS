@@ -65,6 +65,10 @@ var homeController = {
         $('#btnSearch').off('click').on('click', function () {
             homeController.loadData(true);
         });
+
+        $("#txtSearch").off('change').on("change", function () {
+            homeController.loadData(true);
+        })
         
         $('.btn-View').off('click').on('click', function () {
             var id = $(this).data('id');
@@ -120,6 +124,7 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
+                    searchData = data.PatientName;
                     var html = '';
                     var template = $('#data-template').html();
                     $.each(data, function (i, item) {
@@ -188,7 +193,8 @@ var homeController = {
                             //LabTestName: item.LabTestName,
                             StartTime: item.StartTime,
                             EnterDate: item.EnterDate,
-                            EnterTime: item.EnterTime
+                            EnterTime: item.EnterTime,
+                            Status: item.Status,
                         });
 
                     });
@@ -254,8 +260,7 @@ var homeController = {
                         homeController.loadDataByPatientId(paId);
                     }
                     else {
-                        toastr.error("Xóa không thành công.");
-
+                        toastr.error("Không thể xóa cuộc hẹn đã thanh toán");
                     }
                 }
             });

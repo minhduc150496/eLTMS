@@ -63,6 +63,22 @@ namespace eLTMS.Web.Controllers
         public JsonResult CheckAndDeleteBlood(DateTime dateTime)
        {
             var result = _cashierService.CheckAndDeleteBlood(dateTime);
+            if (result > 0)
+            {
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn xét nghiêm máu"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result
@@ -73,6 +89,22 @@ namespace eLTMS.Web.Controllers
         public JsonResult CheckNDeleteUrine(DateTime dateTime)
         {
             var result = _cashierService.CheckAndDeleteUrine(dateTime);
+            if (result > 0)
+            {
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn xét nghiệm nước tiểu"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result
@@ -83,24 +115,74 @@ namespace eLTMS.Web.Controllers
         public JsonResult CheckNDeleteCell(DateTime dateTime)
         {
             var result = _cashierService.CheckAndDeleteCell(dateTime);
+            if (result > 0)
+            {
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn xét nghiệm tế bào"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result
             });
         }
+
         [HttpPost]
         public JsonResult CheckNDeleteMucus(DateTime dateTime)
         {
             var result = _cashierService.CheckAndDeleteMucus(dateTime);
+            if (result > 0)
+            {
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn xét nghiệm dịch"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result
             });
         }
+
         [HttpPost]
         public JsonResult CheckNDeletePhan(DateTime dateTime)
         {
             var result = _cashierService.CheckAndDeletePhan(dateTime);
+            if (result > 0)
+            {
+                var tokens = _cashierService.GetAllTokens();// lấy tất cả device token
+                int[] roleIds = {
+                    //(int)RoleEnum.Receptionist,
+                    (int)RoleEnum.Cashier,
+                    (int)RoleEnum.Receptionist,
+                    //(int)RoleEnum.Manager
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Xóa cuộc hẹn xét nghiệm phân"
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result

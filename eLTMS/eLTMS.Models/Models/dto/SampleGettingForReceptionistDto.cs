@@ -17,6 +17,8 @@ namespace eLTMS.Models.Models.dto
 
         public string LabTestName { get; set; }
 
+        public string Status { get; set; }
+
         public string EnterDate { get; set; }
 
         public string EnterTime { get; set; }

@@ -67,11 +67,12 @@ namespace eLTMS.BusinessLogic.Services
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
-            var sampleGettings = sgRepo.GetAll();
-            var sgs = sampleGettings.Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
+            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date
+            && p.IsPaid == true/* && p.Status == "WAITING" */);
             if (sampleId == 1)
             {
-                sgs = sgRepo.GetAll().Where(p => (p.SampleId == 1 || p.SampleId==2) && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
+                sgs = sgRepo.GetAll().Where(p => (p.SampleId == 1 || p.SampleId==2) 
+                && p.IsDeleted != true && p.GettingDate == date && p.IsPaid == true);
             }
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
@@ -103,13 +104,16 @@ namespace eLTMS.BusinessLogic.Services
                     OrderNumber = count++,
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),
                     SampleGettingId = p.spSg.sg.SampleGettingId,
+                    DateOfBirth = c.pa.DateOfBirth != null ? c.pa.DateOfBirth.Value.ToShortDateString() : "",
                     LabTestingIds = GetIdList(p.spSg.sg.LabTestings),
+
                     SampleName = p.spSg.sp.SampleName,
                     PatientName = c.pa.FullName,
                     Date = p.spSg.sg.GettingDate.Value.ToShortDateString(),
                     IsGot = p.spSg.sg.IsGot
-
                 }).ToList();
+                result = result.Where(p => p.PatientName.ToString().ToLower().Contains(search.ToLower())).ToList()
+                .OrderBy(a => a.StartTime).ToList();
             result = result.Where(p => p.StartTime.ToString().Contains(search)
             || p.SampleGettingId.ToString().Contains(search)
             || p.Date.ToString().Contains(search)
@@ -120,6 +124,7 @@ namespace eLTMS.BusinessLogic.Services
 
             return result;
         }
+
         private List<int> GetIdList(ICollection<LabTesting> labTestings)
         {
             var result = new List<int>();
