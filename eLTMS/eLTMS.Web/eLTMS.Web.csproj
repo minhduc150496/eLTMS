@@ -7881,6 +7881,7 @@
     <Content Include="Assets\dist\css\adminlte.min.css.map" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Assets\plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="Scripts\customScript\labtestResultFail.js" />
     <Content Include="Scripts\customScript\sampleFail.js" />
     <Content Include="Scripts\customScript\receptionist.js" />
     <Content Include="Scripts\customScript\nurseChangeSttScript.js" />
