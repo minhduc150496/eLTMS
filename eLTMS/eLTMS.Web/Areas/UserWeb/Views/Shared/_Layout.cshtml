@@ -243,6 +243,17 @@
             "Cashier": 8
         };
         Object.freeze(RoleEnum);
+        
+        //toastr.options = {
+        //    "debug": false,
+        //    "positionClass": "toast-bottom-right",
+        //    "onclick": null,
+        //    "fadeIn": 300,
+        //    "fadeOut": 1000,
+        //    "timeOut": 5000,
+        //    "extendedTimeOut": 1000
+        //}
+
         var config = {
             apiKey: "AIzaSyBmErEOrR3HvYOALMjpqmP4dwiYUuAPK7E",
             authDomain: "eltms-test1.firebaseapp.com",
@@ -291,6 +302,7 @@
             if (roleIds.includes(roleId)) {
                 // Toastr
                 console.log(payload);
+                toastr.options.positionClass = 'toast-top-right';
                 toastr["success"](payload.data.message);                
             }
         }
