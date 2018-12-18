@@ -66,7 +66,7 @@ namespace eLTMS.Web.Controllers
 
         public ActionResult LabTestingResult()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Receptionist, (int)RoleEnum.Doctor))
             {
                 return View();
             }
@@ -75,7 +75,7 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult LabTestingFail()
         {
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.LabTechnician, (int)RoleEnum.Doctor))
             {
                 return View();
             }
@@ -331,6 +331,19 @@ namespace eLTMS.Web.Controllers
         public JsonResult UpdateResult(string code,string con,string cmt)
         {
             var result = _appointmentService.Update(code,con,cmt);
+            if (result == true)
+            {
+                var tokens = _tokenService.GetAll();
+                int[] roleIds = {
+                    (int)RoleEnum.Patient
+                };
+                var data = new
+                {
+                    roleIds,
+                    message = "Bạn đã có kết quả xét nghiệm."
+                };
+                SendNotificationUtils.SendNotification(data, tokens);
+            }
             return Json(new
             {
                 success = result

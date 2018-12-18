@@ -103,7 +103,7 @@ var Controller = {
                 sttDone: sttDone,
             },
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 if (response.success) {
                     var hasData = response.data.length > 0;
                     var html = '';
