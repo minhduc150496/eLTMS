@@ -256,6 +256,33 @@
                             </ul>
                         </li>
                     }
+
+                    @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician )
+                    {
+                        <li class="treeview @(controllerName == "LabTest" ? "menu-open" : "")">
+                            <a href="#">
+                                <i class="fa fa-object-ungroup"></i>
+                                <span>Kỹ thuật viên</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" @(controllerName == "LabTest" ? "style=display:block" : "")>
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                                {
+                                    <li @(actionName == "LabTest" ? "class=active" : "")>
+                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hotel"></i> <span>Xử lý mẫu</span></a>
+                                    </li>
+                                }
+                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
+                                {
+                                    <li @(actionName == "LabTest" ? "class=active" : "")>
+                                        <a href="@Url.Action("SampleFail", "LabTest")"><i class="fa fa-hotel"></i> <span>Lấy mẫu lại</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
                 </ul>
             </section>
             <!-- /.sidebar -->

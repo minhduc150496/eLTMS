@@ -10,7 +10,7 @@ var homeController = {
     registerEvent: function () {
         $('#btnHistory').off('click').on('click', function () {
             var patientId = parseInt($('#txtPatientId').val());
-            $('#lblPopupTitle').text('Danh sách kết quả xét nghiệm');
+            //$('#lblPopupTitle').text('Danh sách kết quả xét nghiệm');
             $('#myModalHistory').modal('show');
             homeController.loadDataResult(patientId);
 
