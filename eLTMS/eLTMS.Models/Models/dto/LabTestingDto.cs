@@ -12,6 +12,7 @@ namespace eLTMS.Models.Models.dto
 
         public List<LabTestingIndexDto> LabTestingIndexDtos { get; set; }
         public string PatientName { get; set; } // Status (length: 20)
+        public string PDOB { get; set; } // Status (length: 20)
         public string PatientPhone { get; set; } // Status (length: 20)
         public string Price { get; set; } // Status (length: 20)
         public int LabTestingId { get; set; } // LabTestingID (Primary key)
@@ -23,5 +24,7 @@ namespace eLTMS.Models.Models.dto
         public string Status { get; set; } // Status (length: 20)
         public bool? IsDeleted { get; set; } // IsDeleted
         public int? MachineSlot { get; set; } // MachineSlot
+        public string GetApp { get; set; } // Status (length: 20)
+        public string ReturnRe { get; set; } // Status (length: 20)
     }
 }

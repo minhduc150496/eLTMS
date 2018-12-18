@@ -7,18 +7,24 @@
 }
 var homeController = {
     init: function () {
+        var dateNow = homeController.formatDate(new Date());
+        document.getElementById("txtSearchDateResult").value = dateNow;
         homeController.registerEvent();
         homeController.loadData();
         homeController.loadDataLabTestingResultFail();
     },
-    registerEvent: function () {
-        //$('.btn-deleteLabTestingResultFail').off('click').on('click', function () {
-        //    var id = $(this).data('id');
-        //    //homeController.deleteLabtesting(id);
-        //    homeController.ChangeIsPaid(id);
-        //    homeController.loadDataLabTestingResultFail();
+    formatDate: function (date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
 
-        //});
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    },
+    registerEvent: function () {
         $('.btn-closeLabTestingResultFail').off('click').on('click', function () {
             var id = $(this).data('id');
             homeController.deleteLabtesting(id);
@@ -33,7 +39,6 @@ var homeController = {
         $('#btnSaveResultLT').off('click').on('click', function () {
             var code = $('#txtAppCodeLT').val();
             var con = $('#txtResultLT').val();
-            //var cmt = $('#txtCMTLT').val();
             var cmt = $('#txtCMTLT').froalaEditor('html.get');
             $.ajax({
                 url: '/LabTest/UpdateResult',
@@ -59,7 +64,9 @@ var homeController = {
             $('#hiddenForm').submit();
 
         });
-
+        $("#txtSearchDateResult").change(function () {
+            homeController.loadData();
+        });
         $('.btn-editResult').off('click').on('click', function () {
             $('#lblPopupTitle').text('Cập nhật thông tin xét nghiệm');
              $('#myModal1').modal('show');
@@ -187,7 +194,7 @@ var homeController = {
             url: '/LabTest/GetAllResult',
             type: 'GET',
             dataType: 'json',
-            data: { page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            data: { s: $('#txtSearchDateResult').val(), page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
@@ -196,10 +203,12 @@ var homeController = {
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
                             LabTestingId: item.LabTestingId,
-                            Name: item.LabTestName,
-                            Status: item.Status,
+                            DOB: item.PDOB,
+                            Pname: item.PatientName,
+                            Phone: item.PatientPhone,
+                            GetA: item.GetApp,
+                            ReR: item.ReturnRe,
                             Getting: item.AppointmentCode,
-                            Group: item.SampleName,
                         });
 
                     });

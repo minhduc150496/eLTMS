@@ -234,10 +234,12 @@ var homeController = {
     },
     loadDataResult: function (id,changePageSize) {
         $.ajax({
-            url: '/Patient/GetAllResults',
+            url: '/Patient/GetAllResultsNoPaging',
             type: 'GET',
             dataType: 'json',
-            data: { id:id,page: homeconfig.pageIndex, pageSize: homeconfig.pageSize },
+            data: {
+                id: id
+            },
             success: function (response) {
                 if (response.success) {
                     var data = response.data;

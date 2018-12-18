@@ -23,5 +23,7 @@ namespace eLTMS.Models.Models.dto
         public string StartTime { get; set; }
 
         public bool? IsGot { get; set; }
+
+        public List<int> LabTestingIds { get; set; }
     }
 }

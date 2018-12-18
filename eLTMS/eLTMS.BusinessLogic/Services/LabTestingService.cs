@@ -16,7 +16,7 @@ namespace eLTMS.BusinessLogic.Services
         List<LabTesting> GetAllLabTesting();
         List<LabTesting> GetAllLabTestingFail();
         List<LabTesting> GetAllLabTestingResult();
-        List<LabTesting> GetAllResult();
+        List<LabTesting> GetAllResult(string s);
         bool Update(List<LabTesting> labTesting);
         bool UpdateFail(int id);
         bool Delete(int id);
@@ -175,10 +175,10 @@ namespace eLTMS.BusinessLogic.Services
             }
             return true;
         }
-        public List<LabTesting> GetAllResult()
+        public List<LabTesting> GetAllResult(string s)
         {
             var repo = this.RepositoryHelper.GetRepository<ILabTestingRepository>(UnitOfWork);
-            var labTestingResult = repo.GetAllResult();
+            var labTestingResult = repo.GetAllResult(s);
             var dupplicatedCode = labTestingResult
                 .GroupBy(x => x.SampleGetting.Appointment.AppointmentCode)
                 .Where(x => x.Count() > 1)

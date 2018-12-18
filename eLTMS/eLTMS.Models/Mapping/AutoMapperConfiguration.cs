@@ -255,6 +255,9 @@ namespace eLTMS.Models.Mapping
                 .ForMember(dst => dst.MachineSlot, src => src.MapFrom(x => x.MachineSlot))
                  .ForMember(dst => dst.PatientPhone, src => src.MapFrom(x => x.SampleGetting.Appointment.Patient.PhoneNumber))
                 .ForMember(dst => dst.PatientName, src => src.MapFrom(x => x.SampleGetting.Appointment.Patient.FullName))
+                 .ForMember(dst => dst.PDOB, src => src.MapFrom(x => x.SampleGetting.Appointment.Patient.DateOfBirth.HasValue ? x.SampleGetting.Appointment.Patient.DateOfBirth.Value.ToString("dd-MM-yyyy") : ""))
+                .ForMember(dst => dst.GetApp, src => src.MapFrom(x => x.SampleGetting.Appointment.EnterTime))
+                .ForMember(dst => dst.ReturnRe, src => src.MapFrom(x => x.SampleGetting.Appointment.ReturnTime))
                .ForMember(dst => dst.LabTestingIndexDtos, src => src.MapFrom(x => x.LabTestingIndexes));
 
                 cfg.CreateMap<Slot, SlotDto>();

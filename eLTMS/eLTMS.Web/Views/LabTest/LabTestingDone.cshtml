@@ -47,19 +47,29 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Danh sách kết quả</h3>
+                    <h3 class="box-title">Danh sách kết quả xét nghiệm trong ngày</h3>
                 </div>
                 <!-- /.box-header -->
+               
                 <div class="box-body">
-
+                    <style>
+                        #example2 th {
+                            vertical-align: top;
+                        }
+                    </style>
+                    <input type="date" id="txtSearchDateResult" />
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Mã lịch hẹn</th>
-                                <th>Tên xét nghiệm</th>
-                                <th>Mẫu xét nghiệm</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
+                                <th>Tên bệnh nhân</th>
+                                <th>Ngày sinh</th>
+                                <th>Số điện thoại</th>
+                                <th>Thời gian đặt xét nghiệm</th>
+                                <th>Thời gian trả kết quả</th>
+                                <th>Chỉnh sửa nhận xét</th>
+                                <th>Xem kết quả</th>
+                                <th>Tải kết quả</th>
                             </tr>
                         </thead>
                         <tbody id="tblDataLabTestingResult"></tbody>
@@ -120,14 +130,19 @@
 <script id="dataLabTestingResult-template" type="x-tmpl-mustache">
     <tr>
         <td>{{Getting}}</td>
-        <td>{{Name}}</td>
-        <td>{{Group}}</td>
-        <td>{{Status}}</td>
-
-        <td>
+        <td>{{Pname}}</td>
+        <td>{{DOB}}</td>
+        <td>{{Phone}}</td>
+        <td>{{GetA}}</td>
+        <td>{{ReR}}</td>
+        <td style="max-width: 40px; text-align: center;">
             <button class="btn btn-primary btn-editResult" data-id="{{Getting}}"><i class="fa fa-pencil-square-o"></i></button>
-            <button class="btn btn-success btn-printResult" data-id="{{Getting}}"><i class="fa fa-file-pdf-o"></i></button>
+        </td>
+        <td style="max-width: 40px; text-align: center;">
             <button class="btn btn-success btn-viewResult" data-id="{{Getting}}"><i class="fa fa-eye"></i></button>
+        </td>
+        <td style="max-width: 40px; text-align: center;">
+            <button class="btn btn-default btn-printResult" data-id="{{Getting}}"><i class="fa fa-download"></i></button>
         </td>
     </tr>
 </script>
