@@ -847,10 +847,10 @@ var homeController = {
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
                             LabTestingId: item.LabTestingId,
-                            Name: item.LabTestName,
+                            Name: item.PatientName,
                             Status: item.Status,
                             Getting: item.AppointmentCode,
-                            Group: item.SampleName,
+                            Group: item.PDOB,
                         });
 
                     });

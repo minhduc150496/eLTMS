@@ -91,6 +91,7 @@ namespace eLTMS.DataAccess.Repositories
              .Include(x => x.LabTest)
              .Include(x => x.SampleGetting.Appointment)
              .Include(x => x.SampleGetting.Sample)
+             .Include(x => x.SampleGetting.Appointment.Patient)
              .ToList();
             return result;
 
