@@ -117,15 +117,22 @@ var Controller = {
 
             var phone = $('#step-0 [name=p-phone]').val();
             var $phone = $('#step-0 [name=p-phone] ~ .valid-mess');
+            const digits = "0123456789";
+            var isDigits = true;
             $phone.html("");
-            if (phone === "") {
-                $phone.html('Vui lòng điền số điện thoại của bạn');
-                valid = false;
-                if (phone.length > 20) {
-                    $phone.html('Số điện thoại tối đa 100 ký tự');
-                    valid = false;
+            for (var i = 0; i < phone.length; i++) {
+                if (digits.includes(phone[i]) == false) {
+                    isDigits = false;
+                    break;
                 }
-            } 
+            }
+            if (phone === "") {
+                $phone.html('Vui lòng điền số điện thoại.');
+                valid = false;
+            } else if (phone.length != 10 || isDigits==false) {
+                $phone.html('Số điện thoại không hợp lệ.<br>Số điện thoại hợp lệ là một dãy số 10 chữ số.');
+                valid = false;
+            }
 
             var address = $('#step-0 [name=p-address]').val();
             var $address = $('#step-0 [name=p-address] ~ .valid-mess');
@@ -436,7 +443,7 @@ var Controller = {
                     data[i].FmStartTime = Utils.formatTimeShort(data[i].StartTime);
                     data[i].FmFinishTime = Utils.formatTimeShort(data[i].FinishTime);
                 }
-                // //console.log(data);
+                //console.log(data);
                 var template = $("#options-template").html();
                 var html = Mustache.render(template, { SlotOptions: data });
                 $("#step-2-form [data-sample-id='" + sampleId + "'] select").html(html);

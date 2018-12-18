@@ -158,7 +158,7 @@
                     {
                         <li @(controllerName == "Cashier" ? "class=active" : "")>
                             <a href="@Url.Action("", "Cashier")">
-                                <i class="fa fa-dollar"></i>
+                                <i class="fa fa-table"></i>
                                 <span>Tiếp tân bộ phận</span>
                             </a>
                         </li>
@@ -220,28 +220,14 @@
                     }
                     @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier || roleId == (int)RoleEnum.Receptionist)
                     {
-                        <li class="treeview @("Patient,Employee".Contains(controllerName) ? "menu-open" : "")">
-                            <a href="#">
-                                <i class="fa fa-child"></i>
-                                <span>Quản lý Con Người</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" @("Patient,Employee".Contains(controllerName) ? "style=display:block" : "")>
-                                @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.Cashier || roleId == (int)RoleEnum.Receptionist)
-                                {
-                                    <li @(actionName == "Patients" ? "class=active" : "")>
-                                        <a href="@Url.Action("Patients", "Patient")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Bệnh nhân</span></a>
-                                    </li>
-                                }
-                                @if (roleId == (int)RoleEnum.Manager)
-                                {
-                                    <li @(actionName == "Employees" ? "class=active" : "")>
-                                        <a href="@Url.Action("Employees", "Employee")"><i class="fa fa-hand-o-right"></i> <span>Quản lý Nhân viên</span></a>
-                                    </li>
-                                }
-                            </ul>
+                        <li @(actionName == "Patients" ? "class=active" : "")>
+                            <a href="@Url.Action("Patients", "Patient")"><i class="fa fa-hotel"></i> <span>Quản lý Bệnh nhân</span></a>
+                        </li>
+                    }
+                    @if (roleId == (int)RoleEnum.Manager)
+                    {
+                        <li @(actionName == "Employees" ? "class=active" : "")>
+                            <a href="@Url.Action("Employees", "Employee")"><i class="fa fa-address-card"></i> <span>Quản lý Nhân viên</span></a>
                         </li>
                     }
                     @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.WarehouseKeeper)
@@ -271,14 +257,14 @@
                         </li>
                     }
                     @*@if (roleId == (int)RoleEnum.Manager)
-                    {
-                        <li @(controllerName == "Feedback" ? "class=active" : "")>
-                            <a href="@Url.Action("Feedbacks", "Feedback")">
-                                <i class="fa fa-newspaper-o"></i>
-                                <span>Quản lý Feedback</span>
-                            </a>
-                        </li>
-                    }*@
+        {
+            <li @(controllerName == "Feedback" ? "class=active" : "")>
+                <a href="@Url.Action("Feedbacks", "Feedback")">
+                    <i class="fa fa-newspaper-o"></i>
+                    <span>Quản lý Feedback</span>
+                </a>
+            </li>
+        }*@
                 </ul>
             </section>
             <!-- /.sidebar -->
