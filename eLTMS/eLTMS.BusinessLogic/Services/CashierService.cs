@@ -436,10 +436,10 @@ namespace eLTMS.BusinessLogic.Services
                     SampleGettingId = p.spSg.sg.SampleGettingId,
                     SampleId = p.spSg.sg.SampleId,
                     IsPaid = p.spSg.sg.IsPaid
-                }).ToList();
-            result = result.Where(p => p.PatientName.ToString().ToLower().Contains(search.ToLower())
+                }).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
+            result = result.Where(p => p.PatientName.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)).ToList()
-            .OrderBy(a=>a.StartTime).ToList();
+            .OrderBy(a => a.StartTime).ToList();
             return result;
         }
 

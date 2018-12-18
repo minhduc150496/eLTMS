@@ -335,6 +335,8 @@ var homeController = {
         $('#ddlGender').val('Male');
         $('#txtPhone').val('');
         $('#txtAddress').val('');
+        $('mauCheckGroup').val('');
+
     },
     
     //cashier load cuộc hẹn trong ngày
