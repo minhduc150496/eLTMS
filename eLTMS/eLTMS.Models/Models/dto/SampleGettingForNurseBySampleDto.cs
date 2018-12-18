@@ -12,6 +12,8 @@ namespace eLTMS.Models.Models.dto
 
         public int? OrderNumber { get; set; }
 
+        public string DateOfBirth { get; set; }
+
         public string SampleName { get; set; }
 
         public string PatientName { get; set; }

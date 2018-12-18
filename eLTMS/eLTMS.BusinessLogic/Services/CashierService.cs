@@ -399,7 +399,9 @@ namespace eLTMS.BusinessLogic.Services
 
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
-            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true && p.GettingDate == date);
+            var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true
+            && p.GettingDate == date && p.Status != "NURSEDONE" && p.Status != "DOCTORDONE");
+
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
             var tables = tableRepo.GetAll();
@@ -424,7 +426,7 @@ namespace eLTMS.BusinessLogic.Services
                 {
                     StartTime = TimeSpan.FromSeconds(p.slot.StartTime.Value).ToString(@"hh\:mm"),//xuất ra string giờ : phút
                     SampleName = p.spSg.sp.SampleName,
-                    AppointmentCode = c.app.AppointmentCode,
+                    DateOfBirth = c.pa.DateOfBirth != null ? c.pa.DateOfBirth.Value.ToShortDateString() : "",
                     OrderNumber = count++,
                     Phone = c.pa.PhoneNumber,
                     Address = c.pa.HomeAddress,
@@ -435,9 +437,9 @@ namespace eLTMS.BusinessLogic.Services
                     SampleId = p.spSg.sg.SampleId,
                     IsPaid = p.spSg.sg.IsPaid
                 }).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
-            result = result.Where(p => p.PatientName.ToString().Contains(search)
+            result = result.Where(p => p.PatientName.ToString().ToLower().Contains(search.ToLower())
             || p.Phone.ToString().Contains(search)).ToList()
-            .GroupBy(a => a.PatientName).Select(g => g.First()).ToList()
+            //.GroupBy(a => a.PatientName).Select(g => g.First()).ToList()
             .OrderBy(a=>a.StartTime).ToList();
             return result;
         }

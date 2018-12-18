@@ -31,7 +31,7 @@ namespace eLTMS.Web.Controllers
         }
         public ActionResult Patients()
         {   
-            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist, (int)RoleEnum.Cashier))
+            if (base.ValidRole((int)RoleEnum.Manager, (int)RoleEnum.Receptionist, (int)RoleEnum.Cashier, (int)RoleEnum.Nurse))
             {
                 var patient = _patientService.GetAllPatients("").LastOrDefault();
                 if (patient != null)

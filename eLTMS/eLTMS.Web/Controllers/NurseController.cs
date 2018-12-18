@@ -58,7 +58,7 @@ namespace eLTMS.Web.Controllers
                 int[] roleIds = {
                     //(int)RoleEnum.Receptionist,
                     (int)RoleEnum.Nurse,
-                    //(int)RoleEnum.Cashier,
+                    (int)RoleEnum.Cashier,
                     //(int)RoleEnum.Manager
                 };
                 var data = new

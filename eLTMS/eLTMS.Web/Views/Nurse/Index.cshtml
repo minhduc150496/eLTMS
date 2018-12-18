@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Appointment For Nurse";
+    ViewBag.Title = "Nurse Page";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -86,7 +86,7 @@
 
 <section class="content-header">
     <h1>
-        DANH SÁCH CHỜ LẤY MẪU
+        DANH SÁCH LẤY MẪU
     </h1>
 </section>
 
@@ -100,29 +100,28 @@
 
                     <br />
                     <br />
-
-                    <input type="text" id="txtSearch" placeholder="Mã cuộc hẹn" />
-                    <button class="btn btn-success" id="btnSearch">Search</button>
-                    Loại xét nghiệm:
+                    <label>Tìm kiếm:</label>
+                    <input type="text" id="txtSearch" placeholder="Tên bệnh nhân" />
+                    @*<button class="btn btn-success" id="btnSearch">Search</button>*@
+                    <label>Loại xét nghiệm:</label>
                     <select class="Sample" id="select-sample">
                         <option value="1">Máu & Nước tiểu</option>
                         <option value="3">Tế bào học</option>
                         <option value="4">Phân</option>
                         <option value="5">Dịch</option>
                     </select>
-                    Ngày:
+                    <label>Ngày:</label>
                     <input type="date" class="Date" id="select-date" />
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>SampleGetting ID</th>
                                 <th>Họ & tên</th>
+                                <th>Ngày sinh</th>
                                 <th>Loại xét nghiệm</th>
-                                <th>Ngày</th>
+                                <th>Mã ống nghiệm</th>
                                 <th>Giờ xét nghiệm</th>
                                 <th>Đã lấy mẫu</th>
-
                             </tr>
                         </thead>
                         <tbody id="tblData"></tbody>
@@ -142,10 +141,10 @@
 <script id="data-template" type="x-tmpl-mustache">
     <tr>
         <td>{{OrderNumber}}</td>
-        <td>{{SgId}}</td>
         <td>{{FullName}}</td>
+        <td>{{DOB}}</td>
         <td>{{SampleName}}</td>
-        <td>{{Date}}</td>
+        <td>{{SgId}}</td>
         <td>{{StartTime}}</td>
         <td>
             <label class="switch">
