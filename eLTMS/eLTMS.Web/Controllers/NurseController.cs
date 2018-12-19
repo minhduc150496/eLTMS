@@ -36,7 +36,7 @@ namespace eLTMS.Web.Controllers
         public JsonResult GetAppBySample(string search, DateTime date, int sampleId, int page=1, int pageSize=20)
         {
             //var queryResult = _receptionistService.GetAppBySample(sampleId);
-            var result = _nurseService.GetAllBySample(search, date, sampleId);
+            var result = _nurseService.GetAllBySample(search, date, sampleId).Skip((page - 1) * pageSize).Take(pageSize);
             var totalRows = result.Count();
             //var totalRows = queryResult.Count();
             //var result = Mapper.Map<IEnumerable<Appointment>, IEnumerable<AppointmentGetAllDto>>(queryResult.Skip((page - 1) * pageSize).Take(pageSize));

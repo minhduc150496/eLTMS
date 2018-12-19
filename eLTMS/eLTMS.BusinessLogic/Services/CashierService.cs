@@ -400,7 +400,7 @@ namespace eLTMS.BusinessLogic.Services
             var apps = appRepo.GetAll().Where(p => p.IsDeleted != true);
             var pas = paRepo.GetAll().Where(p => p.IsDeleted != true);
             var sgs = sgRepo.GetAll().Where(p => p.SampleId == sampleId && p.IsDeleted != true
-            && p.GettingDate == date && p.Status != "NURSEDONE" && p.Status != "DOCTORDONE");
+            && p.GettingDate == date /*&& p.Status != "NURSEDONE"*/);
 
             var sps = spRepo.GetAll().Where(p => p.IsDeleted != true);
             var slots = slotRepo.GetAll();
@@ -437,10 +437,9 @@ namespace eLTMS.BusinessLogic.Services
                     SampleId = p.spSg.sg.SampleId,
                     IsPaid = p.spSg.sg.IsPaid
                 }).GroupBy(a => a.PatientName).Select(g => g.First()).ToList();
-            result = result.Where(p => p.PatientName.ToString().ToLower().Contains(search.ToLower())
+            result = result.Where(p => p.PatientName.ToString().Contains(search)
             || p.Phone.ToString().Contains(search)).ToList()
-            //.GroupBy(a => a.PatientName).Select(g => g.First()).ToList()
-            .OrderBy(a=>a.StartTime).ToList();
+            .OrderBy(a => a.StartTime).ToList();
             return result;
         }
 

@@ -43,6 +43,7 @@ namespace eLTMS.BusinessLogic.Services
                     exportPerDto.CreateDate = DateTime.Now;
                     exportPerDto.ExportPaperCode = exportPaper.ExportPaperCode;
                     exportPerDto.Note = exportPaper.Note;
+                    exportPerDto.IsDeleted = false;
                     exportPerDto.Status = exportPaper.Status;
                     exportPaperRepo.Create(exportPerDto);
                     var dbValresults = UnitOfWork.SaveChanges();

@@ -42,6 +42,7 @@ namespace eLTMS.BusinessLogic.Services
                     importPerDto.CreateDate = DateTime.Now;
                     importPerDto.ImportPaperCode = importPaper.ImportPaperCode;
                     importPerDto.Note = importPaper.Note;
+                    importPerDto.IsDeleted =false;
                     importPaperRepo.Create(importPerDto);
                     var dbValresults =  UnitOfWork.SaveChanges();
                     if (dbValresults.Any())

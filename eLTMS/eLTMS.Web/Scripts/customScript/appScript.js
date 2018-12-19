@@ -60,7 +60,6 @@ var homeController = {
         $("#select-date").change(function () {
             homeController.loadData();
         });
-        
 
         $('#btnSave').off('click').on('click', function () {
             var name = $('#txtName').val();
@@ -209,13 +208,11 @@ var homeController = {
 
             var $phone = $('#step-0 [name=txtPhone] ~ .valid-mess');
             $phone.html("");
-            //var rgPhone = /d;
             if (phone === "") {
                 $phone.html('Vui lòng điền đầy đủ số điện thoại');
                 valid = false;
             }
-            else
-            if (phone.length > 11) {
+            else if (phone.length > 11) {
                 $phone.html('Số điện thoại có độ dài tối đa 11 ký tự');
                 valid = false;
             }
@@ -231,12 +228,6 @@ var homeController = {
                 }
             } 
             
-            //var $check = $('#step-0 [name=checkGroup] ~ .valid-mess');
-            //if (mau === false && nuocTieu === false && teBaoHoc === false && phan === false && dich === false) {
-            //    $check.html('Vui lòng chọn loại xét nghiệm');
-            //    valid = false;
-            //} 
-
             if (valid) {
                 var item = {
                     Name: name,
@@ -344,6 +335,8 @@ var homeController = {
         $('#ddlGender').val('Male');
         $('#txtPhone').val('');
         $('#txtAddress').val('');
+        $('mauCheckGroup').val('');
+
     },
     
     //cashier load cuộc hẹn trong ngày
@@ -360,7 +353,7 @@ var homeController = {
             success: function (response) {
                 if (response.success) {
                     var data = response.data;
-                    searchData = data.PatientName;
+                    //searchData = data.PatientName;
                     //do du lieu qua html
                     var html = '';
                     var template = $('#data-template').html();

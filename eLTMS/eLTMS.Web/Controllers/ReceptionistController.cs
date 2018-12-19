@@ -48,7 +48,7 @@ namespace eLTMS.Web.Controllers
         [HttpGet]
         public JsonResult GetAppByPatientId(int patientId, DateTime date, int page = 1, int pageSize = 20)
         {
-            var result = _receptionistService.GetAppByPatient(patientId, date);
+            var result = _receptionistService.GetAppByPatient(patientId, date).Skip((page - 1) * pageSize).Take(pageSize);
             var totalRows = result.Count();
             return Json(new
             {

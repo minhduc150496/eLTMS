@@ -362,9 +362,9 @@ var Controller = {
         // set value min max for input type date
         $('#table-step2 [type="date"]').each(function (index, el) {
             if (CONFIG.IS_UPDATE == false) { // is create
-                $(el).val(Tomorrow);
+                $(el).val(Today);
             }
-            $(el).attr('min', Tomorrow);
+            $(el).attr('min', Today);
             $(el).attr('max', MaxGettingDate);
         })
 
