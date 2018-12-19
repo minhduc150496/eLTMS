@@ -53,11 +53,11 @@ var homeController = {
 
     registerEvent: function () {
 
-        $("#select-sample").change(function () {
+        $("#select-sample").off('change').on('change', function () {
             homeController.loadData();
         });
         
-        $("#select-date").change(function () {
+        $("#select-date").off('change').on('change', function () {
             homeController.loadData();
         });
 

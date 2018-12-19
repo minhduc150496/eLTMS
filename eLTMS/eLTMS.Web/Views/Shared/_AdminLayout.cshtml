@@ -271,13 +271,13 @@
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTest" ? "class=active" : "")>
-                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hotel"></i> <span>Xử lý mẫu</span></a>
+                                        <a href="@Url.Action("LabTesting", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Xử lý mẫu</span></a>
                                     </li>
                                 }
                                 @if (roleId == (int)RoleEnum.Manager || roleId == (int)RoleEnum.LabTechnician)
                                 {
                                     <li @(actionName == "LabTest" ? "class=active" : "")>
-                                        <a href="@Url.Action("SampleFail", "LabTest")"><i class="fa fa-hotel"></i> <span>Lấy mẫu lại</span></a>
+                                        <a href="@Url.Action("SampleFail", "LabTest")"><i class="fa fa-hand-o-right"></i> <span>Lấy mẫu lại</span></a>
                                     </li>
                                 }
                             </ul>
