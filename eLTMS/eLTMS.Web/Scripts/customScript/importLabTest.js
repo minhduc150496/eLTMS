@@ -896,7 +896,7 @@ var homeController = {
                     $('#tblDataLabTestingResult1').html(html);
                     $('#txtCode').val(code);
                     homeController.registerEvent();
-                } $('#txtResult').val(''); $('#btnAddNewResult').hide();
+                } $('#txtResult').val(''); /*$('#btnAddNewResult').hide();/**/
             }
         })
     },
